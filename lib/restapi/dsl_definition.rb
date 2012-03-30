@@ -88,12 +88,9 @@ module Restapi
           
           # params validations
           if params.has_key?(param.name)
-            param_val = params[:"#{param.name}"]
+            param.validate(params[:"#{param.name}"])
+          end
 
-            unless param.validator.valid?(param_val)
-              raise ArgumentError.new(param.validator.error)
-            end
-          end  
         end # params.each
 
         # run the original method code

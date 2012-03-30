@@ -52,6 +52,7 @@ module Restapi
       end
 
       def validate(value)
+        return false if value.nil?
         begin
           Kernel.send(@type.to_s, value)
         rescue ArgumentError
@@ -60,7 +61,7 @@ module Restapi
       end
 
       def self.build(argument, options, block)
-        self.new(argument) if argument.is_a?(Class)
+        self.new(argument) if argument.is_a?(Class) && argument != Hash
       end
 
       def error
@@ -152,6 +153,41 @@ module Restapi
         ""
       end
     end
-    
+
+    class HashValidator < BaseValidator
+
+      def self.build(argument, options, block)
+        self.new(block) if block.is_a?(Proc) && block.arity <= 0 && argument == Hash
+      end
+
+      def initialize(argument)
+        @proc = argument
+        @hash_params = {}
+
+        self.instance_exec(&@proc)
+      end
+      
+      def validate(value)
+        if @hash_params
+          @hash_params.each do |k, p|
+            p.validate(value[k]) if value.has_key?(k) || p.required
+          end
+        end
+        return true
+      end
+
+      def error
+        "TODO"
+      end
+
+      def description
+        "TODO"
+      end
+
+      def param(param_name, *args, &block)
+        @hash_params[param_name.to_sym] = Restapi::ParamDescription.new(param_name, *args, &block)
+      end
+    end
+
   end
 end

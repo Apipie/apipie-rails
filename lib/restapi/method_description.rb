@@ -11,7 +11,8 @@ module Restapi
       @short_description = args[:desc]
       @path = args[:path]
       @http = args[:method]
-      @full_description = Restapi.rdoc.convert(app.get_description)
+      desc = app.get_description || ''
+      @full_description = Restapi.rdoc.convert(desc.strip_heredoc)
       @errors = app.get_errors
       @params = app.get_params
     end

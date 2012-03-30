@@ -128,4 +128,28 @@ describe UsersController do
     
   end
 
+  describe "POST create" do
+    
+    it "should understand hash validator" do
+      post :create, :user => { :username => "root", :password => "12345", :membership => "standard" }
+      assert_response :success
+
+      a = Restapi[UsersController, :create]
+      a.short_description.should eq("Create user")
+      a.path.should eq("/users")
+      a.http.should eq("POST")
+
+      lambda { post :create, :user => { :username => "root", :password => "12345", :membership => "____" } }.should
+      raise_error(ArgumentError)
+
+      lambda { post :create, :user => { :username => "root" } }.should
+      raise_error(ArgumentError)
+
+      post :create, :user => { :username => "root", :password => "pwd" }
+      assert_response :success
+
+    end
+
+  end
+
 end

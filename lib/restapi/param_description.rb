@@ -24,12 +24,17 @@ module Restapi
       @required = options[:required] || false
       
       @validator = Validator::BaseValidator.find(validator_type, options, block)
-      @validator.param_name = @name
       raise "Validator not found." unless validator
+      @validator.param_name = @name
+    end
+
+    def validate(value)
+      unless @validator.valid?(value)
+        raise ArgumentError.new(@validator.error)
+      end
     end
 
     def to_json
-      puts "tady #{validator.to_s}"
       {
         :name => name,
         :description => desc,
