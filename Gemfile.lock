@@ -75,6 +75,7 @@ GEM
       rdoc (~> 3.4)
       thor (~> 0.14.4)
     rake (0.9.2.2)
+    rcov (1.0.0)
     rdoc (3.12)
       json (~> 1.4)
     rspec (2.8.0)
@@ -112,5 +113,6 @@ DEPENDENCIES
   ZenTest
   capybara (>= 0.4.0)
   rails (= 3.0.11)
+  rcov
   rspec-rails
   sqlite3

@@ -74,27 +74,30 @@ module Restapi
       Restapi.remove_method_description(resource_name, method_name)
       mapi = Restapi.define_method_description(resource_name, method_name)
 
-      # redefine method
-      old_method = instance_method(method_name) 
-  
-      define_method(method_name) do |*args|
+      # redefine method only if validation is turned on
+      if Restapi.configuration.validate == true
+
+        old_method = instance_method(method_name) 
         
-        mapi.params.each do |_, param|
-
-          # check if required parameters are present
-          if param.required && !params.has_key?(param.name)
-            raise ArgumentError.new("Expecting #{param.name} parameter.")
-          end
+        define_method(method_name) do |*args|
           
-          # params validations
-          if params.has_key?(param.name)
-            param.validate(params[:"#{param.name}"])
-          end
+          mapi.params.each do |_, param|
 
-        end # params.each
+            # check if required parameters are present
+            if param.required && !params.has_key?(param.name)
+              raise ArgumentError.new("Expecting #{param.name} parameter.")
+            end
+            
+            # params validations
+            if params.has_key?(param.name)
+              param.validate(params[:"#{param.name}"])
+            end
 
-        # run the original method code
-        old_method.bind(self).call(*args)
+          end # params.each
+
+          # run the original method code
+          old_method.bind(self).call(*args)
+        end
 
       end
       

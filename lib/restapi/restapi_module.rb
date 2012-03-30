@@ -26,13 +26,14 @@ module Restapi
   end
 
   class Configuration
-    attr_accessor :app_name, :app_info, :copyright, :markup_language
+    attr_accessor :app_name, :app_info, :copyright, :markup_language, :validate
 
     def initialize
       @markup_language = :rdoc
       @app_name = "Another API"
       @app_info = "Another API description"
       @copyright = nil
+      @validate = true
     end
   end
 
