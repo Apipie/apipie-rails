@@ -1,5 +1,13 @@
 Dummy::Application.routes.draw do
-  resources :users
+  resources :users do
+    collection do
+      get :doc
+    end
+  end
+  
+  resources :dogs
+  
+  restapi "/dokumentace"
   
   # The priority is based upon order of creation:
   # first created -> highest priority.

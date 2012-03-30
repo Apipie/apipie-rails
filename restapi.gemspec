@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.authors     = ["Pavel Pokorny"]
   s.email       = ["pajkycz@gmail.com"]
   s.homepage    = "http://github.com/Pajk/restapi"
-  s.summary     = %q{Python style decorators for Ruby}
+  s.summary     = %q{REST API documentation tool}
   s.description = %q{gem description}
 
   s.rubyforge_project = "restapi"

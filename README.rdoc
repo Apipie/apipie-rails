@@ -1,3 +1,0 @@
-= Restapi
-
-This project rocks. Real readme comes before Christmass.

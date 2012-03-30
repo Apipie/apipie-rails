@@ -1,0 +1,24 @@
+<h3>Method:</h3>
+<strong>Name</strong>: <%= @api.method %><br>
+<strong>Resource</strong>: <%= @api.resource %><br>
+<strong>Short description</strong>: <%= @api.short_description %><br>
+<strong>URL path</strong>: <%= @api.path %><br>
+<strong>HTTP method</strong>: <%= @api.http %><br>
+<strong>Description:</strong> <%= @api.full_description.html_safe %><br>
+
+<h3>Errors:</h3>
+<% @api.errors.each do |err| %>
+  <%= err.code %>
+  <%= err.description %>
+  <br>
+<% end %>
+
+<h3>Params:</h3>
+<% @api.params.each do |_, param| %>
+  <%= param.name %>:
+  <ul>
+    <li>Description: <%= param.desc %></li>
+    <li>Required: <%= param.required ? 'yes' : 'no' %></li>
+    <li>Validator: <%= param.validator.inspect %></li>
+  </ul>
+<% end %>

@@ -17,7 +17,7 @@ module Restapi
     #       :method => "GET"
     #
     def api(args)
-      Restapi.application.last_api_args = args
+      Restapi.last_api_args = args
     end
 
     # Describe the next method.
@@ -29,10 +29,10 @@ module Restapi
     #   end
     #
     def desc(description)
-      if Restapi.application.last_description
+      if Restapi.last_description
         raise "Double method description."
       end
-      Restapi.application.last_description = description
+      Restapi.last_description = description
     end
 
     # Describe possible errors
@@ -45,7 +45,7 @@ module Restapi
     #   end
     #
     def error(args)
-      Restapi.application.last_errors << args
+      Restapi.last_errors << Restapi::ErrorDescription.new(args)
     end
     
     # Describe method's parameter
@@ -56,55 +56,51 @@ module Restapi
     #     puts greeting
     #   end
     #
-    def param(param_name, validator, args)
-      # "PARAM: " + param_name.to_s
-      # " vtor: " + validator.to_s
-      # " args: " + args.inspect
-      
-      args[:validator] = validator
-      Restapi.application.last_params[param_name.to_sym] = args
+    def param(param_name, *args, &block)
+      Restapi.last_params[param_name.to_sym] = Restapi::ParamDescription.new(param_name, *args, &block)
     end
     
-    def method_added(name)
-      
+    # create method api and redefine newly added method
+    def method_added(method_name)
+
       super
       
-      return unless Restapi.application.restapi_provided?
+      return unless Restapi.restapi_provided?
       
-      # puts "#{name} added to #{self}"
-      
-      unless @restapi_methods
-        @restapi_methods = Hash.new
-        class << self; attr_accessor :restapi_methods; end
-      end
-      
-      name = name.to_sym
+      method_name = method_name.to_sym
+      resource_name = self.controller_name
 
-      method_name = [self, name]
-      
-      api = Restapi::Api.define_api(method_name)
-      
-      @restapi_methods[method_name] = api
+      # remove mapi if exists and create new one
+      Restapi.remove_method_description(resource_name, method_name)
+      mapi = Restapi.define_method_description(resource_name, method_name)
 
       # redefine method
-      # TODO: validations
-      old_method = instance_method(name) 
+      old_method = instance_method(method_name) 
   
-      define_method(name) do |*args|
-        puts "about to call #{name}(#{params})"
+      define_method(method_name) do |*args|
         
-        # check if required parameters are present
-        api.params.each do |key, value|
-          if value[:required] && !params.has_key?(key)
-            raise ArgumentError.new("Expecting #{key} parameter.")
-          end
-        end
+        mapi.params.each do |_, param|
 
-        old_method.bind(self).call(*args)  
+          # check if required parameters are present
+          if param.required && !params.has_key?(param.name)
+            raise ArgumentError.new("Expecting #{param.name} parameter.")
+          end
+          
+          # params validations
+          if params.has_key?(param.name)
+            param_val = params[:"#{param.name}"]
+
+            unless param.validator.valid?(param_val)
+              raise ArgumentError.new(param.validator.error)
+            end
+          end  
+        end # params.each
+
+        # run the original method code
+        old_method.bind(self).call(*args)
+
       end
       
-    end
-    
-  end
-
-end
+    end # def method_added
+  end # module DSL
+end # module Restapi
