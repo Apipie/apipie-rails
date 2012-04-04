@@ -1,6 +1,26 @@
 require 'spec_helper'
 
 describe UsersController do
+  
+  describe "resource" do
+    it "should be described" do
+      a = Restapi.get_resource_description(UsersController)
+      
+      a._short_description.should eq('Site members')
+      a._full_description.should eq("\n<h2 id=\"label-Long+description\">Long description</h2>\n\n<p>Example resource for rest api documentation</p>\n")
+      a._methods.should eq(["users#show", "users#create", "users#index"])
+      md = a._params[:id]
+      md.should_not be(nil)
+      md.name.should eq(:id)
+      md.desc.should eq("\n<p>User ID</p>\n")
+      md.required.should eq(true)
+      md.validator.class.should eq(Restapi::Validator::TypeValidator)
+      a._id.should eq('users')
+      a._path.should eq('/users/')
+      a._version.should eq('1.0 - 3.4.2012')
+      a._name.should eq('Members')
+    end
+  end
 
   describe "GET show" do
 
@@ -38,35 +58,35 @@ describe UsersController do
 
       param = a.params[:session]
       param.required.should eq(true)
-      param.desc.should eq("user is logged in")
+      param.desc.should eq("\n<p>user is logged in</p>\n")
       param.validator.class.should be(Restapi::Validator::TypeValidator)
       param.validator.instance_variable_get("@type").should eq(String)
       
       param = a.params[:float_param]
       param.required.should eq(false)
-      param.desc.should eq("float param")
+      param.desc.should eq("\n<p>float param</p>\n")
       param.validator.class.should be(Restapi::Validator::TypeValidator)
       param.validator.instance_variable_get("@type").should eq(Float)
 
       param = a.params[:id]
       param.required.should eq(true)
-      param.desc.should eq("user id")
+      param.desc.should eq("\n<p>user id</p>\n")
       param.validator.class.should be(Restapi::Validator::TypeValidator)
       param.validator.instance_variable_get("@type").should eq(Integer)
 
       param = a.params[:regexp_param]
-      param.desc.should eq("regexp param")
+      param.desc.should eq("\n<p>regexp param</p>\n")
       param.required.should eq(false)
       param.validator.class.should be(Restapi::Validator::RegexpValidator)
       param.validator.instance_variable_get("@regexp").should eq(/^[0-9]* years/)
 
       param = a.params[:array_param]
-      param.desc.should eq("array validator")
+      param.desc.should eq("\n<p>array validator</p>\n")
       param.validator.class.should be(Restapi::Validator::ArrayValidator)
       param.validator.instance_variable_get("@array").should eq([100, "one", "two", 1, 2])
 
       param = a.params[:proc_param]
-      param.desc.should eq("proc validator")
+      param.desc.should eq("\n<p>proc validator</p>\n")
       param.validator.class.should be(Restapi::Validator::ProcValidator)
       
       a.full_description.length.should be > 400

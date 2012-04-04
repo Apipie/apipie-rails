@@ -20,7 +20,7 @@ module Restapi
       options = args.pop || {}
       
       @name = name
-      @desc = options[:desc]
+      @desc = Restapi.rdoc.convert((options[:desc] || '').strip_heredoc)
       @required = options[:required] || false
       
       @validator = Validator::BaseValidator.find(validator_type, options, block)

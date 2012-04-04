@@ -44,10 +44,10 @@ module Restapi
     end
 
     # create new resource api description
-    def define_resource_description(resource_name)
+    def define_resource_description(resource_name, &block)
       resource_name = get_resource_name(resource_name)
 
-      @resource_descriptions[resource_name] ||= Restapi::ResourceDescription.new(resource_name, self)
+      @resource_descriptions[resource_name] ||= Restapi::ResourceDescription.new(resource_name, &block)
     end
     
     # check if there is some saved description

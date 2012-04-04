@@ -6,6 +6,7 @@ Dummy::Application.routes.draw do
   end
   
   resources :dogs
+  resources :twitter_example
   
   restapi "/dokumentace"
   

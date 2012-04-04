@@ -1,6 +1,19 @@
 class UsersController < ApplicationController
   
-  api :desc => "Show user profile",
+  resource_description do
+    name 'Members'
+    short 'Site members'
+    path '/users/'
+    version '1.0 - 3.4.2012'
+    param :id, Fixnum, :desc => "User ID", :required => true
+    description <<-EOS
+      == Long description
+
+      Example resource for rest api documentation
+    EOS
+  end
+  
+  api :short => "Show user profile",
       :path => "/users/:id",
       :method => "GET"
   error :code => 401, :desc => "Unauthorized"
@@ -14,7 +27,7 @@ class UsersController < ApplicationController
   param :proc_param, lambda { |val| 
     val == "param value" ? true : "The only good value is 'param value'."
   }, :desc => "proc validator"
-  desc <<-eos
+  description <<-eos
     = Action View Base
 
     Action View templates can be written in several ways. If the template file has a <tt>.erb</tt> extension then it uses a mixture of ERb

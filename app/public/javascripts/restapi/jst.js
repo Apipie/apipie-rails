@@ -1,49 +1,61 @@
 window.JST = {};
 
 window.JST['resources/index'] = _.template(
-    "<ul class='nav nav-list'> \
-     <li class='nav-header'>Resources</li> \
-     <% _.each(resources.models, function(api) { %> \
-       <li class='<%= api==Restapi.Resource ? 'active' : '' %>'><a href='#<%= api.get('id') %>'><%= api.get('alias') %></a></li> \
-     <% }) %> \
-     </ul>");
+    "<% _.each(resources.models, function(api) { %> \
+       <h3><a href='#<%= api.get('id') %>'><%= api.get('name') %></a><br><small><%= api.get('short_description') %></small></h3> \
+       <table class='table'> \
+        <thead><tr><th>Resource</th><th>Description</th></tr></thead> \
+        <tbody> \
+          <% _.each(api.get('methods'), function(m) { %> \
+            <tr><td><%= m['http'] %> <%= m['path'] %></td><td><%= m['short_description'] %></td></tr> \
+            <% }) %> \
+        </tbody> \
+       </table> \
+     <% }) %>");
      
 window.JST['resources/show'] = _.template(
     "<% if(Restapi.Resource) { %> \
-      <div class='page-header'><h1><%= Restapi.Resource.get('alias') %></h1></div> \
+      <div class='page-header'><h1><%= Restapi.Resource.get('name') %><br>\
+      <small><%= Restapi.Resource.get('short_description') %></small></h1></div> \
+      <% if(Restapi.Resource.get('full_description') != '') { %> \
+        <div class='hero-unit'> \
+          <p><%= Restapi.Resource.get('full_description') %></p> \
+        </div> \
+      <% } %> \
     <% } %> \
     <div class='accordion' id='accordion'> \
       <% _.each(methods.models, function(api) { %> \
         <div class='well accordion-group'> \
           <div class='accordion-heading'> \
             <a href='#description-<%= api.get('method') %>' class='accordion-toggle' data-toggle='collapse' data-parent='#accordion'> \
-              <h2><%= api.get('http') %> <%= api.get('path') %> <small><%= api.get('method') %>: <%= api.get('short_description') %></small></h2>\
-            </a> \
+              <h3><%= api.get('http') %> <%= api.get('path') %></a> \
+            <small><%= api.get('short_description') %></small></h3>\
           </div> \
           <div id='description-<%= api.get('method') %>' class='collapse accordion-body'> \
             <%= api.get('full_description') %> \
-            <h1>Errors</h1> \
-            <% _.each(api.get('errors'), function(err) { %> \
-              <%= err['code'] %> \
-              <%= err['description'] %> \
-              <br> \
-            <% }) %> \
-            <h1>Params</h1> \
-            <% _.each(api.get('params'), function(val) { %> \
-              <h3><%= val['name'] %></h3> \
-              <ul>\
-                <li>Description: <%= val['description'] %></li> \
-                <li>Required: <%= val['required'] %></li> \
-                <% if(val['validator']!=''){ %> \
-                  <li>Validator: <%= val['validator'] %></li> \
-                <% } %> \
-              </ul> \
-            <% }) %> \
+            <% if(api.get('errors')!='') { %> \
+              <h2>Errors</h2> \
+              <% _.each(api.get('errors'), function(err) { %> \
+                <%= err['code'] %> \
+                <%= err['description'] %> \
+                <br> \
+              <% }) %> \
+            <% } %> \
+            <% if(api.get('params') != ''){ %> \
+              <h2>Params</h2> \
+              <table class='table'> \
+                <thead><tr><th>Param name</th><th>Description</th></tr></thead> \
+                <tbody> \
+                  <% _.each(api.get('params'), function(val) { %> \
+                    <tr><td><strong><%= val['name'] %></strong><br>\
+                    <small><%= val['required'] ? 'required' : 'optional' %></small></td> \
+                    <td><%= val['description'] %><br>\
+                    <% if(val['validator']!=''){ %> Value: <%= val['validator'] %><% } %> \
+                    </td></tr> \
+                  <% }) %> \
+                </tbody> \
+               </table> \
+             <% } %> \
             </div> \
         </div> \
      <% }) %></div>");
-
-
-    // "<% _.each(mapis.models, function(api) { %> \
-       // <strong><%= api.get('resource') %>#<%= api.get('method') %></strong><br> \
-     // <% }) %>");

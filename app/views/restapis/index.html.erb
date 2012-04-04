@@ -2,21 +2,7 @@
 <html>
 <head>
   <title>API documentation</title>
-  <script type="text/javascript" src="/javascripts/jquery-1.7.2.js"></script>
-  <script type="text/javascript" src="/javascripts/json2.js"></script>
-  <script type="text/javascript" src="/javascripts/underscore.js"></script>
-  <script type="text/javascript" src="/javascripts/backbone.js"></script>
-  <script type="text/javascript" src="/javascripts/bootstrap-collapse.js"></script>
-  <script type="text/javascript" src="/javascripts/restapi/jst.js"></script>
-  <script type="text/javascript" src="/javascripts/restapi/restapi.js"></script>
-
-  <script type="text/javascript" src="/javascripts/restapi/models/resource.js"></script>
-  <script type="text/javascript" src="/javascripts/restapi/routers/resources_router.js"></script>
-  <script type="text/javascript" src="/javascripts/restapi/collections/resources.js"></script>
-  <script type="text/javascript" src="/javascripts/restapi/collections/methods.js"></script>
-  <script type="text/javascript" src="/javascripts/restapi/views/resources/resources_index.js"></script>
-  <script type="text/javascript" src="/javascripts/restapi/views/resources/resources_show.js"></script>
-
+  
   <link type="text/css" rel="stylesheet" href="/stylesheets/bootstrap.css">
   <link type="text/css" rel="stylesheet" href="/stylesheets/restapi/application.css">            
   <link type="text/css" rel="stylesheet" href="/stylesheets/bootstrap-responsive.css">
@@ -51,14 +37,18 @@
         <div class="row-fluid">
           <div class="span3">
             <div id='left_menu_0' class='well sidebar-nav'>
-              Loading...
+              <ul class='nav nav-list'>
+               <li class='nav-header'>Resources</li>
+               <% Restapi.resource_descriptions.each { |k, v| %>
+                 <li class=''><a href='#<%= v._id %>'><%= v._name %></a></li>
+               <% } %>
+               </ul>
             </div><!--/.well -->
           </div><!--/span-->
           <div class="span9">
             <div id='container'>
               <div class='hero-unit'><%= Restapi.configuration.app_info %></div>
             </div>
-
         <hr>
 
         <footer>
@@ -68,5 +58,20 @@
         </footer>
 
       </div><!--/.fluid-container-->
+      
+      <script type="text/javascript" src="/javascripts/jquery-1.7.2.js"></script>
+      <script type="text/javascript" src="/javascripts/json2.js"></script>
+      <script type="text/javascript" src="/javascripts/underscore.js"></script>
+      <script type="text/javascript" src="/javascripts/backbone.js"></script>
+      <script type="text/javascript" src="/javascripts/bootstrap-collapse.js"></script>
+      <script type="text/javascript" src="/javascripts/restapi/jst.js"></script>
+      <script type="text/javascript" src="/javascripts/restapi/restapi.js"></script>
+
+      <script type="text/javascript" src="/javascripts/restapi/models/resource.js"></script>
+      <script type="text/javascript" src="/javascripts/restapi/routers/resources_router.js"></script>
+      <script type="text/javascript" src="/javascripts/restapi/collections/resources.js"></script>
+      <script type="text/javascript" src="/javascripts/restapi/collections/methods.js"></script>
+      <script type="text/javascript" src="/javascripts/restapi/views/resources/resources_index.js"></script>
+      <script type="text/javascript" src="/javascripts/restapi/views/resources/resources_show.js"></script>
 </body>
 </html>

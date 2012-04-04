@@ -8,6 +8,18 @@ module Restapi
   module DSL
 
     private
+    
+    # Describe whole resource
+    # 
+    # Example:
+    # api :desc => "Show user profile", :path => "/users/", :version => '1.0 - 3.4.2012'
+    # param :id, Fixnum, :desc => "User ID", :required => true
+    # desc <<-EOS
+    #   Long description...
+    # EOS
+    def resource_description(options = {}, &block)
+      Restapi.define_resource_description(self, &block) if block_given?
+    end
 
     # Declare an api.
     #
@@ -34,6 +46,7 @@ module Restapi
       end
       Restapi.last_description = description
     end
+    alias :description :desc
 
     # Describe possible errors
     #

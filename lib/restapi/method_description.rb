@@ -8,7 +8,7 @@ module Restapi
       @method = method
       @resource = resource
       args = app.get_api_args
-      @short_description = args[:desc]
+      @short_description = args[:desc] || args[:short] || args[:description]
       @path = args[:path]
       @http = args[:method]
       desc = app.get_description || ''
