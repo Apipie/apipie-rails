@@ -12,7 +12,7 @@
   <![endif]-->
 </head>
 <body>
-      <div class="navbar navbar-fixed-top">
+      <!-- <div class="navbar navbar-fixed-top">
         <div class="navbar-inner">
           <div class="container-fluid">
             <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -20,58 +20,28 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </a>
-            <a class="brand" href=""><%= Restapi.configuration.app_name %></a>
-            <div class="nav-collapse">
-              <ul class="nav">
-                <li class="active"><a href="">Home</a></li>
-              </ul>
-              <form id="search" class="navbar-search pull-left">
-                <input type="text" class="search-query" placeholder="Search">
-              </form>
-            </div><!--/.nav-collapse -->
+            <a id="api-title" class="brand" href="">Loading...</a>
+            </div>
           </div>
         </div>
-      </div>
+      </div> -->
 
-      <div class="container-fluid">
-        <div class="row-fluid">
-          <div class="span3">
-            <div id='left_menu_0' class='well sidebar-nav'>
-              <ul class='nav nav-list'>
-               <li class='nav-header'>Resources</li>
-               <% Restapi.resource_descriptions.each { |k, v| %>
-                 <li class=''><a href='#<%= v._id %>'><%= v._name %></a></li>
-               <% } %>
-               </ul>
-            </div><!--/.well -->
-          </div><!--/span-->
-          <div class="span9">
-            <div id='container'>
-              <div class='hero-unit'><%= Restapi.configuration.app_info %></div>
-            </div>
+      <div class="container">
+        <div class="row">
+          <div id='container'></div>
+        </div>
         <hr>
+        <footer></footer>
 
-        <footer>
-          <% if Restapi.configuration.copyright %>
-          <p>&copy; <%= Restapi.configuration.copyright %></p>
-          <% end %>
-        </footer>
-
-      </div><!--/.fluid-container-->
+      </div>
       
       <script type="text/javascript" src="/javascripts/jquery-1.7.2.js"></script>
       <script type="text/javascript" src="/javascripts/json2.js"></script>
       <script type="text/javascript" src="/javascripts/underscore.js"></script>
       <script type="text/javascript" src="/javascripts/backbone.js"></script>
       <script type="text/javascript" src="/javascripts/bootstrap-collapse.js"></script>
-      <script type="text/javascript" src="/javascripts/restapi/jst.js"></script>
       <script type="text/javascript" src="/javascripts/restapi/restapi.js"></script>
-
-      <script type="text/javascript" src="/javascripts/restapi/models/resource.js"></script>
-      <script type="text/javascript" src="/javascripts/restapi/routers/resources_router.js"></script>
-      <script type="text/javascript" src="/javascripts/restapi/collections/resources.js"></script>
-      <script type="text/javascript" src="/javascripts/restapi/collections/methods.js"></script>
-      <script type="text/javascript" src="/javascripts/restapi/views/resources/resources_index.js"></script>
-      <script type="text/javascript" src="/javascripts/restapi/views/resources/resources_show.js"></script>
+      <script type="text/javascript" src="/javascripts/restapi/jst.js"></script>
+      <script type="text/javascript" src="/javascripts/restapi/routers/documentation_router.js"></script>
 </body>
 </html>

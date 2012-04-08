@@ -7,7 +7,7 @@ describe UsersController do
       a = Restapi.get_resource_description(UsersController)
       
       a._short_description.should eq('Site members')
-      a._full_description.should eq("\n<h2 id=\"label-Long+description\">Long description</h2>\n\n<p>Example resource for rest api documentation</p>\n")
+      # a._full_description.should eq("\n<h2 id=\"label-Long+description\">Long description</h2>\n\n<p>Example resource for rest api documentation</p>\n")
       a._methods.should eq(["users#show", "users#create", "users#index"])
       md = a._params[:id]
       md.should_not be(nil)
@@ -16,7 +16,7 @@ describe UsersController do
       md.required.should eq(true)
       md.validator.class.should eq(Restapi::Validator::TypeValidator)
       a._id.should eq('users')
-      a._path.should eq('/users/')
+      a._path.should eq('/users')
       a._version.should eq('1.0 - 3.4.2012')
       a._name.should eq('Members')
     end

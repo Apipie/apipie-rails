@@ -1,20 +1,12 @@
 module Restapi
   module Routing
     module MapperExtensions
-      def restapi(route = "/restapi")
-        
-        Restapi.options.route = route
-                
-        # user can specify route 'alias'
-        # self.resources :restapis, :path => route
-        self.get("#{route}/(:resource)" => "restapis#index" )
-        
-        # we need to use some 'static' route from js so we use /restapi, 
-        #it should be always defined
-        # self.resources :restapis, :path => "/apidoc"
-        
-        self.get("/apidoc/(:resource)" => "restapis#index" ) unless route == "/apidoc"
-        
+      def restapi(route = "/apidoc")
+
+        Restapi.configuration.doc_base_url = route
+
+        self.get("#{route}/(:resource)/(:method)" => "restapis#index")
+
       end
     end
   end

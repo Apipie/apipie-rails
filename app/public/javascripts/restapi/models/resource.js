@@ -1,1 +1,0 @@
-Restapi.Models.Resource = Backbone.Model.extend();

@@ -1,17 +1,14 @@
 var Restapi = {
-  Models: {},
-  Collections: {},
-  Views: {},
   Routers: {},
-  Resource: null,
-  ResourceAlias: "",
-
+  Templates: {},
+  
   init: function() {
-    new Restapi.Routers.Resources();
-    return Backbone.history.start();
+    new Restapi.Routers.Documentation();
+    var base = '/' + window.location.pathname.split('/')[1];
+    Backbone.history.start({pushState: true, root: base});
   }
 };
 
 $(document).ready(function() {
-  return Restapi.init();
+  Restapi.init();
 });

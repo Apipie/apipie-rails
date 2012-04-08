@@ -16,16 +16,17 @@ module Restapi
       @errors = app.get_errors
       @params = app.get_params
     end
+    
+    def doc_url; "#{Restapi.configuration.doc_base_url}/#{@resource}/#{@method}"; end
+    def api_url; "#{Restapi.configuration.api_base_url}#{@path}"; end
 
     def to_json
-      puts "#{@method} to_json"
       {
-        :id => "#{@resource}##{@method}",
-        :method => @method,
-        :resource => @resource,
+        :doc_url => doc_url,
+        :api_url => api_url,
+        :name => @method,
+        :http_method => @http,
         :short_description => @short_description,
-        :path => @path,
-        :http => @http,
         :full_description => @full_description,
         :errors => @errors,
         :params => @params.collect { |_,v| v.to_json }

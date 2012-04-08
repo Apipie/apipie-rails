@@ -13,18 +13,13 @@ module Restapi
     end
 
     attr_accessor :last_api_args, :last_errors, :last_params, :last_description
-    attr_reader :method_descriptions, :resource_descriptions, :info
+    attr_reader :method_descriptions, :resource_descriptions
     
     def initialize  
       super
       @method_descriptions = Hash.new
       @resource_descriptions = Hash.new
-      @info = Hash.new
       clear_last
-    end
-    
-    def options
-      @options ||= OpenStruct.new
     end
     
     # create new method api description
@@ -124,6 +119,26 @@ module Restapi
       params = @last_params.clone
       @last_params.clear
       params
+    end
+    
+    def to_json(resource_name, method_name)
+      
+      _resources = if resource_name.blank?
+        resource_descriptions.collect { |_,v| v.to_json }
+      else
+        [@resource_descriptions[resource_name].to_json(method_name)]
+      end
+
+      {
+        'docs' => {
+          'name' => Restapi.configuration.app_name,
+          'info' => Restapi.configuration.app_info,
+          'copyright' => Restapi.configuration.copyright,
+          'doc_url' => Restapi.configuration.doc_base_url,
+          'api_url' => Restapi.configuration.api_base_url,
+          'resources' => _resources
+        }
+      }
     end
 
     private

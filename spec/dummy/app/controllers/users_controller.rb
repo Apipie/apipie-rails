@@ -3,13 +3,32 @@ class UsersController < ApplicationController
   resource_description do
     name 'Members'
     short 'Site members'
-    path '/users/'
+    path '/users'
     version '1.0 - 3.4.2012'
     param :id, Fixnum, :desc => "User ID", :required => true
     description <<-EOS
       == Long description
 
       Example resource for rest api documentation
+
+      These can now be accessed in <tt>shared/header</tt> with:
+
+        Headline: <%= headline %>
+        First name: <%= person.first_name %>
+
+      If you need to find out whether a certain local variable has been assigned a value in a particular render call,
+      you need to use the following pattern:
+
+        <% if local_assigns.has_key? :headline %>
+          Headline: <%= headline %>
+        <% end %>
+
+      Testing using <tt>defined? headline</tt> will not work. This is an implementation restriction.
+
+      === Template caching
+
+      By default, Rails will compile each template to a method in order to render it. When you alter a template,
+      Rails will check the file's modification time and recompile it in development mode.
     EOS
   end
   

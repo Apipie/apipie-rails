@@ -48,18 +48,25 @@ module Restapi
       @_methods.uniq!
     end
     
-    def to_json
-      methods = []
-      @_methods.each { |key| methods << Restapi.method_descriptions[key].to_json }
+    def doc_url; "#{Restapi.configuration.doc_base_url}/#{@_id}"; end
+    def api_url; "#{Restapi.configuration.api_base_url}#{@_path}"; end
+    
+    def to_json(method_name = nil)
+
+      _methods = if method_name.blank?
+        @_methods.collect { |key| Restapi.method_descriptions[key].to_json }
+      else
+        [Restapi.method_descriptions[[@_id, method_name].join('#')].to_json]
+      end
+
       {
-        :id => @_id,
+        :doc_url => doc_url,
+        :api_url => api_url,
         :name => @_name,
-        :version => @_version,
         :short_description => @_short_description,
         :full_description => @_full_description,
-        
-        :methods => methods,
-        :params => @_params.collect { |_,v| v.to_json }
+        :version => @_version,
+        :methods => _methods
       }
     end
 
