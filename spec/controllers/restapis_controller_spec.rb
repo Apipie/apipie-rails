@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe RestapisController do
+describe Restapi::RestapisController do
 
   describe "GET index" do
 

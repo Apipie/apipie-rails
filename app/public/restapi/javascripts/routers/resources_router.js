@@ -18,7 +18,7 @@ Restapi.Routers.Resources = Backbone.Router.extend({
   show: function(resource) {
     this.left_menu();
     Restapi.Resource = this.resources.get(resource);
-    this.methods.url = "/apidoc/"+resource;
+    this.methods.url = Restapi.baseurl()+"/"+resource;
     this.methods.fetch();
     this.resources.trigger('reset');
     

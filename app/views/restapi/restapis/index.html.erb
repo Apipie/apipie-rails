@@ -2,24 +2,26 @@
 <html>
 <head>
   <title>API documentation</title>
-  <script type="text/javascript" src="/javascripts/jquery-1.7.2.js"></script>
-  <script type="text/javascript" src="/javascripts/json2.js"></script>
-  <script type="text/javascript" src="/javascripts/underscore.js"></script>
-  <script type="text/javascript" src="/javascripts/backbone.js"></script>
-  <script type="text/javascript" src="/javascripts/bootstrap-collapse.js"></script>
-  <script type="text/javascript" src="/javascripts/restapi/jst.js"></script>
-  <script type="text/javascript" src="/javascripts/restapi/restapi.js"></script>
+  <% %w[
+    bundled/jquery-1.7.2.js
+    bundled/json2.js
+    bundled/underscore.js
+    bundled/backbone.js
+    bundled/bootstrap-collapse.js
 
-  <script type="text/javascript" src="/javascripts/restapi/models/resource.js"></script>
-  <script type="text/javascript" src="/javascripts/restapi/routers/resources_router.js"></script>
-  <script type="text/javascript" src="/javascripts/restapi/collections/resources.js"></script>
-  <script type="text/javascript" src="/javascripts/restapi/collections/methods.js"></script>
-  <script type="text/javascript" src="/javascripts/restapi/views/resources/resources_index.js"></script>
-  <script type="text/javascript" src="/javascripts/restapi/views/resources/resources_show.js"></script>
-
-  <link type="text/css" rel="stylesheet" href="/stylesheets/bootstrap.css">
-  <link type="text/css" rel="stylesheet" href="/stylesheets/restapi/application.css">            
-  <link type="text/css" rel="stylesheet" href="/stylesheets/bootstrap-responsive.css">
+    jst.js
+    restapi.js
+    models/resource.js
+    routers/resources_router.js
+    collections/resources.js
+    collections/methods.js
+    views/resources/resources_index.js
+    views/resources/resources_show.js ].each do |file| %>
+    <script type="text/javascript" src="<%= Restapi.full_url("javascripts/#{file}") %>"></script>
+  <% end %>
+  <% %w[bundled/bootstrap.css application.css bundled/bootstrap-responsive.css].each do |file| %>
+    <link type="text/css" rel="stylesheet" href="<%= Restapi.full_url("stylesheets/#{file}") %>"/>
+  <% end %>
   <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
   <!--[if lt IE 9]>
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>

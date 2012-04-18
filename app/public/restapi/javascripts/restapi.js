@@ -9,7 +9,9 @@ var Restapi = {
   init: function() {
     new Restapi.Routers.Resources();
     return Backbone.history.start();
-  }
+  },
+
+  baseurl: function() { return document.location.toString().replace(/#.*/,""); }
 };
 
 $(document).ready(function() {

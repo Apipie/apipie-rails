@@ -1,3 +1,3 @@
 Restapi.Collections.Methods = Backbone.Collection.extend({
-  url: "/apidoc/"
+  url: Restapi.baseurl()
 });

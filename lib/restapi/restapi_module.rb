@@ -1,12 +1,10 @@
+require "restapi/helpers"
 require "restapi/application"
 require "ostruct"
 require "erb"
 
 module Restapi
-
-  def self.rdoc
-    @rdoc ||= RDoc::Markup::ToHtml.new
-  end
+  extend Restapi::Helpers
 
   def self.app
     @application ||= Restapi::Application.new
@@ -26,7 +24,7 @@ module Restapi
   end
 
   class Configuration
-    attr_accessor :app_name, :app_info, :copyright, :markup_language, :validate
+    attr_accessor :app_name, :app_info, :copyright, :markup_language, :validate, :baseurl
 
     def initialize
       @markup_language = :rdoc
@@ -34,6 +32,7 @@ module Restapi
       @app_info = "Another API description"
       @copyright = nil
       @validate = true
+      @baseurl = "/restapi"
     end
   end
 
