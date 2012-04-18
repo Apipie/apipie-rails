@@ -10,7 +10,7 @@ module Restapi
         if rails_prefix = ENV["RAILS_RELATIVE_URL_ROOT"]
           @prefix << rails_prefix
         end
-        @prefix << Restapi.configuration.baseurl
+        @prefix << Restapi.configuration.doc_base_url
       end
       path = path.sub(/^\//,"")
       "#{@prefix}/#{path}"

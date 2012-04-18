@@ -7,11 +7,10 @@ Gem::Specification.new do |s|
   s.version     = Restapi::VERSION
   s.authors     = ["Pavel Pokorny"]
   s.email       = ["pajkycz@gmail.com"]
-  s.homepage    = "http://github.com/Pajk/restapi"
+  s.homepage    = "http://github.com/Pajk/rails-restapi"
   s.summary     = %q{REST API documentation tool}
   s.description = %q{Maintain your API documentation up to date!}
 
-  s.rubyforge_project = "restapi"
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
@@ -19,5 +18,5 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency "rspec-rails"
   s.add_development_dependency "rcov"
-  # s.add_runtime_dependency "rest-client"
+  s.add_runtime_dependency "rest-client"
 end

@@ -28,10 +28,10 @@ module Restapi
   end
 
   class Configuration
-    attr_accessor :app_name, :app_info, :copyright, :markup_language, :validate, :baseurl, :api_base_url, :doc_base_url
+    attr_accessor :app_name, :app_info, :copyright, :markup_language, :validate, :api_base_url, :doc_base_url
 
     def app_info=(text)
-      @app_info = Restapi.convert_markup(text)
+      @app_info = Restapi.rdoc.convert(text.strip_heredoc)
     end
     
     def initialize
@@ -40,9 +40,8 @@ module Restapi
       @app_info = "Another API description"
       @copyright = nil
       @validate = true
-      @baseurl = "/restapi"
       @api_base_url = ""
-      @doc_base_url = "/apidoc"
+      @doc_base_url = "/restapi"
     end
   end
 

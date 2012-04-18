@@ -8,7 +8,7 @@ module Restapi
     # we need engine just for serving static assets
     class Engine < Rails::Engine
       initializer "static assets" do |app|
-        app.middleware.use ::Restapi::StaticDispatcher, "#{root}/app/public", Restapi.configuration.baseurl
+        app.middleware.use ::Restapi::StaticDispatcher, "#{root}/app/public", Restapi.configuration.doc_base_url
       end
     end
 
