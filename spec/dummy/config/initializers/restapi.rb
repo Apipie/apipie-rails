@@ -24,6 +24,8 @@ Restapi.configure do |config|
       "Welcome aboard: You're riding Ruby on Rails!"
   EOS
   config.copyright = "&copy; 2012 Pavel Pokorny"
+  config.baseurl = "/restapi"
+  config.doc_base_url = "/restapi"
   config.api_base_url = "/api"
   config.markup_language = :rdoc
   # config.validate = false

@@ -8,7 +8,7 @@ Dummy::Application.routes.draw do
   resources :dogs
   resources :twitter_example
   
-  restapi "/docs"
+  restapi
   
   # The priority is based upon order of creation:
   # first created -> highest priority.

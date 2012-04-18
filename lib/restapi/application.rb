@@ -1,4 +1,5 @@
 require 'ostruct'
+require 'restapi/static_dispatcher'
 
 module Restapi
 
@@ -7,8 +8,7 @@ module Restapi
     # we need engine just for serving static assets
     class Engine < Rails::Engine
       initializer "static assets" do |app|
-        # app.middleware.use ::ActionDispatch::Static, "#{root}/app/public"
-        app.middleware.insert_after ::ActionDispatch::Static, ::ActionDispatch::Static, "#{root}/app/public"
+        app.middleware.use ::Restapi::StaticDispatcher, "#{root}/app/public", Restapi.configuration.baseurl
       end
     end
 
