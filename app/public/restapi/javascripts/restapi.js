@@ -1,14 +1,13 @@
 var Restapi = {
   Routers: {},
   Templates: {},
+  Rendered: false,
   
   init: function() {
     new Restapi.Routers.Documentation();
-    var base = '/' + window.location.pathname.split('/')[1];
-    Backbone.history.start({pushState: true, root: base});
-  },
-
-  baseurl: function() { return document.location.toString().replace(/#.*/,""); }
+    var base = window.location.pathname;
+    Backbone.history.start({root: base});
+  }
 };
 
 $(document).ready(function() {

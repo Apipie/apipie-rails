@@ -17,7 +17,10 @@ module Restapi
       @params = app.get_params
     end
     
-    def doc_url; "#{Restapi.configuration.doc_base_url}/#{@resource}/#{@method}"; end
+    def doc_url
+      "#{ENV["RAILS_RELATIVE_URL_ROOT"]}#{Restapi.configuration.doc_base_url}##{@resource}/#{@method}"
+    end
+
     def api_url; "#{Restapi.configuration.api_base_url}#{@path}"; end
 
     def to_json

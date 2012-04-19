@@ -134,7 +134,7 @@ module Restapi
           'name' => Restapi.configuration.app_name,
           'info' => Restapi.configuration.app_info,
           'copyright' => Restapi.configuration.copyright,
-          'doc_url' => Restapi.configuration.doc_base_url,
+          'doc_url' => "#{ENV["RAILS_RELATIVE_URL_ROOT"]}#{Restapi.configuration.doc_base_url}",
           'api_url' => Restapi.configuration.api_base_url,
           'resources' => _resources
         }

@@ -46,6 +46,8 @@ module Restapi
       case env['REQUEST_METHOD']
       when 'GET', 'HEAD'
         path = env['PATH_INFO'].sub("#{@baseurl}/","/restapi/").chomp('/')
+        path.sub!("#{ENV["RAILS_RELATIVE_URL_ROOT"]}",'')
+        
         if match = @file_handler.match?(path)
           env["PATH_INFO"] = match
           return @file_handler.call(env)

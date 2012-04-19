@@ -48,7 +48,10 @@ module Restapi
       @_methods.uniq!
     end
     
-    def doc_url; "#{Restapi.configuration.doc_base_url}/#{@_id}"; end
+    def doc_url
+      "#{ENV["RAILS_RELATIVE_URL_ROOT"]}#{Restapi.configuration.doc_base_url}##{@_id}"
+    end
+
     def api_url; "#{Restapi.configuration.api_base_url}#{@_path}"; end
     
     def to_json(method_name = nil)

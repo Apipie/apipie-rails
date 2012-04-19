@@ -11,21 +11,25 @@ Restapi.Routers.Documentation = Backbone.Router.extend({
   },
 
   index: function() {
-    this.render('index');
+    var url = window.location.pathname + '.json';
+    this.render('index', url);
   },
   
   resource: function(resource) {
-    this.render('resource');
+    var url = [window.location.pathname, resource + '.json'].join('/');
+    this.render('resource', url);
   },
   
   method: function(resource, method) {
-    this.render('method');
+    var url = [window.location.pathname, resource, method +'.json'].join('/');
+    this.render('method', url);
   },
   
-  render: function(type) {
-    this.data = $.getJSON(window.location.pathname + '.json', function(data) {
-      $('#api-title').html(data.docs.name).attr('href', data.docs.doc_url);
-      $('footer').html(data.docs.copyright);
+  render: function(type, url) {
+    this.data = $.getJSON(url, function(data) {
+      if(!Restapi.rendered) {
+        $('footer').html(data.docs.copyright);
+      }
       
       var html = '';
       if (type == 'index') {
@@ -40,7 +44,8 @@ Restapi.Routers.Documentation = Backbone.Router.extend({
         });
       }
       
-      $("#container").append(html);
+      $("#container").html(html);
+      Restapi.rendered = true;
     });
   }
 
