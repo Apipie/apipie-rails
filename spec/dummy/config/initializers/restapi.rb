@@ -26,6 +26,10 @@ Restapi.configure do |config|
   config.copyright = "&copy; 2012 Pavel Pokorny"
   config.doc_base_url = "/dokumentace"
   config.api_base_url = "/api"
-  config.markup_language = :rdoc
+  # config.markup = choose one of:
+  #   Restapi::Markup::RDoc.new [default]
+  #   Restapi::Markup::Markdown.new
+  #   Restapi::Markup::Textile.new
+  # or provide another class with to_html(text) instance method
   # config.validate = false
 end

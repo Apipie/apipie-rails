@@ -7,8 +7,11 @@ describe UsersController do
       a = Restapi.get_resource_description(UsersController)
       
       a._short_description.should eq('Site members')
-      # a._full_description.should eq("\n<h2 id=\"label-Long+description\">Long description</h2>\n\n<p>Example resource for rest api documentation</p>\n")
-      a._methods.should eq(["users#show", "users#create", "users#index"])
+      a._methods.count.should == 4
+      a._methods.should include("users#show")
+      a._methods.should include("users#create")
+      a._methods.should include("users#index")
+      a._methods.should include("users#two_urls")
       md = a._params[:id]
       md.should_not be(nil)
       md.name.should eq(:id)
@@ -52,9 +55,11 @@ describe UsersController do
       a.errors[1].code.should eq(404)
       a.errors[1].description.should eq("Not Found")
 
-      a.short_description.should eq("Show user profile")
-      a.path.should eq("/users/:id")
-      a.http.should eq("GET")
+      a.apis.count.should == 1
+      a.apis.first.short_description.should eq("Show user profile")
+      a.apis.first.api_url.should
+        eq("#{Restapi.configuration.api_base_url}/users/:id")
+      a.apis.first.http_method.should eq("GET")
 
       param = a.params[:session]
       param.required.should eq(true)
@@ -78,12 +83,14 @@ describe UsersController do
       param.desc.should eq("\n<p>regexp param</p>\n")
       param.required.should eq(false)
       param.validator.class.should be(Restapi::Validator::RegexpValidator)
-      param.validator.instance_variable_get("@regexp").should eq(/^[0-9]* years/)
+      param.validator.instance_variable_get("@regexp").should
+        eq(/^[0-9]* years/)
 
       param = a.params[:array_param]
       param.desc.should eq("\n<p>array validator</p>\n")
       param.validator.class.should be(Restapi::Validator::ArrayValidator)
-      param.validator.instance_variable_get("@array").should eq([100, "one", "two", 1, 2])
+      param.validator.instance_variable_get("@array").should
+        eq([100, "one", "two", 1, 2])
 
       param = a.params[:proc_param]
       param.desc.should eq("\n<p>proc validator</p>\n")
@@ -93,12 +100,27 @@ describe UsersController do
     end
     
     it "should yell ArgumentError if id is not a number" do
-      lambda { get :show, :id => "not a number", :session => "secret_hash" }.should raise_error(ArgumentError)
+      lambda { 
+        get :show, 
+            :id => "not a number", 
+            :session => "secret_hash"
+      }.should raise_error(ArgumentError)
     end
     
     it "should yell ArgumentError if float_param is not a float" do
-      lambda { get :show, :id => 5, :session => "secret_hash", :float_param => "234.2.34"}.should raise_error(ArgumentError)
-      lambda { get :show, :id => 5, :session => "secret_hash", :float_param => "no float here"}.should raise_error(ArgumentError)
+      lambda { 
+        get :show, 
+            :id => 5,
+            :session => "secret_hash",
+            :float_param => "234.2.34"
+      }.should raise_error(ArgumentError)
+      
+      lambda { 
+        get :show, 
+            :id => 5, 
+            :session => "secret_hash", 
+            :float_param => "no float here"
+      }.should raise_error(ArgumentError)
     end
 
     it "should understand float validator" do
@@ -109,13 +131,19 @@ describe UsersController do
     end
     
     it "should understand regexp validator" do
-      get :show, :id => 5, :session => "secret_hash", :regexp_param => "24 years"
+      get :show,
+          :id => 5,
+          :session => "secret_hash",
+          :regexp_param => "24 years"
       assert_response :success
     end
     
     it "should validate with regexp validator" do
       lambda {
-        get :show, :id => 5, :session => "secret_hash", :regexp_param => "ten years"
+        get :show,
+            :id => 5, 
+            :session => "secret_hash",
+            :regexp_param => "ten years"
       }.should raise_error(ArgumentError)
     end
     
@@ -131,18 +159,33 @@ describe UsersController do
     end
     
     it "should raise ArgumentError with array validator" do
-      lambda { get :show, :id => 5, :session => "secret_hash", :array_param => "blabla" }.should
-      raise_error(ArgumentError)
+      lambda { 
+        get :show,
+            :id => 5,
+            :session => "secret_hash",
+            :array_param => "blabla"
+      }.should raise_error(ArgumentError)
       
-      lambda { get :show, :id => 5, :session => "secret_hash", :array_param => 3 }.should
-      raise_error(ArgumentError)
+      lambda {
+        get :show, 
+            :id => 5,
+            :session => "secret_hash",
+            :array_param => 3
+      }.should raise_error(ArgumentError)
     end
     
     it "should validate with Proc validator" do
-      lambda { get :show, :id => 5, :session => "secret_hash", :proc_param => "asdgsag" }.should
-      raise_error(ArgumentError)
+      lambda {
+        get :show,
+            :id => 5,
+            :session => "secret_hash",
+            :proc_param => "asdgsag"
+      }.should raise_error(ArgumentError)
       
-      get :show, :id => 5, :session => "secret_hash", :proc_param => "param value"
+      get :show,
+          :id => 5,
+          :session => "secret_hash",
+          :proc_param => "param value"
       assert_response :success
     end
     
@@ -151,23 +194,87 @@ describe UsersController do
   describe "POST create" do
     
     it "should understand hash validator" do
-      post :create, :user => { :username => "root", :password => "12345", :membership => "standard" }
+      post :create,
+           :user => { 
+             :username => "root",
+             :password => "12345",
+             :membership => "standard"
+           }
       assert_response :success
 
       a = Restapi[UsersController, :create]
-      a.short_description.should eq("Create user")
-      a.path.should eq("/users")
-      a.http.should eq("POST")
+      a.apis.count.should == 1
+      api = a.apis.first
+      api.short_description.should eq("Create user")
+      api.api_url.should eq("/api/users")
+      api.http_method.should eq("POST")
 
-      lambda { post :create, :user => { :username => "root", :password => "12345", :membership => "____" } }.should
-      raise_error(ArgumentError)
+      lambda {
+        post :create,
+             :user => {
+               :username => "root",
+               :password => "12345",
+               :membership => "____"
+              }
+      }.should raise_error(ArgumentError)
 
-      lambda { post :create, :user => { :username => "root" } }.should
-      raise_error(ArgumentError)
+      lambda {
+        post :create,
+             :user => { :username => "root" }
+      }.should raise_error(ArgumentError)
 
-      post :create, :user => { :username => "root", :password => "pwd" }
+      post :create, 
+           :user => { :username => "root", :password => "pwd" }
       assert_response :success
 
+    end
+
+  end
+
+  describe 'two_urls' do
+
+    it "should store all api method description" do
+      method_description = Restapi[UsersController, :two_urls]
+      method_description.class.should be(Restapi::MethodDescription)
+      method_description.apis.count.should == 2
+      apis = method_description.apis
+      a1 = apis.first
+      a2 = apis.second
+      
+      a1.short_description.should eq('Get company users')
+      a1.api_url.should eq('/api/company_users')
+      a1.http_method.should eq('GET')
+      a2.short_description.should eq('Get users working in given company')
+      a2.api_url.should eq('/api/company/:id/users')
+      a2.http_method.should eq('GET')
+    end
+  
+    it "should be described by valid json" do
+       json_hash = {
+        :errors => [],
+        :doc_url => "#{Restapi.configuration.doc_base_url}#users/two_urls",
+        :full_description => '',
+        :params => [{
+          :description => "\n<p>Company ID</p>\n",
+          :required => false,
+          :validator => "Parameter has to be Integer.",
+          :name => :id
+        }],
+        :name => :two_urls,
+        :apis => [
+          {
+            :http_method => 'GET',
+            :short_description => 'Get company users',
+            :api_url => "#{Restapi.configuration.api_base_url}/company_users"
+          },{
+            :http_method => 'GET',
+            :short_description => 'Get users working in given company',
+            :api_url =>"#{Restapi.configuration.api_base_url}/company/:id/users"
+          }
+        ]
+      }
+      
+      Restapi[UsersController, :two_urls].to_json.should eq(json_hash)
     end
 
   end

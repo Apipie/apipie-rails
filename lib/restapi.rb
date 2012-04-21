@@ -1,6 +1,4 @@
 require 'active_support/dependencies'
-require 'rdoc'
-require 'rdoc/markup/to_html'
 
 # add path to restapi controller to ActiveSupport paths
 %w{ controllers views }.each do |dir|
@@ -11,6 +9,7 @@ require 'rdoc/markup/to_html'
 end
 
 require "restapi/routing"
+require "restapi/markup"
 require "restapi/restapi_module"
 require "restapi/method_description"
 require "restapi/resource_description"

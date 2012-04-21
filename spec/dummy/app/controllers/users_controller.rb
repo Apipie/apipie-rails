@@ -204,6 +204,17 @@ class UsersController < ApplicationController
   def index
     render :text => "List of users"
   end
+
+  api :desc => 'Get company users',
+      :path => '/company_users',
+      :method => 'GET'
+  api :desc => 'Get users working in given company',
+      :path => '/company/:id/users',
+      :method => 'GET'
+  param :id, Integer, :desc => "Company ID"
+  def two_urls
+    render :text => 'List of users'
+  end
   
   def doc
     @api = Restapi['users', :show]

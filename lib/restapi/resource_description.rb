@@ -37,7 +37,7 @@ module Restapi
     alias :short_description :short
     def desc(description)
       description ||= ''
-      @_full_description = Restapi.rdoc.convert(description.strip_heredoc)
+      @_full_description = Restapi.markup_to_html(description)
     end
     alias :description :desc
     alias :full_description :desc

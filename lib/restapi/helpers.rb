@@ -1,7 +1,7 @@
 module Restapi
   module Helpers
-    def rdoc
-      @rdoc ||= RDoc::Markup::ToHtml.new
+    def markup_to_html(text)
+      Restapi.configuration.markup.to_html(text.strip_heredoc)
     end
 
     def full_url(path)

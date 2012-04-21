@@ -30,7 +30,8 @@ module Restapi
 
       # create new or get existing api
       key = [resource_name, method_name].join('#')
-      @method_descriptions[key] ||= Restapi::MethodDescription.new(method_name, resource_name, self)
+      @method_descriptions[key] ||=
+        Restapi::MethodDescription.new(method_name, resource_name, self)
 
       # add mapi key to resource api
       define_resource_description(resource_name).add_method(key)
@@ -42,18 +43,18 @@ module Restapi
     def define_resource_description(resource_name, &block)
       resource_name = get_resource_name(resource_name)
 
-      @resource_descriptions[resource_name] ||= Restapi::ResourceDescription.new(resource_name, &block)
+      @resource_descriptions[resource_name] ||=
+        Restapi::ResourceDescription.new(resource_name, &block)
+    end
+
+    def add_method_description_args(args)
+      @last_api_args << MethodDescription::Api.new(args)
     end
     
     # check if there is some saved description
     def restapi_provided?
       true unless last_api_args.blank?
     end
-    
-    # List of all the apis defined in the given scope (and its sub-scopes).
-    # def mapis_for_resource(resource_name)
-      # @method_descriptions.select { |key,val| key.first == controller_name }
-    # end
 
     # get api for given method
     def get_method_description(resource_name, method_name)
@@ -90,7 +91,7 @@ module Restapi
 
     # clear all saved data
     def clear_last
-      @last_api_args = nil
+      @last_api_args = Array.new
       @last_errors = Array.new
       @last_params = Hash.new
       @last_description = nil

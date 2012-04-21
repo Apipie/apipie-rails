@@ -2,8 +2,7 @@
 
 module Restapi
 
-  # DSL is a module that provides #api, #error, #param, #error.  Use this
-  # when you'd like to use restapi outside the top level scope.
+  # DSL is a module that provides #api, #error, #param, #error.
 
   module DSL
 
@@ -29,7 +28,7 @@ module Restapi
     #       :method => "GET"
     #
     def api(args)
-      Restapi.last_api_args = args
+      Restapi.add_method_description_args(args)
     end
 
     # Describe the next method.
