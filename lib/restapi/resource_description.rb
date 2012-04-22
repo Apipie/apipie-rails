@@ -10,7 +10,8 @@ module Restapi
   # id - resouce name
   class ResourceDescription
     
-    attr_reader :_short_description, :_full_description, :_methods, :_id, :_path, :_version, :_name, :_params
+    attr_reader :_short_description, :_full_description, :_methods, :_id,
+      :_path, :_version, :_name, :_params
     
     def initialize(resource_name, &block)
       @_methods = []
@@ -27,14 +28,18 @@ module Restapi
     end
     
     def param(param_name, *args, &block)
-      @_params[param_name] = Restapi::ParamDescription.new(param_name, *args, &block)
+      @_params[param_name.to_sym] = Restapi::ParamDescription.new(param_name, *args, &block)
     end
     
     def path(path); @_path = path; end
+    
     def version(version); @_version = version; end
+    
     def name(name); @_name = name; end
+    
     def short(short); @_short_description = short; end
     alias :short_description :short
+    
     def desc(description)
       description ||= ''
       @_full_description = Restapi.markup_to_html(description)

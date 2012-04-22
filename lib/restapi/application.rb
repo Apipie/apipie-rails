@@ -1,4 +1,3 @@
-require 'ostruct'
 require 'restapi/static_dispatcher'
 
 module Restapi
@@ -33,7 +32,7 @@ module Restapi
       @method_descriptions[key] ||=
         Restapi::MethodDescription.new(method_name, resource_name, self)
 
-      # add mapi key to resource api
+      # add method description key to resource description
       define_resource_description(resource_name).add_method(key)
 
       @method_descriptions[key]
@@ -42,7 +41,9 @@ module Restapi
     # create new resource api description
     def define_resource_description(resource_name, &block)
       resource_name = get_resource_name(resource_name)
-
+      
+      # puts "defining api for #{resource_name}"
+      
       @resource_descriptions[resource_name] ||=
         Restapi::ResourceDescription.new(resource_name, &block)
     end
@@ -125,7 +126,12 @@ module Restapi
     def to_json(resource_name, method_name)
       
       _resources = if resource_name.blank?
-        resource_descriptions.collect { |_,v| v.to_json }
+        # take just resources which have some methods because
+        # we dont want to show eg ApplicationController as resource
+        resource_descriptions.inject({}) do |result, (k,v)|
+          result[k] = v.to_json unless v._methods.blank?
+          result
+        end
       else
         [@resource_descriptions[resource_name].to_json(method_name)]
       end
@@ -147,7 +153,7 @@ module Restapi
       def get_resource_name(klass)
         if klass.class == String
           klass
-        elsif klass.class == Class && klass.ancestors.include?(ActionController::Base)
+        elsif klass.class == Class && ActionController::Base.descendants.include?(klass)
           klass.controller_name
         end
       end

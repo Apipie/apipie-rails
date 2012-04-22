@@ -6,6 +6,7 @@ describe UsersController do
     it "should be described" do
       a = Restapi.get_resource_description(UsersController)
       
+      #puts Restapi.method_descriptions['users#show'].inspect
       a._short_description.should eq('Site members')
       a._methods.count.should == 4
       a._methods.should include("users#show")
@@ -16,7 +17,7 @@ describe UsersController do
       md.should_not be(nil)
       md.name.should eq(:id)
       md.desc.should eq("\n<p>User ID</p>\n")
-      md.required.should eq(true)
+      md.required.should eq(false)
       md.validator.class.should eq(Restapi::Validator::TypeValidator)
       a._id.should eq('users')
       a._path.should eq('/users')
@@ -255,6 +256,16 @@ describe UsersController do
         :doc_url => "#{Restapi.configuration.doc_base_url}#users/two_urls",
         :full_description => '',
         :params => [{
+          :description => "\n<p>Authorization</p>\n",
+          :required => false,
+          :validator => "Parameter has to be String.",
+          :name => :oauth
+       },{
+          :description => "\n<p>Param description for all methods</p>\n",
+          :required=>false,
+          :validator=>"TODO",
+          :name=>:resource_param
+        },{
           :description => "\n<p>Company ID</p>\n",
           :required => false,
           :validator => "Parameter has to be Integer.",

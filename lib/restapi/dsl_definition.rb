@@ -79,12 +79,9 @@ module Restapi
       
       return unless Restapi.restapi_provided?
       
-      method_name = method_name.to_sym
-      resource_name = self.controller_name
-
-      # remove mapi if exists and create new one
-      Restapi.remove_method_description(resource_name, method_name)
-      mapi = Restapi.define_method_description(resource_name, method_name)
+      # remove method description if exists and create new one
+      Restapi.remove_method_description(self, method_name)
+      description = Restapi.define_method_description(self, method_name)
 
       # redefine method only if validation is turned on
       if Restapi.configuration.validate == true
@@ -93,7 +90,7 @@ module Restapi
         
         define_method(method_name) do |*args|
           
-          mapi.params.each do |_, param|
+          description.params.each do |_, param|
 
             # check if required parameters are present
             if param.required && !params.has_key?(param.name)

@@ -9,8 +9,6 @@ class DogsController < ApplicationController
   def show
     render :nothing => true
   end
-  
-  #############################################################################
 
   api :desc => "List all dogs",
       :path => "/dogs",

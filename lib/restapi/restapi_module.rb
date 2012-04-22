@@ -1,7 +1,5 @@
 require "restapi/helpers"
 require "restapi/application"
-require "ostruct"
-require "erb"
 
 module Restapi
   extend Restapi::Helpers
@@ -28,7 +26,8 @@ module Restapi
   end
 
   class Configuration
-    attr_accessor :app_name, :app_info, :copyright, :markup, :validate, :api_base_url, :doc_base_url
+    attr_accessor :app_name, :app_info, :copyright, :markup,
+      :validate, :api_base_url, :doc_base_url
     
     def app_info
       Restapi.markup_to_html(@app_info)

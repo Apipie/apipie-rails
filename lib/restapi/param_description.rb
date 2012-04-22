@@ -23,9 +23,13 @@ module Restapi
       @desc = Restapi.markup_to_html(options[:desc] || '')
       @required = options[:required] || false
       
-      @validator = Validator::BaseValidator.find(validator_type, options, block)
-      raise "Validator not found." unless validator
-      @validator.param_name = @name
+      @validator = nil
+      unless validator_type.nil?
+        @validator = 
+          Validator::BaseValidator.find(validator_type, options, block)
+        raise "Validator not found." unless validator
+        @validator.param_name = @name
+      end
     end
 
     def validate(value)
