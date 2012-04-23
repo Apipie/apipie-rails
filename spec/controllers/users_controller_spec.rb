@@ -255,22 +255,21 @@ describe UsersController do
         :errors => [],
         :doc_url => "#{Restapi.configuration.doc_base_url}#users/two_urls",
         :full_description => '',
-        :params => [{
-          :description => "\n<p>Authorization</p>\n",
-          :required => false,
-          :validator => "Parameter has to be String.",
-          :name => :oauth
-       },{
-          :description => "\n<p>Param description for all methods</p>\n",
-          :required=>false,
-          :validator=>"TODO",
-          :name=>:resource_param
-        },{
-          :description => "\n<p>Company ID</p>\n",
-          :required => false,
-          :validator => "Parameter has to be Integer.",
-          :name => :id
-        }],
+        :params => [ {:required=>true,
+                      :validator=>"Parameter has to be String.",
+                      :description=>"\n<p>Username for login</p>\n",
+                      :name=>"resource_param[username]"},
+                      {:required=>true,
+                       :validator=>"Parameter has to be String.",
+                       :description=>"\n<p>Password for login</p>\n",
+                       :name=>"resource_param[password]"},
+                      {:required=>false,
+                         :validator=>"Parameter has to be String.",
+                         :description=>"\n<p>Authorization</p>\n", :name=>"oauth"},
+                      {:required=>false, :validator=>"Parameter has to be Integer.",
+                        :description=>"\n<p>Company ID</p>\n",
+                        :name=>"id"},
+                        ],
         :name => :two_urls,
         :apis => [
           {
