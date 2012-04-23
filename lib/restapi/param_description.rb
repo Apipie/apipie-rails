@@ -9,6 +9,8 @@ module Restapi
   class ParamDescription
 
     attr_reader :name, :desc, :required, :validator
+
+    attr_accessor :parent
     
     def initialize(name, *args, &block)
 
@@ -26,9 +28,8 @@ module Restapi
       @validator = nil
       unless validator_type.nil?
         @validator = 
-          Validator::BaseValidator.find(validator_type, options, block)
+          Validator::BaseValidator.find(self, validator_type, options, block)
         raise "Validator not found." unless validator
-        @validator.param_name = @name
       end
     end
 
@@ -38,13 +39,33 @@ module Restapi
       end
     end
 
+    def full_name
+      name_parts = parents_and_self.map(&:name)
+      return ([name_parts.first] + name_parts[1..-1].map { |n| "[#{n}]" }).join("")
+    end
+
+    # returns an array of all the parents: starting with the root parent
+    # ending with itself
+    def parents_and_self
+      ret = []
+      if self.parent
+        ret.concat(self.parent.parents_and_self)
+      end
+      ret << self
+      ret
+    end
+
     def to_json
-      {
-        :name => name,
-        :description => desc,
-        :required => required,
-        :validator => validator.to_s
-      }
+      if validator.is_a? Restapi::Validator::HashValidator
+        validator.hash_params_ordered.map(&:to_json)
+      else
+        {
+          :name => full_name,
+          :description => desc,
+          :required => required,
+          :validator => validator.to_s
+        }
+      end
     end
 
   end

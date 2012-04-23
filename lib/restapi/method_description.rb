@@ -83,7 +83,7 @@ module Restapi
         :apis => method_apis_to_json,
         :full_description => @full_description,
         :errors => @errors,
-        :params => params.collect { |_,v| v.to_json }
+        :params => params.collect { |_,v| v.to_json }.flatten
       }
     end
 
