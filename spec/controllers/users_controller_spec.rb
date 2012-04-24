@@ -13,7 +13,7 @@ describe UsersController do
       a._methods.should include("users#create")
       a._methods.should include("users#index")
       a._methods.should include("users#two_urls")
-      md = a._params[:id]
+      md = a._params_ordered.find { |p| p.name == :id }
       md.should_not be(nil)
       md.name.should eq(:id)
       md.desc.should eq("\n<p>User ID</p>\n")
@@ -258,9 +258,6 @@ describe UsersController do
         :params => [{:required=>false,
                      :validator=>"Parameter has to be String.",
                      :description=>"\n<p>Authorization</p>\n", :name=>"oauth"},
-                    {:required=>false, :validator=>"Parameter has to be Integer.",
-                     :description=>"\n<p>Company ID</p>\n",
-                     :name=>"id"},
                     {:required=>true,
                      :validator=>"Parameter has to be String.",
                      :description=>"\n<p>Username for login</p>\n",
@@ -268,8 +265,11 @@ describe UsersController do
                     {:required=>true,
                      :validator=>"Parameter has to be String.",
                      :description=>"\n<p>Password for login</p>\n",
-                     :name=>"resource_param[password]"}               
-                   ],
+                     :name=>"resource_param[password]"},
+                    {:required=>false, :validator=>"Parameter has to be Integer.",
+                     :description=>"\n<p>Company ID</p>\n",
+                     :name=>"id"},
+       ],
         :name => :two_urls,
         :apis => [
           {

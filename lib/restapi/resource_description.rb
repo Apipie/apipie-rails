@@ -11,11 +11,11 @@ module Restapi
   class ResourceDescription
     
     attr_reader :_short_description, :_full_description, :_methods, :_id,
-      :_path, :_version, :_name, :_params
+      :_path, :_version, :_name, :_params_ordered
     
     def initialize(resource_name, &block)
       @_methods = []
-      @_params = Hash.new
+      @_params_ordered = []
 
       @_id = resource_name
       @_version = "1"
@@ -28,7 +28,8 @@ module Restapi
     end
     
     def param(param_name, *args, &block)
-      @_params[param_name.to_sym] = Restapi::ParamDescription.new(param_name, *args, &block)
+      param_description = Restapi::ParamDescription.new(param_name, *args, &block)
+      @_params_ordered << param_description
     end
     
     def path(path); @_path = path; end

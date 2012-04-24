@@ -92,9 +92,9 @@ module Restapi
 
     # clear all saved data
     def clear_last
-      @last_api_args = Array.new
-      @last_errors = Array.new
-      @last_params = Hash.new
+      @last_api_args = []
+      @last_errors = []
+      @last_params = []
       @last_description = nil
     end
         
