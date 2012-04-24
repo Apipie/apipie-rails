@@ -69,7 +69,7 @@ module Restapi
     #   end
     #
     def param(param_name, *args, &block)
-      Restapi.last_params[param_name.to_sym] = Restapi::ParamDescription.new(param_name, *args, &block)
+      Restapi.last_params << Restapi::ParamDescription.new(param_name, *args, &block)
     end
     
     # create method api and redefine newly added method

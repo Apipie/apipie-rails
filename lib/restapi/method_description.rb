@@ -1,3 +1,4 @@
+require 'set'
 module Restapi
 
   class MethodDescription
@@ -20,7 +21,7 @@ module Restapi
 
     end
 
-    attr_reader :errors, :params, :full_description, :method, :resource, :apis
+    attr_reader :errors, :full_description, :method, :resource, :apis
     
     def initialize(method, resource, app)
       @method = method
@@ -31,7 +32,7 @@ module Restapi
       desc = app.get_description || ''
       @full_description = Restapi.markup_to_html(desc)
       @errors = app.get_errors
-      @params = app.get_params
+      @params_ordered = app.get_params
 
       parent = @resource.camelize.sub(/$/,'Controller').constantize.superclass
       if parent != ActionController::Base
@@ -40,22 +41,25 @@ module Restapi
     end
 
     def params
-      all_params = Hash.new
+      params_ordered.reduce({}) { |h,p| h[p.name] = p; h }
+    end
 
+    def params_ordered
+      all_params = []
       # get params from parent resource description
       if @parent_resource
         parent = Restapi.get_resource_description(@parent_resource)
-        all_params = parent._params if parent
+        merge_params(all_params, parent._params_ordered) if parent
       end
 
       # get params from actual resource description
       if @resource
         resource = Restapi.get_resource_description(@resource)
-        all_params = all_params.merge(resource._params) if resource
+        merge_params(all_params, resource._params_ordered) if resource
       end
 
-      # get params from actual method description
-      all_params.merge(@params).reject { |_, v| v.validator.nil? }
+      merge_params(all_params, @params_ordered)
+      all_params.find_all(&:validator)
     end
     
     def doc_url
@@ -83,8 +87,16 @@ module Restapi
         :apis => method_apis_to_json,
         :full_description => @full_description,
         :errors => @errors,
-        :params => params.collect { |_,v| v.to_json }.flatten
+        :params => params_ordered.map(&:to_json).flatten
       }
+    end
+
+    private
+
+    def merge_params(params, new_params)
+      new_param_names = Set.new(new_params.map(&:name))
+      params.delete_if { |p| new_param_names.include?(p.name) }
+      params.concat(new_params)
     end
 
   end
