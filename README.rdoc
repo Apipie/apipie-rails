@@ -1,0 +1,3 @@
+= Rails API documentation generator
+
+{<img src="https://secure.travis-ci.org/Pajk/rails-restapi.png?branch=master" alt="Build Status" />}[http://travis-ci.org/Pajk/rails-restapi]
