@@ -155,7 +155,7 @@ describe UsersController do
       assert_response :success
       get :show, :id => 5, :session => "secret_hash", :array_param => 1
       assert_response :success
-      get :show, :id => 5, :session => "secret_hash", :array_param => "2"
+      get :show, :id => 5, :session => "secret_hash", :boolean_param => false
       assert_response :success
     end
     

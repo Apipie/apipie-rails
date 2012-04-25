@@ -116,17 +116,7 @@ module Restapi
       end
 
       def validate(value)
-
-        @array.find do |expected|
-          expected_class = expected.class
-          expected_class = Integer if expected_class == Fixnum
-          begin
-            converted_value = Kernel.send(expected_class.to_s, value)
-          rescue ArgumentError
-            false
-          end
-          converted_value === expected
-        end
+        @array.include?(value)
       end
 
       def self.build(param_description, argument, options, proc)
