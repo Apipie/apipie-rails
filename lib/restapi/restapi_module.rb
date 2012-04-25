@@ -56,9 +56,35 @@ module Restapi
     alias_method :use_cache?, :use_cache
 
     attr_writer :cache_dir
-
     def cache_dir
       @cache_dir ||= File.join(Rails.root, "public", "restapi-cache")
+    end
+
+    # if there is not obvious reason why the DSL should be turned on (no
+    # validations, cache turned on etc.), it's disabled to avoid unneeded
+    # allocation. It you need the DSL for other reasons, you can force the
+    # activation.
+    attr_writer :force_dsl
+    def force_dsl?
+      @force_dsl
+    end
+
+    # array of controller names (strings) (might include actions as well)
+    # to be ignored # when extracting description form calls.
+    # e.g. %w[Api::CommentsController Api::PostsController#post]
+    attr_writer :ignored_by_recorder
+    def ignored_by_recorder
+      @ignored_by_recorder ||= []
+      @ignored_by_recorder.map(&:to_s)
+    end
+
+    # comment to put before docs that was generated automatically. It's used to
+    # determine if the description should be overwritten next recording.
+    # If you want to keep the documentation (prevent from overriding), remove
+    # the line above the docs.
+    attr_writer :generated_doc_disclaimer
+    def generated_doc_disclaimer
+      @generated_doc_disclaimer ||= "# DOC GENERATED AUTOMATICALLY: REMOVE THIS LINE TO PREVENT REGENARATING NEXT TIME"
     end
     
     def app_info
