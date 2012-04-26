@@ -8,7 +8,7 @@ module Restapi
   # validator - Validator::BaseValidator subclass
   class ParamDescription
 
-    attr_reader :name, :desc, :required, :validator
+    attr_reader :name, :desc, :required, :allow_nil, :validator
 
     attr_accessor :parent
     
@@ -24,6 +24,7 @@ module Restapi
       @name = name
       @desc = Restapi.markup_to_html(options[:desc] || '')
       @required = options[:required] || false
+      @allow_nil = options[:allow_nil] || false
       
       @validator = nil
       unless validator_type.nil?
@@ -34,6 +35,7 @@ module Restapi
     end
 
     def validate(value)
+      return true if @allow_nil && value.nil?
       unless @validator.valid?(value)
         raise ArgumentError.new(@validator.error)
       end
@@ -63,6 +65,7 @@ module Restapi
           :name => full_name,
           :description => desc,
           :required => required,
+          :allow_nil => allow_nil,
           :validator => validator.to_s
         }
       end

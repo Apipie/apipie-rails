@@ -201,11 +201,23 @@ describe UsersController do
 
     end
 
-    it "it should support Hash validator without specifying keys" do
+    it "should support Hash validator without specifying keys" do
       Restapi[UsersController, :create].to_json[:params].should include(:name => "facts",
                                                                         :validator => "Parameter has to be Hash.",
                                                                         :description => "\n<p>Additional optional facts about the user</p>\n",
-                                                                        :required => false)
+                                                                        :required => false,
+                                                                        :allow_nil => true)
+    end
+
+    it "should allow nil as the facts argument" do
+      post :create,
+           :user => { 
+             :username => "root",
+             :password => "12345",
+             :membership => "standard",
+           },
+           :facts => nil
+      assert_response :success
     end
 
   end
@@ -234,17 +246,21 @@ describe UsersController do
         :doc_url => "#{Restapi.configuration.doc_base_url}#users/two_urls",
         :full_description => '',
         :params => [{:required=>false,
+                     :allow_nil => false,
                      :validator=>"Parameter has to be String.",
                      :description=>"\n<p>Authorization</p>\n", :name=>"oauth"},
                     {:required=>true,
+                     :allow_nil => false,
                      :validator=>"Parameter has to be String.",
                      :description=>"\n<p>Username for login</p>\n",
                      :name=>"resource_param[username]"},
                     {:required=>true,
+                     :allow_nil => false,
                      :validator=>"Parameter has to be String.",
                      :description=>"\n<p>Password for login</p>\n",
                      :name=>"resource_param[password]"},
                     {:required=>false, :validator=>"Parameter has to be Integer.",
+                     :allow_nil => false,
                      :description=>"\n<p>Company ID</p>\n",
                      :name=>"id"},
        ],
