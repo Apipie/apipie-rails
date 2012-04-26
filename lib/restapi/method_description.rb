@@ -34,10 +34,11 @@ module Restapi
       @errors = app.get_errors
       @params_ordered = app.get_params
 
-      parent = @resource.camelize.sub(/$/,'Controller').constantize.superclass
+      parent = @resource.controller.superclass
       if parent != ActionController::Base
         @parent_resource = parent.controller_name
       end
+      @resource.add_method("#{resource._id}##{method}")
     end
 
     def params
@@ -54,8 +55,7 @@ module Restapi
 
       # get params from actual resource description
       if @resource
-        resource = Restapi.get_resource_description(@resource)
-        merge_params(all_params, resource._params_ordered) if resource
+        merge_params(all_params, resource._params_ordered)
       end
 
       merge_params(all_params, @params_ordered)
@@ -66,7 +66,7 @@ module Restapi
       [
         ENV["RAILS_RELATIVE_URL_ROOT"],
         Restapi.configuration.doc_base_url,
-        "##{@resource}/#{@method}"
+        "##{@resource._id}/#{@method}"
       ].join
     end
 
