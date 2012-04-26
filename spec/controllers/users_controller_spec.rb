@@ -230,6 +230,13 @@ describe UsersController do
 
     end
 
+    it "it should support Hash validator without specifying keys" do
+      Restapi[UsersController, :create].to_json[:params].should include(:name => "facts",
+                                                                        :validator => "Parameter has to be Hash.",
+                                                                        :description => "\n<p>Additional optional facts about the user</p>\n",
+                                                                        :required => false)
+    end
+
   end
 
   describe 'two_urls' do
