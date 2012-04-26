@@ -196,6 +196,7 @@ class UsersController < ApplicationController
     param :password, String, :desc => "Password for login", :required => true
     param :membership, ["standard","premium"], :desc => "User membership"
   end
+  param :facts, Hash, :desc => "Additional optional facts about the user"
   def create
     render :text => "OK"
   end
