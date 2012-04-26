@@ -22,30 +22,28 @@ module Restapi
     end
     
     # create new method api description
-    def define_method_description(resource_name, method_name)
-      resource_name = get_resource_name(resource_name)
-
-      puts "defining api for #{resource_name}:#{method_name}"
-
+    def define_method_description(controller, method_name)
       # create new or get existing api
+      resource_name = get_resource_name(controller)
       key = [resource_name, method_name].join('#')
-      @method_descriptions[key] ||=
-        Restapi::MethodDescription.new(method_name, resource_name, self)
-
       # add method description key to resource description
-      define_resource_description(resource_name).add_method(key)
+      resource = define_resource_description(controller)
+
+      method_description = Restapi::MethodDescription.new(method_name, resource, self)
+
+      @method_descriptions[key] ||= method_description
 
       @method_descriptions[key]
     end
 
     # create new resource api description
-    def define_resource_description(resource_name, &block)
-      resource_name = get_resource_name(resource_name)
-      
+    def define_resource_description(controller, &block)
+      resource_name = get_resource_name(controller)
+
       # puts "defining api for #{resource_name}"
-      
+
       @resource_descriptions[resource_name] ||=
-        Restapi::ResourceDescription.new(resource_name, &block)
+        Restapi::ResourceDescription.new(controller, resource_name, &block)
     end
 
     def add_method_description_args(args)
