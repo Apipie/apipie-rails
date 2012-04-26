@@ -70,7 +70,7 @@ module Restapi
       end
 
       def self.build(param_description, argument, options, block)
-        self.new(param_description, argument) if argument.is_a?(Class) && argument != Hash
+        self.new(param_description, argument) if argument.is_a?(Class) && (argument != Hash || block.nil?)
       end
 
       def error
