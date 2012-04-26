@@ -50,7 +50,7 @@ describe UsersController do
       a.should eq(b)
 
       a.method.should eq(:show)
-      a.resource.should eq('users')
+      a.resource._id.should eq('users')
       a.errors[0].code.should eq(401)
       a.errors[0].description.should eq("Unauthorized")
       a.errors[1].code.should eq(404)

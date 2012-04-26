@@ -10,13 +10,14 @@ module Restapi
   # id - resouce name
   class ResourceDescription
     
-    attr_reader :_short_description, :_full_description, :_methods, :_id,
+    attr_reader :controller, :_short_description, :_full_description, :_methods, :_id,
       :_path, :_version, :_name, :_params_ordered
     
-    def initialize(resource_name, &block)
+    def initialize(controller, resource_name, &block)
       @_methods = []
       @_params_ordered = []
 
+      @controller = controller
       @_id = resource_name
       @_version = "1"
       @_name = @_id.humanize
@@ -26,7 +27,7 @@ module Restapi
       
       block.arity < 1 ? instance_eval(&block) : block.call(self) if block_given?
     end
-    
+
     def param(param_name, *args, &block)
       param_description = Restapi::ParamDescription.new(param_name, *args, &block)
       @_params_ordered << param_description
@@ -78,7 +79,5 @@ module Restapi
         :methods => _methods
       }
     end
-
   end
-  
 end
