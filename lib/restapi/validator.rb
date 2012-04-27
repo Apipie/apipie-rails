@@ -62,11 +62,7 @@ module Restapi
 
       def validate(value)
         return false if value.nil?
-        begin
-          Kernel.send(@type.to_s, value)
-        rescue ArgumentError
-          return false
-        end
+        value.is_a? @type
       end
 
       def self.build(param_description, argument, options, block)
