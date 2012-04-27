@@ -68,12 +68,6 @@ describe UsersController do
       param.validator.class.should be(Restapi::Validator::TypeValidator)
       param.validator.instance_variable_get("@type").should eq(String)
       
-      param = a.params[:float_param]
-      param.required.should eq(false)
-      param.desc.should eq("\n<p>float param</p>\n")
-      param.validator.class.should be(Restapi::Validator::TypeValidator)
-      param.validator.instance_variable_get("@type").should eq(Float)
-
       param = a.params[:id]
       param.required.should eq(true)
       param.desc.should eq("\n<p>user id</p>\n")
@@ -106,29 +100,6 @@ describe UsersController do
             :id => "not a number", 
             :session => "secret_hash"
       }.should raise_error(ArgumentError)
-    end
-    
-    it "should yell ArgumentError if float_param is not a float" do
-      lambda { 
-        get :show, 
-            :id => 5,
-            :session => "secret_hash",
-            :float_param => "234.2.34"
-      }.should raise_error(ArgumentError)
-      
-      lambda { 
-        get :show, 
-            :id => 5, 
-            :session => "secret_hash", 
-            :float_param => "no float here"
-      }.should raise_error(ArgumentError)
-    end
-
-    it "should understand float validator" do
-      get :show, :id => 5, :session => "secret_hash", :float_param => "234.34"
-      assert_response :success
-      get :show, :id => 5, :session => "secret_hash", :float_param => "234"
-      assert_response :success
     end
     
     it "should understand regexp validator" do
