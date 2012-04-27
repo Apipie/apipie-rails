@@ -7,10 +7,10 @@ module Restapi
       
       attr_accessor :short_description, :api_url, :http_method
       
-      def initialize(args)
-        @http_method = args[:method] || args[:http_method] || args[:http]
-        @short_description = args[:desc] || args[:short] || args[:description]
-        @api_url = create_api_url(args[:path] || args[:url])
+      def initialize(method, path, desc)
+        @http_method = method.to_s
+        @api_url = create_api_url(path)
+        @short_description = desc
       end
       
       private
@@ -74,7 +74,7 @@ module Restapi
       @apis.each.collect do |api|
         {
           :api_url => api.api_url,
-          :http_method => api.http_method,
+          :http_method => api.http_method.to_s,
           :short_description => api.short_description
         }
       end

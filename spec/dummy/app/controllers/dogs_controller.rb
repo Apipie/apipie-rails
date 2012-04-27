@@ -1,8 +1,6 @@
 class DogsController < ApplicationController
   
-  api :desc => "Show dogs profile",
-      :path => "/dogs/:id",
-      :method => "GET"
+  api :GET, "/dogs/:id", "Show dogs profile"
   error :code => 401, :desc => "Unauthorized"
   error :code => 404, :desc => "Not Found"
   desc "+Show dog+ This is *description* of dog show method."
@@ -10,9 +8,7 @@ class DogsController < ApplicationController
     render :nothing => true
   end
 
-  api :desc => "List all dogs",
-      :path => "/dogs",
-      :method => "GET"
+  api :GET, "/dogs", "List all dogs"
   desc "List all dogs which are registered on our social site."
   def index
     render :text => "List of dogs"
