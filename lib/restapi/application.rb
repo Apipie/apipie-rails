@@ -46,8 +46,8 @@ module Restapi
         Restapi::ResourceDescription.new(controller, resource_name, &block)
     end
 
-    def add_method_description_args(args)
-      @last_api_args << MethodDescription::Api.new(args)
+    def add_method_description_args(method, path, desc)
+      @last_api_args << MethodDescription::Api.new(method, path, desc)
     end
     
     # check if there is some saved description

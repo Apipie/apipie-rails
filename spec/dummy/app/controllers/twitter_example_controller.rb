@@ -6,9 +6,7 @@ class TwitterExampleController < ApplicationController
     path '/users/'
   end
   
-  api :desc => 'Return up to 100 users worth of extended information, specified by either ID, screen name, or combination of the two.',
-      :path => '/users/lookup',
-      :method => 'GET'
+  api :GET, '/users/lookup', 'Return up to 100 users worth of extended information, specified by either ID, screen name, or combination of the two.'
   param :screen_name, String, :desc => 'A comma separated list of screen names, up to 100 are allowed in a single request. You are strongly encouraged to use a POST for larger (up to 100 screen names) requests.'
   param :user_id, Integer, :desc => 'A comma separated list of user IDs, up to 100 are allowed in a single request. You are strongly encouraged to use a POST for larger requests.'
   param :include_entities, String, :desc => 'When set to either <code>true</code>, <code>t</code> or <code>1</code>, each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags. While entities are opt-in on timelines at present, they will be made a default component of output in the future. See Tweet Entities for more detail on entities.'
@@ -30,9 +28,7 @@ class TwitterExampleController < ApplicationController
     render :text => "lookup"
   end
   
-  api :desc => 'Access the profile image in various sizes for the user with the indicated screen_name.',
-      :path => '/users/profile_image/:screen_name',
-      :method => 'GET'
+  api :GET, '/users/profile_image/:screen_name', 'Access the profile image in various sizes for the user with the indicated screen_name.'
   param :screen_name, String, :required => true, :desc => 'The screen name of the user for whom to return results for. Helpful for disambiguating when a valid screen name is also a user ID.'
   param :size, ['bigger','normal','mini','original'], :desc => <<-EOS
     Specifies the size of image to fetch. Not specifying a size will give the default, normal size of 48px by 48px. Valid options include:
@@ -53,8 +49,7 @@ class TwitterExampleController < ApplicationController
     render :text => "profile_image"
   end
   
-  api :path => '/users/search', :method => 'GET',
-      :desc => 'Runs a search for users similar to Find People button on Twitter.com.'
+  api :GET, '/users/search', 'Runs a search for users similar to Find People button on Twitter.com.'
   param :q, String, :desc => 'The search query to run against people search.', :required => true
   param :page, Integer, :desc => 'Specifies the page of results to retrieve.'
   param :per_page, Integer, :desc => 'The number of people to retrieve. Maxiumum of 20 allowed per page.'
@@ -151,8 +146,7 @@ class TwitterExampleController < ApplicationController
     render :text => 'search'
   end
   
-  api :path => '/users/show', :method => 'GET',
-      :desc => 'Returns extended information of a given user, specified by ID or screen name as per the required id parameter.'
+  api :GET, '/users/show', 'Returns extended information of a given user, specified by ID or screen name as per the required id parameter.'
   param :user_id, Integer, :required => true, :desc => <<-EOS
     The ID of the user for whom to return results for. Either an id or screen_name is required for this method.
     _Note_: Specifies the ID of the user to befriend. Helpful for disambiguating when a valid user ID is also a valid screen name.
@@ -169,8 +163,7 @@ class TwitterExampleController < ApplicationController
     render :text => 'show'
   end
   
-  api :path => '/users/contributors', :method => 'GET',
-      :description => 'Returns an array of users who can contribute to the specified account.'
+  api :GET, '/users/contributors', 'Returns an array of users who can contribute to the specified account.'
   param :user_id, Integer, :desc => 'The ID of the user for whom to return results for. Helpful for disambiguating when a valid user ID is also a valid screen name.'
   param :screen_name, String, :desc => 'The screen name of the user for whom to return results for. Helpful for disambiguating when a valid screen name is also a user ID.'
   param :include_entities, String
