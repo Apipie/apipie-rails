@@ -36,9 +36,7 @@ class UsersController < ApplicationController
     EOS
   end
   
-  api :short => "Show user profile",
-      :path => "/users/:id",
-      :method => "GET"
+  api :GET, "/users/:id", "Show user profile"
   error :code => 401, :desc => "Unauthorized"
   error :code => 404, :desc => "Not Found"
   param :id, Fixnum, :desc => "user id", :required => true
@@ -190,7 +188,7 @@ class UsersController < ApplicationController
     render :text => "OK"
   end
   
-  api :desc => "Create user", :path => "/users", :method => "POST"
+  api :POST, "/users", "Create user"
   param :user, Hash, :desc => "User info" do
     param :username, String, :desc => "Username for login", :required => true
     param :password, String, :desc => "Password for login", :required => true
@@ -201,9 +199,7 @@ class UsersController < ApplicationController
     render :text => "OK"
   end
 
-  api :desc => "List users",
-      :path => "/users",
-      :method => "GET"
+  api :GET, "/users", "List users"
   error :code => 401, :desc => "Unauthorized"
   error :code => 404, :desc => "Not Found"
   desc "List all users."
@@ -213,12 +209,8 @@ class UsersController < ApplicationController
     render :text => "List of users"
   end
 
-  api :desc => 'Get company users',
-      :path => '/company_users',
-      :method => 'GET'
-  api :desc => 'Get users working in given company',
-      :path => '/company/:id/users',
-      :method => 'GET'
+  api :GET, '/company_users', 'Get company users'
+  api :GET, '/company/:id/users', 'Get users working in given company'
   param :id, Integer, :desc => "Company ID"
   def two_urls
     render :text => 'List of users'
