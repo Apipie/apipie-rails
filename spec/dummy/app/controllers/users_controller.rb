@@ -44,7 +44,6 @@ class UsersController < ApplicationController
   param :id, Fixnum, :desc => "user id", :required => true
   param :id, Integer, :desc => "user id", :required => true
   param :session, String, :desc => "user is logged in", :required => true
-  param :float_param, Float, :desc => "float param"
   param :regexp_param, /^[0-9]* years/, :desc => "regexp param"
   param :array_param, [100, "one", "two", 1, 2], :desc => "array validator"
   param :boolean_param, [true, false], :desc => "array validator with boolean"
