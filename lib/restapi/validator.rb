@@ -57,7 +57,6 @@ module Restapi
       def initialize(param_description, argument)
         super(param_description)
         @type = argument
-        @type = Integer if @type == Fixnum
       end
 
       def validate(value)
@@ -66,7 +65,9 @@ module Restapi
       end
 
       def self.build(param_description, argument, options, block)
-        self.new(param_description, argument) if argument.is_a?(Class) && (argument != Hash || block.nil?)
+        if argument.is_a?(Class) && (argument != Hash || block.nil?)
+          self.new(param_description, argument) 
+        end
       end
 
       def error

@@ -1,30 +1,7 @@
 Restapi.configure do |config|
   config.app_name = "Test app"
-  config.app_info = <<-EOS
-  == Getting Started
-
-  1. Install Rails at the command prompt if you haven't yet:
-
-      gem install rails
-
-  2. At the command prompt, create a new Rails application:
-
-      rails new myapp
-
-     where "myapp" is the application name.
-
-  3. Change directory to +myapp+ and start the web server:
-
-      cd myapp; rails server
-
-     Run with <tt>--help</tt> or <tt>-h</tt> for options.
-
-  4. Go to http://localhost:3000 and you'll see:
-
-      "Welcome aboard: You're riding Ruby on Rails!"
-  EOS
   config.copyright = "&copy; 2012 Pavel Pokorny"
-  config.doc_base_url = "/dokumentace"
+  config.doc_base_url = "/apidoc"
   config.api_base_url = "/api"
   # config.markup = choose one of:
   #   Restapi::Markup::RDoc.new [default]
@@ -32,4 +9,36 @@ Restapi.configure do |config|
   #   Restapi::Markup::Textile.new
   # or provide another class with to_html(text) instance method
   # config.validate = false
+  
+  path = File.expand_path(File.dirname(__FILE__)+'/../../../../README.rdoc')
+  config.app_info = File.read(path)
+end
+
+
+# integer validator
+class Restapi::Validator::IntegerValidator < Restapi::Validator::BaseValidator
+
+  def initialize(param_description, argument)
+    super(param_description)
+    @type = argument
+  end
+
+  def validate(value)
+    return false if value.nil?
+    !!(value.to_s =~ /^[-+]?[0-9]+$/)
+  end
+
+  def self.build(param_description, argument, options, block)
+    if argument == Integer || argument == Fixnum
+      self.new(param_description, argument) 
+    end
+  end
+
+  def error
+    "Parameter #{@param_name} expecting to be #{@type.name}, got: #{@error_value.class.name}"
+  end
+
+  def description
+    "Parameter has to be #{@type}."
+  end
 end

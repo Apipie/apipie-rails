@@ -46,6 +46,8 @@ Restapi.Routers.Documentation = Backbone.Router.extend({
       
       $("#container").html(html);
       Restapi.rendered = true;
+      
+      Restapi.highlight_syntax();
     });
   }
 

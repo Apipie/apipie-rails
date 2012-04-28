@@ -4,6 +4,7 @@ class TwitterExampleController < ApplicationController
     name 'Users'
     short_description 'Users are at the center of everything Twitter: they follow, they favorite, and tweet & retweet.'
     path '/users/'
+    description "Long description of this resource."
   end
   
   api :GET, '/users/lookup', 'Return up to 100 users worth of extended information, specified by either ID, screen name, or combination of the two.'

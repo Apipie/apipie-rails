@@ -18,7 +18,7 @@ describe UsersController do
       md.name.should eq(:id)
       md.desc.should eq("\n<p>User ID</p>\n")
       md.required.should eq(false)
-      md.validator.class.should eq(Restapi::Validator::TypeValidator)
+      md.validator.class.should eq(Restapi::Validator::IntegerValidator)
       a._id.should eq('users')
       a._path.should eq('/users')
       a._version.should eq('1.0 - 3.4.2012')
@@ -29,7 +29,7 @@ describe UsersController do
   describe "GET show" do
 
     it "find a user with id" do
-      get :show, :id => 5, :session => "secret_hash"
+      get :show, :id => '5', :session => "secret_hash"
       
       assert_response :success
     end
@@ -71,7 +71,7 @@ describe UsersController do
       param = a.params[:id]
       param.required.should eq(true)
       param.desc.should eq("\n<p>user id</p>\n")
-      param.validator.class.should be(Restapi::Validator::TypeValidator)
+      param.validator.class.should be(Restapi::Validator::IntegerValidator)
       param.validator.instance_variable_get("@type").should eq(Integer)
 
       param = a.params[:regexp_param]

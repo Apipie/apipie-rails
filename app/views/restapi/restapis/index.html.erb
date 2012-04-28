@@ -2,8 +2,12 @@
 <html>
 <head>
   <title>API documentation</title>
-  <% %w[bundled/bootstrap.css application.css bundled/bootstrap-responsive.css].each do |file| %>
-    <link type="text/css" rel="stylesheet" href="<%= Restapi.full_url("stylesheets/#{file}") %>"/>
+  <% %w[bundled/bootstrap.css 
+        application.css
+        bundled/prettify.css
+        bundled/bootstrap-responsive.css ].each do |file| %>
+    <link type="text/css" rel="stylesheet" 
+          href="<%= Restapi.full_url("stylesheets/#{file}") %>"/>
   <% end %>
   <!-- IE6-8 support of HTML5 elements -->
   <!--[if lt IE 9]>
@@ -24,11 +28,13 @@
     bundled/underscore.js
     bundled/backbone.js
     bundled/bootstrap-collapse.js
+    bundled/prettify.js
 
     restapi.js
     jst.js
     routers/documentation_router.js ].each do |file| %>
-    <script type="text/javascript" src="<%= Restapi.full_url("javascripts/#{file}") %>"></script>
+    <script type="text/javascript" 
+            src="<%= Restapi.full_url("javascripts/#{file}") %>"></script>
   <% end %>
 </body>
 </html>
