@@ -46,13 +46,13 @@ https://img.skitch.com/20120428-bni2cmq5cyhjuw1jkd78e3qjxn.png
 
 === Gemfile
 
-Add +rails-restapi+ gem to your gemfile and run bundle.
+Add +restapi+ gem to your gemfile and run bundle.
 
-    gem 'rails-restapi'
+    gem 'restapi'
     
 For bleeding edge version use GitHub version
 
-    gem 'rails-restapi', :git => 'git://github.com/Pajk/rails-restapi.git'
+    gem 'restapi', :git => 'git://github.com/Pajk/rails-restapi.git'
 
 === Config file
 
