@@ -35,7 +35,7 @@ describe UsersController do
     end
 
     it "throw ArgumentError if some required parameter missing" do
-      lambda { get :show, :id => 5 }.should raise_error(ArgumentError)
+      lambda { get :show, :id => 5 }.should raise_error(ArgumentError, / session /)
     end
     
     it "responds with status 401 if session is wrong" do
@@ -99,7 +99,7 @@ describe UsersController do
         get :show, 
             :id => "not a number", 
             :session => "secret_hash"
-      }.should raise_error(ArgumentError)
+      }.should raise_error(ArgumentError, / id /)
     end
     
     it "should understand regexp validator" do
@@ -116,7 +116,7 @@ describe UsersController do
             :id => 5, 
             :session => "secret_hash",
             :regexp_param => "ten years"
-      }.should raise_error(ArgumentError)
+      }.should raise_error(ArgumentError, / regexp_param /)
     end
     
     it "should validate with array validator" do
@@ -136,14 +136,14 @@ describe UsersController do
             :id => 5,
             :session => "secret_hash",
             :array_param => "blabla"
-      }.should raise_error(ArgumentError)
+      }.should raise_error(ArgumentError, / array_param /)
       
       lambda {
         get :show, 
             :id => 5,
             :session => "secret_hash",
             :array_param => 3
-      }.should raise_error(ArgumentError)
+      }.should raise_error(ArgumentError, / array_param /)
     end
     
     it "should validate with Proc validator" do
@@ -152,7 +152,7 @@ describe UsersController do
             :id => 5,
             :session => "secret_hash",
             :proc_param => "asdgsag"
-      }.should raise_error(ArgumentError)
+      }.should raise_error(ArgumentError, / proc_param /)
       
       get :show,
           :id => 5,
@@ -188,12 +188,12 @@ describe UsersController do
                :password => "12345",
                :membership => "____"
               }
-      }.should raise_error(ArgumentError)
+      }.should raise_error(ArgumentError, / membership /)
 
       lambda {
         post :create,
              :user => { :username => "root" }
-      }.should raise_error(ArgumentError)
+      }.should raise_error(ArgumentError, / password /)
 
       post :create, 
            :user => { :username => "root", :password => "pwd" }
