@@ -35,7 +35,7 @@ class Restapi::Validator::IntegerValidator < Restapi::Validator::BaseValidator
   end
 
   def error
-    "Parameter #{@param_name} expecting to be #{@type.name}, got: #{@error_value.class.name}"
+    "Parameter #{param_name} expecting to be #{@type.name}, got: #{@error_value.class.name}"
   end
 
   def description

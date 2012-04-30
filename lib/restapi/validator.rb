@@ -71,7 +71,7 @@ module Restapi
       end
 
       def error
-        "Parameter #{@param_name} expecting to be #{@type.name}, got: #{@error_value.class.name}"
+        "Parameter #{param_name} expecting to be #{@type.name}, got: #{@error_value.class.name}"
       end
 
       def description
@@ -96,7 +96,7 @@ module Restapi
       end
 
       def error
-        "Parameter #{@param_name} expecting to match /#{@regexp.source}/, got '#{@error_value}'"
+        "Parameter #{param_name} expecting to match /#{@regexp.source}/, got '#{@error_value}'"
       end
 
       def description
@@ -121,7 +121,7 @@ module Restapi
       end
 
       def error
-        "Parameter #{@param_name} has bad value (#{@error_value.inspect}). Expecting one of: #{@array.join(',')}."
+        "Parameter #{param_name} has bad value (#{@error_value.inspect}). Expecting one of: #{@array.join(',')}."
       end
 
       def description
@@ -145,7 +145,7 @@ module Restapi
       end
 
       def error
-        "Parameter #{@param_name} has bad value (\"#{@error_value}\"). #{@help}"
+        "Parameter #{param_name} has bad value (\"#{@error_value}\"). #{@help}"
       end
 
       def description
