@@ -64,7 +64,7 @@ Restapi.Templates.Resource = _.template(
                 <tbody> \
                   <% _.each(m.params, function(val) { %> \
                     <tr><td><strong><%= val.name %></strong><br>\
-                    <small><%= val.required ? 'required' : 'optional' %></small></td> \
+                    <small><%= val.required ? 'required' : 'optional' %><%= val.allow_nil ? ', nil allowed' : '' %></small></td> \
                     <td><%= val.description %><br>\
                     <% if(val.validator != ''){ %> Value: <%= val.validator %><% } %> \
                     </td></tr> \
@@ -113,7 +113,7 @@ Restapi.Templates.Method = _.template(
           <tr> \
             <td> \
               <strong><%= val.name %></strong><br> \
-              <small><%= val.required ? 'required' : 'optional' %></small> \
+              <small><%= val.required ? 'required' : 'optional' %><%= val.allow_nil ? ', nil allowed' : '' %></small> \
             </td> \
             <td> \
               <%= val.description %><br>\
