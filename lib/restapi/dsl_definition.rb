@@ -17,6 +17,7 @@ module Restapi
     #   Long description...
     # EOS
     def resource_description(options = {}, &block)
+      Restapi.remove_resource_description(self)
       Restapi.define_resource_description(self, &block) if block_given?
     end
 
