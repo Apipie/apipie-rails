@@ -243,7 +243,8 @@ describe UsersController do
     it "should be described by valid json" do
        json_hash = {
         :errors => [],
-        :doc_url => "#{Restapi.configuration.doc_base_url}#users/two_urls",
+        :examples => [],
+        :doc_url => "#{Restapi.configuration.doc_base_url}/users/two_urls",
         :full_description => '',
         :params => [{:required=>false,
                      :allow_nil => false,

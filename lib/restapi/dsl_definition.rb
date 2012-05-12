@@ -46,6 +46,12 @@ module Restapi
     end
     alias :description :desc
 
+    # Show some example of what does the described 
+    # method return.
+    def example(example)
+      Restapi.add_example(example)
+    end
+
     # Describe possible errors
     #
     # Example:

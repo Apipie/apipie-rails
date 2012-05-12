@@ -21,7 +21,7 @@ module Restapi
 
     end
 
-    attr_reader :errors, :full_description, :method, :resource, :apis
+    attr_reader :errors, :full_description, :method, :resource, :apis, :examples
     
     def initialize(method, resource, app)
       @method = method
@@ -33,6 +33,7 @@ module Restapi
       @full_description = Restapi.markup_to_html(desc)
       @errors = app.get_errors
       @params_ordered = app.get_params
+      @examples = app.get_examples
 
       parent = @resource.controller.superclass
       if parent != ActionController::Base
@@ -66,7 +67,7 @@ module Restapi
       [
         ENV["RAILS_RELATIVE_URL_ROOT"],
         Restapi.configuration.doc_base_url,
-        "##{@resource._id}/#{@method}"
+        "/#{@resource._id}/#{@method}"
       ].join
     end
 
@@ -87,7 +88,8 @@ module Restapi
         :apis => method_apis_to_json,
         :full_description => @full_description,
         :errors => @errors,
-        :params => params_ordered.map(&:to_json).flatten
+        :params => params_ordered.map(&:to_json).flatten,
+        :examples => @examples
       }
     end
 

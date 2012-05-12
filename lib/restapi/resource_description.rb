@@ -56,7 +56,7 @@ module Restapi
     end
     
     def doc_url
-      "#{ENV["RAILS_RELATIVE_URL_ROOT"]}#{Restapi.configuration.doc_base_url}##{@_id}"
+      "#{ENV["RAILS_RELATIVE_URL_ROOT"]}#{Restapi.configuration.doc_base_url}/#{@_id}"
     end
 
     def api_url; "#{Restapi.configuration.api_base_url}#{@_path}"; end

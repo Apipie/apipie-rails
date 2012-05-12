@@ -2,7 +2,7 @@ require 'active_support/dependencies'
 
 # add path to restapi controller to ActiveSupport paths
 %w{ controllers views }.each do |dir|
-  path = File.join(File.dirname(__FILE__), 'app', dir)
+  path = File.expand_path(File.join(File.dirname(__FILE__), '..', 'app', dir))
   $LOAD_PATH << path
   ActiveSupport::Dependencies.autoload_paths << path
   ActiveSupport::Dependencies.autoload_once_paths.delete(path)

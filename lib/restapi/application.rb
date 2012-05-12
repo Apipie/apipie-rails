@@ -11,7 +11,7 @@ module Restapi
       end
     end
 
-    attr_accessor :last_api_args, :last_errors, :last_params, :last_description
+    attr_accessor :last_api_args, :last_errors, :last_params, :last_description, :last_examples
     attr_reader :method_descriptions, :resource_descriptions
     
     def initialize  
@@ -48,6 +48,10 @@ module Restapi
 
     def add_method_description_args(method, path, desc)
       @last_api_args << MethodDescription::Api.new(method, path, desc)
+    end
+
+    def add_example(example)
+      @last_examples << example.strip_heredoc
     end
     
     # check if there is some saved description
@@ -94,6 +98,7 @@ module Restapi
       @last_errors = []
       @last_params = []
       @last_description = nil
+      @last_examples = []
     end
         
     # Return the current description, clearing it in the process.
@@ -120,6 +125,12 @@ module Restapi
       @last_params.clear
       params
     end
+
+    def get_examples
+      examples = @last_examples.clone
+      @last_examples.clear
+      examples
+    end
     
     def to_json(resource_name, method_name)
       
@@ -135,13 +146,13 @@ module Restapi
       end
 
       {
-        'docs' => {
-          'name' => Restapi.configuration.app_name,
-          'info' => Restapi.configuration.app_info,
-          'copyright' => Restapi.configuration.copyright,
-          'doc_url' => "#{ENV["RAILS_RELATIVE_URL_ROOT"]}#{Restapi.configuration.doc_base_url}",
-          'api_url' => Restapi.configuration.api_base_url,
-          'resources' => _resources
+        :docs => {
+          :name => Restapi.configuration.app_name,
+          :info => Restapi.configuration.app_info,
+          :copyright => Restapi.configuration.copyright,
+          :doc_url => "#{ENV["RAILS_RELATIVE_URL_ROOT"]}#{Restapi.configuration.doc_base_url}",
+          :api_url => Restapi.configuration.api_base_url,
+          :resources => _resources
         }
       }
     end

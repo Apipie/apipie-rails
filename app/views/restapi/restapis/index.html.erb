@@ -1,40 +1,34 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>API documentation</title>
-  <% %w[bundled/bootstrap.css 
-        application.css
-        bundled/prettify.css
-        bundled/bootstrap-responsive.css ].each do |file| %>
-    <link type="text/css" rel="stylesheet" 
-          href="<%= Restapi.full_url("stylesheets/#{file}") %>"/>
-  <% end %>
-  <!-- IE6-8 support of HTML5 elements -->
-  <!--[if lt IE 9]>
-    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-  <![endif]-->
-</head>
-<body>
-  <div class="container">
-    <div class="row">
-      <div id='container'></div>
-    </div>
-    <hr>
-    <footer></footer>
-  </div>
-  <% %w[
-    bundled/jquery-1.7.2.js
-    bundled/json2.js
-    bundled/underscore.js
-    bundled/backbone.js
-    bundled/bootstrap-collapse.js
-    bundled/prettify.js
+<ul class='breadcrumb'>
+  <li class='active'><a href='<%= @doc[:doc_url] %>'><%= @doc[:name] %></a></li>
+</ul>
 
-    restapi.js
-    jst.js
-    routers/documentation_router.js ].each do |file| %>
-    <script type="text/javascript" 
-            src="<%= Restapi.full_url("javascripts/#{file}") %>"></script>
-  <% end %>
-</body>
-</html>
+<div class=''><%= @doc[:info].html_safe %></div>
+
+<% @doc[:resources].each do |key, api| %>
+  <h2>
+    <a href='<%= api[:doc_url] %>'><%= api[:name] %></a><br>
+    <small><%= api[:short_description] %></small>
+  </h2>
+  <table class='table'>
+    <thead>
+      <tr>
+        <th>Resource</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% api[:methods].each do |m| %>
+        <% m[:apis].each do |a| %>
+          <tr>
+            <td><a href='<%= m[:doc_url] %>'><%= a[:http_method] %> <%= a[:api_url] %></a></td>
+            <td width='60%'><%= a[:short_description] %></td>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
+
+<% content_for :restapi_footer do %>
+  <%= raw @doc[:copyright] %>
+<% end %>

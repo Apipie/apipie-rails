@@ -62,87 +62,90 @@ class TwitterExampleController < ApplicationController
     
     === Extended description
     This method has a feature-specific rate limit of 60 calls per hour that is applied in conjunction with the main REST API rate limit. Calls to this method will count against the feature-specific rate limit and the main REST API rate limit. If either limit is exhausted, the request will fail. You can monitor the status of the feature-specific rate limit by inspecting the HTTP response headers <tt>X-FeatureRateLimit-Limit</tt>, <tt>X-FeatureRateLimit-Remaining</tt>, and <tt>X-FeatureRateLimit-Reset</tt>. These headers correspond to the <tt>X-RateLimit</tt> headers provided by the main REST API limit.
-      [
-        {
-          "name": "Twitter API",
-          "profile_sidebar_border_color": "87bc44",
-          "profile_background_tile": false,
-          "profile_sidebar_fill_color": "e0ff92",
-          "location": "San Francisco, CA",
-          "profile_image_url": "http://a3.twimg.com/profile_images/689684365/api_normal.png",
-          "created_at": "Wed May 23 06:01:13 +0000 2007",
-          "profile_link_color": "0000ff",
-          "favourites_count": 2,
-          "url": "http://apiwiki.twitter.com",
-          "contributors_enabled": true,
-          "utc_offset": -28800,
-          "id": 6253282,
-          "profile_use_background_image": true,
-          "profile_text_color": "000000",
-          "protected": false,
-          "followers_count": 160753,
-          "lang": "en",
-          "verified": true,
-          "profile_background_color": "c1dfee",
-          "geo_enabled": true,
-          "notifications": null,
-          "description": "The Real Twitter API. I tweet about API changes, service issues and happily answer questions about Twitter and our API. Don't get an answer? It's on my website.",
-          "time_zone": "Pacific Time (US & Canada)",
-          "friends_count": 19,
-          "statuses_count": 1858,
-          "profile_background_image_url": "http://a3.twimg.com/profile_background_images/59931895/twitterapi-background-new.png",
-          "status": {
-            "coordinates": null,
-            "favorited": false,
-            "created_at": "Tue Jun 22 16:53:28 +0000 2010",
-            "truncated": false,
-            "text": "@Demonicpagan possible some part of your signature generation is incorrect & fails for real reasons.. follow up on the list if you suspect",
-            "contributors": null,
-            "id": 16783999399,
-            "geo": null,
-            "in_reply_to_user_id": 6339722,
-            "place": null,
-            "source": "<a href="http://www.tweetdeck.com" rel="nofollow">TweetDeck</a>",
-            "in_reply_to_screen_name": "Demonicpagan",
-            "in_reply_to_status_id": 16781827477
-          },
-          "screen_name": "twitterapi",
-          "following": null
-        },
-        ...
-        {
-          "name": "twitterAPI",
-          "profile_sidebar_border_color": "87bc44",
-          "profile_background_tile": false,
-          "profile_sidebar_fill_color": "e0ff92",
-          "location": null,
-          "profile_image_url": "http://s.twimg.com/a/1277162817/images/default_profile_6_normal.png",
-          "created_at": "Fri Jun 04 12:07:25 +0000 2010",
-          "profile_link_color": "0000ff",
-          "favourites_count": 0,
-          "url": null,
-          "contributors_enabled": false,
-          "utc_offset": null,
-          "id": 151851125,
-          "profile_use_background_image": true,
-          "profile_text_color": "000000",
-          "protected": false,
-          "followers_count": 0,
-          "lang": "ja",
-          "verified": false,
-          "profile_background_color": "9ae4e8",
-          "geo_enabled": false,
-          "notifications": false,
-          "description": null,
-          "time_zone": null,
-          "friends_count": 0,
-          "statuses_count": 0,
-          "profile_background_image_url": "http://s.twimg.com/a/1277162817/images/themes/theme1/bg.png",
-          "screen_name": "popoAPI",
-          "following": false
-        }
-      ]
   EOS
+
+  example <<-EDOC
+  [
+    {
+      "name": "Twitter API",
+      "profile_sidebar_border_color": "87bc44",
+      "profile_background_tile": false,
+      "profile_sidebar_fill_color": "e0ff92",
+      "location": "San Francisco, CA",
+      "profile_image_url": "http://a3.twimg.com/profile_images/689684365/api_normal.png",
+      "created_at": "Wed May 23 06:01:13 +0000 2007",
+      "profile_link_color": "0000ff",
+      "favourites_count": 2,
+      "url": "http://apiwiki.twitter.com",
+      "contributors_enabled": true,
+      "utc_offset": -28800,
+      "id": 6253282,
+      "profile_use_background_image": true,
+      "profile_text_color": "000000",
+      "protected": false,
+      "followers_count": 160753,
+      "lang": "en",
+      "verified": true,
+      "profile_background_color": "c1dfee",
+      "geo_enabled": true,
+      "notifications": null,
+      "description": "The Real Twitter API. I tweet about API changes, service issues and happily answer questions about Twitter and our API. Don't get an answer? It's on my website.",
+      "time_zone": "Pacific Time (US & Canada)",
+      "friends_count": 19,
+      "statuses_count": 1858,
+      "profile_background_image_url": "http://a3.twimg.com/profile_background_images/59931895/twitterapi-background-new.png",
+      "status": {
+        "coordinates": null,
+        "favorited": false,
+        "created_at": "Tue Jun 22 16:53:28 +0000 2010",
+        "truncated": false,
+        "text": "@Demonicpagan possible some part of your signature generation is incorrect & fails for real reasons.. follow up on the list if you suspect",
+        "contributors": null,
+        "id": 16783999399,
+        "geo": null,
+        "in_reply_to_user_id": 6339722,
+        "place": null,
+        "source": "<a href="http://www.tweetdeck.com" rel="nofollow">TweetDeck</a>",
+        "in_reply_to_screen_name": "Demonicpagan",
+        "in_reply_to_status_id": 16781827477
+      },
+      "screen_name": "twitterapi",
+      "following": null
+    },
+    ...
+    {
+      "name": "twitterAPI",
+      "profile_sidebar_border_color": "87bc44",
+      "profile_background_tile": false,
+      "profile_sidebar_fill_color": "e0ff92",
+      "location": null,
+      "profile_image_url": "http://s.twimg.com/a/1277162817/images/default_profile_6_normal.png",
+      "created_at": "Fri Jun 04 12:07:25 +0000 2010",
+      "profile_link_color": "0000ff",
+      "favourites_count": 0,
+      "url": null,
+      "contributors_enabled": false,
+      "utc_offset": null,
+      "id": 151851125,
+      "profile_use_background_image": true,
+      "profile_text_color": "000000",
+      "protected": false,
+      "followers_count": 0,
+      "lang": "ja",
+      "verified": false,
+      "profile_background_color": "9ae4e8",
+      "geo_enabled": false,
+      "notifications": false,
+      "description": null,
+      "time_zone": null,
+      "friends_count": 0,
+      "statuses_count": 0,
+      "profile_background_image_url": "http://s.twimg.com/a/1277162817/images/themes/theme1/bg.png",
+      "screen_name": "popoAPI",
+      "following": false
+    }
+  ]
+  EDOC
   def search
     render :text => 'search'
   end
@@ -170,124 +173,128 @@ class TwitterExampleController < ApplicationController
   param :include_entities, String
   param :skip_status, ['t','true','1'],
     :description => 'When set to either true, t or 1 statuses will not be included in the returned user objects.'
-    
-  description <<-EDOC
-    === Example request
-    GET	https://api.twitter.com/1/users/contributors.json?screen_name=twitterapi&include_entities=true&skip_status=true
-      [
-        {
-          "profile_sidebar_border_color": "C0DEED",
-          "profile_background_tile": false,
-          "name": "Matt Harris",
-          "profile_sidebar_fill_color": "DDEEF6",
-          "expanded_url": "http://themattharris.com",
-          "created_at": "Sat Feb 17 20:49:54 +0000 2007",
-          "location": "SFO/LHR/YVR/JAX/IAD/AUS",
-          "profile_image_url": "http://a1.twimg.com/profile_images/554181350/matt_normal.jpg",
-          "follow_request_sent": false,
-          "is_translator": false,
-          "profile_link_color": "0084B4",
-          "id_str": "777925",
-          "entities": {
-            "urls": [
 
-            ],
-            "hashtags": [
+  description "Look at examples."
+  
+  example <<-EDOC
+    GET https://api.twitter.com/1/users/contributors.json?screen_name=twitterapi&include_entities=true&skip_status=true
+    [
+      {
+        "profile_sidebar_border_color": "C0DEED",
+        "profile_background_tile": false,
+        "name": "Matt Harris",
+        "profile_sidebar_fill_color": "DDEEF6",
+        "expanded_url": "http://themattharris.com",
+        "created_at": "Sat Feb 17 20:49:54 +0000 2007",
+        "location": "SFO/LHR/YVR/JAX/IAD/AUS",
+        "profile_image_url": "http://a1.twimg.com/profile_images/554181350/matt_normal.jpg",
+        "follow_request_sent": false,
+        "is_translator": false,
+        "profile_link_color": "0084B4",
+        "id_str": "777925",
+        "entities": {
+          "urls": [
 
-            ],
-            "user_mentions": [
-              {
-                "name": "Cindy Li",
-                "id_str": "29733",
-                "id": 29733,
-                "indices": [
-                  45,
-                  53
-                ],
-                "screen_name": "cindyli"
-              }
-            ]
-          },
-          "default_profile": true,
-          "url": "http://t.co/292MnqA",
-          "contributors_enabled": false,
-          "favourites_count": 120,
-          "id": 777925,
-          "utc_offset": -28800,
-          "listed_count": 271,
-          "profile_use_background_image": true,
-          "followers_count": 6242,
-          "lang": "en",
-          "protected": false,
-          "profile_text_color": "333333",
-          "profile_background_color": "C0DEED",
-          "time_zone": "Pacific Time (US & Canada)",
-          "geo_enabled": true,
-          "description": "Developer Advocate at Twitter and married to @cindyli. NASA enthusiast, British expat and all around geek living in San Francisco.",
-          "notifications": false,
-          "verified": false,
-          "profile_background_image_url": "http://a0.twimg.com/images/themes/theme1/bg.png",
-          "statuses_count": 3835,
-          "display_url": "themattharris.com",
-          "friends_count": 360,
-          "default_profile_image": false,
-          "following": false,
-          "show_all_inline_media": false,
-          "screen_name": "themattharris"
+          ],
+          "hashtags": [
+
+          ],
+          "user_mentions": [
+            {
+              "name": "Cindy Li",
+              "id_str": "29733",
+              "id": 29733,
+              "indices": [
+                45,
+                53
+              ],
+              "screen_name": "cindyli"
+            }
+          ]
         },
-        ...
-        {
-          "profile_sidebar_border_color": "547980",
-          "profile_background_tile": true,
-          "name": "Ryan Sarver",
-          "profile_sidebar_fill_color": "F8FCF2",
-          "expanded_url": "http://sarver.org",
-          "created_at": "Mon Feb 26 18:05:55 +0000 2007",
-          "location": "San Francisco, CA",
-          "profile_image_url": "http://a2.twimg.com/profile_images/644997837/ryan_sarver_twitter_big_normal.jpg",
-          "follow_request_sent": false,
-          "is_translator": false,
-          "profile_link_color": "547980",
-          "id_str": "795649",
-          "entities": {
-            "urls": [
+        "default_profile": true,
+        "url": "http://t.co/292MnqA",
+        "contributors_enabled": false,
+        "favourites_count": 120,
+        "id": 777925,
+        "utc_offset": -28800,
+        "listed_count": 271,
+        "profile_use_background_image": true,
+        "followers_count": 6242,
+        "lang": "en",
+        "protected": false,
+        "profile_text_color": "333333",
+        "profile_background_color": "C0DEED",
+        "time_zone": "Pacific Time (US & Canada)",
+        "geo_enabled": true,
+        "description": "Developer Advocate at Twitter and married to @cindyli. NASA enthusiast, British expat and all around geek living in San Francisco.",
+        "notifications": false,
+        "verified": false,
+        "profile_background_image_url": "http://a0.twimg.com/images/themes/theme1/bg.png",
+        "statuses_count": 3835,
+        "display_url": "themattharris.com",
+        "friends_count": 360,
+        "default_profile_image": false,
+        "following": false,
+        "show_all_inline_media": false,
+        "screen_name": "themattharris"
+      },
+      ...      
+    ]
+  EDOC
+  example <<-EDOC
+    Another example...
+    {
+      "profile_sidebar_border_color": "547980",
+      "profile_background_tile": true,
+      "name": "Ryan Sarver",
+      "profile_sidebar_fill_color": "F8FCF2",
+      "expanded_url": "http://sarver.org",
+      "created_at": "Mon Feb 26 18:05:55 +0000 2007",
+      "location": "San Francisco, CA",
+      "profile_image_url": "http://a2.twimg.com/profile_images/644997837/ryan_sarver_twitter_big_normal.jpg",
+      "follow_request_sent": false,
+      "is_translator": false,
+      "profile_link_color": "547980",
+      "id_str": "795649",
+      "entities": {
+        "urls": [
 
-            ],
-            "hashtags": [
+        ],
+        "hashtags": [
 
-            ],
-            "user_mentions": [
+        ],
+        "user_mentions": [
 
-            ]
-          },
-          "default_profile": false,
-          "contributors_enabled": true,
-          "url": "http://t.co/Lzsetyk",
-          "favourites_count": 246,
-          "id": 795649,
-          "utc_offset": -28800,
-          "profile_use_background_image": true,
-          "listed_count": 1384,
-          "followers_count": 280756,
-          "lang": "en",
-          "protected": false,
-          "profile_text_color": "594F4F",
-          "profile_background_color": "45ADA8",
-          "time_zone": "Pacific Time (US & Canada)",
-          "geo_enabled": true,
-          "description": "platform/api at twitter",
-          "notifications": false,
-          "verified": false,
-          "friends_count": 1022,
-          "profile_background_image_url": "http://a0.twimg.com/profile_background_images/113854313/xa60e82408188860c483d73444d53e21.png",
-          "display_url": "sarver.org",
-          "default_profile_image": false,
-          "statuses_count": 7031,
-          "following": false,
-          "show_all_inline_media": true,
-          "screen_name": "rsarver"
-        }
-      ]
+        ]
+      },
+      "default_profile": false,
+      "contributors_enabled": true,
+      "url": "http://t.co/Lzsetyk",
+      "favourites_count": 246,
+      "id": 795649,
+      "utc_offset": -28800,
+      "profile_use_background_image": true,
+      "listed_count": 1384,
+      "followers_count": 280756,
+      "lang": "en",
+      "protected": false,
+      "profile_text_color": "594F4F",
+      "profile_background_color": "45ADA8",
+      "time_zone": "Pacific Time (US & Canada)",
+      "geo_enabled": true,
+      "description": "platform/api at twitter",
+      "notifications": false,
+      "verified": false,
+      "friends_count": 1022,
+      "profile_background_image_url": "http://a0.twimg.com/profile_background_images/113854313/xa60e82408188860c483d73444d53e21.png",
+      "display_url": "sarver.org",
+      "default_profile_image": false,
+      "statuses_count": 7031,
+      "following": false,
+      "show_all_inline_media": true,
+      "screen_name": "rsarver"
+    }
   EDOC
   def contributors
     render :text => 'contributors'

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>API documentation</title>
+  <% %w[bundled/bootstrap.min.css 
+        application.css
+        bundled/prettify.css
+        bundled/bootstrap-responsive.min.css ].each do |file| %>
+    <link type="text/css" rel="stylesheet" 
+          href="<%= Restapi.full_url("stylesheets/#{file}") %>"/>
+  <% end %>
+  <!-- IE6-8 support of HTML5 elements -->
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+</head>
+<body>
+  <div class="container">
+    <div class="row">      
+      <div id='container'>
+        <%= yield %>
+      </div>
+    </div>
+    <hr>
+    <footer><%= yield :restapi_footer %></footer>
+  </div>
+  <% %w[
+    bundled/jquery-1.7.2.js
+    bundled/bootstrap-collapse.js
+    bundled/prettify.js
+    restapi.js ].each do |file| %>
+    <script type="text/javascript" 
+            src="<%= Restapi.full_url("javascripts/#{file}") %>"></script>
+  <% end %>
+</body>
+</html>

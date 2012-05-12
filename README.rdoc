@@ -154,6 +154,8 @@ Then describe methods available to your API.
         method. HTTP response code and description can be provided.
 [description] Full method description which will be converted to HTML by
               choosen markup language processor.
+[example] Provide example of server response, whole communication or response type.
+          It will be formatted as code.
 
 Example:  
 
@@ -167,7 +169,8 @@ Example:
    param :proc_param, lambda { |val| 
      val == "param value" ? true : "The only good value is 'param value'."
    }, :desc => "proc validator"
-   description <<-eos
+   description "method description"
+   example " 'user': {...} "
    def show
      #...
    end
@@ -340,6 +343,12 @@ For inspiration this is how Textile look like:
         RedCloth.new(text).to_html
       end
     end
+
+== Static page
+
+To generate static version of documentation run <tt>rake restapi:static</tt> task.
+It will create folder with one-page documentation in your public directory. Rename
+or delete it if you want to use 'normal' dynamic version again.
     
 == TODO
 
