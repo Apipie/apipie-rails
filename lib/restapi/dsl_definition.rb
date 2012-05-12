@@ -3,7 +3,6 @@
 module Restapi
 
   # DSL is a module that provides #api, #error, #param, #error.
-
   module DSL
 
     private
@@ -16,7 +15,7 @@ module Restapi
     # desc <<-EOS
     #   Long description...
     # EOS
-    def resource_description(options = {}, &block)
+    def resource_description(options = {}, &block) #:doc:
       Restapi.remove_resource_description(self)
       Restapi.define_resource_description(self, &block) if block_given?
     end
@@ -26,7 +25,7 @@ module Restapi
     # Example:
     #   api :GET, "/resource_route", "short description",
     #
-    def api(method, path, desc = nil)
+    def api(method, path, desc = nil) #:doc:
       Restapi.add_method_description_args(method, path, desc)
     end
 
@@ -38,7 +37,7 @@ module Restapi
     #     puts "hello world"
     #   end
     #
-    def desc(description)
+    def desc(description) #:doc:
       if Restapi.last_description
         raise "Double method description."
       end
@@ -48,7 +47,7 @@ module Restapi
 
     # Show some example of what does the described 
     # method return.
-    def example(example)
+    def example(example) #:doc:
       Restapi.add_example(example)
     end
 
@@ -61,7 +60,7 @@ module Restapi
     #     puts "hello world"
     #   end
     #
-    def error(args)
+    def error(args) #:doc:
       Restapi.last_errors << Restapi::ErrorDescription.new(args)
     end
     
@@ -73,12 +72,12 @@ module Restapi
     #     puts greeting
     #   end
     #
-    def param(param_name, *args, &block)
+    def param(param_name, *args, &block) #:doc:
       Restapi.last_params << Restapi::ParamDescription.new(param_name, *args, &block)
     end
     
     # create method api and redefine newly added method
-    def method_added(method_name)
+    def method_added(method_name) #:doc:s
 
       super
       

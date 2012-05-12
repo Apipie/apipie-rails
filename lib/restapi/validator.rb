@@ -12,9 +12,14 @@ module Restapi
         @param_description = param_description
       end
 
+      def self.inherited(subclass)
+        @validators ||= []
+        @validators.insert 0, subclass
+      end
+
       # find the right validator for given options
       def self.find(param_description, argument, options, block)
-        self.subclasses.each do |validator_type|
+        @validators.each do |validator_type|
           validator = validator_type.build(param_description, argument, options, block)
           return validator if validator
         end
