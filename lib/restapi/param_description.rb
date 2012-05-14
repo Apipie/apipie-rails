@@ -59,14 +59,25 @@ module Restapi
 
     def to_json
       if validator.is_a? Restapi::Validator::HashValidator
-        validator.hash_params_ordered.map(&:to_json)
-      else
         {
-          :name => full_name,
+          :name => name.to_s,
+          :full_name => full_name,
           :description => desc,
           :required => required,
           :allow_nil => allow_nil,
-          :validator => validator.to_s
+          :validator => validator.to_s,
+          :expected_type => validator.expected_type,
+          :params => validator.hash_params_ordered.map(&:to_json)
+        }
+      else
+        {
+          :name => name.to_s,
+          :full_name => full_name,
+          :description => desc,
+          :required => required,
+          :allow_nil => allow_nil,
+          :validator => validator.to_s,
+          :expected_type => validator.expected_type
         }
       end
     end

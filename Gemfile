@@ -1,6 +1,6 @@
 source "http://rubygems.org"
 
-gem "rails", "3.0.11"
+gem "rails", ">= 3.0.11"
 gem "sqlite3"
 
 group :development, :test do
@@ -9,4 +9,5 @@ group :development, :test do
   gem "redcarpet"
   gem "RedCloth"
   gem "rake"
+  gem "weary", ">= 1.0.1"
 end

@@ -77,7 +77,7 @@ module Restapi
     end
     
     # create method api and redefine newly added method
-    def method_added(method_name) #:doc:s
+    def method_added(method_name) #:doc:
 
       super
       

@@ -24,7 +24,7 @@
     </div>
     <div>
       <% m[:apis].each do |api| %>
-        <h3>
+        <h2>
           <a href='#description-<%= m[:name] %>'
            class='accordion-toggle'
            data-toggle='collapse'
@@ -32,7 +32,7 @@
             <%= api[:http_method] %> <%= api[:api_url] %>
           </a><br>
           <small><%= raw api[:short_description] %></small>
-        </h3>
+        </h2>
       <% end %>
     </div>
     
@@ -40,7 +40,7 @@
       
       <%= raw m[:full_description] %>
       <% unless m[:errors].blank? %>
-        <h2>Errors</h2>
+        <h3>Errors</h3>
         <% m[:errors].each do |err| %>
           <%= err.code %>
           <%= err.description %>
@@ -49,7 +49,7 @@
       <% end %>
         
       <% unless m[:params].blank? %>
-        <h2>Params</h2>
+        <h3>Params</h3>
         <table class='table'>
           <thead>
             <tr>
@@ -58,24 +58,7 @@
             </tr>
           </thead>
           <tbody>
-            <% m[:params].each do |val| %>
-              <tr>
-                <td>
-                  <strong><%= val[:name] %></strong><br>
-                  <small>
-                    <%= val[:required] ? 'required' : 'optional' %>
-                    <%= val[:allow_nil] ? ', nil allowed' : '' %>
-                  </small>
-                </td>
-                <td>
-                  <%= raw val[:description] %><br>
-                  
-                  <% unless val[:validator].blank? %>
-                    Value: <%= val[:validator] %>
-                  <% end %>
-                </td>
-              </tr>
-            <% end %>
+            <%= print_nested_params(m) %>
           </tbody>
         </table>
       <% end %>

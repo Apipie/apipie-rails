@@ -1,16 +1,21 @@
 Dummy::Application.routes.draw do
-  
+
   scope ENV['RAILS_RELATIVE_URL_ROOT'] || '/' do
     
-    resources :users do
-      collection do
-        get :doc
+    scope '/api' do
+      resources :users
+      resources :twitter_example do
+        collection do
+          get :lookup
+          get 'profile_image/:screen_name' => 'twitter_example#profile_image'
+          get :search
+          get :search
+          get :contributors
+        end
       end
     end
-  
-    resources :dogs
-    resources :twitter_example
 
     restapi
   end
+  root :to => 'restapi/restapis#index'
 end

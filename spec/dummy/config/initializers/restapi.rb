@@ -41,4 +41,8 @@ class Restapi::Validator::IntegerValidator < Restapi::Validator::BaseValidator
   def description
     "Parameter has to be #{@type}."
   end
+  
+  def expected_type
+    'numeric'
+  end
 end

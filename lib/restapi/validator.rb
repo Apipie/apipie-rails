@@ -54,6 +54,13 @@ module Restapi
         self.description
       end
 
+      # what type is expected, mostly string
+      # this information is used in cli client
+      # thor supported types — :string, :hash, :array, :numeric, or :boolean
+      def expected_type
+        'string'
+      end
+
     end
 
     # validate arguments type
@@ -81,6 +88,16 @@ module Restapi
 
       def description
         "Parameter has to be #{@type}."
+      end
+
+      def expected_type
+        if @type.ancestors.include? Hash
+          'hash'
+        elsif @type.ancestors.include? Numeric
+          'numeric'
+        else
+          'string'
+        end
       end
     end
 
@@ -185,11 +202,11 @@ module Restapi
       end
 
       def error
-        "TODO"
+        "Has to be hash."
       end
 
       def description
-        "TODO"
+        "Has to be hash."
       end
 
       def param(param_name, *args, &block)
@@ -197,6 +214,10 @@ module Restapi
         param_description.parent = self.param_description
         @hash_params_ordered << param_description
         @hash_params[param_name.to_sym] = param_description
+      end
+
+      def expected_type
+        'hash'
       end
     end
 

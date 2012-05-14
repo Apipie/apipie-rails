@@ -1,5 +1,19 @@
 require 'spec_helper'
 
+def compare_hashes(h1, h2)
+  h1.each do |key, val|
+    if val.is_a? Hash
+      compare_hashes val, h2[key]
+    elsif val.is_a? Array
+      val.each_with_index do |v, i|
+        compare_hashes val[i], h2[key][i]
+      end
+    else
+      val.should eq(h2[key])
+    end
+  end
+end
+
 describe UsersController do
   
   describe "resource" do
@@ -202,11 +216,13 @@ describe UsersController do
     end
 
     it "should support Hash validator without specifying keys" do
-      Restapi[UsersController, :create].to_json[:params].should include(:name => "facts",
+      Restapi[UsersController, :create].to_json[:params].should include(:name => "facts", 
+                                                                        :full_name => "facts",
                                                                         :validator => "Parameter has to be Hash.",
                                                                         :description => "\n<p>Additional optional facts about the user</p>\n",
                                                                         :required => false,
-                                                                        :allow_nil => true)
+                                                                        :allow_nil => true,
+                                                                        :expected_type => "hash")
     end
 
     it "should allow nil as the facts argument" do
@@ -246,24 +262,40 @@ describe UsersController do
         :examples => [],
         :doc_url => "#{Restapi.configuration.doc_base_url}/users/two_urls",
         :full_description => '',
-        :params => [{:required=>false,
+        :params => [{:full_name=>"oauth",
+                     :required=>false,
                      :allow_nil => false,
                      :validator=>"Parameter has to be String.",
-                     :description=>"\n<p>Authorization</p>\n", :name=>"oauth"},
-                    {:required=>true,
-                     :allow_nil => false,
-                     :validator=>"Parameter has to be String.",
-                     :description=>"\n<p>Username for login</p>\n",
-                     :name=>"resource_param[username]"},
-                    {:required=>true,
-                     :allow_nil => false,
-                     :validator=>"Parameter has to be String.",
-                     :description=>"\n<p>Password for login</p>\n",
-                     :name=>"resource_param[password]"},
+                     :description=>"\n<p>Authorization</p>\n", 
+                     :name=>"oauth",
+                     :expected_type=>"string"},
+                    {:validator=>"Has to be hash.", 
+                     :description=>"\n<p>Param description for all methods</p>\n", 
+                     :expected_type=>"hash", 
+                     :allow_nil=>false, 
+                     :name=>"resource_param",
+                     :required=>false, 
+                     :full_name=>"resource_param",
+                     :params=> 
+                      [{:required=>true,
+                        :allow_nil => false,
+                        :validator=>"Parameter has to be String.",
+                        :description=>"\n<p>Username for login</p>\n",
+                        :name=>"username", :full_name=>"resource_param[username]",
+                        :expected_type=>"string"},
+                       {:required=>true,
+                        :allow_nil => false,
+                        :validator=>"Parameter has to be String.",
+                        :description=>"\n<p>Password for login</p>\n",
+                        :name=>"password", :full_name=>"resource_param[password]",
+                        :expected_type=>"string"}
+                      ]
+                    },
                     {:required=>false, :validator=>"Parameter has to be Integer.",
                      :allow_nil => false,
                      :description=>"\n<p>Company ID</p>\n",
-                     :name=>"id"},
+                     :name=>"id", :full_name=>"id",
+                     :expected_type=>"numeric"},
        ],
         :name => :two_urls,
         :apis => [
@@ -279,7 +311,11 @@ describe UsersController do
         ]
       }
       
-      Restapi[UsersController, :two_urls].to_json.should eq(json_hash)
+      # Restapi[UsersController, :two_urls].to_json.should eq(json_hash)
+      json = Restapi[UsersController, :two_urls].to_json
+
+      compare_hashes json, json_hash
+
     end
 
   end

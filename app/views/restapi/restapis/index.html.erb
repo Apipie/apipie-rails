@@ -2,7 +2,9 @@
   <li class='active'><a href='<%= @doc[:doc_url] %>'><%= @doc[:name] %></a></li>
 </ul>
 
-<div class=''><%= @doc[:info].html_safe %></div>
+<div><%= @doc[:info].html_safe %></div>
+
+<h1 class='page-header'>Resources</h1>
 
 <% @doc[:resources].each do |key, api| %>
   <h2>

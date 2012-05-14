@@ -3,11 +3,11 @@ class TwitterExampleController < ApplicationController
   resource_description do
     name 'Users'
     short_description 'Users are at the center of everything Twitter: they follow, they favorite, and tweet & retweet.'
-    path '/users/'
+    path '/twitter_example/'
     description "Long description of this resource."
   end
   
-  api :GET, '/users/lookup', 'Return up to 100 users worth of extended information, specified by either ID, screen name, or combination of the two.'
+  api :GET, '/twitter_example/lookup', 'Return up to 100 users worth of extended information, specified by either ID, screen name, or combination of the two.'
   param :screen_name, String, :desc => 'A comma separated list of screen names, up to 100 are allowed in a single request. You are strongly encouraged to use a POST for larger (up to 100 screen names) requests.'
   param :user_id, Integer, :desc => 'A comma separated list of user IDs, up to 100 are allowed in a single request. You are strongly encouraged to use a POST for larger requests.'
   param :include_entities, String, :desc => 'When set to either <code>true</code>, <code>t</code> or <code>1</code>, each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags. While entities are opt-in on timelines at present, they will be made a default component of output in the future. See Tweet Entities for more detail on entities.'
@@ -29,7 +29,7 @@ class TwitterExampleController < ApplicationController
     render :text => "lookup"
   end
   
-  api :GET, '/users/profile_image/:screen_name', 'Access the profile image in various sizes for the user with the indicated screen_name.'
+  api :GET, '/twitter_example/profile_image/:screen_name', 'Access the profile image in various sizes for the user with the indicated screen_name.'
   param :screen_name, String, :required => true, :desc => 'The screen name of the user for whom to return results for. Helpful for disambiguating when a valid screen name is also a user ID.'
   param :size, ['bigger','normal','mini','original'], :desc => <<-EOS
     Specifies the size of image to fetch. Not specifying a size will give the default, normal size of 48px by 48px. Valid options include:
@@ -47,10 +47,10 @@ class TwitterExampleController < ApplicationController
     This method should only be used by application developers to lookup or check the profile image URL for a user. This method must not be used as the image source URL presented to users of your application.
   EOS
   def profile_image
-    render :text => "profile_image"
+    render :text => "profile_image of '#{params[:screen_name]}'"
   end
   
-  api :GET, '/users/search', 'Runs a search for users similar to Find People button on Twitter.com.'
+  api :GET, '/twitter_example/search', 'Runs a search for users similar to Find People button on Twitter.com.'
   param :q, String, :desc => 'The search query to run against people search.', :required => true
   param :page, Integer, :desc => 'Specifies the page of results to retrieve.'
   param :per_page, Integer, :desc => 'The number of people to retrieve. Maxiumum of 20 allowed per page.'
@@ -150,7 +150,7 @@ class TwitterExampleController < ApplicationController
     render :text => 'search'
   end
   
-  api :GET, '/users/show', 'Returns extended information of a given user, specified by ID or screen name as per the required id parameter.'
+  api :GET, '/twitter_example/show', 'Returns extended information of a given user, specified by ID or screen name as per the required id parameter.'
   param :user_id, Integer, :required => true, :desc => <<-EOS
     The ID of the user for whom to return results for. Either an id or screen_name is required for this method.
     _Note_: Specifies the ID of the user to befriend. Helpful for disambiguating when a valid user ID is also a valid screen name.
@@ -161,13 +161,13 @@ class TwitterExampleController < ApplicationController
     
     You must be following a protected user to be able to see their most recent status update. If you don't follow a protected user, or request this method without autenticating, the users status will be removed.
 
-    The URL pattern <tt>/version/users/show/:screen_name_or_user_id.format</tt> is still accepted but not recommended. As a sequence of numbers is a valid screen name we recommend using the +screen_name+ or +user_id+ parameter instead.
+    The URL pattern <tt>/version/twitter_example/show/:screen_name_or_user_id.format</tt> is still accepted but not recommended. As a sequence of numbers is a valid screen name we recommend using the +screen_name+ or +user_id+ parameter instead.
   EDOC
   def show
     render :text => 'show'
   end
   
-  api :GET, '/users/contributors', 'Returns an array of users who can contribute to the specified account.'
+  api :GET, '/twitter_example/contributors', 'Returns an array of users who can contribute to the specified account.'
   param :user_id, Integer, :desc => 'The ID of the user for whom to return results for. Helpful for disambiguating when a valid user ID is also a valid screen name.'
   param :screen_name, String, :desc => 'The screen name of the user for whom to return results for. Helpful for disambiguating when a valid screen name is also a user ID.'
   param :include_entities, String
@@ -177,7 +177,7 @@ class TwitterExampleController < ApplicationController
   description "Look at examples."
   
   example <<-EDOC
-    GET https://api.twitter.com/1/users/contributors.json?screen_name=twitterapi&include_entities=true&skip_status=true
+    GET https://api.twitter.com/1/twitter_example/contributors.json?screen_name=twitterapi&include_entities=true&skip_status=true
     [
       {
         "profile_sidebar_border_color": "C0DEED",

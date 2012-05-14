@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  
+
   resource_description do
     name 'Members'
     short 'Site members'
@@ -35,7 +35,7 @@ class UsersController < ApplicationController
       Rails will check the file's modification time and recompile it in development mode.
     EOS
   end
-  
+
   api :GET, "/users/:id", "Show user profile"
   error :code => 401, :desc => "Unauthorized"
   error :code => 404, :desc => "Not Found"
@@ -43,9 +43,9 @@ class UsersController < ApplicationController
   param :id, Integer, :desc => "user id", :required => true
   param :session, String, :desc => "user is logged in", :required => true
   param :regexp_param, /^[0-9]* years/, :desc => "regexp param"
-  param :array_param, [100, "one", "two", 1, 2], :desc => "array validator"
+  param :array_param, ["100", "one", "two", "1", "2"], :desc => "array validator"
   param :boolean_param, [true, false], :desc => "array validator with boolean"
-  param :proc_param, lambda { |val| 
+  param :proc_param, lambda { |val|
     val == "param value" ? true : "The only good value is 'param value'."
   }, :desc => "proc validator"
   description <<-eos
@@ -179,23 +179,23 @@ class UsersController < ApplicationController
       render :text => "Not authorized", :status => 401
       return
     end
-    
+
     unless params[:id].to_i == 5
       render :text => "Not Found", :status => 404 and return
     end
-    
+
     render :text => "OK"
   end
-  
+
   api :POST, "/users", "Create user"
-  param :user, Hash, :desc => "User info" do
+  param :user, Hash, :desc => "User info", :required => true do
     param :username, String, :desc => "Username for login", :required => true
     param :password, String, :desc => "Password for login", :required => true
     param :membership, ["standard","premium"], :desc => "User membership"
   end
   param :facts, Hash, :desc => "Additional optional facts about the user", :allow_nil => true
   def create
-    render :text => "OK"
+    render :text => "OK #{params.inspect}"
   end
 
   api :GET, "/users", "List users"
