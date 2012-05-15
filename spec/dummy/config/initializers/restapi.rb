@@ -9,7 +9,7 @@ Restapi.configure do |config|
   # config.reload_controllers = false
 
   # for reloading to work properly you need to specify where your api controllers are (like in Dir.glob):
-  # config.api_controllers_matcher = File.join(Rails.root, "app", "controllers", "**","*.rb")
+  config.api_controllers_matcher = File.join(Rails.root, "app", "controllers", "**","*.rb")
 
   # config.api_base_url = "/api"
   # config.markup = choose one of:
