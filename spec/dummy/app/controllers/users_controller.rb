@@ -36,18 +36,6 @@ class UsersController < ApplicationController
     EOS
   end
 
-  api :GET, "/users/:id", "Show user profile"
-  error :code => 401, :desc => "Unauthorized"
-  error :code => 404, :desc => "Not Found"
-  param :id, Fixnum, :desc => "user id", :required => true
-  param :id, Integer, :desc => "user id", :required => true
-  param :session, String, :desc => "user is logged in", :required => true
-  param :regexp_param, /^[0-9]* years/, :desc => "regexp param"
-  param :array_param, ["100", "one", "two", "1", "2"], :desc => "array validator"
-  param :boolean_param, [true, false], :desc => "array validator with boolean"
-  param :proc_param, lambda { |val|
-    val == "param value" ? true : "The only good value is 'param value'."
-  }, :desc => "proc validator"
   description <<-eos
     = Action View Base
 
@@ -174,6 +162,17 @@ class UsersController < ApplicationController
 
     More builder documentation can be found at http://builder.rubyforge.org.
   eos
+  api :GET, "/users/:id", "Show user profile"
+  error :code => 401, :desc => "Unauthorized"
+  error :code => 404, :desc => "Not Found"
+  param :id, Integer, :desc => "user id", :required => true
+  param :session, String, :desc => "user is logged in", :required => true
+  param :regexp_param, /^[0-9]* years/, :desc => "regexp param"
+  param :array_param, ["100", "one", "two", "1", "2"], :desc => "array validator"
+  param :boolean_param, [true, false], :desc => "array validator with boolean"
+  param :proc_param, lambda { |val|
+    val == "param value" ? true : "The only good value is 'param value'."
+  }, :desc => "proc validator"
   def show
     unless params[:session] == "secret_hash"
       render :text => "Not authorized", :status => 401

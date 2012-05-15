@@ -6,9 +6,9 @@ module Restapi
   module DSL
 
     private
-    
+
     # Describe whole resource
-    # 
+    #
     # Example:
     # api :desc => "Show user profile", :path => "/users/", :version => '1.0 - 3.4.2012'
     # param :id, Fixnum, :desc => "User ID", :required => true
@@ -45,7 +45,7 @@ module Restapi
     end
     alias :description :desc
 
-    # Show some example of what does the described 
+    # Show some example of what does the described
     # method return.
     def example(example) #:doc:
       Restapi.add_example(example)
@@ -63,7 +63,7 @@ module Restapi
     def error(args) #:doc:
       Restapi.last_errors << Restapi::ErrorDescription.new(args)
     end
-    
+
     # Describe method's parameter
     #
     # Example:
@@ -75,14 +75,14 @@ module Restapi
     def param(param_name, *args, &block) #:doc:
       Restapi.last_params << Restapi::ParamDescription.new(param_name, *args, &block)
     end
-    
+
     # create method api and redefine newly added method
     def method_added(method_name) #:doc:
 
       super
-      
+
       return unless Restapi.restapi_provided?
-      
+
       # remove method description if exists and create new one
       Restapi.remove_method_description(self, method_name)
       description = Restapi.define_method_description(self, method_name)
@@ -90,30 +90,32 @@ module Restapi
       # redefine method only if validation is turned on
       if Restapi.configuration.validate == true
 
-        old_method = instance_method(method_name) 
-        
+        old_method = instance_method(method_name)
+
         define_method(method_name) do |*args|
-          
-          description.params.each do |_, param|
 
-            # check if required parameters are present
-            if param.required && !params.has_key?(param.name)
-              raise ArgumentError.new("Expecting #{param.name} parameter.")
-            end
-            
-            # params validations
-            if params.has_key?(param.name)
-              param.validate(params[:"#{param.name}"])
-            end
+          if Restapi.configuration.validate == true
+            description.params.each do |_, param|
 
-          end # params.each
+              # check if required parameters are present
+              if param.required && !params.has_key?(param.name)
+                raise ArgumentError.new("Expecting #{param.name} parameter.")
+              end
+
+              # params validations
+              if params.has_key?(param.name)
+                param.validate(params[:"#{param.name}"])
+              end
+
+            end
+          end
 
           # run the original method code
           old_method.bind(self).call(*args)
         end
 
       end
-      
+
     end # def method_added
   end # module DSL
 end # module Restapi

@@ -102,7 +102,7 @@ namespace :restapi do
     content = ""
     ac content, "require 'rubygems'"
     ac content, "require 'thor'"
-    ac content, "require 'base'"
+    ac content, "require './base'"
 
     doc[:resources].each do |key, resource|
       ac content, "class #{key.camelize} < Thor"
