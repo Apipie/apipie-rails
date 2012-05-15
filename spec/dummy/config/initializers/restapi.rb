@@ -3,13 +3,22 @@ Restapi.configure do |config|
   config.copyright = "&copy; 2012 Pavel Pokorny"
   config.doc_base_url = "/apidoc"
   config.api_base_url = "/api"
+
+  # set to enable/disable reloading controllers (and the documentation with it),
+  # by default enabled in development
+  # config.reload_controllers = false
+
+  # for reloading to work properly you need to specify where your api controllers are (like in Dir.glob):
+  # config.api_controllers_matcher = File.join(Rails.root, "app", "controllers", "**","*.rb")
+
+  # config.api_base_url = "/api"
   # config.markup = choose one of:
   #   Restapi::Markup::RDoc.new [default]
   #   Restapi::Markup::Markdown.new
   #   Restapi::Markup::Textile.new
   # or provide another class with to_html(text) instance method
   # config.validate = false
-  
+
   path = File.expand_path(File.dirname(__FILE__)+'/../../../../README.rdoc')
   config.app_info = File.read(path)
 end

@@ -4,13 +4,9 @@ module Restapi
     
     def index
       respond_to do |format|
-
+       
+        Restapi.reload_documentation if Restapi.configuration.reload_controllers?
         @doc = Restapi.to_json(params[:resource], params[:method])
-
-        if (@doc[:docs][:resources].blank? || @doc[:docs][:resources].first == 'null') && Rails.env.development?
-          Dir[File.join(Rails.root, "app", "controllers", "**","*.rb")].each {|f| load f}
-          @doc = Restapi.to_json(params[:resource], params[:method])
-        end
 
         format.json do
           render :json => @doc

@@ -157,6 +157,10 @@ module Restapi
       }
     end
 
+    def reload_documentation
+      Dir[Restapi.configuration.api_controllers_matcher].each {|f|  load f}
+    end
+
     private
 
       def get_resource_name(klass)
