@@ -3,10 +3,10 @@ namespace :restapi do
   desc "Generate static documentation"
   task :static => :environment do
 
-    av = ActionView::Base.new(ActiveSupport::Dependencies.autoload_paths)
+    av = ActionView::Base.new(File.expand_path("../../../app/views", __FILE__))
 
     av.class_eval do
-      include ApplicationHelper
+      include Restapi::RestapisHelper
     end
 
     Dir[File.join(Rails.root, "app", "controllers", "**","*.rb")].each {|f| load f}

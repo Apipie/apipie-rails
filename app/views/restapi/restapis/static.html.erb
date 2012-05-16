@@ -34,10 +34,10 @@
   <% end %>
 
   <div class='accordion' id='accordion'>
-    
+
     <% resource[:methods].each do |method| %>
       <hr>
-      
+
       <ul class='breadcrumb' id='<%= key %>-<%= method[:name] %>'>
         <li>
           <a href='#'><%= @doc[:name] %></a>
@@ -89,27 +89,11 @@
               </tr>
             </thead>
             <tbody>
-              <% method[:params].each do |val| %>
-                <tr>
-                  <td>
-                    <strong><%= val[:name] %></strong><br>
-                    <small>
-                      <%= val[:required] ? 'required' : 'optional' %>
-                      <%= val[:allow_nil] ? ', nil allowed' : '' %>
-                    </small>
-                  </td>
-                  <td>
-                    <%= raw val[:description] %><br>
-                    <% unless val[:validator].blank? %>
-                      Value: <%= val[:validator] %>
-                    <% end %>
-                  </td>
-                </tr>
-              <% end %>
+              <%= print_nested_params(method) %>
             </tbody>
           </table>
         <% end %>
-      </div> 
+      </div>
     <% end %>
   </div>
 <% end %>
