@@ -34,12 +34,18 @@ module Restapi
       @errors = app.get_errors
       @params_ordered = app.get_params
       @examples = app.get_examples
+      
+      @examples += load_recorded_examples
 
       parent = @resource.controller.superclass
       if parent != ActionController::Base
         @parent_resource = parent.controller_name
       end
-      @resource.add_method("#{resource._id}##{method}")
+      @resource.add_method(id)
+    end
+
+    def id
+      "#{resource._id}##{method}"
     end
 
     def params
@@ -99,6 +105,31 @@ module Restapi
       new_param_names = Set.new(new_params.map(&:name))
       params.delete_if { |p| new_param_names.include?(p.name) }
       params.concat(new_params)
+    end
+
+    def load_recorded_examples
+      (Restapi.recorded_examples[id] || []).
+        find_all { |ex| ex["show_in_doc"].to_i > 0 }.
+        sort_by { |ex| ex["show_in_doc"] }.
+        map { |ex| format_example(ex.symbolize_keys) }
+    end
+
+    def format_example_data(data)
+      case data
+      when Array, Hash
+        JSON.pretty_generate(data).gsub(/: \[\s*\]/,": []").gsub(/\{\s*\}/,"{}")
+      else
+        data
+      end
+    end
+
+    def format_example(ex)
+      example = "#{ex[:verb]} #{ex[:path]}"
+      example << "?#{ex[:query]}" unless ex[:query].blank?
+      example << "\n" << format_example_data(ex[:request_data]).to_s if ex[:request_data]
+      example << "\n" << ex[:code].to_s
+      example << "\n" << format_example_data(ex[:response_data]).to_s if ex[:response_data]
+      example
     end
 
   end
