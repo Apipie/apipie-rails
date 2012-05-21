@@ -163,8 +163,8 @@ class UsersController < ApplicationController
     More builder documentation can be found at http://builder.rubyforge.org.
   eos
   api :GET, "/users/:id", "Show user profile"
-  error :code => 401, :desc => "Unauthorized"
-  error :code => 404, :desc => "Not Found"
+  error 401, "Unauthorized"
+  error :code => 404, :description => "Not Found"
   param :id, Integer, :desc => "user id", :required => true
   param :session, String, :desc => "user is logged in", :required => true
   param :regexp_param, /^[0-9]* years/, :desc => "regexp param"

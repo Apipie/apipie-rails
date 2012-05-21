@@ -55,12 +55,13 @@ module Restapi
     #
     # Example:
     #   error :desc => "speaker is sleeping", :code => 500
+    #   error 500, "speaker is sleeping"
     #   def hello_world
     #     return 500 if self.speaker.sleeping?
     #     puts "hello world"
     #   end
     #
-    def error(args) #:doc:
+    def error(*args) #:doc:
       Restapi.last_errors << Restapi::ErrorDescription.new(args)
     end
 
