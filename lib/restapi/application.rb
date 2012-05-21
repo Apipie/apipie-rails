@@ -1,4 +1,5 @@
 require 'restapi/static_dispatcher'
+require 'yaml'
 
 module Restapi
 
@@ -131,6 +132,21 @@ module Restapi
       @last_examples.clear
       examples
     end
+
+    def recorded_examples
+      return @recorded_examples if @recorded_examples
+      tape_file = File.join(Rails.root,"doc","restapi_examples.yml")
+      if File.exists?(tape_file)
+        @recorded_examples = YAML.load_file(tape_file)
+      else
+        @recorded_examples = {}
+      end
+      @recorded_examples
+    end
+
+    def reload_examples
+      @recorded_examples = nil
+    end
     
     def to_json(resource_name, method_name)
       
@@ -158,6 +174,7 @@ module Restapi
     end
 
     def reload_documentation
+      reload_examples
       Dir[Restapi.configuration.api_controllers_matcher].each {|f|  load f}
     end
 
