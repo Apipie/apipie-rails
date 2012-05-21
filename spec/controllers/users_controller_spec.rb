@@ -311,6 +311,23 @@ describe UsersController do
 
   end
 
+  describe "examples" do
+
+    it "should be able to load examples from yml file" do
+      Restapi.get_method_description(UsersController, :show).examples.should == [<<EOS1, <<EOS2].map(&:chomp)
+GET /users/14?verbose=true
+200
+{
+  "name": "Test User",
+  "id": 14
+}
+EOS1
+GET /users/15
+404
+EOS2
+    end
+  end
+
   describe "param description" do
 
     it "should contain all specified information" do
