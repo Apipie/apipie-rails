@@ -1,5 +1,5 @@
 <ul class='breadcrumb'>
-  <li class='active'><a href='<%= @doc[:doc_url] %>'><%= @doc[:name] %></a></li>
+  <li class='active'><a href='<%= @doc[:doc_url] %>.html'><%= @doc[:name] %></a></li>
 </ul>
 
 <div><%= @doc[:info].html_safe %></div>
@@ -8,7 +8,7 @@
 
 <% @doc[:resources].each do |key, api| %>
   <h2>
-    <a href='<%= api[:doc_url] %>'><%= api[:name] %></a><br>
+    <a href='<%= api[:doc_url] %>.html'><%= api[:name] %></a><br>
     <small><%= api[:short_description] %></small>
   </h2>
   <table class='table'>
@@ -22,7 +22,7 @@
       <% api[:methods].each do |m| %>
         <% m[:apis].each do |a| %>
           <tr>
-            <td><a href='<%= m[:doc_url] %>'><%= a[:http_method] %> <%= a[:api_url] %></a></td>
+            <td><a href='<%= m[:doc_url] %>.html'><%= a[:http_method] %> <%= a[:api_url] %></a></td>
             <td width='60%'><%= a[:short_description] %></td>
           </tr>
         <% end %>

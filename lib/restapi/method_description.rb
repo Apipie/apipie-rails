@@ -70,11 +70,7 @@ module Restapi
     end
     
     def doc_url
-      [
-        ENV["RAILS_RELATIVE_URL_ROOT"],
-        Restapi.configuration.doc_base_url,
-        "/#{@resource._id}/#{@method}"
-      ].join
+      Restapi.full_url("#{@resource._id}/#{@method}")
     end
 
     def method_apis_to_json
