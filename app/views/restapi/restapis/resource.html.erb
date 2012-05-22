@@ -1,5 +1,5 @@
 <ul class='breadcrumb'>
-  <li><a href='<%= @doc[:doc_url] %>'><%= @doc[:name] %></a><span class='divider'>/</span></li>
+  <li><a href='<%= @doc[:doc_url] %>.html'><%= @doc[:name] %></a><span class='divider'>/</span></li>
   <li class='active'><%= @resource[:name] %></li>
 </ul>
 
@@ -20,7 +20,7 @@
   <% @resource[:methods].each do |m| %>
     <hr>
     <div class='pull-right small'>
-      <a href='<%= m[:doc_url] %>'> >>> </a>
+      <a href='<%= m[:doc_url] %>.html'> >>> </a>
     </div>
     <div>
       <% m[:apis].each do |api| %>

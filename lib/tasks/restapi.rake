@@ -1,38 +1,104 @@
+require 'fileutils'
 namespace :restapi do
 
   desc "Generate static documentation"
+  # You can specify OUT=output_base_file to have the following structure:
+  #
+  #    output_base_file.html
+  #    output_base_file-onepage.html
+  #    output_base_file
+  #    | - resource1.html
+  #    | - resource1
+  #    | - | - method1.html
+  #    | - | - method2.html
+  #    | - resource2.html
+  #
+  # By default OUT="#{Rails.root}/doc/apidoc"
   task :static => :environment do
+    with_loaded_documentation do
+      out = ENV["OUT"] || File.join(::Rails.root, 'doc', 'apidoc')
+      raise "File #{out} already exists" if File.exists?(out)
+      subdir = File.basename(out)
 
+      copy_jscss(out)
+
+      Restapi.url_prefix = "./#{subdir}"
+      doc = Restapi.to_json
+      generate_one_page(out, doc)
+      generate_index_page(out, doc)
+      Restapi.url_prefix = "../#{subdir}"
+      generate_resource_pages(out, doc)
+      Restapi.url_prefix = "../../#{subdir}"
+      generate_method_pages(out, doc)
+    end
+  end
+
+  def renderer
     av = ActionView::Base.new(File.expand_path("../../../app/views", __FILE__))
-
     av.class_eval do
       include Restapi::RestapisHelper
     end
+    av
+  end
 
-    Dir[File.join(Rails.root, "app", "controllers", "**","*.rb")].each {|f| load f}
-
-    doc = Restapi.to_json()[:docs]
-
-    # dir in public directory
-    dir_path = File.join(::Rails.root.to_s, 'public', Restapi.configuration.doc_base_url)
-    FileUtils.rm_r(dir_path) if File.directory?(dir_path)
-    Dir.mkdir(dir_path)
-
-    copy_jscss(File.join(dir_path, Restapi.configuration.doc_base_url))
-
-    Restapi.configuration.doc_base_url = Restapi.configuration.doc_base_url[1..-1]
-    File.open(File.join(dir_path,'index.html'), "w") do |f|
+  def render_page(file_name, template, variables)
+    av = renderer
+    File.open(file_name, "w") do |f|
+      variables.each do |var, val|
+        av.instance_variable_set("@#{var}", val)
+      end
       f.write av.render(
-        :template => "restapi/restapis/static",
-        :locals => {:doc => doc},
+        :template => "restapi/restapis/#{template}",
         :layout => 'layouts/restapi/restapi')
-      puts File.join(dir_path,'index.html')
     end
+  end
 
+  def generate_one_page(file_base, doc)
+    FileUtils.mkdir_p(File.dirname(file_base)) unless File.exists?(File.dirname(file_base))
+
+    render_page("#{file_base}-onepage.html", "static", {:doc => doc[:docs]})
+  end
+
+  def generate_index_page(file_base, doc)
+    FileUtils.mkdir_p(File.dirname(file_base)) unless File.exists?(File.dirname(file_base))
+
+    render_page("#{file_base}.html", "index", {:doc => doc[:docs]})
+  end
+
+  def generate_resource_pages(file_base, doc)
+    doc[:docs][:resources].each do |resource_name, _|
+      resource_file_base = File.join(file_base, resource_name.to_s)
+      FileUtils.mkdir_p(File.dirname(resource_file_base)) unless File.exists?(File.dirname(resource_file_base))
+
+      doc = Restapi.to_json(resource_name)
+      render_page("#{resource_file_base}.html", "resource", {:doc => doc[:docs],
+                                                             :resource => doc[:docs][:resources].first})
+    end
+  end
+
+  def generate_method_pages(file_base, doc)
+    doc[:docs][:resources].each do |resource_name, resource_params|
+      resource_params[:methods].each do |method|
+        method_file_base = File.join(file_base, resource_name.to_s, method[:name].to_s)
+        FileUtils.mkdir_p(File.dirname(method_file_base)) unless File.exists?(File.dirname(method_file_base))
+
+        doc = Restapi.to_json(resource_name, method[:name])
+        render_page("#{method_file_base}.html", "method", {:doc => doc[:docs],
+                                                           :resource => doc[:docs][:resources].first,
+                                                           :method => doc[:docs][:resources].first[:methods].first})
+
+      end
+    end
+  end
+
+  def with_loaded_documentation
+    Dir[File.join(Rails.root, "app", "controllers", "**","*.rb")].each {|f| load f}
+    yield
   end
 
   def copy_jscss(dest)
     src = File.expand_path(File.join(File.dirname(__FILE__), '..', '..', 'app', 'public', 'restapi'))
+    FileUtils.mkdir_p dest
     FileUtils.cp_r "#{src}/.", dest
   end
 
@@ -46,7 +112,7 @@ namespace :restapi do
       Dir[path + "/*.rb"].each { |file| require file }
     end
 
-    Dir.mkdir('clients') unless File.exists?('clients')
+    FileUtils.mkdir_p('clients') unless File.exists?('clients')
 
     doc = Restapi.to_json()[:docs]
 
