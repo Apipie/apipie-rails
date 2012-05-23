@@ -4,7 +4,30 @@ module Restapi
     
     def index
       respond_to do |format|
-       
+
+        if Restapi.configuration.use_cache?
+          path = Restapi.configuration.doc_base_url.dup
+          path << "/" << params[:resource] if params[:resource].present?
+          path << "/" << params[:method] if params[:method].present?
+          if params[:format].present?
+            path << ".#{params[:format]}"
+          else
+            path << ".html"
+          end
+          cache_file = File.join(Restapi.configuration.cache_dir, path)
+          if File.exists?(cache_file)
+            content_type = case params[:format]
+                           when "json" then "application/json"
+                           else "text/html"
+                           end
+            send_file cache_file, :type => content_type, :disposition => "inline"
+          else
+            Rails.logger.error("API doc cache not found for '#{path}'. Perhaps you have forgot to run `rake restapi:cache`")
+            head :not_found
+          end
+          return
+        end
+
         Restapi.reload_documentation if Restapi.configuration.reload_controllers?
         @doc = Restapi.to_json(params[:resource], params[:method])
 
