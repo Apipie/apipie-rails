@@ -178,6 +178,13 @@ module Restapi
       Dir[Restapi.configuration.api_controllers_matcher].each {|f|  load f}
     end
 
+    # Is there a reason to interpret the DSL for this run?
+    # with specific setting for some environment there is no reason the dsl
+    # should be interpreted (e.g. no validations and doc from cache)
+    def active_dsl?
+      Restapi.configuration.validate? || ! Restapi.configuration.use_cache?
+    end
+
     private
 
       def get_resource_name(klass)
