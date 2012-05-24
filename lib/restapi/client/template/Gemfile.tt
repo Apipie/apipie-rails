@@ -1,0 +1,5 @@
+source :rubygems
+
+gem 'thor', '0.15.4'
+gem 'json'
+gem 'rest-client', '1.6.1'
