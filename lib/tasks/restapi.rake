@@ -33,6 +33,18 @@ namespace :restapi do
     end
   end
 
+  desc "Generate cache to avoid production dependencies on markup languages"
+  task :cache => :environment do
+    with_loaded_documentation do
+      cache_dir = Restapi.configuration.cache_dir
+      file_base = File.join(cache_dir, Restapi.configuration.doc_base_url)
+      doc = Restapi.to_json
+      generate_index_page(file_base, doc, true)
+      generate_resource_pages(file_base, doc, true)
+      generate_method_pages(file_base, doc, true)
+    end
+  end
+
   def renderer
     av = ActionView::Base.new(File.expand_path("../../../app/views", __FILE__))
     av.class_eval do
@@ -59,24 +71,27 @@ namespace :restapi do
     render_page("#{file_base}-onepage.html", "static", {:doc => doc[:docs]})
   end
 
-  def generate_index_page(file_base, doc)
+  def generate_index_page(file_base, doc, include_json = false)
     FileUtils.mkdir_p(File.dirname(file_base)) unless File.exists?(File.dirname(file_base))
 
     render_page("#{file_base}.html", "index", {:doc => doc[:docs]})
+
+    File.open("#{file_base}.json", "w") { |f| f << doc.to_json } if include_json
   end
 
-  def generate_resource_pages(file_base, doc)
+  def generate_resource_pages(file_base, doc, include_json = false)
     doc[:docs][:resources].each do |resource_name, _|
       resource_file_base = File.join(file_base, resource_name.to_s)
       FileUtils.mkdir_p(File.dirname(resource_file_base)) unless File.exists?(File.dirname(resource_file_base))
 
       doc = Restapi.to_json(resource_name)
       render_page("#{resource_file_base}.html", "resource", {:doc => doc[:docs],
-                                                             :resource => doc[:docs][:resources].first})
+                                                          :resource => doc[:docs][:resources].first})
+      File.open("#{resource_file_base}.json", "w") { |f| f << doc.to_json } if include_json
     end
   end
 
-  def generate_method_pages(file_base, doc)
+  def generate_method_pages(file_base, doc, include_json = false)
     doc[:docs][:resources].each do |resource_name, resource_params|
       resource_params[:methods].each do |method|
         method_file_base = File.join(file_base, resource_name.to_s, method[:name].to_s)
@@ -87,11 +102,13 @@ namespace :restapi do
                                                            :resource => doc[:docs][:resources].first,
                                                            :method => doc[:docs][:resources].first[:methods].first})
 
+        File.open("#{method_file_base}.json", "w") { |f| f << doc.to_json } if include_json
       end
     end
   end
 
   def with_loaded_documentation
+    Restapi.configuration.use_cache = false # we don't want to skip DSL evaluation
     Dir[File.join(Rails.root, "app", "controllers", "**","*.rb")].each {|f| load f}
     yield
   end

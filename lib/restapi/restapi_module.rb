@@ -29,6 +29,8 @@ module Restapi
     attr_accessor :app_name, :app_info, :copyright, :markup,
       :validate, :api_base_url, :doc_base_url
 
+    alias_method :validate?, :validate
+
     # matcher to be used in Dir.glob to find controllers to be reloaded e.g.
     #
     #   "#{Rails.root}/app/controllers/api/*.rb"
@@ -42,6 +44,21 @@ module Restapi
     def reload_controllers?
       @reload_controllers = Rails.env.development? unless defined? @reload_controllers
       return @reload_controllers && @api_controllers_matcher
+    end
+
+    # set to true if you want to use pregenerated documentation cache and avoid
+    # generating the documentation on runtime (usefull for production
+    # environment).
+    # You can generate the cache by running
+    #
+    #     rake restapi:cache
+    attr_accessor :use_cache
+    alias_method :use_cache?, :use_cache
+
+    attr_writer :cache_dir
+
+    def cache_dir
+      @cache_dir ||= File.join(Rails.root, "public", "restapi-cache")
     end
     
     def app_info

@@ -318,8 +318,7 @@ describe UsersController do
 GET /users/14?verbose=true
 200
 {
-  "name": "Test User",
-  "id": 14
+  "name": "Test User"
 }
 EOS1
 GET /users/15

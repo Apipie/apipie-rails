@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'fileutils'
 
 describe Restapi::RestapisController do
 
@@ -93,5 +94,40 @@ describe Restapi::RestapisController do
 
       it { should_not reload_documentation }
     end
+  end
+
+  describe "documentation cache" do
+
+    let(:cache_dir) { File.join(Rails.root, "tmp", "restapi-cache") }
+
+    before do
+      FileUtils.rm_r(cache_dir) if File.exists?(cache_dir)
+      FileUtils.mkdir_p(File.join(cache_dir, "apidoc", "resource"))
+      File.open(File.join(cache_dir, "apidoc.html"), "w") { |f| f << "apidoc.html cache" }
+      File.open(File.join(cache_dir, "apidoc.json"), "w") { |f| f << "apidoc.json cache" }
+      File.open(File.join(cache_dir, "apidoc", "resource.html"), "w") { |f| f << "resource.html cache" }
+      File.open(File.join(cache_dir, "apidoc", "resource", "method.html"), "w") { |f| f << "method.html cache" }
+
+      Restapi.configuration.use_cache = true
+      Restapi.configuration.cache_dir = cache_dir
+    end
+
+    after do
+      FileUtils.rm_r(cache_dir) if File.exists?(cache_dir)
+    end
+
+    it "uses the file in cache dir instead of generating the content on runtime" do
+      get :index
+      response.body.should == "apidoc.html cache"
+      get :index, :format => "html"
+      response.body.should == "apidoc.html cache"
+      get :index, :format => "json"
+      response.body.should == "apidoc.json cache"
+      get :index, :format => "html", :resource => "resource"
+      response.body.should == "resource.html cache"
+      get :index, :format => "html", :resource => "resource", :method => "method"
+      response.body.should == "method.html cache"
+    end
+
   end
 end

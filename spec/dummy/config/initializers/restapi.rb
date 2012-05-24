@@ -4,6 +4,13 @@ Restapi.configure do |config|
   config.doc_base_url = "/apidoc"
   config.api_base_url = "/api"
 
+  # set to true to turn on/off the cache. To generate the cache use:
+  #
+  #     rake restapi:cache
+  #
+  # config.use_cache = Rails.env.production?
+  # config.cache_dir = File.join(Rails.root, "public", "restapi-cache") # optional
+
   # set to enable/disable reloading controllers (and the documentation with it),
   # by default enabled in development
   # config.reload_controllers = false

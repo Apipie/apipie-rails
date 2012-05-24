@@ -16,6 +16,7 @@ module Restapi
     #   Long description...
     # EOS
     def resource_description(options = {}, &block) #:doc:
+      return unless Restapi.active_dsl?
       Restapi.remove_resource_description(self)
       Restapi.define_resource_description(self, &block) if block_given?
     end
@@ -26,6 +27,7 @@ module Restapi
     #   api :GET, "/resource_route", "short description",
     #
     def api(method, path, desc = nil) #:doc:
+      return unless Restapi.active_dsl?
       Restapi.add_method_description_args(method, path, desc)
     end
 
@@ -38,6 +40,7 @@ module Restapi
     #   end
     #
     def desc(description) #:doc:
+      return unless Restapi.active_dsl?
       if Restapi.last_description
         raise "Double method description."
       end
@@ -48,6 +51,7 @@ module Restapi
     # Show some example of what does the described
     # method return.
     def example(example) #:doc:
+      return unless Restapi.active_dsl?
       Restapi.add_example(example)
     end
 
@@ -62,6 +66,7 @@ module Restapi
     #   end
     #
     def error(*args) #:doc:
+      return unless Restapi.active_dsl?
       Restapi.last_errors << Restapi::ErrorDescription.new(args)
     end
 
@@ -74,14 +79,15 @@ module Restapi
     #   end
     #
     def param(param_name, *args, &block) #:doc:
+      return unless Restapi.active_dsl?
       Restapi.last_params << Restapi::ParamDescription.new(param_name, *args, &block)
     end
 
     # create method api and redefine newly added method
     def method_added(method_name) #:doc:
-
       super
 
+      return unless Restapi.active_dsl?
       return unless Restapi.restapi_provided?
 
       # remove method description if exists and create new one
