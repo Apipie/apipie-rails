@@ -69,7 +69,7 @@
             </tr>
           </thead>
           <tbody>
-            <%= print_nested_params(m) %>
+            <%= render(:partial => "params", :locals => {:params => m[:params]}) %>
           </tbody>
         </table>
       <% end %>

@@ -6,7 +6,7 @@
 
 <h1 class='page-header'>Resources</h1>
 
-<% @doc[:resources].each do |key, api| %>
+<% @doc[:resources].sort_by(&:first).each do |key, api| %>
   <h2>
     <a href='<%= api[:doc_url] %>.html'><%= api[:name] %></a><br>
     <small><%= api[:short_description] %></small>

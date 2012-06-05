@@ -1,0 +1,16 @@
+<ul>
+  <% params.each do |param| %>
+    <li>
+      <strong><%= param[:name] %> </strong>:
+      <small>
+        <%= param[:required] ? 'required' : 'optional' %>
+        <%= param[:allow_nil] ? ', nil allowed' : '' %>
+        <% if param[:validator] %>
+          [ <%= param[:validator] %> ]
+        <% end %>
+      </small>
+      <%= param[:description].html_safe %>
+    </li>
+    <%= render(:partial => "params_plain", :locals => {:params => param[:params]}) unless param[:params].blank? %>
+  <% end %>
+</ul>
