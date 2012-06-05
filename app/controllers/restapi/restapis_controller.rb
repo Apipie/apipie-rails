@@ -7,6 +7,10 @@ module Restapi
 
         if Restapi.configuration.use_cache?
           path = Restapi.configuration.doc_base_url.dup
+          if [:resource, :method, :format].any? { |p| params[p].to_s =~ /\W/ }
+            head :bad_request and return
+          end
+
           path << "/" << params[:resource] if params[:resource].present?
           path << "/" << params[:method] if params[:method].present?
           if params[:format].present?
