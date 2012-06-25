@@ -17,13 +17,12 @@ describe Restapi::RestapisController do
 
     RSpec::Matchers.define :reload_documentation do
       match do
+        Restapi.should_receive(:reload_documentation)
+        get :index
         begin
-          orig = Restapi.get_resource_description("users")._short_description.dup
-          Restapi.get_resource_description("users")._short_description << 'Modified'
-          get :index
-          ret = Restapi.get_resource_description("users")._short_description == orig
-        ensure
-          Restapi.get_resource_description("users")._short_description.gsub!('Modified', "")
+          RSpec::Mocks.verify
+        rescue RSpec::Mocks::MockExpectationError
+          false
         end
       end
 
