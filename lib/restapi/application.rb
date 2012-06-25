@@ -173,9 +173,15 @@ module Restapi
       }
     end
 
+    def api_controllers_paths
+      Dir[Restapi.configuration.api_controllers_matcher]
+    end
+
     def reload_documentation
       reload_examples
-      Dir[Restapi.configuration.api_controllers_matcher].each {|f|  load f}
+      api_controllers_paths.each do |f|
+        load_controller_from_file f
+      end
     end
 
     # Is there a reason to interpret the DSL for this run?
@@ -187,13 +193,18 @@ module Restapi
 
     private
 
-      def get_resource_name(klass)
-        if klass.class == String
-          klass
-        elsif klass.class == Class && ActionController::Base.descendants.include?(klass)
-          klass.controller_name
-        end
+    def get_resource_name(klass)
+      if klass.class == String
+        klass
+      elsif klass.class == Class && ActionController::Base.descendants.include?(klass)
+        klass.controller_name
       end
+    end
+
+    def load_controller_from_file(controller_file)
+      controller_class_name = controller_file.gsub(/\A.*\/app\/controllers\//,"").gsub(/\.\w*\Z/,"").camelize
+      controller_class_name.constantize
+    end
 
   end
 end
