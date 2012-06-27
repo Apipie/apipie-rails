@@ -14,14 +14,14 @@ module Restapi
 
     attr_accessor :last_api_args, :last_errors, :last_params, :last_description, :last_examples
     attr_reader :method_descriptions, :resource_descriptions
-    
-    def initialize  
+
+    def initialize
       super
       @method_descriptions = Hash.new
       @resource_descriptions = Hash.new
       clear_last
     end
-    
+
     # create new method api description
     def define_method_description(controller, method_name)
       # create new or get existing api
@@ -54,7 +54,7 @@ module Restapi
     def add_example(example)
       @last_examples << example.strip_heredoc
     end
-    
+
     # check if there is some saved description
     def restapi_provided?
       true unless last_api_args.blank?
@@ -101,26 +101,26 @@ module Restapi
       @last_description = nil
       @last_examples = []
     end
-        
+
     # Return the current description, clearing it in the process.
     def get_description
       desc = @last_description
       @last_description = nil
       desc
     end
-    
+
     def get_errors
       errors = @last_errors.clone
       @last_errors.clear
       errors
     end
-    
+
     def get_api_args
       api_args = @last_api_args.clone
       @last_api_args.clear
       api_args
     end
-    
+
     def get_params
       params = @last_params.clone
       @last_params.clear
@@ -147,9 +147,9 @@ module Restapi
     def reload_examples
       @recorded_examples = nil
     end
-    
+
     def to_json(resource_name, method_name)
-      
+
       _resources = if resource_name.blank?
         # take just resources which have some methods because
         # we dont want to show eg ApplicationController as resource
@@ -196,7 +196,11 @@ module Restapi
     def get_resource_name(klass)
       if klass.class == String
         klass
-      elsif klass.class == Class && ActionController::Base.descendants.include?(klass)
+      elsif klass.class == Class &&
+        (
+          ActionController::Base.descendants.include?(klass) ||
+          (defined?(ActionController::API) && ActionController::API.descendants.include?(klass))
+        )
         klass.controller_name
       end
     end

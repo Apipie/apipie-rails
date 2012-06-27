@@ -17,7 +17,6 @@ namespace :restapi do
   task :static => :environment do
     with_loaded_documentation do
       out = ENV["OUT"] || File.join(::Rails.root, 'doc', 'apidoc')
-      raise "File #{out} already exists" if File.exists?(out)
       subdir = File.basename(out)
 
       copy_jscss(out)
