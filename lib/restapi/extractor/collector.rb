@@ -63,7 +63,7 @@ module Restapi
             # we specify what type it might be. At the end the first type
             # that left is taken as the more general one
             unless param_desc[:type]
-              param_desc[:type] = [:bool, :number, :identifier]
+              param_desc[:type] = [:bool, :number]
               param_desc[:type] << Hash if value.is_a? Hash
               param_desc[:type] << :undef
             end
@@ -72,11 +72,7 @@ module Restapi
               param_desc[:type].shift
             end
 
-            if param_desc[:type].first == :number && (key.to_s !~ /id$/ || !NumberValidator.validate(value))
-              param_desc[:type].shift
-            end
-
-            if param_desc[:type].first == :identifier && (key.to_s !~ /id$/ || !IdentifierValidator.validate(value))
+            if param_desc[:type].first == :number && (key.to_s !~ /id$/ || !Restapi::Validator::NumberValidator.validate(value))
               param_desc[:type].shift
             end
           end
@@ -112,20 +108,6 @@ module Restapi
       end
 
     end
-
-    class NumberValidator
-      def self.validate(value)
-        value.to_s =~ /\A(0|[1-9]\d*)\Z/
-      end
-    end
-
-    class IdentifierValidator
-      def self.validate(value)
-        value = value.to_s
-        value =~ /\A[\w| |_|-]*\Z/ && value.strip == value && (2..128).include?(value.length)
-      end
-    end
-
   end
 end
 
