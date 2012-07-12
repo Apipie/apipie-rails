@@ -160,6 +160,8 @@ Then describe methods available to your API.
               choosen markup language processor.
 [example] Provide example of server response, whole communication or response type.
           It will be formatted as code.
+[see] Provide reference to another method, this has to be string with
+      controller_name#method_name. 
 
 Example:
 
@@ -175,6 +177,7 @@ Example:
    }, :desc => "proc validator"
    description "method description"
    example " 'user': {...} "
+   see "users#showme"
    def show
      #...
    end

@@ -48,6 +48,17 @@ module Restapi
     end
     alias :description :desc
 
+    # Reference other similar method
+    #
+    #   api :PUT, '/articles/:id'
+    #   see "articles#create"
+    #   def update; end
+    def see(method_key)
+      return unless Restapi.active_dsl?
+      raise "'See' method called twice." if Restapi.last_see
+      Restapi.last_see = method_key
+    end
+
     # Show some example of what does the described
     # method return.
     def example(example) #:doc:

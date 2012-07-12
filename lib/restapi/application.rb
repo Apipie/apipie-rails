@@ -12,7 +12,7 @@ module Restapi
       end
     end
 
-    attr_accessor :last_api_args, :last_errors, :last_params, :last_description, :last_examples
+    attr_accessor :last_api_args, :last_errors, :last_params, :last_description, :last_examples, :last_see
     attr_reader :method_descriptions, :resource_descriptions
 
     def initialize
@@ -61,10 +61,18 @@ module Restapi
     end
 
     # get api for given method
-    def get_method_description(resource_name, method_name)
+    #
+    # There are two ways how this method can be used:
+    # 1) Specify both parameters
+    #   resource_name: controller class or string with resource name (plural)
+    #   method_name: name of the method (string or symbol)
+    # 2) Specify only first parameter:
+    #   resource_name: string containing both resource and method name joined
+    #   with # (eg. "users#create")
+    def get_method_description(resource_name, method_name = nil)
       resource_name = get_resource_name(resource_name)
-
-      @method_descriptions[[resource_name, method_name].join('#')]
+      key = method_name.blank? ? resource_name : [resource_name, method_name].join('#')
+      @method_descriptions[key]
     end
     alias :[] :get_method_description
 
@@ -100,6 +108,7 @@ module Restapi
       @last_params = []
       @last_description = nil
       @last_examples = []
+      @last_see = nil
     end
 
     # Return the current description, clearing it in the process.
@@ -119,6 +128,12 @@ module Restapi
       api_args = @last_api_args.clone
       @last_api_args.clear
       api_args
+    end
+
+    def get_see
+      see = @last_see
+      @last_see = nil
+      see
     end
 
     def get_params

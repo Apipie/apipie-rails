@@ -213,4 +213,11 @@ class UsersController < ApplicationController
   def two_urls
     render :text => 'List of users'
   end
+
+  api :GET, '/users/see_another', 'Boring method'
+  see 'users#create'
+  desc 'This method is boring, look at users#create'
+  def see_another
+    render :text => 'This is very similar to create action'
+  end
 end

@@ -21,13 +21,14 @@ module Restapi
 
     end
 
-    attr_reader :errors, :full_description, :method, :resource, :apis, :examples
+    attr_reader :errors, :full_description, :method, :resource, :apis, :examples, :see
     
     def initialize(method, resource, app)
       @method = method
       @resource = resource
       
       @apis = app.get_api_args
+      @see = app.get_see
      
       desc = app.get_description || ''
       @full_description = Restapi.markup_to_html(desc)
@@ -83,6 +84,20 @@ module Restapi
       end
     end
 
+    def see_url
+      if @see
+        method_description = Restapi[@see]
+        if method_description.nil?
+          raise ArgumentError.new("Method #{@see} referenced in 'see' does not exist.")
+        end 
+        method_description.doc_url
+      end
+    end
+    
+    def see
+      @see
+    end
+
     def to_json
       {
         :doc_url => doc_url,
@@ -91,7 +106,9 @@ module Restapi
         :full_description => @full_description,
         :errors => @errors,
         :params => params_ordered.map(&:to_json).flatten,
-        :examples => @examples
+        :examples => @examples,
+        :see => @see,
+        :see_url => see_url
       }
     end
 

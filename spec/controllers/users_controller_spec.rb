@@ -21,7 +21,7 @@ describe UsersController do
 
     it "should contain all resource methods" do
       methods = subject._methods
-      methods.count.should == 4
+      methods.count.should == 5
       methods.should include("users#show")
       methods.should include("users#create")
       methods.should include("users#index")
@@ -218,6 +218,29 @@ describe UsersController do
       api.api_url.should eq("#{Restapi.configuration.api_base_url}/users/:id")
       api.http_method.should eq("GET")
       b.full_description.length.should be > 400
+    end
+
+    context "contain :see option" do
+
+      context "the key is valid" do 
+        it "should contain reference to another method" do
+          api = Restapi[UsersController, :see_another]
+          api.see.should eq('users#create')
+          Restapi['users#see_another'].should eq(Restapi[UsersController, :see_another])
+          api.see_url.should eq(Restapi[UsersController, :create].doc_url)
+        end
+      end
+
+      context "the key is not valid" do
+        it "should raise exception" do
+          api = Restapi[UsersController, :see_another]
+          api.instance_variable_set :@see, 'doesnot#exist'
+          lambda {
+            api.see_url
+          }.should raise_error(ArgumentError, /does not exist/)
+          api.instance_variable_set :@see, nil
+        end
+      end
     end
 
     it "should contain possible errors description" do

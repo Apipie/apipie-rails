@@ -36,6 +36,10 @@
       <% end %>
     </div>
     
+    <% unless m[:see_url].blank? %>
+      Also see <%= link_to m[:see], m[:see_url] %>
+    <% end %>
+
     <div id='description-<%= m[:name] %>' class='collapse accordion-body'>
       
       <%= raw m[:full_description] %>
