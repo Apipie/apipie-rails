@@ -170,7 +170,7 @@ namespace :restapi do
             else
               optional << param[:name].to_sym
             end
-          end
+        end
           ac content, "resource.optional :#{optional.join(', :')}", 4 unless optional.blank?
           ac content, "resource.required :#{required.join(', :')}", 4 unless required.blank?
 
@@ -240,4 +240,21 @@ namespace :restapi do
   def plaintext(text)
     text.gsub(/<.*?>/, '').gsub("\n",' ').strip
   end
+
+  desc "Update api description in controllers base on routes"
+  task :update_from_routes => [:environment] do
+    Restapi.configuration.force_dsl = true
+    ignored = Restapi.configuration.ignored_by_recorder
+    with_loaded_documentation do
+      apis_from_routes = Restapi::Extractor.apis_from_routes
+      apis_from_routes.each do |(controller, action), apis|
+        next if ignored.include?(controller)
+        next if ignored.include?("#{controller}##{action}")
+        Restapi::Extractor::Writer.update_action_description(controller.constantize, action) do |u|
+          u.update_apis(apis)
+        end
+      end
+    end
+  end
+
 end
