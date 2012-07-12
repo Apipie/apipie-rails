@@ -28,6 +28,20 @@ module Restapi
         @code = response.first
       end
 
+      def analyze_functional_test(test_context)
+        request, response = test_context.request, test_context.response
+        @verb = request.request_method.to_sym
+        @path = request.path
+        @params = request.request_parameters
+        if [:POST, :PUT].include?(@verb)
+          @request_data = @params
+        else
+          @query = request.query_string
+        end
+        @response_data = parse_data(response.body)
+        @code = response.code
+      end
+
       def parse_data(data)
         return nil if data.to_s =~ /^\s*$/
         JSON.parse(data)
@@ -84,6 +98,19 @@ module Restapi
           response = block.call
           Restapi::Extractor.call_recorder.analyse_response(response)
           response
+        ensure
+          Restapi::Extractor.call_finished
+        end
+      end
+
+      module FunctionalTestRecording
+        def self.included(base)
+          base.alias_method_chain :process, :api_recording          
+        end
+
+        def process_with_api_recording(*args) # action, parameters = nil, session = nil, flash = nil, http_method = 'GET')
+          process_without_api_recording(*args)
+          Restapi::Extractor.call_recorder.analyze_functional_test(self)
         ensure
           Restapi::Extractor.call_finished
         end

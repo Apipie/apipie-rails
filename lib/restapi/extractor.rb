@@ -15,6 +15,9 @@ class Restapi::Railtie
         end
       end
       app.middleware.use ::Restapi::Extractor::Recorder::Middleware
+      ActionController::TestCase::Behavior.instance_eval do
+        include Restapi::Extractor::Recorder::FunctionalTestRecording
+      end
     end
   end
 end
