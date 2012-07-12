@@ -146,7 +146,7 @@ module Restapi
         new_header = ""
         new_header << Restapi.configuration.generated_doc_disclaimer << "\n" if generated?
         new_header << generate_apis_code(apis)
-        new_header << old_header.lines.reject do |line|
+        new_header << ensure_line_breaks(old_header.lines).reject do |line|
           line.include?(Restapi.configuration.generated_doc_disclaimer) ||
             line =~ /^api/
         end.join
@@ -186,7 +186,7 @@ module Restapi
 
       def action_line
         return @action_line if defined? @action_line
-        @action_line = controller_content.lines.find_index { |line| line =~ /def \b#{@action}\b/ }
+        @action_line = ensure_line_breaks(controller_content.lines).find_index { |line| line =~ /def \b#{@action}\b/ }
         raise ActionNotFound unless @action_line
         @action_line
       end
@@ -273,17 +273,17 @@ module Restapi
       end
 
       def align_indented(text)
-        shift_left = text.lines.map { |l| l[/^\s*/].size }.min
-        text.lines.map { |l| l[shift_left..-1] }.join
+        shift_left = ensure_line_breaks(text.lines).map { |l| l[/^\s*/].size }.min
+        ensure_line_breaks(text.lines).map { |l| l[shift_left..-1] }.join
       end
 
       def overwrite_header(new_header)
         overwrite_line_from = action_line
         overwrite_line_to = action_line
         unless old_header.empty?
-          overwrite_line_from -= old_header.lines.count
+          overwrite_line_from -= ensure_line_breaks(old_header.lines).count
         end
-        lines = controller_content.lines.to_a
+        lines = ensure_line_breaks(controller_content.lines).to_a
         indentation = lines[action_line][/^\s*/]
         self.controller_content= (lines[0...overwrite_line_from] +
                               [new_header.gsub(/^/,indentation)] +
@@ -296,7 +296,7 @@ module Restapi
         added_lines = []
         lines_to_add = []
         block_level = 0
-        controller_content.lines.first(action_line).reverse_each do |line|
+        ensure_line_breaks(controller_content.lines).first(action_line).reverse_each do |line|
           if line =~ /\s*\bend\b\s*/
             block_level += 1
           end
@@ -317,6 +317,20 @@ module Restapi
           end
         end
         return added_lines.reverse.join
+      end
+
+      # this method would be totally useless unless some clever guy
+      # desided that it would be great idea to change a behavior of
+      # "".lines method to not include end of lines.
+      #
+      # For more details:
+      #   https://github.com/puppetlabs/puppet/blob/0dc44695/lib/puppet/util/monkey_patches.rb
+      def ensure_line_breaks(lines)
+        if lines.to_a.size > 1 && lines.first !~ /\n\Z/
+          lines.map { |l| l !~ /\n\Z/ ? (l << "\n") : l }.to_enum
+        else
+          lines
+        end
       end
     end
 
@@ -340,4 +354,3 @@ module Restapi
 
   end
 end
-
