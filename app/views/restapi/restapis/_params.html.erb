@@ -1,0 +1,22 @@
+<% level ||= 0 %>
+<% col = 255 - level * 5 %>
+<% params.each do |param| %>
+  <tr style='background-color:rgb(<%= "#{col},#{col},#{col}" %>);'>
+    <td>
+      <strong><%= param[:full_name] %> </strong><br>
+      <small>
+        <%= param[:required] ? 'required' : 'optional' %>
+        <%= param[:allow_nil] ? ', nil allowed' : '' %>
+      </small>
+    </td>
+    <td>
+      <%= param[:description].html_safe %>
+      <% unless param[:validator].blank? %>
+        <br>
+        Value: <%= param[:validator] %>
+      <% end %>
+    </td>
+  </tr>
+
+  <%= render(:partial => "params", :locals => {:level => level + 1, :params => param[:params]}) unless param[:params].blank? %>
+<% end %>
