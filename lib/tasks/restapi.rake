@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 require 'fileutils'
 namespace :restapi do
 
@@ -24,6 +25,7 @@ namespace :restapi do
       Restapi.url_prefix = "./#{subdir}"
       doc = Restapi.to_json
       generate_one_page(out, doc)
+      generate_plain_page(out, doc)
       generate_index_page(out, doc)
       Restapi.url_prefix = "../#{subdir}"
       generate_resource_pages(out, doc)
@@ -45,22 +47,18 @@ namespace :restapi do
   end
 
   def renderer
-    av = ActionView::Base.new(File.expand_path("../../../app/views", __FILE__))
-    av.class_eval do
-      include Restapi::RestapisHelper
-    end
-    av
+    ActionView::Base.new(File.expand_path("../../../app/views/restapi/restapis", __FILE__))
   end
 
-  def render_page(file_name, template, variables)
+  def render_page(file_name, template, variables, layout = 'restapi')
     av = renderer
     File.open(file_name, "w") do |f|
       variables.each do |var, val|
         av.instance_variable_set("@#{var}", val)
       end
       f.write av.render(
-        :template => "restapi/restapis/#{template}",
-        :layout => 'layouts/restapi/restapi')
+        :template => "#{template}",
+        :layout => (layout && "../../layouts/restapi/#{layout}"))
     end
   end
 
@@ -68,6 +66,12 @@ namespace :restapi do
     FileUtils.mkdir_p(File.dirname(file_base)) unless File.exists?(File.dirname(file_base))
 
     render_page("#{file_base}-onepage.html", "static", {:doc => doc[:docs]})
+  end
+
+  def generate_plain_page(file_base, doc)
+    FileUtils.mkdir_p(File.dirname(file_base)) unless File.exists?(File.dirname(file_base))
+
+    render_page("#{file_base}-plain.html", "plain", {:doc => doc[:docs]}, nil)
   end
 
   def generate_index_page(file_base, doc, include_json = false)

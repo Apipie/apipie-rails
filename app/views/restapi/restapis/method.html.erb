@@ -52,7 +52,7 @@
         </tr>
       </thead>
       <tbody>
-        <%= print_nested_params(@method) %>
+        <%= render(:partial => "params", :locals => {:params => @method[:params]}) %>
       </tbody>
     </table>
   <% end %>
