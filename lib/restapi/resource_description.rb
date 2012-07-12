@@ -11,7 +11,7 @@ module Restapi
   class ResourceDescription
     
     attr_reader :controller, :_short_description, :_full_description, :_methods, :_id,
-      :_path, :_version, :_name, :_params_ordered
+      :_path, :_version, :_name, :_params_ordered, :_parent
     
     def initialize(controller, resource_name, &block)
       @_methods = []
@@ -19,11 +19,12 @@ module Restapi
 
       @controller = controller
       @_id = resource_name
-      @_version = "1"
+      @_version = nil 
       @_name = @_id.humanize
       @_full_description = ""
       @_short_description = ""
       @_path = ""
+      @_parent = Restapi.get_resource_description(controller.superclass)
       
       block.arity < 1 ? instance_eval(&block) : block.call(self) if block_given?
     end
@@ -36,6 +37,10 @@ module Restapi
     def path(path); @_path = path; end
     
     def version(version); @_version = version; end
+
+    def _version
+      @_version || @_parent.try(:_version)
+    end
     
     def name(name); @_name = name; end
     
@@ -66,7 +71,7 @@ module Restapi
       _methods = if method_name.blank?
         @_methods.collect { |key| Restapi.method_descriptions[key].to_json }
       else
-        [Restapi.method_descriptions[[@_id, method_name].join('#')].to_json]
+        [Restapi.method_descriptions[Restapi.construct_method_key(@_id, method_name)].to_json]
       end
 
       {
@@ -75,7 +80,7 @@ module Restapi
         :name => @_name,
         :short_description => @_short_description,
         :full_description => @_full_description,
-        :version => @_version,
+        :version => _version,
         :methods => _methods
       }
     end

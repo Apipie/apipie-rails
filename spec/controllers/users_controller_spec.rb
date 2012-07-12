@@ -32,8 +32,8 @@ describe UsersController do
       subject._short_description.should eq('Site members')
       subject._id.should eq('users')
       subject._path.should eq('/users')
-      subject._version.should eq('1.0 - 3.4.2012')
-      subject._name.should eq('Members')
+      subject._version.should eq('1.2.3')
+      subject._name.should eq('Users')
     end
 
     it "should contain params defined on resource level" do

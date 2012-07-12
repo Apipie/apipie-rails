@@ -8,7 +8,10 @@
 
 <% @doc[:resources].each do |key, api| %>
   <h2>
-    <a href='<%= api[:doc_url] %>.html'><%= api[:name] %></a><br>
+    <a href='<%= api[:doc_url] %>.html'>
+      <%= api[:name] %>
+      <% if api[:version] %><small><%= "v%s" % api[:version] %></small><% end %>
+    </a><br>
     <small><%= api[:short_description] %></small>
   </h2>
   <table class='table'>

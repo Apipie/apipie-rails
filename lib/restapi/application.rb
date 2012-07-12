@@ -24,24 +24,15 @@ module Restapi
 
     # create new method api description
     def define_method_description(controller, method_name)
-      # create new or get existing api
-      resource_name = get_resource_name(controller)
-      key = [resource_name, method_name].join('#')
-      # add method description key to resource description
       resource = define_resource_description(controller)
-
       method_description = Restapi::MethodDescription.new(method_name, resource, self)
-
+      key = construct_method_key(controller, method_name)
       @method_descriptions[key] ||= method_description
-
-      @method_descriptions[key]
     end
 
     # create new resource api description
     def define_resource_description(controller, &block)
       resource_name = get_resource_name(controller)
-
-      # puts "defining api for #{resource_name}"
 
       @resource_descriptions[resource_name] ||=
         Restapi::ResourceDescription.new(controller, resource_name, &block)
@@ -71,7 +62,7 @@ module Restapi
     #   with # (eg. "users#create")
     def get_method_description(resource_name, method_name = nil)
       resource_name = get_resource_name(resource_name)
-      key = method_name.blank? ? resource_name : [resource_name, method_name].join('#')
+      key = method_name.blank? ? resource_name : construct_method_key(resource_name, method_name)
       @method_descriptions[key]
     end
     alias :[] :get_method_description
@@ -79,14 +70,14 @@ module Restapi
     # get api for given resource
     def get_resource_description(resource_name)
       resource_name = get_resource_name(resource_name)
-
+      nil if resource_name.nil?
       @resource_descriptions[resource_name]
     end
 
     def remove_method_description(resource_name, method_name)
       resource_name = get_resource_name(resource_name)
 
-      @method_descriptions.delete [resource_name, method_name].join('#')
+      @method_descriptions.delete construct_method_key(resource_name, method_name)
     end
 
     def remove_resource_description(resource_name)
@@ -206,6 +197,11 @@ module Restapi
       Restapi.configuration.validate? || ! Restapi.configuration.use_cache?
     end
 
+    def construct_method_key(controller, method_name)
+      resource_name = get_resource_name(controller)
+      [resource_name, method_name].join '#'
+    end
+
     private
 
     def get_resource_name(klass)
@@ -216,7 +212,11 @@ module Restapi
           ActionController::Base.descendants.include?(klass) ||
           (defined?(ActionController::API) && ActionController::API.descendants.include?(klass))
         )
-        klass.controller_name
+        klass.controller_path.gsub '/', '_'
+      elsif klass == ActionController::Base
+        nil
+      else
+        raise "Restapi: Can not resolve resource #{klass} name."
       end
     end
 

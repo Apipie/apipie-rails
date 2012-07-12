@@ -4,7 +4,10 @@
     <span class='divider'>/</span>
   </li>
   <li>
-    <a href='<%= @resource[:doc_url] %>.html'><%= @resource[:name] %></a>
+    <a href='<%= @resource[:doc_url] %>.html'>
+      <%= @resource[:name] %>
+      <% if @resource[:version] %><small><%= "v%s" % @resource[:version] %></small><% end %>
+    </a>
     <span class='divider'>/</span>
   </li>
   <li class='active'><%= @method[:name] %></li>

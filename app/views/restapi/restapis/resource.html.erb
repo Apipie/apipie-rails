@@ -1,11 +1,19 @@
 <ul class='breadcrumb'>
-  <li><a href='<%= @doc[:doc_url] %>.html'><%= @doc[:name] %></a><span class='divider'>/</span></li>
-  <li class='active'><%= @resource[:name] %></li>
+  <li>
+    <a href='<%= @doc[:doc_url] %>.html'><%= @doc[:name] %></a>
+    <span class='divider'>/</span>
+  </li>
+  <li class='active'>
+    <%= @resource[:name] %>
+    <% if @resource[:version] %><small><%= "v%s" % @resource[:version] %></small><% end %>
+  </li>
 </ul>
 
 <div class='page-header'>
   <h1>
-    <%= @resource[:name] %><br>
+    <%= @resource[:name] %>
+    <% if @resource[:version] %><small><%= "v%s" % @resource[:version] %></small><% end %>
+    <br>
     <small><%= raw @resource[:short_description] %></small>
   </h1>
 </div>
