@@ -7,7 +7,8 @@ module <%= class_base %>Client
 <% if method[:params].any? -%>
         validate_params!(params, <%= validation_hash(method).inspect.html_safe %>)
 <% end -%>
-        call(:<%= api(method)[:http_method].downcase %>, "<%= substituted_url(method) %>"<%= ", params" if method[:params].any? %>)
+        call(:<%= api(method)[:http_method].downcase %>, "<%= substituted_url(method) %>"<%= 
+        (api(method)[:http_method].downcase == 'get' ? ", :params => params" : ", params") if method[:params].any? %>)
       end
 <% end -%>
 

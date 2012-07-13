@@ -16,6 +16,7 @@ module <%= class_base %>Client
     end
 
     def validate_params!(options, valid_keys)
+      return unless options.is_a?(Hash)
       invalid_keys = options.keys - (valid_keys.is_a?(Hash) ? valid_keys.keys : valid_keys)
       raise ArgumentError, "Invalid keys: #{invalid_keys.join(", ")}" unless invalid_keys.empty?
 
