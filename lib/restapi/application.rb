@@ -211,11 +211,7 @@ module Restapi
     def get_resource_name(klass)
       if klass.class == String
         klass
-      elsif klass.class == Class &&
-        (
-          ActionController::Base.descendants.include?(klass) ||
-          (defined?(ActionController::API) && ActionController::API.descendants.include?(klass))
-        )
+      elsif klass.respond_to?(:controller_name)
         klass.controller_name
       end
     end
