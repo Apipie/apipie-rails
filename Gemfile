@@ -9,5 +9,4 @@ group :development, :test do
   gem "redcarpet"
   gem "RedCloth"
   gem "rake"
-  gem "weary", ">= 1.0.1"
 end
