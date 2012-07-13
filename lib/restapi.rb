@@ -8,4 +8,5 @@ require "restapi/error_description"
 require "restapi/validator"
 require "restapi/dsl_definition"
 require "restapi/railtie"
+require 'restapi/extractor'
 require "restapi/version"
