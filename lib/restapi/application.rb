@@ -207,14 +207,9 @@ module Restapi
     def get_resource_name(klass)
       if klass.class == String
         klass
-      elsif klass.class == Class &&
-        (
-          ActionController::Base.descendants.include?(klass) ||
-          (defined?(ActionController::API) && ActionController::API.descendants.include?(klass))
-        )
+      elsif klass.respond_to?(:controller_path)
+        return nil if klass == ActionController::Base
         klass.controller_path.gsub '/', '_'
-      elsif klass == ActionController::Base
-        nil
       else
         raise "Restapi: Can not resolve resource #{klass} name."
       end
