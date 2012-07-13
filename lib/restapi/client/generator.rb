@@ -31,7 +31,7 @@ module Restapi
       end
 
       def self.start(client_name)
-        super([client_name.underscore], :destination_root => destination_root)
+        super([client_name.parameterize.underscore], :destination_root => destination_root)
       end
 
       def generate_cli
@@ -94,7 +94,7 @@ module Restapi
       end
 
       def transformation_hash(method)
-        method[:params].find_all { |p| p[:expected_type] == "hash" }.reduce({}) do |h, p|
+        method[:params].find_all { |p| p[:expected_type] == "hash" && !p[:params].nil? }.reduce({}) do |h, p|
           h.update(p[:name] => p[:params].map { |pp| pp[:name] })
         end
       end

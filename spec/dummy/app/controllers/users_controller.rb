@@ -7,8 +7,8 @@ class UsersController < ApplicationController
     version '1.0 - 3.4.2012'
     param :id, Fixnum, :desc => "User ID", :required => false
     param :resource_param, Hash, :desc => 'Param description for all methods' do
-      param :username, String, :desc => "Username for login", :required => true
-      param :password, String, :desc => "Password for login", :required => true
+      param :ausername, String, :desc => "Username for login", :required => true
+      param :apassword, String, :desc => "Password for login", :required => true
     end
     description <<-EOS
       == Long description
