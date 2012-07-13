@@ -1,7 +1,8 @@
+# -*- coding: utf-8 -*-
 module Restapi
-  
+
   module Validator
-    
+
     # to create new validator, inherit from Restapi::Validator::Base
     # and implement class method build and instance method validate
     class BaseValidator
@@ -191,7 +192,7 @@ module Restapi
 
         self.instance_exec(&@proc)
       end
-      
+
       def validate(value)
         if @hash_params
           @hash_params.each do |k, p|
@@ -221,5 +222,67 @@ module Restapi
       end
     end
 
+
+    # special type of validator: we say that it's not specified
+    class UndefValidator < Restapi::Validator::BaseValidator
+
+      def validate(value)
+        true
+      end
+
+      def self.build(param_description, argument, options, block)
+        if argument == :undef
+          self.new(param_description)
+        end
+      end
+
+      def description
+        nil
+      end
+    end
+
+    class NumberValidator < Restapi::Validator::BaseValidator
+
+      def validate(value)
+        value.to_s =~ /\A(0|[1-9]\d*)\Z$/
+      end
+
+      def self.build(param_description, argument, options, block)
+        if argument == :number
+          self.new(param_description)
+        end
+      end
+
+      def error
+        "Parameter #{param_name} expecting to be a number, got: #{@error_value}"
+      end
+
+      def description
+        "Has to be a number."
+      end
+    end
+
+    class BooleanValidator < Restapi::Validator::BaseValidator
+
+      def validate(value)
+        %w[true false].include?(value.to_s)
+      end
+
+      def self.build(param_description, argument, options, block)
+        if argument == :bool
+          self.new(param_description)
+        end
+      end
+
+      def error
+        "Parameter #{param_name} expecting to be a boolean value, got: #{@error_value}"
+      end
+
+      def description
+        "Has to be a boolean"
+      end
+    end
+
   end
 end
+

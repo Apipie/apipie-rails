@@ -299,13 +299,13 @@ describe UsersController do
                         :allow_nil => false,
                         :validator=>"Parameter has to be String.",
                         :description=>"\n<p>Username for login</p>\n",
-                        :name=>"username", :full_name=>"resource_param[username]",
+                        :name=>"ausername", :full_name=>"resource_param[ausername]",
                         :expected_type=>"string"},
                        {:required=>true,
                         :allow_nil => false,
                         :validator=>"Parameter has to be String.",
                         :description=>"\n<p>Password for login</p>\n",
-                        :name=>"password", :full_name=>"resource_param[password]",
+                        :name=>"apassword", :full_name=>"resource_param[apassword]",
                         :expected_type=>"string"}
                       ]
                     },

@@ -5,8 +5,8 @@ class UsersController < ApplicationController
     path '/users'
     param :id, Fixnum, :desc => "User ID", :required => false
     param :resource_param, Hash, :desc => 'Param description for all methods' do
-      param :username, String, :desc => "Username for login", :required => true
-      param :password, String, :desc => "Password for login", :required => true
+      param :ausername, String, :desc => "Username for login", :required => true
+      param :apassword, String, :desc => "Password for login", :required => true
     end
     version "1.2.3"
     description <<-EOS

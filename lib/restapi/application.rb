@@ -194,7 +194,7 @@ module Restapi
     # with specific setting for some environment there is no reason the dsl
     # should be interpreted (e.g. no validations and doc from cache)
     def active_dsl?
-      Restapi.configuration.validate? || ! Restapi.configuration.use_cache?
+      Restapi.configuration.validate? || ! Restapi.configuration.use_cache? || Restapi.configuration.force_dsl?
     end
 
     def construct_method_key(controller, method_name)
