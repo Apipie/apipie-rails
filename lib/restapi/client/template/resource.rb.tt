@@ -1,0 +1,16 @@
+module <%= class_base %>Client
+  module Resources
+    class <%= resource_name.camelize %> < <%= class_base %>Client::Base
+<% resource[:methods].each do |method| -%>
+
+      def <%= method[:name] %><%= "(#{ client_args(method).join(", ") })" if client_args(method).any? %>
+<% if method[:params].any? -%>
+        validate_params!(params, <%= validation_hash(method).inspect.html_safe %>)
+<% end -%>
+        call(:<%= api(method)[:http_method].downcase %>, "<%= substituted_url(method) %>"<%= ", params" if method[:params].any? %>)
+      end
+<% end -%>
+
+    end
+  end
+end
