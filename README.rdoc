@@ -359,21 +359,24 @@ or delete it if you want to use 'normal' dynamic version again.
 
 == CLI client
 
-If you provide enough info about your API, you can generate simple CLI client. It is rather skeleton but sufficient for simple use. There is rake task for it: <tt>rake restapi:client</tt>. You can run it with two arguments <tt>rake restapi:client[http://api.example.com,.json]</tt>. The first argument is API base URL (default is http://localhost:3000). Value of second argument is appended to every URL (empty by default) which can be used to specify format. This two values can be also set afterwards from your environment as API_URL and URL_APPEND.
+If you provide enough info about your API, you can generate simple CLI client. It is rather skeleton but sufficient for simple use. There is rake task for it: <tt>rake restapi:client</tt>.
 
-This task create *clients* directory with two files. <tt>Base.rb</tt> contains {Weary}[https://github.com/mwunsch/weary] clients which you can use in your own program, for howto look at {Weary}[https://github.com/mwunsch/weary] documentation. <tt>cli.thor</tt> contains {Thor}[https://github.com/wycats/thor] classes for easy interaction from cli.
+This task create *clients* directory with client files.
+It uses {REST Client}[https://github.com/archiloque/rest-client] for HTTP communication and {Thor}[https://github.com/wycats/thor] for easy interaction from cli.
 
 Example usage:
 
-    thor list             # list of all available resources and methods
-    thor help users:show  # method and its parameters description
-    thor users:show --id=5 --session=abc # get /users/5?session=abc and print response body
-    thor users:create --user=username:foo password:bar
+    ./bin/client             # list of all available resources
+    ./bin/client user  # list of methods with description
+    ./bin/client user help show # show method description and parameters
+    ./bin/client help user:show
+    ./bin/client user show --id=5 --screen-name=pajk  # get /users/5?screen_name=pajk and print response body
+    ./bin/client user create --user=username:foo password:bar
 
-== TODO
+== {Extractor}[https://github.com/Pajk/rails-restapi/wiki/Extractor]
+
+== Future features
 
 * Dynamic CLI client (read info from documentation API)
 * Add documentation json API description to readme
-[Ideas] * PDF documentation generator
-        * Possibility to create requests from web documentation and check responses
-
+* Possibility to create requests from web documentation and check responses
