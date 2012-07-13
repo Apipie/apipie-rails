@@ -188,8 +188,8 @@ class UsersController < ApplicationController
 
   api :POST, "/users", "Create user"
   param :user, Hash, :desc => "User info", :required => true do
-    param :username, String, :desc => "Username for login", :required => true
-    param :password, String, :desc => "Password for login", :required => true
+    param :name, String, :desc => "Username for login", :required => true
+    param :pass, String, :desc => "Password for login", :required => true
     param :membership, ["standard","premium"], :desc => "User membership"
   end
   param :facts, Hash, :desc => "Additional optional facts about the user", :allow_nil => true

@@ -150,21 +150,16 @@ class TwitterExampleController < ApplicationController
     render :text => 'search'
   end
   
-  api :GET, '/twitter_example/show', 'Returns extended information of a given user, specified by ID or screen name as per the required id parameter.'
-  param :user_id, Integer, :required => true, :desc => <<-EOS
+  api :GET, '/twitter_example/:id', 'Returns extended information of a given user, specified by ID or screen name as per the required id parameter.'
+  param :id, :number, :required => true, :desc => <<-EOS
     The ID of the user for whom to return results for. Either an id or screen_name is required for this method.
-    _Note_: Specifies the ID of the user to befriend. Helpful for disambiguating when a valid user ID is also a valid screen name.
   EOS
-  param :screen_name, String, :desc => 'The screen name of the user for whom to return results for. Either a id or screen_name is required for this method.'
+  param :screen_name, String, :desc => 'The screen name of the user for...'
   description <<-EDOC
     Returns extended information of a given user, specified by ID or screen name as per the required id parameter. The author's most recent status will be returned inline.
-    
-    You must be following a protected user to be able to see their most recent status update. If you don't follow a protected user, or request this method without autenticating, the users status will be removed.
-
-    The URL pattern <tt>/version/twitter_example/show/:screen_name_or_user_id.format</tt> is still accepted but not recommended. As a sequence of numbers is a valid screen name we recommend using the +screen_name+ or +user_id+ parameter instead.
   EDOC
   def show
-    render :text => 'show'
+    render :text => "show #{params}"
   end
   
   api :GET, '/twitter_example/contributors', 'Returns an array of users who can contribute to the specified account.'

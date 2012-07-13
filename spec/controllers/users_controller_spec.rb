@@ -147,7 +147,7 @@ describe UsersController do
       end
 
       it "should work with Hash validator" do
-        post :create, :user => { :username => "root", :password => "12345", :membership => "standard" }
+        post :create, :user => { :name => "root", :pass => "12345", :membership => "standard" }
         assert_response :success
 
         a = Restapi[UsersController, :create]
@@ -156,19 +156,19 @@ describe UsersController do
         param.first.validator.class.should eq(Restapi::Validator::HashValidator)
         hash_params = param.first.validator.hash_params_ordered
         hash_params.count.should == 3
-        hash_params[0].name == :username
-        hash_params[1].name == :password
+        hash_params[0].name == :name
+        hash_params[1].name == :pass
         hash_params[2].name == :membership
 
         lambda {
-          post :create, :user => { :username => "root", :password => "12345", :membership => "____" }
+          post :create, :user => { :name => "root", :pass => "12345", :membership => "____" }
         }.should raise_error(ArgumentError, / membership /)
 
         lambda {
-          post :create, :user => { :username => "root" }
-        }.should raise_error(ArgumentError, / password /)
+          post :create, :user => { :name => "root" }
+        }.should raise_error(ArgumentError, / pass /)
 
-        post :create, :user => { :username => "root", :password => "pwd" }
+        post :create, :user => { :name => "root", :pass => "pwd" }
         assert_response :success
       end
 
@@ -186,8 +186,8 @@ describe UsersController do
       it "should allow nil when allow_nil is set to true" do
         post :create,
              :user => {
-               :username => "root",
-               :password => "12345",
+               :name => "root",
+               :pass => "12345",
                :membership => "standard",
              },
              :facts => nil
