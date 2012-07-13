@@ -244,7 +244,7 @@ module Restapi
     class NumberValidator < Restapi::Validator::BaseValidator
 
       def validate(value)
-        value.to_s =~ /\A(0|[1-9]\d*)\Z$/
+        self.class.validate(value)
       end
 
       def self.build(param_description, argument, options, block)
@@ -259,6 +259,10 @@ module Restapi
 
       def description
         "Has to be a number."
+      end
+
+      def self.validate(value)
+        value.to_s =~ /\A(0|[1-9]\d*)\Z$/
       end
     end
 
