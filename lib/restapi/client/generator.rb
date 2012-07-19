@@ -26,19 +26,20 @@ module Restapi
         File.expand_path("../template", __FILE__)
       end      
 
-      def self.destination_root
-        File.join(FileUtils.pwd, "client")
+      def self.destination_root(name)
+        File.join(FileUtils.pwd, "#{name}_client")
       end
 
       def self.start(client_name)
-        super([client_name.parameterize.underscore], :destination_root => destination_root)
+        name = client_name.parameterize.underscore
+        super([name], :destination_root => destination_root(name))
       end
 
       def generate_cli
         template("README.tt", "README")
         template("Gemfile.tt", "Gemfile")
-        template("bin.rb.tt", "bin/#{name}-client")
-        chmod("bin/#{name}-client", 0755)
+        template("bin.rb.tt", "bin/#{name}_client")
+        chmod("bin/#{name}_client", 0755)
         template("client.rb.tt", "lib/#{name}_client.rb")
         template("base.rb.tt", "lib/#{name}_client/base.rb")
         template("cli_command.rb.tt", "lib/#{name}_client/cli_command.rb")

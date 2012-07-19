@@ -357,21 +357,7 @@ To generate static version of documentation run <tt>rake restapi:static</tt> tas
 It will create folder with one-page documentation in your public directory. Rename
 or delete it if you want to use 'normal' dynamic version again.
 
-== CLI client
-
-If you provide enough info about your API, you can generate simple CLI client. It is rather skeleton but sufficient for simple use. There is rake task for it: <tt>rake restapi:client</tt>.
-
-This task create *clients* directory with client files.
-It uses {REST Client}[https://github.com/archiloque/rest-client] for HTTP communication and {Thor}[https://github.com/wycats/thor] for easy interaction from cli.
-
-Example usage:
-
-    ./bin/client             # list of all available resources
-    ./bin/client user  # list of methods with description
-    ./bin/client user help show # show method description and parameters
-    ./bin/client help user:show
-    ./bin/client user show --id=5 --screen-name=pajk  # get /users/5?screen_name=pajk and print response body
-    ./bin/client user create --user=username:foo password:bar
+== {CLI client}[https://github.com/Pajk/rails-restapi/wiki/CLI-client]
 
 == {Extractor}[https://github.com/Pajk/rails-restapi/wiki/Extractor]
 
