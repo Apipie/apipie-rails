@@ -7,7 +7,7 @@ require 'apipie/extractor/writer'
 require 'apipie/extractor/collector'
 
 class Apipie::Railtie
-  if ENV["RESTAPI_RECORD"]
+  if ENV["APIPIE_RECORD"]
     initializer 'apipie.extractor' do |app|
       ActiveSupport.on_load :action_controller do
         before_filter do |controller|
@@ -121,11 +121,11 @@ module Apipie
   end
 end
 
-if ENV["RESTAPI_RECORD"]
+if ENV["APIPIE_RECORD"]
   Apipie.configuration.force_dsl = true
   at_exit do
     record_params, record_examples = false, false
-    case ENV["RESTAPI_RECORD"]
+    case ENV["APIPIE_RECORD"]
     when "params"   then record_params = true
     when "examples" then record_examples = true
     when "all"      then record_params = true, record_examples = true
