@@ -17,4 +17,11 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   s.add_development_dependency "rspec-rails"
+  s.add_development_dependency "rails", ">= 3.0.10"
+  s.add_development_dependency "sqlite3"
+  s.add_development_dependency "rspec-rails"
+  s.add_development_dependency "minitest"
+  s.add_development_dependency "redcarpet"
+  s.add_development_dependency "RedCloth"
+  s.add_development_dependency "rake"
 end

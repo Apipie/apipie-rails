@@ -1,3 +1,8 @@
+PATH
+  remote: .
+  specs:
+    apipie-rails (0.0.6)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -101,6 +106,7 @@ PLATFORMS
 
 DEPENDENCIES
   RedCloth
+  apipie-rails!
   minitest
   rails (>= 3.0.10)
   rake
