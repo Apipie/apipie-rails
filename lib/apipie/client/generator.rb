@@ -6,7 +6,7 @@ require 'thor/group'
 require 'fileutils'
 require 'active_support/inflector'
 
-module Restapi
+module Apipie
   module Client
 
     class Generator < Thor::Group
@@ -19,7 +19,7 @@ module Restapi
 
       def initialize(*args)
         super
-        @doc = Restapi.to_json()[:docs]
+        @doc = Apipie.to_json()[:docs]
       end
 
       def self.source_root

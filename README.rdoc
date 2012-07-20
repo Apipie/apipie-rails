@@ -1,4 +1,4 @@
-= API Documentation Tool {<img src="https://secure.travis-ci.org/Pajk/rails-restapi.png?branch=master" alt="Build Status" />}[http://travis-ci.org/Pajk/rails-restapi]
+= API Documentation Tool {<img src="https://secure.travis-ci.org/Pajk/apipie-rails.png?branch=master" alt="Build Status" />}[http://travis-ci.org/Pajk/apipie-rails]
 
 == What?
 
@@ -17,9 +17,6 @@ what it is all about.
 
 Informations you entered with provided DSL are used to generate
 online documentation and validate values of incoming requests parameters.
-
-Warning: The name rails-restapi is not final and will be changed
-in near future.
 
 == Why?
 
@@ -46,17 +43,17 @@ https://img.skitch.com/20120428-bni2cmq5cyhjuw1jkd78e3qjxn.png
 
 === Gemfile
 
-Add +restapi+ gem to your gemfile and run bundle.
+Add +apipie+ gem to your gemfile and run bundle.
 
-    gem 'restapi'
+    gem 'apipie'
 
 For bleeding edge version use GitHub version
 
-    gem 'restapi', :git => 'git://github.com/Pajk/rails-restapi.git'
+    gem 'apipie', :git => 'git://github.com/Pajk/apipie-rails.git'
 
 === Config file
 
-Create configuration file in e.g. */config/initializers/restapi.rb*.
+Create configuration file in e.g. */config/initializers/apipie.rb*.
 You can set  application name, footer text, API and documentation base URL
 and turn off validations. You can also choose your favorite markup language
 of full descriptions.
@@ -71,7 +68,7 @@ of full descriptions.
 [api_controllers_matcher] For reloading to work properly you need to specify where your API controllers are.
 [markup] You can choose markup language for descriptions of your application,
          resources and methods. RDoc is the default but you can choose from
-         Restapi::Markup::Markdown.new or Restapi::Markup::Textile.new.
+         Apipie::Markup::Markdown.new or Apipie::Markup::Textile.new.
          In order to use Markdown you need Redcarpet gem and for Textile you
          need RedCloth. Add those to your gemfile and run bundle if you
          want to use them. You can also add any other markup language
@@ -79,13 +76,13 @@ of full descriptions.
 
 Example:
 
-    Restapi.configure do |config|
+    Apipie.configure do |config|
       config.app_name = "Test app"
       config.copyright = "&copy; 2012 Pavel Pokorny"
       config.doc_base_url = "/apidoc"
       config.api_base_url = "/api"
       config.validate = false
-      config.markup = Restapi::Markup::Markdown.new
+      config.markup = Apipie::Markup::Markdown.new
       config.reload_controllers = true
       config.api_controllers_matcher = File.join(Rails.root, "app", "controllers", "**","*.rb")
       config.app_info = <<-DOC
@@ -96,7 +93,7 @@ Example:
 
 === Routes
 
-Add +restapi+ to your *routes.rb*, that's all.
+Add +apipie+ to your *routes.rb*, that's all.
 
 
 === Resource Description
@@ -277,13 +274,13 @@ Example:
 === Adding custom validator
 
 Only basic validators are included but it is really easy to add your own.
-Create new initializer with subclass of Restapi::Validator::BaseValidator.
+Create new initializer with subclass of Apipie::Validator::BaseValidator.
 Two methods are required to implement - instance method
 <tt>validate(value)</tt> and class method
 <tt>build(param_description, argument, options, block)</tt>.
 
 When searching for validator +build+ method of every subclass of
-Restapi::Validator::BaseValidator is called. The first one whitch return
+Apipie::Validator::BaseValidator is called. The first one whitch return
 constructed validator object is used.
 
 Example: Adding IntegerValidator
@@ -292,9 +289,9 @@ We want to check if parameter value is an integer like this:
 
     param :id, Integer, :desc => "Company ID"
 
-So we create restapi_validators.rb initializer with this content:
+So we create apipie_validators.rb initializer with this content:
 
-    class IntegerValidator < Restapi::Validator::BaseValidator
+    class IntegerValidator < Apipie::Validator::BaseValidator
 
       def initialize(param_description, argument)
         super(param_description)
@@ -324,7 +321,7 @@ So we create restapi_validators.rb initializer with this content:
 
 Parameters of the build method:
 
-[param_description] Instance of Restapi::ParamDescription contains all
+[param_description] Instance of Apipie::ParamDescription contains all
                     given informations about validated parameter.
 [argument] Specified validator, in our example it is +Integer+
 [options] Hash with specified options, for us just
@@ -336,8 +333,8 @@ Parameters of the build method:
 
 The default markup language is {RDoc}[http://rdoc.rubyforge.org/RDoc/Markup.html]. It can be changed in
 config file (config.markup=) to one of these:
-[Markdown] Use Restapi::Markup::Markdown.new. You need Redcarpet gem.
-[Textile] Use Restapi::Markup::Textile.new. You need RedCloth gem.
+[Markdown] Use Apipie::Markup::Markdown.new. You need Redcarpet gem.
+[Textile] Use Apipie::Markup::Textile.new. You need RedCloth gem.
 
 Or provide you own object with <tt>to_html(text)</tt> method.
 For inspiration this is how Textile look like:
@@ -353,13 +350,13 @@ For inspiration this is how Textile look like:
 
 == Static page
 
-To generate static version of documentation run <tt>rake restapi:static</tt> task.
+To generate static version of documentation run <tt>rake apipie:static</tt> task.
 It will create folder with one-page documentation in your public directory. Rename
 or delete it if you want to use 'normal' dynamic version again.
 
-== {CLI client}[https://github.com/Pajk/rails-restapi/wiki/CLI-client]
+== {CLI client}[https://github.com/Pajk/apipie-rails/wiki/CLI-client]
 
-== {Extractor}[https://github.com/Pajk/rails-restapi/wiki/Extractor]
+== {Extractor}[https://github.com/Pajk/apipie-rails/wiki/Extractor]
 
 == Future features
 
