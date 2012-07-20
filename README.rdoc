@@ -45,11 +45,11 @@ https://img.skitch.com/20120428-bni2cmq5cyhjuw1jkd78e3qjxn.png
 
 Add +apipie+ gem to your gemfile and run bundle.
 
-    gem 'apipie'
+    gem 'apipie-rails'
 
 For bleeding edge version use GitHub version
 
-    gem 'apipie', :git => 'git://github.com/Pajk/apipie-rails.git'
+    gem 'apipie-rails', :git => 'git://github.com/Pajk/apipie-rails.git'
 
 === Config file
 
