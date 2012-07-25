@@ -1,28 +1,27 @@
-%define gem_name apipie-rails
+%global gemname apipie-rails
 
-Name: rubygem-%{gem_name}
-Version: 0.0.6
-Release: 1%{?dist}
-Summary: Rails API documentation tool and client generator.
-
-Group: Development/Libraries
-License: MIT
-URL: https://github.com/Pajk/apipie-rails
-Source0: http://rubygems.org/downloads/%{gem_name}-%{version}.gem
-
+%global gemdir %(ruby -rubygems -e 'puts Gem::dir' 2>/dev/null)
+%global geminstdir %{gemdir}/gems/%{gemname}-%{version}
 %if 0%{?rhel} == 6 || 0%{?fedora} < 17
 %define rubyabi 1.8
 %else
 %define rubyabi 1.9
 %endif
+
+Summary: Rails API documentation tool and client generator.
+Name: rubygem-%{gemname}
+Version: 0.0.6
+Release: 1%{?dist}
+Group: Development/Libraries
+License: MIT
+URL: http://github.com/Pajk/apipie-rails
+Source0: http://rubygems.org/downloads/%{gemname}-%{version}.gem
 Requires: ruby(abi) >= %{rubyabi}
-Requires: ruby(rubygems)
-Requires: ruby
+Requires: rubygems 
 BuildRequires: ruby(abi) >= %{rubyabi}
 BuildRequires: rubygems-devel
-BuildRequires: ruby
 BuildArch: noarch
-Provides: rubygem(%{gem_name}) = %{version}
+Provides: rubygem(%{gemname}) = %{version}
 
 %description
 This gem adds new methods to Rails controllers that can be used to describe
@@ -30,43 +29,25 @@ resources exposed by API. Informations entered with provided DSL are used
 to generate documentation, client or to validate incoming requests.
 
 %prep
-gem unpack %{SOURCE0}
-%setup -q -D -T -n %{gem_name}-%{version}
-gem spec %{SOURCE0} -l --ruby > %{gem_name}.gemspec
-
+%setup -q -c -T
+mkdir -p .%{gemdir}
+gem install --local --install-dir .%{gemdir} \
+            --force %{SOURCE0}
 
 %build
-mkdir -p .%{gem_dir}
-
-# Create the gem as gem install only works on a gem file
-gem build %{gem_name}.gemspec
-
-# gem install compiles any C extensions and installs into a directory
-# We set that to be a local directory so that we can move it into the
-# buildroot in %%install
-gem install -V \
-        --local \
-        --install-dir ./%{gem_dir} \
-        --bindir ./%{_bindir} \
-        --force \
-        --rdoc \
-        %{gem_name}-%{version}.gem
 
 %install
-mkdir -p %{buildroot}%{gem_dir}
-cp -a ./%{gem_dir}/* %{buildroot}%{gem_dir}/
+mkdir -p %{buildroot}%{gemdir}
+cp -a .%{gemdir}/* \
+        %{buildroot}%{gemdir}/
+
 
 %files
-%{gem_dir}/gems/%{gem_name}-%{version}/
-
-
-%doc MIT-LICENSE README.rdoc
-
-%{gem_dir}/cache/%{gem_name}-%{version}.gem
-%{gem_dir}/specifications/%{gem_name}-%{version}.gemspec
-%{gem_docdir}
+%{geminstdir}/
+%exclude %{gemdir}/cache/%{gemname}-%{version}.gem
+%exclude %{geminstdir}/spec
+%{gemdir}/specifications/%{gemname}-%{version}.gemspec
+%doc %{geminstdir}/MIT-LICENSE
+%doc %{geminstdir}/README.rdoc
 
 %changelog
-* Fri Jul 20 2012 Pavel Pokorný <pajkycz@gmail.com> 0.0.6-1
-- new RPM package built with tito
-
