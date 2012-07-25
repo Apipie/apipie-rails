@@ -10,7 +10,7 @@
 
 Summary: Rails API documentation tool and client generator.
 Name: rubygem-%{gemname}
-Version: 0.0.6
+Version: 0.0.7
 Release: 1%{?dist}
 Group: Development/Libraries
 License: MIT
@@ -51,3 +51,6 @@ cp -a .%{gemdir}/* \
 %doc %{geminstdir}/README.rdoc
 
 %changelog
+* Wed Jul 25 2012 Pavel Pokorný <pajkycz@gmail.com> 0.0.7-1
+- new package built with tito
+
