@@ -16,7 +16,9 @@ module Apipie
       private
 
       def create_api_url(path)
-        "#{Apipie.configuration.api_base_url}#{path}"
+        path = "#{Apipie.configuration.api_base_url}#{path}"
+        path = path[0..-2] if path[-1..-1] == '/'
+        return path
       end
 
     end

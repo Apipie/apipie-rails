@@ -1,17 +1,28 @@
 require 'rest_client'
+require 'oauth'
 require 'json'
+require '<%= name %>_client/rest_client_oauth'
 
 module <%= class_base %>Client
   class Base
     attr_reader :client
 
     def initialize(config)
-      @client =  RestClient::Resource.new(config[:base_url], :user => config[:username], :password => config[:password])
+      @client = RestClient::Resource.new(config[:base_url],
+                                         :user     => config[:username],
+                                         :password => config[:password],
+                                         :oauth    => config[:oauth],
+                                         :headers  => { :content_type => 'application/json',
+                                                        :accept       => 'application/json' })
     end
 
-    def call(method, path, params = {})
-      ret = client[path].send(method, params)
-      data = JSON.parse(ret.body) rescue ret.body
+    def call(method, path, payload = nil)
+      ret  = client[path].send(*[method, payload ? payload.to_json : nil].compact)
+      data = begin
+        JSON.parse(ret.body)
+      rescue JSON::ParserError
+        ret.body
+      end
       return data, ret
     end
 
