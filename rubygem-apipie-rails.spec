@@ -11,7 +11,7 @@
 Summary: Rails API documentation tool and client generator.
 Name: rubygem-%{gemname}
 Version: 0.0.7
-Release: 1%{?dist}
+Release: 2%{?dist}
 Group: Development/Libraries
 License: MIT
 URL: http://github.com/Pajk/apipie-rails
@@ -46,11 +46,15 @@ cp -a .%{gemdir}/* \
 %{geminstdir}/
 %exclude %{gemdir}/cache/%{gemname}-%{version}.gem
 %exclude %{geminstdir}/spec
+%exclude %{gemdir}/doc/%{gemname}-%{version}
 %{gemdir}/specifications/%{gemname}-%{version}.gemspec
 %doc %{geminstdir}/MIT-LICENSE
 %doc %{geminstdir}/README.rdoc
 
 %changelog
+* Thu Jul 26 2012 Pavel Pokorný <pajkycz@gmail.com> 0.0.7-2
+- removed doc files from rpm
+
 * Wed Jul 25 2012 Pavel Pokorný <pajkycz@gmail.com> 0.0.7-1
 - new package built with tito
 
