@@ -7,7 +7,7 @@ module <%= class_base %>Client
   class Base
     attr_reader :client
 
-    def initialize(config)
+    def initialize(config = <%= class_base %>Client.client_config)
       @client = RestClient::Resource.new(config[:base_url],
                                          :user     => config[:username],
                                          :password => config[:password],
