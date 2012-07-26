@@ -107,4 +107,8 @@ begin
 rescue RestClient::Exception => e
   $stderr.puts e.message
   exit 1
+rescue Errno::ECONNREFUSED => e
+  $stderr.puts "Server #{<%= class_base %>Client.client_config[:base_url]} not available"
+  $stderr.puts e.message
+  exit 1
 end

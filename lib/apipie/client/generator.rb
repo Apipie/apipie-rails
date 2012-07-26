@@ -38,12 +38,15 @@ module Apipie
       def generate_cli
         template("README.tt", "README")
         template("Gemfile.tt", "Gemfile")
+        template("Rakefile.tt", "Rakefile")
+        template("client.gemspec.tt", "#{name}_client.gemspec")
         template("bin.rb.tt", "bin/#{name}_client")
         chmod("bin/#{name}_client", 0755)
         template("client.rb.tt", "lib/#{name}_client.rb")
         template("base.rb.tt", "lib/#{name}_client/base.rb")
         template("cli_command.rb.tt", "lib/#{name}_client/cli_command.rb")
         template("rest_client_oauth.rb.tt", "lib/#{name}_client/rest_client_oauth.rb")
+        template("version.rb.tt", "lib/#{name}_client/version.rb")
         doc[:resources].each do |key, resource|
           @resource = resource
           template("cli.rb.tt", "lib/#{name}_client/commands/#{resource_name}.thor")

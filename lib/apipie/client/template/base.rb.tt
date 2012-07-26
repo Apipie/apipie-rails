@@ -17,7 +17,8 @@ module <%= class_base %>Client
     end
 
     def call(method, path, payload = nil)
-      ret  = client[path].send(*[method, payload ? payload.to_json : nil].compact)
+      a, *_ = [method, payload ? payload.to_json : nil].compact
+      ret  = client[path].send(a)
       data = begin
         JSON.parse(ret.body)
       rescue JSON::ParserError
