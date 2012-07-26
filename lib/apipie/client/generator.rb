@@ -68,12 +68,17 @@ module Apipie
 
       protected
 
+      def camelizer(string)
+        string = string.sub(/^[a-z\d]*/) { $&.capitalize }
+        string.gsub(/(?:_|(\/))([a-z\d]*)/i) { "#{$2.capitalize}" }
+      end
+
       def class_base
-        @class_base ||= name.camelize
+        @class_base ||= camelizer(name)
       end
 
       def class_suffix
-        @class_suffix ||= suffix.camelize
+        @class_suffix ||= camelizer(suffix)
       end
 
       def plaintext(text)
