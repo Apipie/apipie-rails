@@ -125,24 +125,26 @@ namespace :apipie do
   end
 
   namespace :client do
-    task :all => [:environment] do |t, args|
+    task :all, [:suffix] => [:environment] do |t, args|
+      args.with_defaults(:suffix => "_client")
       Apipie.configuration.use_cache = false # we don't want to skip DSL evaluation
       Apipie.api_controllers_paths.each { |file| require file }
 
-      Apipie::Client::Generator.start(Apipie.configuration.app_name)
+      Apipie::Client::Generator.start(Apipie.configuration.app_name, :all, args[:suffix])
     end
 
     desc "Generate only ruby bindings for API documented with apipie gem."
-    task :bindings => [:environment] do |t, args|
+    task :bindings, [:suffix] => [:environment] do |t, args|
+      args.with_defaults(:suffix => "_client")
       Apipie.configuration.use_cache = false # we don't want to skip DSL evaluation
       Apipie.api_controllers_paths.each { |file| require file }
 
-      Apipie::Client::Generator.start(Apipie.configuration.app_name, :bindings)
+      Apipie::Client::Generator.start(Apipie.configuration.app_name, :bindings, args[:suffix])
     end
   end
 
   desc "Generate CLI client for API documented with apipie gem."
-  task :client => 'client:all'
+  task :client, [:suffix] => 'client:all'
 
   def plaintext(text)
     text.gsub(/<.*?>/, '').gsub("\n",' ').strip

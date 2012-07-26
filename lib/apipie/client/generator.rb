@@ -14,6 +14,8 @@ module Apipie
 
       # Define arguments and options
       argument :name
+      argument :subject
+      argument :suffix
 
       attr_reader :doc, :resource
 
@@ -26,47 +28,52 @@ module Apipie
         File.expand_path("../template", __FILE__)
       end
 
-      def self.destination_root(name)
-        File.join(FileUtils.pwd, "#{name}_client")
+      def self.destination_root(name, suffix)
+        File.join(FileUtils.pwd, "#{name}#{suffix}")
       end
 
-      def self.all?
-        @subject == :all
-      end
-
-      def self.start(client_name, subject = :all)
-        @subject = subject
+      def self.start(client_name, subject = :all, suffix = '_client')
         name = client_name.parameterize.underscore
-        super([name], :destination_root => destination_root(name))
+        suffix = suffix.parameterize.underscore
+        super([name, subject, suffix], :destination_root => destination_root(name, suffix))
+      end
+
+      def all?
+        subject == :all
       end
 
       def generate_cli
+        full_name = "#{name}#{suffix}"
         template("README.tt", "README")
         template("Gemfile.tt", "Gemfile")
         template("Rakefile.tt", "Rakefile")
-        template("client.gemspec.tt", "#{name}_client.gemspec")
-        template("client.rb.tt", "lib/#{name}_client.rb")
-        template("base.rb.tt", "lib/#{name}_client/base.rb")
-        template("rest_client_oauth.rb.tt", "lib/#{name}_client/rest_client_oauth.rb")
-        template("version.rb.tt", "lib/#{name}_client/version.rb")
-        if Generator.all?
-          template("bin.rb.tt", "bin/#{name}_client")
-          chmod("bin/#{name}_client", 0755)
-          template("cli_command.rb.tt", "lib/#{name}_client/cli_command.rb")
+        template("client.gemspec.tt", "#{full_name}.gemspec")
+        template("client.rb.tt", "lib/#{full_name}.rb")
+        template("base.rb.tt", "lib/#{full_name}/base.rb")
+        template("rest_client_oauth.rb.tt", "lib/#{full_name}/rest_client_oauth.rb")
+        template("version.rb.tt", "lib/#{full_name}/version.rb")
+        if all?
+          template("bin.rb.tt", "bin/#{full_name}")
+          chmod("bin/#{full_name}", 0755)
+          template("cli_command.rb.tt", "lib/#{full_name}/cli_command.rb")
         end
         doc[:resources].each do |key, resource|
           @resource = resource
-          if Generator.all?
-            template("cli.rb.tt", "lib/#{name}_client/commands/#{resource_name}.thor")
+          if all?
+            template("cli.rb.tt", "lib/#{full_name}/commands/#{resource_name}.thor")
           end
-          template("resource.rb.tt", "lib/#{name}_client/resources/#{resource_name}.rb")
+          template("resource.rb.tt", "lib/#{full_name}/resources/#{resource_name}.rb")
         end
       end
 
       protected
 
       def class_base
-        name.camelize
+        @class_base ||= name.camelize
+      end
+
+      def class_suffix
+        @class_suffix ||= suffix.camelize
       end
 
       def plaintext(text)

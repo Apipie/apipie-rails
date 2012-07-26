@@ -1,6 +1,6 @@
-module <%= class_base %>Client
+module <%= class_base %><%= class_suffix %>
   module Resources
-    class <%= resource_name.camelize %> < <%= class_base %>Client::Base
+    class <%= resource_name.camelize %> < <%= class_base %><%= class_suffix %>::Base
 <% resource[:methods].each do |method| -%>
 
       def <%= method[:name] %><%= "(#{ client_args(method).join(", ") })" if client_args(method).any? %>

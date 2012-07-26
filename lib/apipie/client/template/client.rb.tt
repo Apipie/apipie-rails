@@ -1,10 +1,10 @@
-require '<%= name %>_client/base'
-require '<%= name %>_client/version'
+require '<%= name %><%= suffix %>/base'
+require '<%= name %><%= suffix %>/version'
 
-resource_files = Dir[File.expand_path('../<%= name %>_client/resources/*.rb', __FILE__)]
+resource_files = Dir[File.expand_path('../<%= name %><%= suffix %>/resources/*.rb', __FILE__)]
 resource_files.each { |f| require f }
 
-module <%= class_base %>Client
+module <%= class_base %><%= class_suffix %>
   def self.client_config
     @client_config ||= { :base_url => "http://localhost:3000",
                          :oauth    => { :consumer_key    => 'consumer',

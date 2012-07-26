@@ -1,13 +1,13 @@
 require 'rest_client'
 require 'oauth'
 require 'json'
-require '<%= name %>_client/rest_client_oauth'
+require '<%= name %><%= suffix %>/rest_client_oauth'
 
-module <%= class_base %>Client
+module <%= class_base %><%= class_suffix %>
   class Base
     attr_reader :client
 
-    def initialize(config = <%= class_base %>Client.client_config)
+    def initialize(config = <%= class_base %><%= class_suffix %>.client_config)
       @client = RestClient::Resource.new(config[:base_url],
                                          :user     => config[:username],
                                          :password => config[:password],

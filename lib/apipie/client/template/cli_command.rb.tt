@@ -1,9 +1,9 @@
-module <%= class_base %>Client
+module <%= class_base %><%= class_suffix %>
   class CliCommand < Thor
     no_tasks do
       def client
-        resource_class = <%= class_base %>Client::Resources.const_get(self.class.name[/[^:]*$/])
-        @client ||= resource_class.new(<%= class_base %>Client.client_config)
+        resource_class = <%= class_base %><%= class_suffix %>::Resources.const_get(self.class.name[/[^:]*$/])
+        @client ||= resource_class.new(<%= class_base %><%= class_suffix %>.client_config)
       end
 
       def transform_options(inline_params, transform_hash = {})

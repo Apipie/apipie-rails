@@ -1,4 +1,4 @@
-class <%= resource_name.camelize %> < <%= class_base %>Client::CliCommand
+class <%= resource_name.camelize %> < <%= class_base %><%= class_suffix %>::CliCommand
 
 <% resource[:methods].each do |method| -%>
   desc '<%= method[:name] %>', '<%= api(method)[:short_description] %>'

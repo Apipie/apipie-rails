@@ -5,8 +5,8 @@ require "thor"
 require 'thor/core_ext/file_binary_read'
 
 $: << File.expand_path("../../lib", __FILE__)
-require "<%= name %>_client"
-require "<%= name %>_client/cli_command"
+require "<%= name %><%= suffix %>"
+require "<%= name %><%= suffix %>/cli_command"
 
 module <%= class_base %>Cli
   class Main < Thor
@@ -37,8 +37,8 @@ module <%= class_base %>Cli
         parser = Thor::Options.new({:username => Thor::Option.parse(%w[username -u], :string),
                                    :password => Thor::Option.parse(%w[password -p], :string)})
         opts = parser.parse(given_args)
-        <%= class_base %>Client.client_config[:username] = opts["username"]
-        <%= class_base %>Client.client_config[:password] = opts["password"]
+        <%= class_base %><%= class_suffix %>.client_config[:username] = opts["username"]
+        <%= class_base %><%= class_suffix %>.client_config[:password] = opts["password"]
         #remaining =  parser.instance_variable_get("@unknown") # TODO: this is an ugly hack :(
         remaining = parser.remaining
         super(task, remaining, given_options, config)
@@ -69,14 +69,14 @@ module <%= class_base %>Cli
     end
 
     def thorfiles
-      Dir[File.expand_path("../../lib/<%= name %>_client/commands/*.thor", __FILE__)]
+      Dir[File.expand_path("../../lib/<%= name %><%= suffix %>/commands/*.thor", __FILE__)]
     end
 
     # Display information about the given klasses. If with_module is given,
     # it shows a table with information extracted from the yaml file.
     #
     def display_klasses(with_modules=false, show_internal=false, klasses=Thor::Base.subclasses)
-      klasses -= [Thor, Main, ::<%= class_base %>Client::CliCommand] unless show_internal
+      klasses -= [Thor, Main, ::<%= class_base %><%= class_suffix %>::CliCommand] unless show_internal
 
       show_modules if with_modules && !thor_yaml.empty?
 
@@ -108,7 +108,7 @@ rescue RestClient::Exception => e
   $stderr.puts e.message
   exit 1
 rescue Errno::ECONNREFUSED => e
-  $stderr.puts "Server #{<%= class_base %>Client.client_config[:base_url]} not available"
+  $stderr.puts "Server #{<%= class_base %><%= class_suffix %>.client_config[:base_url]} not available"
   $stderr.puts e.message
   exit 1
 end
