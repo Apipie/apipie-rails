@@ -43,6 +43,7 @@ module Apipie
         template("client.rb.tt", "lib/#{name}_client.rb")
         template("base.rb.tt", "lib/#{name}_client/base.rb")
         template("cli_command.rb.tt", "lib/#{name}_client/cli_command.rb")
+        template("rest_client_oauth.rb.tt", "lib/#{name}_client/rest_client_oauth.rb")
         doc[:resources].each do |key, resource|
           @resource = resource
           template("cli.rb.tt", "lib/#{name}_client/commands/#{resource_name}.thor")
