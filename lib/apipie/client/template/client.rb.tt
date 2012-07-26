@@ -5,6 +5,8 @@ resource_files.each { |f| require f }
 
 module <%= class_base %>Client
   def self.client_config
-    @client_config ||= {:base_url => "http://localhost:3000"}
+    @client_config ||= { :base_url => "http://localhost:3000",
+                         :oauth    => { :consumer_key    => 'katello',
+                                        :consumer_secret => 'shhhh' } }
   end
 end
