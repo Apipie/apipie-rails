@@ -17,9 +17,7 @@ License: MIT
 URL: http://github.com/Pajk/apipie-rails
 Source0: http://rubygems.org/downloads/%{gemname}-%{version}.gem
 Requires: ruby(abi) >= %{rubyabi}
-Requires: rubygems 
 BuildRequires: ruby(abi) >= %{rubyabi}
-BuildRequires: rubygems-devel
 BuildArch: noarch
 Provides: rubygem(%{gemname}) = %{version}
 
@@ -43,13 +41,28 @@ cp -a .%{gemdir}/* \
 
 
 %files
-%{geminstdir}/
-%exclude %{gemdir}/cache/%{gemname}-%{version}.gem
-%exclude %{geminstdir}/spec
-%exclude %{gemdir}/doc/%{gemname}-%{version}
+%{geminstdir}/app
+%{geminstdir}/lib
+%{geminstdir}/apipie-rails.gemspec
+%{geminstdir}/Gemfile
+%{geminstdir}/Gemfile.lock
+%{geminstdir}/Rakefile
 %{gemdir}/specifications/%{gemname}-%{version}.gemspec
+
+%exclude %{geminstdir}/spec
+%exclude %{geminstdir}/rel-eng
+%exclude %{geminstdir}/.gitignore
+%exclude %{geminstdir}/.rspec
+%exclude %{geminstdir}/.rvmrc
+%exclude %{geminstdir}/.travis.yml
+%exclude %{geminstdir}/rubygem-apipie-rails.spec
+%exclude %{gemdir}/cache/%{gemname}-%{version}.gem
+%exclude %{gemdir}/doc/%{gemname}-%{version}
+
 %doc %{geminstdir}/MIT-LICENSE
 %doc %{geminstdir}/README.rdoc
+%doc %{geminstdir}/APACHE-LICENSE-2.0
+%doc %{geminstdir}/NOTICE
 
 %changelog
 * Thu Jul 26 2012 Pavel Pokorný <pajkycz@gmail.com> 0.0.7-2

@@ -57,7 +57,7 @@ module Apipie
 
       # what type is expected, mostly string
       # this information is used in cli client
-      # thor supported types — :string, :hash, :array, :numeric, or :boolean
+      # thor supported types :string, :hash, :array, :numeric, or :boolean
       def expected_type
         'string'
       end
