@@ -11,11 +11,12 @@ module Apipie
   class ResourceDescription
 
     attr_reader :controller, :_short_description, :_full_description, :_methods, :_id,
-      :_path, :_version, :_name, :_params_ordered
+      :_path, :_version, :_name, :_params_ordered, :_errors_ordered
 
     def initialize(controller, resource_name, &block)
       @_methods = []
       @_params_ordered = []
+      @_errors_ordered = []
 
       @controller = controller
       @_id = resource_name
@@ -32,6 +33,12 @@ module Apipie
       param_description = Apipie::ParamDescription.new(param_name, *args, &block)
       @_params_ordered << param_description
     end
+
+    def error(*args)
+      error_description = Apipie::ErrorDescription.new(args)
+      @_errors_ordered << error_description
+    end
+
 
     def path(path); @_path = path; end
 

@@ -246,10 +246,12 @@ describe UsersController do
     it "should contain possible errors description" do
       a = Apipie.get_method_description(UsersController, :show)
 
-      a.errors[0].code.should eq(401)
-      a.errors[0].description.should eq("Unauthorized")
-      a.errors[1].code.should eq(404)
-      a.errors[1].description.should eq("Not Found")
+      a.errors[0].code.should eq(500)
+      a.errors[0].description.should include("crashed")
+      a.errors[1].code.should eq(401)
+      a.errors[1].description.should eq("Unauthorized")
+      a.errors[2].code.should eq(404)
+      a.errors[2].description.should eq("Not Found")
     end
 
     it "should contain all params description" do
@@ -276,7 +278,8 @@ describe UsersController do
     it "should be described by valid json" do
       json = Apipie[UsersController, :two_urls].to_json
       expected_hash = {
-        :errors => [],
+        :errors => [{:code=>404, :description=>"Missing"},
+                    {:code=>500, :description=>"Server crashed for some <%= reason %>"}],
         :examples => [],
         :doc_url => "#{Apipie.configuration.doc_base_url}/users/two_urls",
         :full_description => '',

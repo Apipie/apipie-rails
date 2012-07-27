@@ -23,7 +23,7 @@ module Apipie
 
     end
 
-    attr_reader :errors, :full_description, :method, :resource, :apis, :examples, :see
+    attr_reader :full_description, :method, :resource, :apis, :examples, :see
 
     def initialize(method, resource, app)
       @method = method
@@ -72,6 +72,19 @@ module Apipie
       all_params.find_all(&:validator)
     end
 
+    def errors
+      return @merged_errors if @merged_errors
+      @merged_errors = []
+      if @resource
+        # exclude overwritten parent errors
+        @merged_errors = @resource._errors_ordered.find_all do |err|
+          !@errors.any? { |e| e.code == err.code }
+        end
+      end
+      @merged_errors.concat(@errors)
+      return @merged_errors
+    end
+
     def doc_url
       Apipie.full_url("#{@resource._id}/#{@method}")
     end
@@ -106,7 +119,7 @@ module Apipie
         :name => @method,
         :apis => method_apis_to_json,
         :full_description => @full_description,
-        :errors => @errors,
+        :errors => errors.map(&:to_json),
         :params => params_ordered.map(&:to_json).flatten,
         :examples => @examples,
         :see => @see,
