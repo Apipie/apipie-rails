@@ -16,6 +16,10 @@ module Apipie
       @description = args[:desc] || args[:description] || args['desc'] || args['description']
     end
 
+    def to_json
+      {:code => code, :description => description}
+    end
+
   end
 
 end
