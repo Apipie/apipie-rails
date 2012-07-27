@@ -10,6 +10,8 @@ class UsersController < ApplicationController
       param :ausername, String, :desc => "Username for login", :required => true
       param :apassword, String, :desc => "Password for login", :required => true
     end
+    error 404, "Missing"
+    error 500, "Server crashed for some <%= reason %>"
     description <<-EOS
       == Long description
 
