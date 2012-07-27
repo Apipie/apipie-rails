@@ -119,7 +119,7 @@ module Apipie
         :name => @method,
         :apis => method_apis_to_json,
         :full_description => @full_description,
-        :errors => errors,
+        :errors => errors.map(&:to_json),
         :params => params_ordered.map(&:to_json).flatten,
         :examples => @examples,
         :see => @see,
