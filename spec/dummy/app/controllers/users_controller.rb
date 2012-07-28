@@ -189,6 +189,7 @@ class UsersController < ApplicationController
   end
 
   api :POST, "/users", "Create user"
+  formats ['json', 'xml']
   param :user, Hash, :desc => "User info", :required => true do
     param :name, String, :desc => "Username for login", :required => true
     param :pass, String, :desc => "Password for login", :required => true

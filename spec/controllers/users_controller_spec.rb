@@ -202,6 +202,7 @@ describe UsersController do
     it "should contain basic info about method" do
       a = Apipie[UsersController, :create]
       a.apis.count.should == 1
+      a.formats.should eq(['json', 'xml'])
       api = a.apis.first
       api.short_description.should eq("Create user")
       api.api_url.should eq("/api/users")
