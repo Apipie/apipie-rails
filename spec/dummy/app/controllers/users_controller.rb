@@ -166,6 +166,7 @@ class UsersController < ApplicationController
     More builder documentation can be found at http://builder.rubyforge.org.
   eos
   api :GET, "/users/:id", "Show user profile"
+  formats ['json', 'jsonp']
   error 401, "Unauthorized"
   error :code => 404, :description => "Not Found"
   param :id, Integer, :desc => "user id", :required => true
@@ -190,7 +191,6 @@ class UsersController < ApplicationController
   end
 
   api :POST, "/users", "Create user"
-  formats ['json', 'xml']
   param :user, Hash, :desc => "User info", :required => true do
     param :name, String, :desc => "Username for login", :required => true
     param :pass, String, :desc => "Password for login", :required => true
