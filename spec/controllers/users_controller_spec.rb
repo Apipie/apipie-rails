@@ -34,6 +34,7 @@ describe UsersController do
       subject._path.should eq('/users')
       subject._version.should eq('1.0 - 3.4.2012')
       subject._name.should eq('Members')
+      subject._formats.should eq(['json'])
     end
 
     it "should contain params defined on resource level" do
@@ -214,6 +215,7 @@ describe UsersController do
       b.resource._id.should eq('users')
 
       b.apis.count.should == 1
+      b.formats.should eq(['json'])
       api = b.apis.first
       api.short_description.should eq("Show user profile")
       api.api_url.should eq("#{Apipie.configuration.api_base_url}/users/:id")

@@ -115,7 +115,7 @@ module Apipie
     end
 
     def formats
-      @formats
+      @formats || @resource._formats
     end
 
     def to_json
