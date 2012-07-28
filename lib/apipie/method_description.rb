@@ -123,6 +123,7 @@ module Apipie
         :doc_url => doc_url,
         :name => @method,
         :apis => method_apis_to_json,
+        :formats => formats,
         :full_description => @full_description,
         :errors => errors.map(&:to_json),
         :params => params_ordered.map(&:to_json).flatten,

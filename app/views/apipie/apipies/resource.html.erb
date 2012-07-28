@@ -10,9 +10,13 @@
   </h1>
 </div>
 
-
 <% unless @resource[:full_description].blank? %>
   <div><%= raw @resource[:full_description] %></div>
+<% end %>
+
+<% unless @resource[:formats].blank? %>
+  <h2>Supported Formats</h2>
+  <%= @resource[:formats].join(', ') %>
 <% end %>
 
 <div class='accordion' id='accordion'>
@@ -41,8 +45,13 @@
     <% end %>
 
     <div id='description-<%= m[:name] %>' class='collapse accordion-body'>
-
       <%= raw m[:full_description] %>
+
+      <% unless m[:formats].blank? %>
+        <h3>Supported Formats</h3>
+        <%= m[:formats].join(', ') %>
+      <% end %>
+
       <% unless m[:errors].blank? %>
         <h3>Errors</h3>
         <% m[:errors].each do |err| %>

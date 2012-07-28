@@ -87,6 +87,7 @@ module Apipie
         :short_description => @_short_description,
         :full_description => @_full_description,
         :version => @_version,
+        :formats => @_formats,
         :methods => _methods
       }
     end
