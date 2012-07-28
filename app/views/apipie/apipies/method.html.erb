@@ -20,6 +20,11 @@
 <% end %>
 
 <div>
+  <% unless @method[:formats].blank? %>
+    <h2>Supported Formats</h2>
+    <%= @method[:formats].join(', ') %>
+  <% end %>
+
   <% unless @method[:see_url].blank? %>
     Also see <%= link_to @method[:see], @method[:see_url] %>.
   <% end %>

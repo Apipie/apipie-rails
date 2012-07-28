@@ -23,7 +23,7 @@ module Apipie
 
     end
 
-    attr_reader :full_description, :method, :resource, :apis, :examples, :see
+    attr_reader :full_description, :method, :resource, :apis, :examples, :see, :formats
 
     def initialize(method, resource, app)
       @method = method
@@ -31,6 +31,7 @@ module Apipie
 
       @apis = app.get_api_args
       @see = app.get_see
+      @formats = app.get_formats
 
       desc = app.get_description || ''
       @full_description = Apipie.markup_to_html(desc)
@@ -113,11 +114,16 @@ module Apipie
       @see
     end
 
+    def formats
+      @formats || @resource._formats
+    end
+
     def to_json
       {
         :doc_url => doc_url,
         :name => @method,
         :apis => method_apis_to_json,
+        :formats => formats,
         :full_description => @full_description,
         :errors => errors.map(&:to_json),
         :params => params_ordered.map(&:to_json).flatten,

@@ -66,6 +66,14 @@ module Apipie
       Apipie.add_example(example)
     end
 
+    # Describe available request/response formats
+    #
+    #   formats ['json', 'jsonp', 'xml']
+    def formats(formats) #:doc:
+      return unless Apipie.active_dsl?
+      Apipie.last_formats = formats
+    end
+
     # Describe possible errors
     #
     # Example:

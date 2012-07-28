@@ -1,15 +1,19 @@
 require 'spec_helper'
 
 def compare_hashes(h1, h2)
-  h1.each do |key, val|
-    if val.is_a? Hash
-      compare_hashes val, h2[key]
-    elsif val.is_a? Array
-      val.each_with_index do |v, i|
-        compare_hashes val[i], h2[key][i]
+  if h1.is_a? String
+    h1.should eq(h2)
+  else
+    h1.each do |key, val|
+      if val.is_a? Hash
+        compare_hashes val, h2[key]
+      elsif val.is_a? Array
+        val.each_with_index do |v, i|
+          compare_hashes val[i], h2[key][i]
+        end
+      else
+        val.should eq(h2[key])
       end
-    else
-      val.should eq(h2[key])
     end
   end
 end
@@ -34,6 +38,7 @@ describe UsersController do
       subject._path.should eq('/users')
       subject._version.should eq('1.0 - 3.4.2012')
       subject._name.should eq('Members')
+      subject._formats.should eq(['json'])
     end
 
     it "should contain params defined on resource level" do
@@ -202,6 +207,7 @@ describe UsersController do
     it "should contain basic info about method" do
       a = Apipie[UsersController, :create]
       a.apis.count.should == 1
+      a.formats.should eq(['json'])
       api = a.apis.first
       api.short_description.should eq("Create user")
       api.api_url.should eq("/api/users")
@@ -213,6 +219,7 @@ describe UsersController do
       b.resource._id.should eq('users')
 
       b.apis.count.should == 1
+      b.formats.should eq(['json', 'jsonp'])
       api = b.apis.first
       api.short_description.should eq("Show user profile")
       api.api_url.should eq("#{Apipie.configuration.api_base_url}/users/:id")
@@ -282,6 +289,7 @@ describe UsersController do
                     {:code=>500, :description=>"Server crashed for some <%= reason %>"}],
         :examples => [],
         :doc_url => "#{Apipie.configuration.doc_base_url}/users/two_urls",
+        :formats=>["json"],
         :full_description => '',
         :params => [{:full_name=>"oauth",
                      :required=>false,

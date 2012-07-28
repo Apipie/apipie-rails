@@ -5,6 +5,7 @@ class UsersController < ApplicationController
     short 'Site members'
     path '/users'
     version '1.0 - 3.4.2012'
+    formats ['json']
     param :id, Fixnum, :desc => "User ID", :required => false
     param :resource_param, Hash, :desc => 'Param description for all methods' do
       param :ausername, String, :desc => "Username for login", :required => true
@@ -165,6 +166,7 @@ class UsersController < ApplicationController
     More builder documentation can be found at http://builder.rubyforge.org.
   eos
   api :GET, "/users/:id", "Show user profile"
+  formats ['json', 'jsonp']
   error 401, "Unauthorized"
   error :code => 404, :description => "Not Found"
   param :id, Integer, :desc => "user id", :required => true

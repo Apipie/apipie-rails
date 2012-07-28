@@ -12,7 +12,7 @@ module Apipie
       end
     end
 
-    attr_accessor :last_api_args, :last_errors, :last_params, :last_description, :last_examples, :last_see
+    attr_accessor :last_api_args, :last_errors, :last_params, :last_description, :last_examples, :last_see, :last_formats
     attr_reader :method_descriptions, :resource_descriptions
 
     def initialize
@@ -109,6 +109,7 @@ module Apipie
       @last_description = nil
       @last_examples = []
       @last_see = nil
+      @last_formats = []
     end
 
     # Return the current description, clearing it in the process.
@@ -134,6 +135,12 @@ module Apipie
       see = @last_see
       @last_see = nil
       see
+    end
+
+    def get_formats
+      formats = @last_formats
+      @last_formats = nil
+      formats
     end
 
     def get_params

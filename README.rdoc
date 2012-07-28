@@ -108,6 +108,7 @@ be checked in every request.
 [short] One line short description.
 [path] Relative URL path of this resource.
 [version] Version of this resource API, use arbitrary string.
+[formats] Resource level request / response formats.
 [param] The very same parameter description as you will use method
         description. Generally use this for parameters that apply
         to every method in the controller (such as :user hash).
@@ -125,6 +126,7 @@ Example:
         short 'Site members'
         path '/users'
         version '1.0 - 3.4.2012'
+        formats ['json', 'xml']
         param :id, Fixnum, :desc => "User ID", :required => false
         param :user, Hash, :desc => 'Param description for all methods' do
           param :username, String, :required => true,
@@ -151,6 +153,7 @@ Then describe methods available to your API.
       You can use this +api+ method more than once for one method. It could
       be useful when there are more routes mapped to it.
 [param] Look at Parameter description section for details.
+[formats] Method level request / response formats.
 [error] Describe each possible error that can happend what calling this
         method. HTTP response code and description can be provided.
 [description] Full method description which will be converted to HTML by
@@ -173,6 +176,7 @@ Example:
      val == "param value" ? true : "The only good value is 'param value'."
    }, :desc => "proc validator"
    description "method description"
+   formats ['json', 'jsonp', 'xml']
    example " 'user': {...} "
    see "users#showme"
    def show

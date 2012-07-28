@@ -8,10 +8,11 @@ module Apipie
   # methods - array of keys to Apipie.method_descriptions (array of Apipie::MethodDescription)
   # name - human readable alias of resource (Articles)
   # id - resouce name
+  # formats - acceptable request/response format types
   class ResourceDescription
 
     attr_reader :controller, :_short_description, :_full_description, :_methods, :_id,
-      :_path, :_version, :_name, :_params_ordered, :_errors_ordered
+      :_path, :_version, :_name, :_params_ordered, :_errors_ordered, :_formats
 
     def initialize(controller, resource_name, &block)
       @_methods = []
@@ -25,6 +26,7 @@ module Apipie
       @_full_description = ""
       @_short_description = ""
       @_path = ""
+      @_formats = []
 
       block.arity < 1 ? instance_eval(&block) : block.call(self) if block_given?
     end
@@ -43,6 +45,8 @@ module Apipie
     def path(path); @_path = path; end
 
     def version(version); @_version = version; end
+
+    def formats(formats); @_formats = formats; end
 
     def name(name); @_name = name; end
 
@@ -83,6 +87,7 @@ module Apipie
         :short_description => @_short_description,
         :full_description => @_full_description,
         :version => @_version,
+        :formats => @_formats,
         :methods => _methods
       }
     end
