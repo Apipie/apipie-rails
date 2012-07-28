@@ -1,15 +1,19 @@
 require 'spec_helper'
 
 def compare_hashes(h1, h2)
-  h1.each do |key, val|
-    if val.is_a? Hash
-      compare_hashes val, h2[key]
-    elsif val.is_a? Array
-      val.each_with_index do |v, i|
-        compare_hashes val[i], h2[key][i]
+  if h1.is_a? String
+    h1.should eq(h2)
+  else
+    h1.each do |key, val|
+      if val.is_a? Hash
+        compare_hashes val, h2[key]
+      elsif val.is_a? Array
+        val.each_with_index do |v, i|
+          compare_hashes val[i], h2[key][i]
+        end
+      else
+        val.should eq(h2[key])
       end
-    else
-      val.should eq(h2[key])
     end
   end
 end
