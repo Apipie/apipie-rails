@@ -10,14 +10,16 @@
 
 Summary: Rails API documentation tool and client generator.
 Name: rubygem-%{gemname}
-Version: 0.0.7
-Release: 2%{?dist}
+Version: 0.0.9
+Release: 0%{?dist}
 Group: Development/Libraries
 License: MIT
 URL: http://github.com/Pajk/apipie-rails
 Source0: http://rubygems.org/downloads/%{gemname}-%{version}.gem
 Requires: ruby(abi) >= %{rubyabi}
+Requires: rubygems
 BuildRequires: ruby(abi) >= %{rubyabi}
+BuildRequires: rubygems
 BuildArch: noarch
 Provides: rubygem(%{gemname}) = %{version}
 
@@ -56,6 +58,7 @@ cp -a .%{gemdir}/* \
 %exclude %{geminstdir}/.rvmrc
 %exclude %{geminstdir}/.travis.yml
 %exclude %{geminstdir}/rubygem-apipie-rails.spec
+%exclude %{geminstdir}/.yardoc
 %exclude %{gemdir}/cache/%{gemname}-%{version}.gem
 %exclude %{gemdir}/doc/%{gemname}-%{version}
 
@@ -65,6 +68,13 @@ cp -a .%{gemdir}/* \
 %doc %{geminstdir}/NOTICE
 
 %changelog
+* Thu Jul 26 2012 Pavel Pokorný <pajkycz@gmail.com> 0.0.8-3
+- Require rubygems in spec file
+
+* Thu Jul 26 2012 Pavel Pokorný <pajkycz@gmail.com> 0.0.8-2
+- New version of apipie-rails gem
+- Generated client improvements
+
 * Thu Jul 26 2012 Pavel Pokorný <pajkycz@gmail.com> 0.0.7-2
 - removed doc files from rpm
 
