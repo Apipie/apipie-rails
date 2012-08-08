@@ -22,7 +22,6 @@ module <%= class_base %><%= class_suffix %>
 
       args = [method]
       args << payload.to_json if [:post, :put].include?(method)
-      # TODO: is #to_json neccessary? RestClient converts it automaticaly for me.
       args << headers if headers
       process_data client[path].send(*args)
     end
