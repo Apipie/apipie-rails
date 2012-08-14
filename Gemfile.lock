@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    apipie-rails (0.0.10)
+    apipie-rails (0.0.11)
 
 GEM
   remote: http://rubygems.org/
