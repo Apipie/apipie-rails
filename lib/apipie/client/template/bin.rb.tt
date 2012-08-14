@@ -34,11 +34,13 @@ module <%= class_base %>Cli
     class << self
       private
       def dispatch(task, given_args, given_options, config)
-        parser = Thor::Options.new({:username => Thor::Option.parse(%w[username -u], :string),
-                                   :password => Thor::Option.parse(%w[password -p], :string)})
+        parser = Thor::Options.new :auth => Thor::Option.parse(%w[auth -a], :string)
         opts = parser.parse(given_args)
-        <%= class_base %><%= class_suffix %>.client_config[:username] = opts["username"]
-        <%= class_base %><%= class_suffix %>.client_config[:password] = opts["password"]
+        if opts['auth']
+          username, password = opts['auth'].split(':')
+          <%= class_base %><%= class_suffix %>.client_config[:username] = username
+          <%= class_base %><%= class_suffix %>.client_config[:password] = password
+        end
         #remaining =  parser.instance_variable_get("@unknown") # TODO: this is an ugly hack :(
         remaining = parser.remaining
         super(task, remaining, given_options, config)
