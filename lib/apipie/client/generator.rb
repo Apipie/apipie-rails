@@ -101,7 +101,7 @@ module Apipie
 
       def client_args(method)
         client_args = params_in_path(method).dup
-        client_args << "params = {}" if method[:params].any?
+        client_args << "params = {}"
         client_args << 'headers = {}'
         client_args
       end
