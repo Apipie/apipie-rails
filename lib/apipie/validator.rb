@@ -47,6 +47,10 @@ module Apipie
         "TODO: validator description"
       end
 
+      def error
+        ParamInvalid.new(param_name, @error_value, description)
+      end
+
       def to_s
         self.description
       end
@@ -83,10 +87,6 @@ module Apipie
         end
       end
 
-      def error
-        ParamInvalid.new(param_name, @error_value, "Exepcting #{@type.name}, got #{@error_value.class.name}")
-      end
-
       def description
         "Parameter has to be #{@type}."
       end
@@ -118,10 +118,6 @@ module Apipie
         self.new(param_description, argument) if argument.is_a? Regexp
       end
 
-      def error
-        ParamInvalid.new(param_name, @error_value, "Does not match #{@regexp.source}")
-      end
-
       def description
         "Parameter has to match regular expression /#{@regexp.source}/."
       end
@@ -141,10 +137,6 @@ module Apipie
 
       def self.build(param_description, argument, options, proc)
         self.new(param_description, argument) if argument.is_a?(Array)
-      end
-
-      def error
-        ParamInvalid.new(param_name, @error_value, "Exepcting one of #{@array.map{|item| item.inspect}.join(',')}")
       end
 
       def description
@@ -202,10 +194,6 @@ module Apipie
         return true
       end
 
-      def error
-        ParamInvalid.new(param_name, @error_value, "Must be a hash")
-      end
-
       def description
         "Has to be hash."
       end
@@ -253,10 +241,6 @@ module Apipie
         end
       end
 
-      def error
-        ParamInvalid.new(param_name, @error_value, "Must be a number")
-      end
-
       def description
         "Has to be a number."
       end
@@ -276,10 +260,6 @@ module Apipie
         if argument == :bool
           self.new(param_description)
         end
-      end
-
-      def error
-        ParamInvalid.new(param_name, @error_value, "Must be 'true' or 'false'")
       end
 
       def description
