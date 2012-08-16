@@ -85,15 +85,15 @@ describe UsersController do
       end
 
       it "should fail if required parameter is missing" do
-        lambda { get :show, :id => 5 }.should raise_error(ArgumentError, / session /)
+        lambda { get :show, :id => 5 }.should raise_error(Apipie::ParamMissing, /\bsession\b/)
       end
 
-      it "should work with Type validator" do
+      it "should work with custom Type validator" do
         lambda {
           get :show,
               :id => "not a number",
               :session => "secret_hash"
-        }.should raise_error(ArgumentError, / id /)
+        }.should raise_error(ArgumentError, / id /) # old-style error rather than ParamInvalid
       end
 
       it "should work with Regexp validator" do
@@ -108,7 +108,7 @@ describe UsersController do
               :id => 5,
               :session => "secret_hash",
               :regexp_param => "ten years"
-        }.should raise_error(ArgumentError, / regexp_param /)
+        }.should raise_error(Apipie::ParamInvalid, / regexp_param /)
       end
 
       it "should work with Array validator" do
@@ -126,14 +126,14 @@ describe UsersController do
               :id => 5,
               :session => "secret_hash",
               :array_param => "blabla"
-        }.should raise_error(ArgumentError, / array_param /)
+        }.should raise_error(Apipie::ParamInvalid, / array_param /)
 
         lambda {
           get :show,
               :id => 5,
               :session => "secret_hash",
               :array_param => 3
-        }.should raise_error(ArgumentError, / array_param /)
+        }.should raise_error(Apipie::ParamInvalid, / array_param /)
       end
 
       it "should work with Proc validator" do
@@ -142,7 +142,7 @@ describe UsersController do
               :id => 5,
               :session => "secret_hash",
               :proc_param => "asdgsag"
-        }.should raise_error(ArgumentError, / proc_param /)
+        }.should raise_error(Apipie::ParamInvalid, / proc_param /)
 
         get :show,
             :id => 5,
@@ -167,11 +167,11 @@ describe UsersController do
 
         lambda {
           post :create, :user => { :name => "root", :pass => "12345", :membership => "____" }
-        }.should raise_error(ArgumentError, / membership /)
+        }.should raise_error(Apipie::ParamInvalid, / membership /)
 
         lambda {
           post :create, :user => { :name => "root" }
-        }.should raise_error(ArgumentError, / pass /)
+        }.should raise_error(Apipie::ParamInvalid, / pass /)
 
         post :create, :user => { :name => "root", :pass => "pwd" }
         assert_response :success
@@ -181,7 +181,7 @@ describe UsersController do
         params = Apipie[UsersController, :create].to_json[:params]
         params.should include(:name => "facts",
                               :full_name => "facts",
-                              :validator => "Parameter has to be Hash.",
+                              :validator => "Must be Hash",
                               :description => "\n<p>Additional optional facts about the user</p>\n",
                               :required => false,
                               :allow_nil => true,
@@ -294,11 +294,11 @@ describe UsersController do
         :params => [{:full_name=>"oauth",
                      :required=>false,
                      :allow_nil => false,
-                     :validator=>"Parameter has to be String.",
+                     :validator=>"Must be String",
                      :description=>"\n<p>Authorization</p>\n",
                      :name=>"oauth",
                      :expected_type=>"string"},
-                    {:validator=>"Has to be hash.",
+                    {:validator=>"Must be a Hash",
                      :description=>"\n<p>Param description for all methods</p>\n",
                      :expected_type=>"hash",
                      :allow_nil=>false,
@@ -308,13 +308,13 @@ describe UsersController do
                      :params=>
                       [{:required=>true,
                         :allow_nil => false,
-                        :validator=>"Parameter has to be String.",
+                        :validator=>"Must be String",
                         :description=>"\n<p>Username for login</p>\n",
                         :name=>"ausername", :full_name=>"resource_param[ausername]",
                         :expected_type=>"string"},
                        {:required=>true,
                         :allow_nil => false,
-                        :validator=>"Parameter has to be String.",
+                        :validator=>"Must be String",
                         :description=>"\n<p>Password for login</p>\n",
                         :name=>"apassword", :full_name=>"resource_param[apassword]",
                         :expected_type=>"string"}

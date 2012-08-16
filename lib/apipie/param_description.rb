@@ -37,7 +37,9 @@ module Apipie
     def validate(value)
       return true if @allow_nil && value.nil?
       unless @validator.valid?(value)
-        raise ArgumentError.new(@validator.error)
+        error = @validator.error
+        error = ArgumentError.new(error) unless error.is_a? Exception
+        raise error
       end
     end
 

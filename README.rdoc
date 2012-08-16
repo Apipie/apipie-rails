@@ -313,13 +313,8 @@ So we create apipie_validators.rb initializer with this content:
         end
       end
 
-      def error
-        "Parameter \#{@param_name} expecting to be \#{@type.name},
-        got: \#{@error_value.class.name}"
-      end
-
       def description
-        "Parameter has to be #{@type}."
+        "Must be #{@type}."
       end
     end
 

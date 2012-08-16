@@ -47,6 +47,10 @@ module Apipie
         "TODO: validator description"
       end
 
+      def error
+        ParamInvalid.new(param_name, @error_value, description)
+      end
+
       def to_s
         self.description
       end
@@ -83,12 +87,8 @@ module Apipie
         end
       end
 
-      def error
-        "Parameter #{param_name} expecting to be #{@type.name}, got: #{@error_value.class.name}"
-      end
-
       def description
-        "Parameter has to be #{@type}."
+        "Must be #{@type}"
       end
 
       def expected_type
@@ -118,12 +118,8 @@ module Apipie
         self.new(param_description, argument) if argument.is_a? Regexp
       end
 
-      def error
-        "Parameter #{param_name} expecting to match /#{@regexp.source}/, got '#{@error_value}'"
-      end
-
       def description
-        "Parameter has to match regular expression /#{@regexp.source}/."
+        "Must match regular expression /#{@regexp.source}/."
       end
     end
 
@@ -143,12 +139,8 @@ module Apipie
         self.new(param_description, argument) if argument.is_a?(Array)
       end
 
-      def error
-        "Parameter #{param_name} has bad value (#{@error_value.inspect}). Expecting one of: #{@array.join(',')}."
-      end
-
       def description
-        "Parameter has to be one of: #{@array.join(', ')}."
+        "Must be one of: #{@array.join(', ')}."
       end
     end
 
@@ -168,7 +160,7 @@ module Apipie
       end
 
       def error
-        "Parameter #{param_name} has bad value (\"#{@error_value}\"). #{@help}"
+        ParamInvalid.new(param_name, @error_value, @help)
       end
 
       def description
@@ -202,12 +194,8 @@ module Apipie
         return true
       end
 
-      def error
-        "Has to be hash."
-      end
-
       def description
-        "Has to be hash."
+        "Must be a Hash"
       end
 
       def param(param_name, *args, &block)
@@ -253,12 +241,8 @@ module Apipie
         end
       end
 
-      def error
-        "Parameter #{param_name} expecting to be a number, got: #{@error_value}"
-      end
-
       def description
-        "Has to be a number."
+        "Must be a number."
       end
 
       def self.validate(value)
@@ -278,12 +262,8 @@ module Apipie
         end
       end
 
-      def error
-        "Parameter #{param_name} expecting to be a boolean value, got: #{@error_value}"
-      end
-
       def description
-        "Has to be a boolean"
+        "Must be 'true' or 'false'"
       end
     end
 
