@@ -314,7 +314,7 @@ So we create apipie_validators.rb initializer with this content:
       end
 
       def description
-        "Parameter has to be #{@type}."
+        "Must be #{@type}."
       end
     end
 

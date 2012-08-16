@@ -88,7 +88,7 @@ module Apipie
       end
 
       def description
-        "Parameter has to be #{@type}."
+        "Must be #{@type}"
       end
 
       def expected_type
@@ -119,7 +119,7 @@ module Apipie
       end
 
       def description
-        "Parameter has to match regular expression /#{@regexp.source}/."
+        "Must match regular expression /#{@regexp.source}/."
       end
     end
 
@@ -140,7 +140,7 @@ module Apipie
       end
 
       def description
-        "Parameter has to be one of: #{@array.join(', ')}."
+        "Must be one of: #{@array.join(', ')}."
       end
     end
 
@@ -195,7 +195,7 @@ module Apipie
       end
 
       def description
-        "Has to be hash."
+        "Must be a Hash"
       end
 
       def param(param_name, *args, &block)
@@ -242,7 +242,7 @@ module Apipie
       end
 
       def description
-        "Has to be a number."
+        "Must be a number."
       end
 
       def self.validate(value)
@@ -263,7 +263,7 @@ module Apipie
       end
 
       def description
-        "Has to be a boolean"
+        "Must be 'true' or 'false'"
       end
     end
 
