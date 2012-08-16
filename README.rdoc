@@ -314,8 +314,7 @@ So we create apipie_validators.rb initializer with this content:
       end
 
       def error
-        "Parameter \#{@param_name} expecting to be \#{@type.name},
-        got: \#{@error_value.class.name}"
+        ParamInvalid.new(@param_name, @error_value, "Must be #{@type.name}, got #{@error_value.calss.name}")
       end
 
       def description

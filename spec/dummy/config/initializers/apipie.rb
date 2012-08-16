@@ -51,6 +51,8 @@ class Apipie::Validator::IntegerValidator < Apipie::Validator::BaseValidator
   end
 
   def error
+    # Newer style is to return an instance of ParamInvalid.  Keeping this
+    # to test backwards compatibility.
     "Parameter #{param_name} expecting to be #{@type.name}, got: #{@error_value.class.name}"
   end
 

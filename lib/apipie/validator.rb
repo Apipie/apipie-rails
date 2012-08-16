@@ -84,7 +84,7 @@ module Apipie
       end
 
       def error
-        "Parameter #{param_name} expecting to be #{@type.name}, got: #{@error_value.class.name}"
+        ParamInvalid.new(param_name, @error_value, "Exepcting #{@type.name}, got #{@error_value.class.name}")
       end
 
       def description
@@ -119,7 +119,7 @@ module Apipie
       end
 
       def error
-        "Parameter #{param_name} expecting to match /#{@regexp.source}/, got '#{@error_value}'"
+        ParamInvalid.new(param_name, @error_value, "Does not match #{@regexp.source}")
       end
 
       def description
@@ -144,7 +144,7 @@ module Apipie
       end
 
       def error
-        "Parameter #{param_name} has bad value (#{@error_value.inspect}). Expecting one of: #{@array.join(',')}."
+        ParamInvalid.new(param_name, @error_value, "Exepcting one of #{@array.map{|item| item.inspect}.join(',')}")
       end
 
       def description
@@ -168,7 +168,7 @@ module Apipie
       end
 
       def error
-        "Parameter #{param_name} has bad value (\"#{@error_value}\"). #{@help}"
+        ParamInvalid.new(param_name, @error_value, @help)
       end
 
       def description
@@ -203,7 +203,7 @@ module Apipie
       end
 
       def error
-        "Has to be hash."
+        ParamInvalid.new(param_name, @error_value, "Must be a hash")
       end
 
       def description
@@ -254,7 +254,7 @@ module Apipie
       end
 
       def error
-        "Parameter #{param_name} expecting to be a number, got: #{@error_value}"
+        ParamInvalid.new(param_name, @error_value, "Must be a number")
       end
 
       def description
@@ -279,7 +279,7 @@ module Apipie
       end
 
       def error
-        "Parameter #{param_name} expecting to be a boolean value, got: #{@error_value}"
+        ParamInvalid.new(param_name, @error_value, "Must be 'true' or 'false'")
       end
 
       def description

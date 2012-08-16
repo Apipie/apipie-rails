@@ -125,7 +125,7 @@ module Apipie
 
               # check if required parameters are present
               if param.required && !params.has_key?(param.name)
-                raise ArgumentError.new("Expecting #{param.name} parameter.")
+                raise ParamMissing.new(param.name)
               end
 
               # params validations
