@@ -263,8 +263,8 @@ describe UsersController do
 
     it "should contain all params description" do
       a = Apipie.get_method_description(UsersController, :show)
-      a.params.count.should == 8
-      a.instance_variable_get('@params_ordered').count.should == 6
+      a.params.count.should == 9
+      a.instance_variable_get('@params_ordered').count.should == 7
     end
 
     it "should contain all api method description" do
@@ -394,6 +394,10 @@ EOS2
       param = a.params[:proc_param]
       param.desc.should eq("\n<p>proc validator</p>\n")
       param.validator.class.should be(Apipie::Validator::ProcValidator)
+
+      param = a.params[:briefer_dsl]
+      param.desc.should eq("\n<p>You dont need :desc =&gt; from now</p>\n")
+      param.validator.class.should be(Apipie::Validator::TypeValidator)
     end
 
   end

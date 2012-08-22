@@ -97,9 +97,9 @@ module Apipie
     #     puts greeting
     #   end
     #
-    def param(param_name, *args, &block) #:doc:
+    def param(param_name, validator, desc_or_options = nil, options = {}, &block) #:doc:
       return unless Apipie.active_dsl?
-      Apipie.last_params << Apipie::ParamDescription.new(param_name, *args, &block)
+      Apipie.last_params << Apipie::ParamDescription.new(param_name, validator, desc_or_options, options, &block)
     end
 
     # create method api and redefine newly added method
