@@ -1,0 +1,70 @@
+<% @doc[:resources].sort_by(&:first).each do |key, resource| %>
+  <h4><a href='#<%= key %>'><%= resource[:name] %></a></h4>
+  <ul>
+    <% resource[:methods].each do |method| %>
+      <li><a href='#<%= key %>-<%= method[:name] %>'><%= method[:name] %></a></li>
+    <% end %>
+  </ul>
+<% end %>
+
+
+<% @doc[:resources].sort_by(&:first).each do |key, resource| %>
+
+  <hr/>
+
+  <div>
+    <h2 id="<%= key %>">
+      <a href='#<%= key %>'><%= resource[:name] %></a><br>
+      <small><%= raw resource[:short_description] %></small>
+    </h2>
+  </div>
+
+  <% unless resource[:full_description].blank? %>
+    <div><%= raw resource[:full_description] %></div>
+  <% end %>
+
+  <div>
+
+    <% resource[:methods].each do |method| %>
+      <hr/>
+
+      <h3 id="<%= "#{key}-#{method[:name]}" %>">
+      <a href='#<%= key %>'><%= resource[:name] %></a> / <a href='#<%= "#{key}-#{method[:name]}" %>'><%= method[:name] %></a>
+      </h3>
+
+      <div>
+        <% method[:apis].each do |api| %>
+          <h4>
+              <%= api[:http_method] %> <%= api[:api_url] %>
+            <br>
+            <small><%= raw api[:short_description] %></small>
+          </h4>
+        <% end %>
+      </div>
+
+      <div>
+        <%= raw method[:full_description] %>
+        <% unless method[:examples].blank? %>
+          <h4>Examples</h4>
+          <% method[:examples].each do |example| %>
+            <pre class="wiki"><%= example %></pre>
+          <% end %>
+        <% end %>
+
+        <% unless method[:errors].blank? %>
+          <h4>Errors</h4>
+          <% method[:errors].each do |err| %>
+            <%= err[:code] %>
+            <%= err[:description] %>
+            <br>
+          <% end %>
+        <% end %>
+
+        <% unless method[:params].blank? %>
+          <h4>Params</h4>
+          <%= render(:partial => "params_plain", :locals => {:params => method[:params]}) %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+<% end %>

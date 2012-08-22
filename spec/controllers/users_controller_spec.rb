@@ -1,15 +1,19 @@
 require 'spec_helper'
 
 def compare_hashes(h1, h2)
-  h1.each do |key, val|
-    if val.is_a? Hash
-      compare_hashes val, h2[key]
-    elsif val.is_a? Array
-      val.each_with_index do |v, i|
-        compare_hashes val[i], h2[key][i]
+  if h1.is_a? String
+    h1.should eq(h2)
+  else
+    h1.each do |key, val|
+      if val.is_a? Hash
+        compare_hashes val, h2[key]
+      elsif val.is_a? Array
+        val.each_with_index do |v, i|
+          compare_hashes val[i], h2[key][i]
+        end
+      else
+        val.should eq(h2[key])
       end
-    else
-      val.should eq(h2[key])
     end
   end
 end
@@ -17,7 +21,7 @@ end
 describe UsersController do
 
   describe "resource description" do
-    subject { a = Restapi.get_resource_description(UsersController) }
+    subject { a = Apipie.get_resource_description(UsersController) }
 
     it "should contain all resource methods" do
       methods = subject._methods
@@ -34,6 +38,7 @@ describe UsersController do
       subject._path.should eq('/users')
       subject._version.should eq('1.2.3')
       subject._name.should eq('Users')
+      subject._formats.should eq(['json'])
     end
 
     it "should contain params defined on resource level" do
@@ -43,21 +48,21 @@ describe UsersController do
       p.name.should eq(:id)
       p.desc.should eq("\n<p>User ID</p>\n")
       p.required.should eq(false)
-      p.validator.class.should eq(Restapi::Validator::IntegerValidator)
+      p.validator.class.should eq(Apipie::Validator::IntegerValidator)
 
       p = subject._params_ordered.second
       p.should_not be(nil)
       p.name.should eq(:resource_param)
       p.desc.should eq("\n<p>Param description for all methods</p>\n")
       p.required.should eq(false)
-      p.validator.class.should eq(Restapi::Validator::HashValidator)
+      p.validator.class.should eq(Apipie::Validator::HashValidator)
     end
   end
 
   describe "validators" do
 
     context "validations are disabled" do
-      before { Restapi.configuration.validate = false }
+      before { Apipie.configuration.validate = false }
 
       it "should reply to valid request" do
         get :show, :id => '5', :session => "secret_hash"
@@ -72,7 +77,7 @@ describe UsersController do
 
 
     context "validations are enabled" do
-      before { Restapi.configuration.validate = true }
+      before { Apipie.configuration.validate = true }
 
       it "should reply to valid request" do
         get :show, :id => '5', :session => "secret_hash"
@@ -80,15 +85,15 @@ describe UsersController do
       end
 
       it "should fail if required parameter is missing" do
-        lambda { get :show, :id => 5 }.should raise_error(ArgumentError, / session /)
+        lambda { get :show, :id => 5 }.should raise_error(Apipie::ParamMissing, /\bsession\b/)
       end
 
-      it "should work with Type validator" do
+      it "should work with custom Type validator" do
         lambda {
           get :show,
               :id => "not a number",
               :session => "secret_hash"
-        }.should raise_error(ArgumentError, / id /)
+        }.should raise_error(ArgumentError, / id /) # old-style error rather than ParamInvalid
       end
 
       it "should work with Regexp validator" do
@@ -103,7 +108,7 @@ describe UsersController do
               :id => 5,
               :session => "secret_hash",
               :regexp_param => "ten years"
-        }.should raise_error(ArgumentError, / regexp_param /)
+        }.should raise_error(Apipie::ParamInvalid, / regexp_param /)
       end
 
       it "should work with Array validator" do
@@ -121,14 +126,14 @@ describe UsersController do
               :id => 5,
               :session => "secret_hash",
               :array_param => "blabla"
-        }.should raise_error(ArgumentError, / array_param /)
+        }.should raise_error(Apipie::ParamInvalid, / array_param /)
 
         lambda {
           get :show,
               :id => 5,
               :session => "secret_hash",
               :array_param => 3
-        }.should raise_error(ArgumentError, / array_param /)
+        }.should raise_error(Apipie::ParamInvalid, / array_param /)
       end
 
       it "should work with Proc validator" do
@@ -137,7 +142,7 @@ describe UsersController do
               :id => 5,
               :session => "secret_hash",
               :proc_param => "asdgsag"
-        }.should raise_error(ArgumentError, / proc_param /)
+        }.should raise_error(Apipie::ParamInvalid, / proc_param /)
 
         get :show,
             :id => 5,
@@ -150,10 +155,10 @@ describe UsersController do
         post :create, :user => { :name => "root", :pass => "12345", :membership => "standard" }
         assert_response :success
 
-        a = Restapi[UsersController, :create]
+        a = Apipie[UsersController, :create]
         param = a.params_ordered.select {|p| p.name == :user }
         param.count.should == 1
-        param.first.validator.class.should eq(Restapi::Validator::HashValidator)
+        param.first.validator.class.should eq(Apipie::Validator::HashValidator)
         hash_params = param.first.validator.hash_params_ordered
         hash_params.count.should == 3
         hash_params[0].name == :name
@@ -162,21 +167,21 @@ describe UsersController do
 
         lambda {
           post :create, :user => { :name => "root", :pass => "12345", :membership => "____" }
-        }.should raise_error(ArgumentError, / membership /)
+        }.should raise_error(Apipie::ParamInvalid, / membership /)
 
         lambda {
           post :create, :user => { :name => "root" }
-        }.should raise_error(ArgumentError, / pass /)
+        }.should raise_error(Apipie::ParamInvalid, / pass /)
 
         post :create, :user => { :name => "root", :pass => "pwd" }
         assert_response :success
       end
 
       it "should support Hash validator without specifying keys" do
-        params = Restapi[UsersController, :create].to_json[:params]
+        params = Apipie[UsersController, :create].to_json[:params]
         params.should include(:name => "facts",
                               :full_name => "facts",
-                              :validator => "Parameter has to be Hash.",
+                              :validator => "Must be Hash",
                               :description => "\n<p>Additional optional facts about the user</p>\n",
                               :required => false,
                               :allow_nil => true,
@@ -200,22 +205,24 @@ describe UsersController do
   describe "method description" do
 
     it "should contain basic info about method" do
-      a = Restapi[UsersController, :create]
+      a = Apipie[UsersController, :create]
       a.apis.count.should == 1
+      a.formats.should eq(['json'])
       api = a.apis.first
       api.short_description.should eq("Create user")
       api.api_url.should eq("/api/users")
       api.http_method.should eq("POST")
 
-      b = Restapi.get_method_description(UsersController, :show)
-      b.should eq(Restapi[UsersController, :show])
+      b = Apipie.get_method_description(UsersController, :show)
+      b.should eq(Apipie[UsersController, :show])
       b.method.should eq(:show)
       b.resource._id.should eq('users')
 
       b.apis.count.should == 1
+      b.formats.should eq(['json', 'jsonp'])
       api = b.apis.first
       api.short_description.should eq("Show user profile")
-      api.api_url.should eq("#{Restapi.configuration.api_base_url}/users/:id")
+      api.api_url.should eq("#{Apipie.configuration.api_base_url}/users/:id")
       api.http_method.should eq("GET")
       b.full_description.length.should be > 400
     end
@@ -224,16 +231,16 @@ describe UsersController do
 
       context "the key is valid" do 
         it "should contain reference to another method" do
-          api = Restapi[UsersController, :see_another]
+          api = Apipie[UsersController, :see_another]
           api.see.should eq('users#create')
-          Restapi['users#see_another'].should eq(Restapi[UsersController, :see_another])
-          api.see_url.should eq(Restapi[UsersController, :create].doc_url)
+          Apipie['users#see_another'].should eq(Apipie[UsersController, :see_another])
+          api.see_url.should eq(Apipie[UsersController, :create].doc_url)
         end
       end
 
       context "the key is not valid" do
         it "should raise exception" do
-          api = Restapi[UsersController, :see_another]
+          api = Apipie[UsersController, :see_another]
           api.instance_variable_set :@see, 'doesnot#exist'
           lambda {
             api.see_url
@@ -244,23 +251,25 @@ describe UsersController do
     end
 
     it "should contain possible errors description" do
-      a = Restapi.get_method_description(UsersController, :show)
+      a = Apipie.get_method_description(UsersController, :show)
 
-      a.errors[0].code.should eq(401)
-      a.errors[0].description.should eq("Unauthorized")
-      a.errors[1].code.should eq(404)
-      a.errors[1].description.should eq("Not Found")
+      a.errors[0].code.should eq(500)
+      a.errors[0].description.should include("crashed")
+      a.errors[1].code.should eq(401)
+      a.errors[1].description.should eq("Unauthorized")
+      a.errors[2].code.should eq(404)
+      a.errors[2].description.should eq("Not Found")
     end
 
     it "should contain all params description" do
-      a = Restapi.get_method_description(UsersController, :show)
-      a.params.count.should == 8
-      a.instance_variable_get('@params_ordered').count.should == 6
+      a = Apipie.get_method_description(UsersController, :show)
+      a.params.count.should == 9
+      a.instance_variable_get('@params_ordered').count.should == 7
     end
 
     it "should contain all api method description" do
-      method_description = Restapi[UsersController, :two_urls]
-      method_description.class.should be(Restapi::MethodDescription)
+      method_description = Apipie[UsersController, :two_urls]
+      method_description.class.should be(Apipie::MethodDescription)
       method_description.apis.count.should == 2
       a1, a2 = method_description.apis
 
@@ -274,20 +283,22 @@ describe UsersController do
     end
 
     it "should be described by valid json" do
-      json = Restapi[UsersController, :two_urls].to_json
+      json = Apipie[UsersController, :two_urls].to_json
       expected_hash = {
-        :errors => [],
+        :errors => [{:code=>404, :description=>"Missing"},
+                    {:code=>500, :description=>"Server crashed for some <%= reason %>"}],
         :examples => [],
-        :doc_url => "#{Restapi.configuration.doc_base_url}/users/two_urls",
+        :doc_url => "#{Apipie.configuration.doc_base_url}/users/two_urls",
+        :formats=>["json"],
         :full_description => '',
         :params => [{:full_name=>"oauth",
                      :required=>false,
                      :allow_nil => false,
-                     :validator=>"Parameter has to be String.",
+                     :validator=>"Must be String",
                      :description=>"\n<p>Authorization</p>\n",
                      :name=>"oauth",
                      :expected_type=>"string"},
-                    {:validator=>"Has to be hash.",
+                    {:validator=>"Must be a Hash",
                      :description=>"\n<p>Param description for all methods</p>\n",
                      :expected_type=>"hash",
                      :allow_nil=>false,
@@ -297,13 +308,13 @@ describe UsersController do
                      :params=>
                       [{:required=>true,
                         :allow_nil => false,
-                        :validator=>"Parameter has to be String.",
+                        :validator=>"Must be String",
                         :description=>"\n<p>Username for login</p>\n",
                         :name=>"ausername", :full_name=>"resource_param[ausername]",
                         :expected_type=>"string"},
                        {:required=>true,
                         :allow_nil => false,
-                        :validator=>"Parameter has to be String.",
+                        :validator=>"Must be String",
                         :description=>"\n<p>Password for login</p>\n",
                         :name=>"apassword", :full_name=>"resource_param[apassword]",
                         :expected_type=>"string"}
@@ -320,11 +331,11 @@ describe UsersController do
           {
             :http_method => 'GET',
             :short_description => 'Get company users',
-            :api_url => "#{Restapi.configuration.api_base_url}/company_users"
+            :api_url => "#{Apipie.configuration.api_base_url}/company_users"
           },{
             :http_method => 'GET',
             :short_description => 'Get users working in given company',
-            :api_url =>"#{Restapi.configuration.api_base_url}/company/:id/users"
+            :api_url =>"#{Apipie.configuration.api_base_url}/company/:id/users"
           }
         ]
       }
@@ -337,7 +348,7 @@ describe UsersController do
   describe "examples" do
 
     it "should be able to load examples from yml file" do
-      Restapi.get_method_description(UsersController, :show).examples.should == [<<EOS1, <<EOS2].map(&:chomp)
+      Apipie.get_method_description(UsersController, :show).examples.should == [<<EOS1, <<EOS2].map(&:chomp)
 GET /users/14?verbose=true
 200
 {
@@ -353,38 +364,41 @@ EOS2
   describe "param description" do
 
     it "should contain all specified information" do
-      a = Restapi.get_method_description(UsersController, :show)
+      a = Apipie.get_method_description(UsersController, :show)
 
       param = a.params[:session]
       param.required.should eq(true)
       param.desc.should eq("\n<p>user is logged in</p>\n")
-      param.validator.class.should be(Restapi::Validator::TypeValidator)
+      param.validator.class.should be(Apipie::Validator::TypeValidator)
       param.validator.instance_variable_get("@type").should eq(String)
 
       param = a.params[:id]
       param.required.should eq(true)
       param.desc.should eq("\n<p>user id</p>\n")
-      param.validator.class.should be(Restapi::Validator::IntegerValidator)
+      param.validator.class.should be(Apipie::Validator::IntegerValidator)
       param.validator.instance_variable_get("@type").should eq(Integer)
 
       param = a.params[:regexp_param]
       param.desc.should eq("\n<p>regexp param</p>\n")
       param.required.should eq(false)
-      param.validator.class.should be(Restapi::Validator::RegexpValidator)
+      param.validator.class.should be(Apipie::Validator::RegexpValidator)
       param.validator.instance_variable_get("@regexp").should
         eq(/^[0-9]* years/)
 
       param = a.params[:array_param]
       param.desc.should eq("\n<p>array validator</p>\n")
-      param.validator.class.should be(Restapi::Validator::ArrayValidator)
+      param.validator.class.should be(Apipie::Validator::ArrayValidator)
       param.validator.instance_variable_get("@array").should
         eq([100, "one", "two", 1, 2])
 
       param = a.params[:proc_param]
       param.desc.should eq("\n<p>proc validator</p>\n")
-      param.validator.class.should be(Restapi::Validator::ProcValidator)
+      param.validator.class.should be(Apipie::Validator::ProcValidator)
+
+      param = a.params[:briefer_dsl]
+      param.desc.should eq("\n<p>You dont need :desc =&gt; from now</p>\n")
+      param.validator.class.should be(Apipie::Validator::TypeValidator)
     end
 
   end
-
 end

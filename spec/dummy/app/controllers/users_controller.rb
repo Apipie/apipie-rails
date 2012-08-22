@@ -3,12 +3,15 @@ class UsersController < ApplicationController
   resource_description do
     short 'Site members'
     path '/users'
+    formats ['json']
     param :id, Fixnum, :desc => "User ID", :required => false
     param :resource_param, Hash, :desc => 'Param description for all methods' do
       param :ausername, String, :desc => "Username for login", :required => true
       param :apassword, String, :desc => "Password for login", :required => true
     end
     version "1.2.3"
+    error 404, "Missing"
+    error 500, "Server crashed for some <%= reason %>"
     description <<-EOS
       == Long description
 
@@ -162,6 +165,7 @@ class UsersController < ApplicationController
     More builder documentation can be found at http://builder.rubyforge.org.
   eos
   api :GET, "/users/:id", "Show user profile"
+  formats ['json', 'jsonp']
   error 401, "Unauthorized"
   error :code => 404, :description => "Not Found"
   param :id, Integer, :desc => "user id", :required => true
@@ -172,6 +176,7 @@ class UsersController < ApplicationController
   param :proc_param, lambda { |val|
     val == "param value" ? true : "The only good value is 'param value'."
   }, :desc => "proc validator"
+  param :briefer_dsl, String, "You dont need :desc => from now"
   def show
     unless params[:session] == "secret_hash"
       render :text => "Not authorized", :status => 401

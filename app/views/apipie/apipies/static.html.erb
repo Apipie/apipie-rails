@@ -1,0 +1,101 @@
+<% @doc[:resources].sort_by(&:first).each do |key, resource| %>
+  <h4><a href='#<%= key %>'><%= resource[:name] %></a></h4>
+  <ul>
+    <% resource[:methods].each do |method| %>
+      <li><a href='#<%= key %>-<%= method[:name] %>'><%= method[:name] %></a></li>
+    <% end %>
+  </ul>
+<% end %>
+
+
+
+<div><%= @doc[:info].html_safe %></div>
+
+<hr>
+
+<% @doc[:resources].sort_by(&:first).each do |key, resource| %>
+
+  <ul class='breadcrumb'  id='<%= key %>'>
+    <li><a href='#'><%= @doc[:name] %></a><span class='divider'>/</span></li>
+    <li class='active'><%= resource[:name] %></li>
+  </ul>
+
+  <div class='page-header'>
+    <h1>
+      <a href='#<%= key %>'><%= resource[:name] %></a><br>
+      <small><%= raw resource[:short_description] %></small>
+    </h1>
+  </div>
+
+  <% unless resource[:full_description].blank? %>
+    <div><%= raw resource[:full_description] %></div>
+  <% end %>
+
+  <div class='accordion' id='accordion'>
+
+    <% resource[:methods].each do |method| %>
+      <hr>
+
+      <ul class='breadcrumb' id='<%= key %>-<%= method[:name] %>'>
+        <li>
+          <a href='#'><%= @doc[:name] %></a>
+          <span class='divider'>/</span>
+        </li>
+        <li>
+          <a href='#<%= key %>'><%= resource[:name] %></a>
+          <span class='divider'>/</span>
+        </li>
+        <li class='active'><%= method[:name] %></li>
+      </ul>
+
+      <div>
+        <% method[:apis].each do |api| %>
+          <h3>
+            <a href='#<%= key %>-<%= method[:name] %>'>
+              <%= api[:http_method] %> <%= api[:api_url] %>
+            </a><br>
+            <small><%= raw api[:short_description] %></small>
+          </h3>
+        <% end %>
+      </div>
+
+      <div>
+        <%= raw method[:full_description] %>
+        <% unless method[:examples].blank? %>
+          <h2>Examples</h2>
+          <% method[:examples].each do |example| %>
+            <pre><%= example %></pre>
+          <% end %>
+        <% end %>
+
+        <% unless method[:errors].blank? %>
+          <h2>Errors</h2>
+          <% method[:errors].each do |err| %>
+            <%= err[:code] %>
+            <%= err[:description] %>
+            <br>
+          <% end %>
+        <% end %>
+
+        <% unless method[:params].blank? %>
+          <h2>Params</h2>
+          <table class='table'>
+            <thead>
+              <tr>
+                <th>Param name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <%= render(:partial => "params", :locals => {:params => method[:params]}) %>
+            </tbody>
+          </table>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+
+<% content_for :apipie_footer do %>
+  <%= raw @doc[:copyright] %>
+<% end %>

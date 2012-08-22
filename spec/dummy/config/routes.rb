@@ -15,7 +15,7 @@ Dummy::Application.routes.draw do
       end
     end
 
-    restapi
+    apipie
   end
-  root :to => 'restapi/restapis#index'
+  root :to => 'apipie/apipies#index'
 end
