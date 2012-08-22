@@ -28,6 +28,10 @@ Apipie.configure do |config|
 
   path = File.expand_path(File.dirname(__FILE__)+'/../../../../README.rdoc')
   config.app_info = File.read(path)
+
+  # set all parameters as required by default
+  # if enabled, use param :name, val, :required => false for optional params
+  config.required_by_default = false
 end
 
 

@@ -27,9 +27,10 @@ module Apipie
 
   class Configuration
     attr_accessor :app_name, :app_info, :copyright, :markup,
-      :validate, :api_base_url, :doc_base_url
+      :validate, :api_base_url, :doc_base_url, :required_by_default
 
     alias_method :validate?, :validate
+    alias_method :required_by_default?, :required_by_default
 
     # matcher to be used in Dir.glob to find controllers to be reloaded e.g.
     #
@@ -97,6 +98,7 @@ module Apipie
       @app_info = "Another API description"
       @copyright = nil
       @validate = true
+      @required_by_default = false
       @api_base_url = ""
       @doc_base_url = "/apipie"
     end

@@ -22,9 +22,15 @@ module Apipie
         raise ArgumentError.new("param description: expected description or options as 3rd parameter")
       end
 
+      options.symbolize_keys!
+
       @name = name
       @desc = Apipie.markup_to_html(options[:desc] || '')
-      @required = options[:required] || false
+      @required = if options.has_key? :required
+        options[:required]
+      else
+        Apipie.configuration.required_by_default?
+      end
       @allow_nil = options[:allow_nil] || false
 
       @validator = nil
