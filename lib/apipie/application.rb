@@ -220,7 +220,7 @@ module Apipie
         return nil if klass == ActionController::Base
         klass.controller_path.gsub '/', '_'
       else
-        raise "Restapi: Can not resolve resource #{klass} name."
+        raise "Apipie: Can not resolve resource #{klass} name."
       end
     end
 
