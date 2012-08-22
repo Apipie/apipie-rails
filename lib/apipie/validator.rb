@@ -198,8 +198,8 @@ module Apipie
         "Must be a Hash"
       end
 
-      def param(param_name, *args, &block)
-        param_description = Apipie::ParamDescription.new(param_name, *args, &block)
+      def param(param_name, validator, desc_or_options = nil, options = {}, &block)
+        param_description = Apipie::ParamDescription.new(param_name, validator, desc_or_options, options, &block)
         param_description.parent = self.param_description
         @hash_params_ordered << param_description
         @hash_params[param_name.to_sym] = param_description
