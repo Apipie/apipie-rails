@@ -5,6 +5,8 @@ module Apipie
   # DSL is a module that provides #api, #error, #param, #error.
   module DSL
 
+    attr_reader :apipie_resource_description
+
     private
 
     # Describe whole resource
@@ -17,8 +19,7 @@ module Apipie
     # EOS
     def resource_description(options = {}, &block) #:doc:
       return unless Apipie.active_dsl?
-      Apipie.remove_resource_description(self)
-      Apipie.define_resource_description(self, &block) if block_given?
+      @apipie_resource_description = Apipie.define_resource_description(self, &block) if block_given?
     end
 
     # Declare an api.

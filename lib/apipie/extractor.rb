@@ -56,7 +56,7 @@ module Apipie
       def apis_from_routes
         return @apis_from_routes if @apis_from_routes
 
-        api_prefix = Apipie.configuration.api_base_url.sub(/\/$/,"")
+        api_prefix = Apipie.api_base_url.sub(/\/$/,"")
         all_routes = Rails.application.routes.routes.map do |r|
           {
             :verb => case r.verb
@@ -74,7 +74,7 @@ module Apipie
 
         end
         api_routes = all_routes.find_all do |r|
-          r[:path].starts_with?(Apipie.configuration.api_base_url)
+          r[:path].starts_with?(Apipie.api_base_url)
         end
 
         @apis_from_routes = Hash.new { |h, k| h[k] = [] }

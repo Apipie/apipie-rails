@@ -15,13 +15,14 @@ module Apipie
       :_path, :_version, :_name, :_params_ordered, :_errors_ordered, :_formats, :_parent
 
     def initialize(controller, resource_name, &block)
-      @_methods = []
+
+      @_methods = HashWithIndifferentAccess.new
       @_params_ordered = []
       @_errors_ordered = []
 
       @controller = controller
       @_id = resource_name
-      @_version = nil 
+      @_version = nil
       @_name = @_id.humanize
       @_full_description = ""
       @_short_description = ""
@@ -30,6 +31,14 @@ module Apipie
       @_formats = []
 
       block.arity < 1 ? instance_eval(&block) : block.call(self) if block_given?
+    end
+
+    def app_info(description)
+      Apipie.configuration.app_info[_version] = description
+    end
+
+    def api_base_url(url)
+      Apipie.configuration.api_base_url[_version] = url
     end
 
     def param(param_name, validator, desc_or_options = nil, options = {}, &block)
@@ -42,13 +51,12 @@ module Apipie
       @_errors_ordered << error_description
     end
 
-
     def path(path); @_path = path; end
 
     def version(version); @_version = version; end
 
     def _version
-      @_version || @_parent.try(:_version)
+      @_version || @_parent.try(:_version) || Apipie.configuration.default_version
     end
 
     def formats(formats); @_formats = formats; end
@@ -65,24 +73,26 @@ module Apipie
     alias :description :desc
     alias :full_description :desc
 
-    # add description of resource method
-    def add_method(mapi_key)
-      @_methods << mapi_key
-      @_methods.uniq!
+    def add_method_description(method_description)
+      @_methods[method_description.method] = method_description
+      # puts "adding #{method_description.method} to #{self._version} #{self._name}"
     end
 
     def doc_url
-      Apipie.full_url(@_id)
+      crumbs = []
+      crumbs << _version if Apipie.configuration.version_in_url
+      crumbs << @_id
+      Apipie.full_url crumbs.join('/')
     end
 
-    def api_url; "#{Apipie.configuration.api_base_url}#{@_path}"; end
+    def api_url; "#{Apipie.api_base_url(_version)}#{@_path}"; end
 
     def to_json(method_name = nil)
 
       _methods = if method_name.blank?
-        @_methods.collect { |key| Apipie.method_descriptions[key].to_json }
+        @_methods.collect { |key, method_description| method_description.to_json}
       else
-        [Apipie.method_descriptions[Apipie.construct_method_key(@_id, method_name)].to_json]
+        [@_methods[method_name].to_json]
       end
 
       {

@@ -9,7 +9,7 @@ class UsersController < ApplicationController
       param :ausername, String, :desc => "Username for login", :required => true
       param :apassword, String, :desc => "Password for login", :required => true
     end
-    version "1.2.3"
+    version "development"
     error 404, "Missing"
     error 500, "Server crashed for some <%= reason %>"
     description <<-EOS
@@ -219,7 +219,7 @@ class UsersController < ApplicationController
   end
 
   api :GET, '/users/see_another', 'Boring method'
-  see 'users#create'
+  see 'development#users#create'
   desc 'This method is boring, look at users#create'
   def see_another
     render :text => 'This is very similar to create action'

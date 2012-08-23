@@ -5,20 +5,12 @@ module Apipie
 
     class Api
 
-      attr_accessor :short_description, :api_url, :http_method
+      attr_accessor :short_description, :path, :http_method
 
       def initialize(method, path, desc)
         @http_method = method.to_s
-        @api_url = create_api_url(path)
+        @path = path
         @short_description = desc
-      end
-
-      private
-
-      def create_api_url(path)
-        path = "#{Apipie.configuration.api_base_url}#{path}"
-        path = path[0..-2] if path[-1..-1] == '/'
-        return path
       end
 
     end
@@ -45,7 +37,6 @@ module Apipie
       if parent != ActionController::Base
         @parent_resource = parent.controller_name
       end
-      @resource.add_method(id)
     end
 
     def id
@@ -87,13 +78,23 @@ module Apipie
     end
 
     def doc_url
-      Apipie.full_url("#{@resource._id}/#{@method}")
+      crumbs = []
+      crumbs << @resource._version if Apipie.configuration.version_in_url
+      crumbs << @resource._id
+      crumbs << @method
+      Apipie.full_url crumbs.join('/')
+    end
+
+    def create_api_url(api)
+      path = "#{Apipie.api_base_url(@resource._version)}#{api.path}"
+      path = path[0..-2] if path[-1..-1] == '/'
+      return path
     end
 
     def method_apis_to_json
       @apis.each.collect do |api|
         {
-          :api_url => api.api_url,
+          :api_url => create_api_url(api),
           :http_method => api.http_method.to_s,
           :short_description => api.short_description
         }

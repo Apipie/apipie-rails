@@ -13,31 +13,37 @@ module Apipie
     end
 
     attr_accessor :last_api_args, :last_errors, :last_params, :last_description, :last_examples, :last_see, :last_formats
-    attr_reader :method_descriptions, :resource_descriptions
+    attr_reader :resource_descriptions
 
     def initialize
       super
-      @method_descriptions = Hash.new
-      @resource_descriptions = Hash.new
+      @resource_descriptions = HashWithIndifferentAccess.new
       clear_last
+    end
+
+    def available_versions
+      @resource_descriptions.keys.sort
     end
 
     # create new method api description
     def define_method_description(controller, method_name)
-      resource = define_resource_description(controller)
-
-      method_description = Apipie::MethodDescription.new(method_name, resource, self)
-      key = construct_method_key(controller, method_name)
-
-      @method_descriptions[key] ||= method_description
+      resource_description = get_resource_description(controller)
+      if resource_description.nil?
+        resource_description = define_resource_description(controller)
+      end
+      method_description = Apipie::MethodDescription.new(method_name, resource_description, self)
+      resource_description.add_method_description(method_description)
     end
 
     # create new resource api description
     def define_resource_description(controller, &block)
       resource_name = get_resource_name(controller)
+      resource_description = Apipie::ResourceDescription.new(controller, resource_name, &block)
+      version = get_resource_version(resource_description)
 
-      @resource_descriptions[resource_name] ||=
-        Apipie::ResourceDescription.new(controller, resource_name, &block)
+      @resource_descriptions[version] ||= {}
+      Apipie.debug("@resource_descriptions[#{version}][#{resource_name}] = #{resource_description}")
+      @resource_descriptions[version][resource_name] ||= resource_description
     end
 
     def add_method_description_args(method, path, desc)
@@ -57,35 +63,59 @@ module Apipie
     #
     # There are two ways how this method can be used:
     # 1) Specify both parameters
-    #   resource_name: controller class or string with resource name (plural)
+    #   resource_name:
+    #       controller class - UsersController
+    #       string with resource name (plural) and version - "v1#users"
     #   method_name: name of the method (string or symbol)
+    #
     # 2) Specify only first parameter:
     #   resource_name: string containing both resource and method name joined
-    #   with # (eg. "users#create")
+    #   with '#' symbol.
+    #   - "users#create" get default version
+    #   - "v2#users#create" get specific version
     def get_method_description(resource_name, method_name = nil)
-      resource_name = get_resource_name(resource_name)
-      key = method_name.blank? ? resource_name : construct_method_key(resource_name, method_name)
-      @method_descriptions[key]
+      if resource_name.is_a?(String)
+        crumbs = resource_name.split('#')
+        if crumbs.size == 2
+          resource_description = get_resource_description(resource_name)
+        elsif crumbs.size == 3
+          method_name = crumbs.pop
+          resource_description = get_resource_description(crumbs.join('#'))
+        end
+      elsif resource_name.respond_to? :apipie_resource_description
+        resource_description = get_resource_description(resource_name)
+      else
+        raise ArgumentError.new("Resource #{resource_name} does not exists.")
+      end
+      unless resource_description.nil?
+        resource_description._methods[method_name.to_sym]
+      end
     end
     alias :[] :get_method_description
 
-    # get api for given resource
-    def get_resource_description(resource_name)
-      resource_name = get_resource_name(resource_name)
-      nil if resource_name.nil?
-      @resource_descriptions[resource_name]
+    # options:
+    # => "users"
+    # => "v2#users"
+    # =>  V2::UsersController
+    def get_resource_description(resource)
+      if resource.is_a?(String)
+        crumbs = resource.split('#')
+        if crumbs.size == 1
+          @resource_descriptions[Apipie.configuration.default_version][resource]
+        elsif crumbs.size == 2 && @resource_descriptions.has_key?(crumbs.first)
+          @resource_descriptions[crumbs.first][crumbs.last]
+        end
+      elsif resource.respond_to?(:apipie_resource_description)
+        return nil if resource == ActionController::Base
+        resource.apipie_resource_description
+      end
     end
 
-    def remove_method_description(resource_name, method_name)
-      resource_name = get_resource_name(resource_name)
-
-      @method_descriptions.delete construct_method_key(resource_name, method_name)
-    end
-
-    def remove_resource_description(resource_name)
-      resource_name = get_resource_name(resource_name)
-
-      @resource_descriptions.delete resource_name
+    def remove_method_description(resource, method_name)
+      resource_description = get_resource_description(resource)
+      if resource_description && resource_description._methods.has_key?(method_name)
+        resource_description._methods.delete method_name
+      end
     end
 
     # Clear all apis in this application.
@@ -163,26 +193,28 @@ module Apipie
       @recorded_examples = nil
     end
 
-    def to_json(resource_name, method_name)
+    def to_json(version, resource_name, method_name)
 
       _resources = if resource_name.blank?
         # take just resources which have some methods because
         # we dont want to show eg ApplicationController as resource
-        resource_descriptions.inject({}) do |result, (k,v)|
+        resource_descriptions[version].inject({}) do |result, (k,v)|
           result[k] = v.to_json unless v._methods.blank?
           result
         end
       else
-        [@resource_descriptions[resource_name].to_json(method_name)]
+        [@resource_descriptions[version][resource_name].to_json(method_name)]
       end
+
+      url_args = Apipie.configuration.version_in_url ? version : ''
 
       {
         :docs => {
           :name => Apipie.configuration.app_name,
-          :info => Apipie.configuration.app_info,
+          :info => Apipie.app_info(version),
           :copyright => Apipie.configuration.copyright,
-          :doc_url => Apipie.full_url(""),
-          :api_url => Apipie.configuration.api_base_url,
+          :doc_url => Apipie.full_url(url_args),
+          :api_url => Apipie.api_base_url(version),
           :resources => _resources
         }
       }
@@ -206,21 +238,24 @@ module Apipie
       Apipie.configuration.validate? || ! Apipie.configuration.use_cache? || Apipie.configuration.force_dsl?
     end
 
-    def construct_method_key(controller, method_name)
-      resource_name = get_resource_name(controller)
-      [resource_name, method_name].join '#'
-    end
-
     private
 
     def get_resource_name(klass)
       if klass.class == String
         klass
-      elsif klass.respond_to?(:controller_path)
+      elsif klass.respond_to?(:controller_name)
         return nil if klass == ActionController::Base
-        klass.controller_path.gsub '/', '_'
+        klass.controller_name
       else
         raise "Apipie: Can not resolve resource #{klass} name."
+      end
+    end
+
+    def get_resource_version(resource_description)
+      if resource_description.respond_to? :_version
+        resource_description._version
+      else
+        Apipie.configuration.default_version
       end
     end
 

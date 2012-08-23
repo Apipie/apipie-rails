@@ -6,6 +6,10 @@ describe Api::V1::ArchitecturesController do
 
     it "should be version 1.0" do
       subject._version.should eq('1.0')
+
+      Apipie.resource_descriptions['1.0'].size.should == 2
+      Apipie.resource_descriptions['1.0'].keys.should
+        include('architectures', 'base')
     end
 
     context "there is another version" do
@@ -16,9 +20,9 @@ describe Api::V1::ArchitecturesController do
       end
 
       it "should have unique methods" do
-        subject._methods.first.should include("index")
-        v2._methods.first.should include("index")
-        subject._methods.first.should_not eq(v2._methods.first)
+        subject._methods.keys.should include('index')
+        v2._methods.keys.should include('index')
+        subject._methods[:index].should_not eq(v2._methods[:index])
       end
 
     end

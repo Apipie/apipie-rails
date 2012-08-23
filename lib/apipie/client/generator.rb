@@ -16,12 +16,13 @@ module Apipie
       argument :name
       argument :subject
       argument :suffix
+      argument :version
 
       attr_reader :doc, :resource
 
       def initialize(*args)
         super
-        @doc = Apipie.to_json()[:docs]
+        @doc = Apipie.to_json(version)[:docs]
       end
 
       def self.source_root
@@ -32,10 +33,10 @@ module Apipie
         File.join(FileUtils.pwd, "#{name}#{suffix}")
       end
 
-      def self.start(client_name, subject = :all, suffix = '_client')
+      def self.start(client_name, subject = :all, suffix = '_client', version = nil)
         name = client_name.parameterize.underscore
         suffix = suffix.parameterize.underscore
-        super([name, subject, suffix], :destination_root => destination_root(name, suffix))
+        super([name, subject, suffix, version], :destination_root => destination_root(name, suffix))
       end
 
       def all?

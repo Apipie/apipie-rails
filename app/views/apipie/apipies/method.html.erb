@@ -1,12 +1,12 @@
 <ul class='breadcrumb'>
   <li>
-    <a href='<%= @doc[:doc_url] %>.html'><%= @doc[:name] %></a>
+    <a href='<%= @doc[:doc_url] %>.html'><%= @doc[:name] %> <%= @resource[:version] %></a>
     <span class='divider'>/</span>
   </li>
   <li>
     <a href='<%= @resource[:doc_url] %>.html'>
       <%= @resource[:name] %>
-      <% if @resource[:version] %><small><%= "v%s" % @resource[:version] %></small><% end %>
+      <% if @resource[:version] %><% end %>
     </a>
     <span class='divider'>/</span>
   </li>
