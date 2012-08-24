@@ -73,6 +73,7 @@ of full descriptions.
          need RedCloth. Add those to your gemfile and run bundle if you
          want to use them. You can also add any other markup language
          processor.
+[layout] Name of a layout template to use instead of Apipie's layout.  But note you may want to include Apipie's styelsheets and javascript for the interaction to work properly.
 
 Example:
 

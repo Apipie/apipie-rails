@@ -1,6 +1,6 @@
 module Apipie
   class ApipiesController < ActionController::Base
-    layout 'apipie/apipie'
+    layout Apipie.configuration.layout
 
     def index
       respond_to do |format|
