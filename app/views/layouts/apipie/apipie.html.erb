@@ -3,13 +3,8 @@
 <head>
   <title>API documentation</title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <% %w[bundled/bootstrap.min.css
-        application.css
-        bundled/prettify.css
-        bundled/bootstrap-responsive.min.css ].each do |file| %>
-    <link type="text/css" rel="stylesheet"
-          href="<%= Apipie.full_url("stylesheets/#{file}") %>"/>
-  <% end %>
+  <%= Apipie.include_stylesheets %>
+  <link type='text/css' rel='stylesheet' href='<%= Apipie.full_url("stylesheets/application.css")%>'/>
   <!-- IE6-8 support of HTML5 elements -->
   <!--[if lt IE 9]>
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -25,13 +20,6 @@
     <hr>
     <footer><%= yield :apipie_footer %></footer>
   </div>
-  <% %w[
-    bundled/jquery-1.7.2.js
-    bundled/bootstrap-collapse.js
-    bundled/prettify.js
-    apipie.js ].each do |file| %>
-    <script type="text/javascript"
-            src="<%= Apipie.full_url("javascripts/#{file}") %>"></script>
-  <% end %>
+  <%= Apipie.include_javascripts %>
 </body>
 </html>

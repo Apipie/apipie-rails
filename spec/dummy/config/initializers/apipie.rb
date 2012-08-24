@@ -32,6 +32,9 @@ Apipie.configure do |config|
   # set all parameters as required by default
   # if enabled, use param :name, val, :required => false for optional params
   config.required_by_default = false
+
+  # use custom layout
+  config.layout = "application"
 end
 
 
