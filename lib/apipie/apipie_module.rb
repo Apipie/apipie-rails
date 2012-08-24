@@ -32,9 +32,9 @@ module Apipie
 
   # get application description for given or default version
   def self.app_info(version = nil)
-    if version && self.configuration.app_info.has_key?(version)
+    if app_info_version_valid? version
       Apipie.markup_to_html(self.configuration.app_info[version])
-    elsif self.configuration.app_info.has_key? Apipie.configuration.default_version
+    elsif app_info_version_valid? Apipie.configuration.default_version
       Apipie.markup_to_html(self.configuration.app_info[Apipie.configuration.default_version])
     else
       "Another API description"
@@ -42,13 +42,21 @@ module Apipie
   end
 
   def self.api_base_url(version = nil)
-    if version && self.configuration.api_base_url.has_key?(version)
+    if api_base_url_version_valid? version
       self.configuration.api_base_url[version]
-    elsif self.configuration.api_base_url.has_key?(Apipie.configuration.default_version)
+    elsif api_base_url_version_valid? Apipie.configuration.default_version
       self.configuration.api_base_url[Apipie.configuration.default_version]
     else
       "/api"
     end
+  end
+
+  def self.app_info_version_valid?(version)
+    version && self.configuration.app_info.has_key?(version)
+  end
+
+  def self.api_base_url_version_valid?(version)
+    version && self.configuration.api_base_url.has_key?(version)
   end
 
 end

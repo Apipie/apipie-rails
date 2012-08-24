@@ -35,6 +35,9 @@ Apipie.configure do |config|
   #   Apipie::Markup::Markdown.new
   #   Apipie::Markup::Textile.new
   # or provide another class with to_html(text) instance method
+  # to disable markup, use
+  # config.markup = nil
+
   # config.validate = false
 
   # set all parameters as required by default
