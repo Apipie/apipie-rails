@@ -27,7 +27,7 @@ module Apipie
 
   class Configuration
     attr_accessor :app_name, :app_info, :copyright, :markup,
-      :validate, :api_base_url, :doc_base_url, :required_by_default
+      :validate, :api_base_url, :doc_base_url, :required_by_default, :layout
 
     alias_method :validate?, :validate
     alias_method :required_by_default?, :required_by_default
@@ -101,6 +101,7 @@ module Apipie
       @required_by_default = false
       @api_base_url = ""
       @doc_base_url = "/apipie"
+      @layout = "apipie/apipie"
     end
   end
 
