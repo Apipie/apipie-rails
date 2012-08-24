@@ -26,11 +26,10 @@ describe UsersController do
     it "should contain all resource methods" do
       methods = subject._methods
       methods.count.should == 5
-      methods.keys.should include('show')
-      methods['show'].should === methods[:show]
-      methods.keys.should include('index')
-      methods.keys.should include('create')
-      methods.keys.should include('two_urls')
+      methods.keys.should include(:show)
+      methods.keys.should include(:index)
+      methods.keys.should include(:create)
+      methods.keys.should include(:two_urls)
     end
 
     it "should contain info about resource" do
@@ -216,7 +215,7 @@ describe UsersController do
 
       b = Apipie.get_method_description(UsersController, :show)
       b.should eq(Apipie[UsersController, :show])
-      b.method.should eq(:show)
+      b.method.should eq('show')
       b.resource._id.should eq('users')
 
       b.apis.count.should == 1
@@ -327,7 +326,7 @@ describe UsersController do
                      :name=>"id", :full_name=>"id",
                      :expected_type=>"numeric"},
        ],
-        :name => :two_urls,
+        :name => 'two_urls',
         :apis => [
           {
             :http_method => 'GET',

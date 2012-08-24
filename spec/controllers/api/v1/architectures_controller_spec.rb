@@ -20,8 +20,8 @@ describe Api::V1::ArchitecturesController do
       end
 
       it "should have unique methods" do
-        subject._methods.keys.should include('index')
-        v2._methods.keys.should include('index')
+        subject._methods.keys.should include(:index)
+        v2._methods.keys.should include(:index)
         subject._methods[:index].should_not eq(v2._methods[:index])
       end
 

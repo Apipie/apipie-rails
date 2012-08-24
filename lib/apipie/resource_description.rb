@@ -16,7 +16,7 @@ module Apipie
 
     def initialize(controller, resource_name, &block)
 
-      @_methods = HashWithIndifferentAccess.new
+      @_methods = ActiveSupport::OrderedHash.new
       @_params_ordered = []
       @_errors_ordered = []
 
@@ -74,8 +74,8 @@ module Apipie
     alias :full_description :desc
 
     def add_method_description(method_description)
-      @_methods[method_description.method] = method_description
-      # puts "adding #{method_description.method} to #{self._version} #{self._name}"
+      Apipie.debug "@resource_descriptions[#{self._version}][#{self._name}]._methods[#{method_description.method}] = #{method_description}"
+      @_methods[method_description.method.to_sym] = method_description
     end
 
     def doc_url
@@ -89,10 +89,10 @@ module Apipie
 
     def to_json(method_name = nil)
 
-      _methods = if method_name.blank?
+      methods = if method_name.blank?
         @_methods.collect { |key, method_description| method_description.to_json}
       else
-        [@_methods[method_name].to_json]
+        [@_methods[method_name.to_sym].to_json]
       end
 
       {
@@ -103,7 +103,7 @@ module Apipie
         :full_description => @_full_description,
         :version => _version,
         :formats => @_formats,
-        :methods => _methods
+        :methods => methods
       }
     end
   end

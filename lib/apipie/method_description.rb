@@ -18,7 +18,7 @@ module Apipie
     attr_reader :full_description, :method, :resource, :apis, :examples, :see, :formats
 
     def initialize(method, resource, app)
-      @method = method
+      @method = method.to_s
       @resource = resource
 
       @apis = app.get_api_args
@@ -44,7 +44,7 @@ module Apipie
     end
 
     def params
-      params_ordered.reduce({}) { |h,p| h[p.name] = p; h }
+      params_ordered.reduce(ActiveSupport::OrderedHash.new) { |h,p| h[p.name] = p; h }
     end
 
     def params_ordered
