@@ -358,8 +358,10 @@ or delete it if you want to use 'normal' dynamic version again.
 
 == {Extractor}[https://github.com/Pajk/apipie-rails/wiki/Extractor]
 
-== Future features
+== Authors
 
-* Dynamic CLI client (read info from documentation API)
-* Add documentation json API description to readme
-* Possibility to create requests from web documentation and check responses
+{Pajk}[https://github.com/Pajk] and {iNecas}[https://github.com/iNecas]
+
+== Contributors
+
+See {Contributors page}[https://github.com/Pajk/apipie-rails/graphs/contributors]. Special thanks to all of them!
