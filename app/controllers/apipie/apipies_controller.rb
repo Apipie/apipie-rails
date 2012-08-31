@@ -42,16 +42,17 @@ module Apipie
         format.html do
 
           @doc = @doc[:docs]
-          puts @doc.inspect
-          if @doc.blank?
-            redirect_to '/'
-          elsif params[:resource].present? && params[:method].present?
+          if params[:resource].present? && params[:method].present?
             @resource = @doc[:resources].first
             @method = @resource[:methods].first
             render 'method'
           elsif params[:resource].present?
             @resource = @doc[:resources].first
-            render 'resource'
+            if @resource == 'null'
+              redirect_to '/'
+            else
+              render 'resource'
+            end
           else
             render 'index'
           end
