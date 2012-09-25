@@ -15,6 +15,7 @@
     <div class="row">
       <div id='container'>
         <%= yield %>
+        <%= render 'disqus' if Apipie.configuration.use_disqus? %>
       </div>
     </div>
     <hr>
