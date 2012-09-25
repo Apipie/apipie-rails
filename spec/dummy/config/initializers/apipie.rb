@@ -34,7 +34,13 @@ Apipie.configure do |config|
   config.required_by_default = false
 
   # use custom layout
+  # use Apipie.include_stylesheets and Apipie.include_javascripts
+  # to include apipies css and js
   config.layout = "application"
+
+  # specify disqus site shortname to show discusion on each page
+  # to show it in custom layout, use `render 'disqus' if Apipie.configuration.use_disqus?`
+  # config.disqus_shortname = 'paveltest'
 end
 
 

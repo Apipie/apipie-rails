@@ -26,7 +26,7 @@ module Apipie
   end
 
   class Configuration
-    attr_accessor :app_name, :app_info, :copyright, :markup,
+    attr_accessor :app_name, :app_info, :copyright, :markup, :disqus_shortname,
       :validate, :api_base_url, :doc_base_url, :required_by_default, :layout
 
     alias_method :validate?, :validate
@@ -88,6 +88,10 @@ module Apipie
       @generated_doc_disclaimer ||= "# DOC GENERATED AUTOMATICALLY: REMOVE THIS LINE TO PREVENT REGENARATING NEXT TIME"
     end
 
+    def use_disqus?
+      !@disqus_shortname.blank?
+    end
+
     def app_info
       Apipie.markup_to_html(@app_info)
     end
@@ -102,6 +106,7 @@ module Apipie
       @api_base_url = ""
       @doc_base_url = "/apipie"
       @layout = "apipie/apipie"
+      @disqus_shortname = nil
     end
   end
 
