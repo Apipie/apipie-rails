@@ -48,7 +48,11 @@ module Apipie
             render 'method'
           elsif params[:resource].present?
             @resource = @doc[:resources].first
-            render 'resource'
+            if @resource == 'null'
+              redirect_to '/'
+            else
+              render 'resource'
+            end
           else
             render 'index'
           end
