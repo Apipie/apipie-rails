@@ -44,11 +44,19 @@ module Apipie
           @doc = @doc[:docs]
           if params[:resource].present? && params[:method].present?
             @resource = @doc[:resources].first
-            @method = @resource[:methods].first
-            render 'method'
+            @method = @resource[:methods].first unless @resource == 'null'
+            if @resource == 'null' || @method == 'null'
+              render 'apipie_404', :status => 404
+            else
+              render 'method'
+            end
           elsif params[:resource].present?
             @resource = @doc[:resources].first
-            render 'resource'
+            if @resource == 'null'
+              render 'apipie_404', :status => 404
+            else
+              render 'resource'
+            end
           else
             render 'index'
           end
