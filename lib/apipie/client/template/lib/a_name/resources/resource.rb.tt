@@ -9,7 +9,7 @@ module <%= class_base %><%= class_suffix %>
 <% end -%>
 <% http_method = api(method)[:http_method].downcase -%>
         call(:<%= http_method %>, "<%= substituted_url(method) %>"<%=
-        (http_method == 'get' ? ", :params => params" : ", :payload => params") if method[:params].any?
+        (http_method == 'get' ? ", :params => params" : ", :payload => params") # if method[:params].any?
 %>, :headers => headers)
       end
 <% end -%>

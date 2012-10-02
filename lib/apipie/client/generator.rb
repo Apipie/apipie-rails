@@ -48,21 +48,21 @@ module Apipie
         template("Gemfile.tt", "Gemfile")
         template("Rakefile.tt", "Rakefile")
         template("client.gemspec.tt", "#{full_name}.gemspec")
-        template("client.rb.tt", "lib/#{full_name}.rb")
-        template("base.rb.tt", "lib/#{full_name}/base.rb")
-        template("rest_client_oauth.rb.tt", "lib/#{full_name}/rest_client_oauth.rb")
-        template("version.rb.tt", "lib/#{full_name}/version.rb")
+        template("lib/a_name/client.rb.tt", "lib/#{full_name}.rb")
+        template("lib/a_name/base.rb.tt", "lib/#{full_name}/base.rb")
+        template("lib/a_name/rest_client_oauth.rb.tt", "lib/#{full_name}/rest_client_oauth.rb")
+        template("lib/a_name/version.rb.tt", "lib/#{full_name}/version.rb")
         if all?
-          template("bin.rb.tt", "bin/#{full_name}")
+          template("bin/bin.rb.tt", "bin/#{full_name}")
           chmod("bin/#{full_name}", 0755)
-          template("cli_command.rb.tt", "lib/#{full_name}/cli_command.rb")
+          template("lib/a_name/cli_command.rb.tt", "lib/#{full_name}/cli_command.rb")
         end
         doc[:resources].each do |key, resource|
           @resource = resource
           if all?
-            template("cli.rb.tt", "lib/#{full_name}/commands/#{resource_name}.thor")
+            template("lib/a_name/commands/cli.rb.tt", "lib/#{full_name}/commands/#{resource_name}.thor")
           end
-          template("resource.rb.tt", "lib/#{full_name}/resources/#{resource_name}.rb")
+          template("lib/a_name/resources/resource.rb.tt", "lib/#{full_name}/resources/#{resource_name}.rb")
         end
       end
 
