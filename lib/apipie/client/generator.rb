@@ -47,8 +47,8 @@ module Apipie
         template("README.tt", "README")
         template("Gemfile.tt", "Gemfile")
         template("Rakefile.tt", "Rakefile")
-        template("client.gemspec.tt", "#{full_name}.gemspec")
-        template("lib/client.rb.tt", "lib/#{full_name}.rb")
+        template("a_name.gemspec.tt", "#{full_name}.gemspec")
+        template("lib/a_name.rb.tt", "lib/#{full_name}.rb")
         template("lib/a_name/version.rb.tt", "lib/#{full_name}/version.rb")
         if all?
           template("bin/bin.rb.tt", "bin/#{full_name}")
