@@ -9,17 +9,7 @@ unless RestClient.const_defined? :OAUTH_EXTENSION
       options         = default_options.merge args[:oauth][:options] || { }
       consumer        = OAuth::Consumer.new(args[:oauth][:consumer_key], args[:oauth][:consumer_secret], options)
 
-
-      method_to_http_request = { :get    => Net::HTTP::Get,
-                                 :post   => Net::HTTP::Post,
-                                 :put    => Net::HTTP::Put,
-                                 :delete => Net::HTTP::Delete }
-
-      http_request = method_to_http_request[args[:method]].
-          new(args[:url]) # create Net::HTTPRequest to get oauth header,
-                          # because RestClient::Request is not supported by Oauth
-      consumer.sign!(http_request)
-      request['Authorization'] = http_request['Authorization'] # add oauth header to rest_client request
+      consumer.sign!(request)
     end
   end
 end
