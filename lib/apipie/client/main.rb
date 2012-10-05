@@ -30,12 +30,12 @@ module Apipie::Client
         parser = Thor::Options.new :auth => Thor::Option.parse(%w[auth -a], :string)
         opts   = parser.parse(given_args)
         if opts['auth']
-          username, password = opts['auth'].split(':')
-          apipie_options[:config][:username]  = username
-          apipie_options[:config][:password]  = password
+          username, password                 = opts['auth'].split(':')
+          apipie_options[:config][:username] = username
+          apipie_options[:config][:password] = password
         end
-        #remaining =  parser.instance_variable_get("@unknown") # in older thor version
         remaining = parser.remaining
+
         super(task, remaining, given_options, config)
       end
     end

@@ -10,4 +10,8 @@ module <%= class_base + class_suffix %>
                          :oauth    => { :consumer_key    => 'consumer',
                                         :consumer_secret => 'shhhh' } }
   end
+
+  def self.doc
+    @doc ||= <%= Apipie.to_json()[:docs].pretty_inspect.html_safe %>
+  end
 end

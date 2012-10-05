@@ -7,18 +7,17 @@ module Apipie::Client
         end
 
         def transform_options(inline_params, transform_hash = {})
-          ret = inline_params.map { |p| options[p] }
-
           # we use not mentioned params without change
           transformed_options = (options.keys - transform_hash.values.flatten - inline_params).reduce({}) { |h, k| h.update(k => options[k]) }
+
+          inline_params.each { |p| transformed_options[p] = options[p] }
 
           transform_hash.each do |sub_key, params|
             transformed_options[sub_key] = {}
             params.each { |p| transformed_options[sub_key][p] = options[p] if options.has_key?(p) }
           end
 
-          ret << transformed_options
-          return *ret
+          return transformed_options
         end
 
         def print_data(data)
