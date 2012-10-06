@@ -40,10 +40,15 @@ namespace :apipie do
   task :cache => :environment do
     with_loaded_documentation do
       cache_dir = Apipie.configuration.cache_dir
+      subdir = Apipie.configuration.doc_base_url.sub(/\A\//,"")
+
       file_base = File.join(cache_dir, Apipie.configuration.doc_base_url)
+      Apipie.url_prefix = "./#{subdir}"
       doc = Apipie.to_json
       generate_index_page(file_base, doc, true)
+      Apipie.url_prefix = "../#{subdir}"
       generate_resource_pages(file_base, doc, true)
+      Apipie.url_prefix = "../../#{subdir}"
       generate_method_pages(file_base, doc, true)
     end
   end
