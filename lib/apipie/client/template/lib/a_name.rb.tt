@@ -1,7 +1,8 @@
 require 'apipie/client/base'
+require 'json'
 require 'yaml'
 
-module <%= class_base + class_suffix %>
+Object.const_set("<%= class_base + class_suffix %>", client_module = Module.new do
   def self.client_config
     @client_config ||= YAML.load_file("#{root}/#{name}/config.yml")
   end
@@ -15,9 +16,11 @@ module <%= class_base + class_suffix %>
   end
 
   def self.doc
-    @doc ||= <%= Apipie.to_json()[:docs].pretty_inspect.html_safe %>
+    @doc ||= File.open("#{root}/#{name}/documentation.json", 'r') do |f|
+      JSON.load(f.read)['docs']
+    end
   end
-end
+end)
 
 require '<%= name %><%= suffix %>/version'
 resource_files = Dir[File.expand_path("#{client_module.root}/#{client_module.name}/resources/*.rb", __FILE__)]

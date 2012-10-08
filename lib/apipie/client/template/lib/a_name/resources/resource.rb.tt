@@ -2,7 +2,7 @@ module <%= class_base %><%= class_suffix %>
   module Resources
     class <%= resource_name.camelize %> < Apipie::Client::Base
       def self.doc
-        @doc ||= <%= class_base %><%= class_suffix %>.doc[:resources]["<%= resource_key %>"]
+        @doc ||= <%= class_base %><%= class_suffix %>.doc['resources']["<%= resource_key %>"]
       end
 <% resource[:methods].each do |method| -%>
 

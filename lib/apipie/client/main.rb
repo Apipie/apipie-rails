@@ -64,7 +64,7 @@ module Apipie::Client
     end
 
     def thorfiles
-      Dir[File.expand_path("lib/*/commands/*.thor", apipie_options[:root])]
+      Dir[File.expand_path("*/commands/*.thor", apipie_options[:root])]
     end
 
     # Display information about the given klasses. If with_module is given,

@@ -36,11 +36,11 @@ module Apipie::Client
     end
 
     def self.validation_hash(method)
-      validation_hashes[method]
+      validation_hashes[method.to_s]
     end
 
     def self.method_doc(method)
-      method_docs[method]
+      method_docs[method.to_s]
     end
 
     def validate_params!(params, rules)
@@ -96,8 +96,8 @@ module Apipie::Client
     private
 
     def self.method_docs
-      @method_docs ||= doc[:methods].inject({ }) do |hash, method|
-        hash[method[:name]] = method
+      @method_docs ||= doc['methods'].inject({ }) do |hash, method|
+        hash[method['name']] = method
         hash
       end
     end
@@ -111,12 +111,12 @@ module Apipie::Client
     end
 
     def self.construct_validation_hash(method)
-      if method[:params].any? { |p| p[:params] }
-        method[:params].reduce({ }) do |h, p|
-          h.update(p[:name] => (p[:params] ? p[:params].map { |pp| pp[:name] } : nil))
+      if method['params'].any? { |p| p['params'] }
+        method['params'].reduce({ }) do |h, p|
+          h.update(p['name'] => (p['params'] ? p['params'].map { |pp| pp['name'] } : nil))
         end
       else
-        method[:params].map { |p| p[:name] }
+        method['params'].map { |p| p['name'] }
       end
     end
 

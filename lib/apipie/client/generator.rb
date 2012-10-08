@@ -5,7 +5,7 @@ require 'thor'
 require 'thor/group'
 require 'fileutils'
 require 'active_support/inflector'
-require 'pp'
+require 'apipie/client/base'
 
 module Apipie
   module Client
@@ -51,6 +51,7 @@ module Apipie
         template("a_name.gemspec.tt", "#{full_name}.gemspec")
         template("lib/a_name.rb.tt", "lib/#{full_name}.rb")
         template("lib/a_name/version.rb.tt", "lib/#{full_name}/version.rb")
+        create_file "lib/#{full_name}/documentation.json", JSON.dump(Apipie.to_json)
         copy_file "lib/a_name/config.yml", "lib/#{full_name}/config.yml"
         if all?
           template("bin/bin.rb.tt", "bin/#{full_name}")
@@ -110,6 +111,22 @@ module Apipie
         method[:params].find_all { |p| p[:expected_type] == "hash" && !p[:params].nil? }.reduce({ }) do |h, p|
           h.update(p[:name] => p[:params].map { |pp| pp[:name] })
         end
+      end
+
+      def validation(method)
+        stringify = lambda do |object|
+          case object
+            when Hash
+              clone = object.dup
+              object.keys.each { |key| clone[key.to_s] = stringify[clone.delete(key)] }
+              clone
+            when Array
+              object.map { |value| stringify[value] }
+            else
+              object
+          end
+        end
+        Apipie::Client::Base.construct_validation_hash(stringify[method])
       end
     end
 
