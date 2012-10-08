@@ -1,14 +1,7 @@
-#!/usr/bin/env ruby
-require "rubygems" # ruby1.9 doesn't "require" it though
-require "pathname"
-require "thor"
-require 'thor/core_ext/file_binary_read'
+require "apipie/client/thor"
+require "apipie/client/cli_command"
 
-$: << File.expand_path("../../lib", __FILE__)
-require "<%= name %><%= suffix %>"
-require "<%= name %><%= suffix %>/cli_command"
-
-module <%= class_base %>Cli
+module Apipie::Client
   class Main < Thor
 
     def help(meth = nil)
@@ -18,7 +11,7 @@ module <%= class_base %>Cli
         self.class.handle_no_task_error(task, false) if klass.nil?
         klass.start(["-h", task].compact, :shell => self.shell)
       else
-        say "<%= name.capitalize %> CLI"
+        say "#{apipie_options[:name].capitalize} CLI"
         say
         invoke :commands
       end
@@ -35,14 +28,14 @@ module <%= class_base %>Cli
       private
       def dispatch(task, given_args, given_options, config)
         parser = Thor::Options.new :auth => Thor::Option.parse(%w[auth -a], :string)
-        opts = parser.parse(given_args)
+        opts   = parser.parse(given_args)
         if opts['auth']
-          username, password = opts['auth'].split(':')
-          <%= class_base %><%= class_suffix %>.client_config[:username] = username
-          <%= class_base %><%= class_suffix %>.client_config[:password] = password
+          username, password                 = opts['auth'].split(':')
+          apipie_options[:config][:username] = username
+          apipie_options[:config][:password] = password
         end
-        #remaining =  parser.instance_variable_get("@unknown") # TODO: this is an ugly hack :(
         remaining = parser.remaining
+
         super(task, remaining, given_options, config)
       end
     end
@@ -71,18 +64,18 @@ module <%= class_base %>Cli
     end
 
     def thorfiles
-      Dir[File.expand_path("../../lib/<%= name %><%= suffix %>/commands/*.thor", __FILE__)]
+      Dir[File.expand_path("*/commands/*.thor", apipie_options[:root])]
     end
 
     # Display information about the given klasses. If with_module is given,
     # it shows a table with information extracted from the yaml file.
     #
     def display_klasses(with_modules=false, show_internal=false, klasses=Thor::Base.subclasses)
-      klasses -= [Thor, Main, ::<%= class_base %><%= class_suffix %>::CliCommand] unless show_internal
+      klasses -= [Thor, Main, ::Apipie::Client::CliCommand, ::Thor] unless show_internal
 
       show_modules if with_modules && !thor_yaml.empty?
 
-      list = Hash.new { |h,k| h[k] = [] }
+      list   = Hash.new { |h, k| h[k] = [] }
       groups = []
 
       # Get classes which inherit from Thor
@@ -93,7 +86,7 @@ module <%= class_base %>Cli
       list["root"] = groups
 
       # Order namespaces with default coming first
-      list = list.sort{ |a,b| a[0].sub(/^default/, '') <=> b[0].sub(/^default/, '') }
+      list         = list.sort { |a, b| a[0].sub(/^default/, '') <=> b[0].sub(/^default/, '') }
       list.each { |n, tasks| display_tasks(n, tasks) unless tasks.empty? }
     end
 
@@ -104,13 +97,3 @@ module <%= class_base %>Cli
 
 end
 
-begin
-  <%= class_base %>Cli::Main.start
-rescue RestClient::Exception => e
-  $stderr.puts e.message
-  exit 1
-rescue Errno::ECONNREFUSED => e
-  $stderr.puts "Server #{<%= class_base %><%= class_suffix %>.client_config[:base_url]} not available"
-  $stderr.puts e.message
-  exit 1
-end

@@ -1,0 +1,22 @@
+module <%= class_base %><%= class_suffix %>
+  module Resources
+    class <%= resource_name.camelize %> < Apipie::Client::Base
+      def self.doc
+        @doc ||= <%= class_base %><%= class_suffix %>.doc['resources']["<%= resource_key %>"]
+      end
+<% resource[:methods].each do |method| -%>
+
+      # @param [Hash] params a hash of params to be passed to the service
+      # allowed keys are: <%= validation(method).inspect %>
+      #
+      # @param [Hash] headers additional http headers
+      def <%= method[:name] %>(params = { }, headers = { })
+        check_params params, :allowed => <%= method[:params].any? %>, :method => __method__
+        url, params = fill_params_in_url "<%= api(method)[:api_url] %>", params
+        call(:"<%= api(method)[:http_method].downcase %>", url, params, headers)
+      end
+<% end -%>
+
+    end
+  end
+end
