@@ -3,12 +3,19 @@ require '<%= name %><%= suffix %>/version'
 
 resource_files = Dir[File.expand_path('../<%= name %><%= suffix %>/resources/*.rb', __FILE__)]
 resource_files.each { |f| require f }
+require 'yaml'
 
 module <%= class_base + class_suffix %>
   def self.client_config
-    @client_config ||= { :base_url => "http://localhost:3000",
-                         :oauth    => { :consumer_key    => 'consumer',
-                                        :consumer_secret => 'shhhh' } }
+    @client_config ||= YAML.load_file("#{root}/#{name}/config.yml")
+  end
+
+  def self.root
+    @root ||= File.expand_path(File.dirname(__FILE__))
+  end
+
+  def self.name
+    "<%= name %><%= suffix %>"
   end
 
   def self.doc

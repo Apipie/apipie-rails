@@ -1,0 +1,5 @@
+---
+:base_url: http://localhost:3000
+:oauth:
+  :consumer_key: consumer
+  :consumer_secret: shhhh

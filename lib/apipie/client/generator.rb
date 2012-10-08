@@ -51,6 +51,7 @@ module Apipie
         template("a_name.gemspec.tt", "#{full_name}.gemspec")
         template("lib/a_name.rb.tt", "lib/#{full_name}.rb")
         template("lib/a_name/version.rb.tt", "lib/#{full_name}/version.rb")
+        copy_file "lib/a_name/config.yml", "lib/#{full_name}/config.yml"
         if all?
           template("bin/bin.rb.tt", "bin/#{full_name}")
           chmod("bin/#{full_name}", 0755)
