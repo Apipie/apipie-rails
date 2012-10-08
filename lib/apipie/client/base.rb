@@ -6,7 +6,7 @@ require 'apipie/client/rest_client_oauth'
 module Apipie::Client
 
   class Base
-    attr_reader :client
+    attr_reader :client, :config
 
     def initialize(config, options = { })
       @client = RestClient::Resource.new config[:base_url],
@@ -15,6 +15,7 @@ module Apipie::Client
                                          :oauth    => config[:oauth],
                                          :headers  => { :content_type => 'application/json',
                                                         :accept       => 'application/json' }
+      @config = config
     end
 
     def call(method, path, params = { }, headers = { })
@@ -69,6 +70,8 @@ module Apipie::Client
 
     def check_params(params, options = { })
       raise ArgumentError unless (method = options[:method])
+      return unless config[:enable_validations]
+
       case options[:allowed]
         when true
           validate_params!(params, self.class.validation_hash(method))
