@@ -1,34 +1,33 @@
-module <%= class_base %><%= class_suffix %>
+module Apipie::Client
   class CliCommand < Thor
     no_tasks do
       def client
-        resource_class = <%= class_base %><%= class_suffix %>::Resources.const_get(self.class.name[/[^:]*$/])
-        @client ||= resource_class.new(<%= class_base %><%= class_suffix %>.client_config)
+        resource_class = apipie_options[:client_module]::Resources.const_get(self.class.name[/[^:]*$/])
+        @client        ||= resource_class.new(apipie_options[:config])
       end
 
-      def transform_options(inline_params, transform_hash = {})
-        ret = inline_params.map { |p| options[p] }
-
+      def transform_options(inline_params, transform_hash = { })
         # we use not mentioned params without change
-        transformed_options = (options.keys - transform_hash.values.flatten - inline_params).reduce({}) { |h, k| h.update(k => options[k]) }
+        transformed_options = (options.keys - transform_hash.values.flatten - inline_params).reduce({ }) { |h, k| h.update(k => options[k]) }
+
+        inline_params.each { |p| transformed_options[p] = options[p] }
 
         transform_hash.each do |sub_key, params|
-          transformed_options[sub_key] = {}
+          transformed_options[sub_key] = { }
           params.each { |p| transformed_options[sub_key][p] = options[p] if options.has_key?(p) }
         end
 
-        ret << transformed_options
-        return *ret
+        return transformed_options
       end
 
       def print_data(data)
         case data
-        when Array
-          print_big_table(table_from_array(data))
-        when Hash
-          print_table(table_from_hash(data))
-        else
-          print_unknown(data)
+          when Array
+            print_big_table(table_from_array(data))
+          when Hash
+            print_table(table_from_hash(data))
+          else
+            print_unknown(data)
         end
       end
 
@@ -49,8 +48,8 @@ module <%= class_base %><%= class_suffix %>
 
       def table_from_array(data)
         return [] if data.empty?
-        table = []
-        items = data.map { |item| normalize_item_data(item) }
+        table   = []
+        items   = data.map { |item| normalize_item_data(item) }
         columns = items.first.keys
         table << columns
         items.each do |item|
@@ -64,7 +63,7 @@ module <%= class_base %><%= class_suffix %>
         return [] if data.empty?
         table = []
         normalize_item_data(data).each do |k, v|
-          table << ["#{k}:",v].map(&:to_s)
+          table << ["#{k}:", v].map(&:to_s)
         end
         table
       end
@@ -73,7 +72,7 @@ module <%= class_base %><%= class_suffix %>
         say data
       end
 
-      def print_big_table(table, options={})
+      def print_big_table(table, options={ })
         return if table.empty?
 
         formats, ident, colwidth = [], options[:ident].to_i, options[:colwidth]
@@ -83,7 +82,7 @@ module <%= class_base %><%= class_suffix %>
         start = colwidth ? 1 : 0
 
         start.upto(table.first.length - 2) do |i|
-          maxima ||= table.max{|a,b| a[i].size <=> b[i].size }[i].size
+          maxima ||= table.max { |a, b| a[i].size <=> b[i].size }[i].size
           formats << "%-#{maxima + 2}s"
         end
 
@@ -113,7 +112,7 @@ module <%= class_base %><%= class_suffix %>
         Thor::Util.thor_classes_in(self).each do |klass|
           list += printable_tasks(false)
         end
-        list.sort!{ |a,b| a[0] <=> b[0] }
+        list.sort! { |a, b| a[0] <=> b[0] }
 
         shell.say
         shell.print_table(list, :indent => 2, :truncate => true)

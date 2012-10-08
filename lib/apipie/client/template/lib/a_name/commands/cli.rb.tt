@@ -1,4 +1,4 @@
-class <%= resource_name.camelize %> < <%= class_base %><%= class_suffix %>::CliCommand
+class <%= resource_name.camelize %> < Apipie::Client::CliCommand
 
 <% resource[:methods].each do |method| -%>
   desc '<%= method[:name] %>', '<%= api(method)[:short_description] %>'
@@ -9,15 +9,12 @@ class <%= resource_name.camelize %> < <%= class_base %><%= class_suffix %>::CliC
   method_option :<%= param[:name] %>, :required => <%= param[:required] ? 'true' : 'false' %>, :desc => '<%= plaintext(param[:description]) %>', :type => :<%= param[:expected_type] %>
 <%   end -%>
   def <%= method[:name] %>
-<%   if params_in_path(method).any? || transformation_hash(method).any?
+<%   #if params_in_path(method).any? || transformation_hash(method).any?
        transform_options_params = [params_in_path(method).inspect]
        transform_options_params << transformation_hash(method).inspect if transformation_hash(method).any? -%>
-    <%= (params_in_path(method) + ["options"]).join(", ") %>, *_ = transform_options(<%= transform_options_params.join(", ").html_safe %>)
-<%   end
-
-  client_args = params_in_path(method).dup
-  client_args << "options" if method[:params].any? -%>
-    data, resp = client.<%= method[:name] %><%= "(#{client_args.join(", ")})" if client_args.any? %>
+    params = transform_options(<%= transform_options_params.join(", ").html_safe %>)
+<%   #end -%>
+    data, resp = client.<%= method[:name] %>(params)
     print_data(data)
   end
 
