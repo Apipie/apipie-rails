@@ -1,8 +1,4 @@
 require 'apipie/client/base'
-require '<%= name %><%= suffix %>/version'
-
-resource_files = Dir[File.expand_path('../<%= name %><%= suffix %>/resources/*.rb', __FILE__)]
-resource_files.each { |f| require f }
 require 'yaml'
 
 module <%= class_base + class_suffix %>
@@ -22,3 +18,7 @@ module <%= class_base + class_suffix %>
     @doc ||= <%= Apipie.to_json()[:docs].pretty_inspect.html_safe %>
   end
 end
+
+require '<%= name %><%= suffix %>/version'
+resource_files = Dir[File.expand_path("#{client_module.root}/#{client_module.name}/resources/*.rb", __FILE__)]
+resource_files.each { |f| require f }
