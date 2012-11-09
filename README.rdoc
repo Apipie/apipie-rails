@@ -74,6 +74,9 @@ of full descriptions.
          want to use them. You can also add any other markup language
          processor.
 [layout] Name of a layout template to use instead of Apipie's layout. You can use Apipie.include_stylesheets and Apipie.include_javascripts helpers to include Apipie's stylesheets and javascripts.
+[ignored] An array of controller names (strings) (might include actions as well)
+          to be ignored when generationg the documentation
+          e.g. %w[Api::CommentsController Api::PostsController#post]
 
 Example:
 

@@ -52,6 +52,15 @@ module Apipie
       @ignored_by_recorder ||= []
       @ignored_by_recorder.map(&:to_s)
     end
+
+    # array of controller names (strings) (might include actions as well)
+    # to be ignored # when generationg the documentation
+    # e.g. %w[Api::CommentsController Api::PostsController#post]
+    attr_writer :ignored
+    def ignored
+      @ignored ||= []
+      @ignored.map(&:to_s)
+    end
  
     # comment to put before docs that was generated automatically. It's used to
     # determine if the description should be overwritten next recording.
