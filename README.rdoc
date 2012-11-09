@@ -365,3 +365,6 @@ or delete it if you want to use 'normal' dynamic version again.
 == Contributors
 
 See {Contributors page}[https://github.com/Pajk/apipie-rails/graphs/contributors]. Special thanks to all of them!
+
+== License
+Apipie-rails is released under the {MIT License}[http://opensource.org/licenses/MIT]
