@@ -114,7 +114,7 @@ module Apipie
       description = Apipie.define_method_description(self, method_name)
 
       # redefine method only if validation is turned on
-      if Apipie.configuration.validate == true
+      if description && Apipie.configuration.validate == true
 
         old_method = instance_method(method_name)
 

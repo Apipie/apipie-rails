@@ -401,4 +401,39 @@ EOS2
     end
 
   end
+
+  describe "ignored option" do
+    class IgnoredController < ApplicationController; end
+
+    after do
+      Apipie.configuration.ignored = %w[]
+    end
+
+    describe "ignored action" do
+      before do
+        Apipie.configuration.ignored = %w[UsersController#ignore]
+      end
+
+      it "skips the listed  actions from the documentation" do
+        Apipie.define_method_description(UsersController, :ignore)
+        Apipie.get_method_description(UsersController, :ignore).should be_nil
+
+        Apipie.define_method_description(UsersController, :dont_ignore)
+        Apipie.get_method_description(UsersController, :dont_ignore).should_not be_nil
+      end
+    end
+
+    describe "ignored controller" do
+      before do
+        Apipie.configuration.ignored = %w[IgnoredController]
+      end
+
+      it "skips the listed controller from the documentation" do
+        Apipie.define_method_description(IgnoredController, :ignore)
+        Apipie.get_method_description(IgnoredController, :ignore).should be_nil
+        Apipie.define_method_description(IgnoredController, :ignore)
+        Apipie.get_method_description(IgnoredController, :ignore).should be_nil
+      end
+    end
+  end
 end
