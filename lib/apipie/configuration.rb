@@ -1,8 +1,8 @@
 module Apipie
   class Configuration
 
-    attr_accessor :app_name, :copyright, :markup, :app_info,
-      :validate, :api_base_url, :doc_base_url, :required_by_default,
+    attr_accessor :app_name, :app_info, :copyright, :markup, :disqus_shortname,
+      :validate, :api_base_url, :doc_base_url, :required_by_default, :layout,
       :default_version, :debug, :version_in_url
 
     alias_method :validate?, :validate
@@ -55,6 +55,15 @@ module Apipie
       @ignored_by_recorder.map(&:to_s)
     end
 
+    # array of controller names (strings) (might include actions as well)
+    # to be ignored # when generationg the documentation
+    # e.g. %w[Api::CommentsController Api::PostsController#post]
+    attr_writer :ignored
+    def ignored
+      @ignored ||= []
+      @ignored.map(&:to_s)
+    end
+
     # comment to put before docs that was generated automatically. It's used to
     # determine if the description should be overwritten next recording.
     # If you want to keep the documentation (prevent from overriding), remove
@@ -62,6 +71,10 @@ module Apipie
     attr_writer :generated_doc_disclaimer
     def generated_doc_disclaimer
       @generated_doc_disclaimer ||= "# DOC GENERATED AUTOMATICALLY: REMOVE THIS LINE TO PREVENT REGENARATING NEXT TIME"
+    end
+
+    def use_disqus?
+      !@disqus_shortname.blank?
     end
 
     # set app description for default version
@@ -89,6 +102,8 @@ module Apipie
       @required_by_default = false
       @api_base_url = HashWithIndifferentAccess.new
       @doc_base_url = "/apipie"
+      @layout = "apipie/apipie"
+      @disqus_shortname = nil
       @default_version = "1.0"
       @debug = false
       @version_in_url = true

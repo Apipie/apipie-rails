@@ -93,7 +93,7 @@ describe UsersController do
           get :show,
               :id => "not a number",
               :session => "secret_hash"
-        }.should raise_error(ArgumentError, / id /) # old-style error rather than ParamInvalid
+        }.should raise_error(Apipie::ParamError, /id/) # old-style error rather than ParamInvalid
       end
 
       it "should work with Regexp validator" do
@@ -108,7 +108,7 @@ describe UsersController do
               :id => 5,
               :session => "secret_hash",
               :regexp_param => "ten years"
-        }.should raise_error(Apipie::ParamInvalid, / regexp_param /)
+        }.should raise_error(Apipie::ParamInvalid, /regexp_param/)
       end
 
       it "should work with Array validator" do
@@ -126,14 +126,14 @@ describe UsersController do
               :id => 5,
               :session => "secret_hash",
               :array_param => "blabla"
-        }.should raise_error(Apipie::ParamInvalid, / array_param /)
+        }.should raise_error(Apipie::ParamInvalid, /array_param/)
 
         lambda {
           get :show,
               :id => 5,
               :session => "secret_hash",
               :array_param => 3
-        }.should raise_error(Apipie::ParamInvalid, / array_param /)
+        }.should raise_error(Apipie::ParamInvalid, /array_param/)
       end
 
       it "should work with Proc validator" do
@@ -142,7 +142,7 @@ describe UsersController do
               :id => 5,
               :session => "secret_hash",
               :proc_param => "asdgsag"
-        }.should raise_error(Apipie::ParamInvalid, / proc_param /)
+        }.should raise_error(Apipie::ParamInvalid, /proc_param/)
 
         get :show,
             :id => 5,
@@ -167,11 +167,11 @@ describe UsersController do
 
         lambda {
           post :create, :user => { :name => "root", :pass => "12345", :membership => "____" }
-        }.should raise_error(Apipie::ParamInvalid, / membership /)
+        }.should raise_error(Apipie::ParamInvalid, /membership/)
 
         lambda {
           post :create, :user => { :name => "root" }
-        }.should raise_error(Apipie::ParamInvalid, / pass /)
+        }.should raise_error(Apipie::ParamInvalid, /pass/)
 
         post :create, :user => { :name => "root", :pass => "pwd" }
         assert_response :success
@@ -400,5 +400,40 @@ EOS2
       param.validator.class.should be(Apipie::Validator::TypeValidator)
     end
 
+  end
+
+  describe "ignored option" do
+    class IgnoredController < ApplicationController; end
+
+    after do
+      Apipie.configuration.ignored = %w[]
+    end
+
+    describe "ignored action" do
+      before do
+        Apipie.configuration.ignored = %w[UsersController#ignore]
+      end
+
+      it "skips the listed  actions from the documentation" do
+        Apipie.define_method_description(UsersController, :ignore)
+        Apipie.get_method_description(UsersController, :ignore).should be_nil
+
+        Apipie.define_method_description(UsersController, :dont_ignore)
+        Apipie.get_method_description(UsersController, :dont_ignore).should_not be_nil
+      end
+    end
+
+    describe "ignored controller" do
+      before do
+        Apipie.configuration.ignored = %w[IgnoredController]
+      end
+
+      it "skips the listed controller from the documentation" do
+        Apipie.define_method_description(IgnoredController, :ignore)
+        Apipie.get_method_description(IgnoredController, :ignore).should be_nil
+        Apipie.define_method_description(IgnoredController, :ignore)
+        Apipie.get_method_description(IgnoredController, :ignore).should be_nil
+      end
+    end
   end
 end

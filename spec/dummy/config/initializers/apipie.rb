@@ -52,6 +52,19 @@ Apipie.configure do |config|
 
   # show debug informations
   config.debug = false
+
+  # set all parameters as required by default
+  # if enabled, use param :name, val, :required => false for optional params
+  config.required_by_default = false
+
+  # use custom layout
+  # use Apipie.include_stylesheets and Apipie.include_javascripts
+  # to include apipies css and js
+  config.layout = "application"
+
+  # specify disqus site shortname to show discusion on each page
+  # to show it in custom layout, use `render 'disqus' if Apipie.configuration.use_disqus?`
+  # config.disqus_shortname = 'paveltest'
 end
 
 

@@ -1,14 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Dummy</title>
-  <%= stylesheet_link_tag :all %>
-  <%= javascript_include_tag :defaults %>
-  <%= csrf_meta_tag %>
+  <title>Dummy API</title>
+  <%= Apipie.include_stylesheets %>
 </head>
-<body>
+<body style='background-color: #F5F6F7;'>
+<div class="container">
+  <div class="row">
+    <div id='container' style='background-color: white;padding:10px;box-shadow:0px 0px 10px rgba(68,68,68,0.6);'>
+      <%= yield %>
+      <%= render 'disqus' if Apipie.configuration.use_disqus? %>
+    </div>
+  </div>
+  <hr>
+  <footer><%= yield :apipie_footer %></footer>
+</div>
 
-<%= yield %>
-
+<%= Apipie.include_javascripts %>
 </body>
 </html>

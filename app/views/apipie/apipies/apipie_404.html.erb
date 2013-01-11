@@ -1,0 +1,12 @@
+<h1 class='page-header'>
+  Oops!
+  <small>
+  <% if @resource == 'null' %>
+    Resource <code><%= params[:resource] %></code> not found.
+  <% else %>
+    Method <code><%= params[:method] %></code> not found for resource <code><%= params[:resource] %></code>.
+  <% end %>
+  </small>
+</h1>
+
+Try going to <a href='<%= @doc[:doc_url] %>.html'><%= @doc[:name] %> API documentation homepage</a>

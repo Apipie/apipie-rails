@@ -40,14 +40,20 @@ namespace :apipie do
   task :cache => :environment do
     with_loaded_documentation do
       cache_dir = Apipie.configuration.cache_dir
+      subdir = Apipie.configuration.doc_base_url.sub(/\A\//,"")
+
       file_base = File.join(cache_dir, Apipie.configuration.doc_base_url)
+      Apipie.url_prefix = "./#{subdir}"
       doc = Apipie.to_json(Apipie.configuration.default_version)
       generate_index_page(file_base, doc, true)
       Apipie.available_versions.each do |version|
         file_base_version = File.join(file_base, version)
         doc = Apipie.to_json(version)
+        Apipie.url_prefix = "./#{subdir}"
         generate_index_page(file_base_version, doc, true, true)
+        Apipie.url_prefix = "../#{subdir}"
         generate_resource_pages(version, file_base_version, doc, true)
+        Apipie.url_prefix = "../../#{subdir}"
         generate_method_pages(version, file_base_version, doc, true)
       end
     end

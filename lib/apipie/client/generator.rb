@@ -5,6 +5,7 @@ require 'thor'
 require 'thor/group'
 require 'fileutils'
 require 'active_support/inflector'
+require 'apipie/client/base'
 
 module Apipie
   module Client
@@ -18,7 +19,7 @@ module Apipie
       argument :suffix
       argument :version
 
-      attr_reader :doc, :resource
+      attr_reader :doc, :resource, :resource_key
 
       def initialize(*args)
         super
@@ -48,22 +49,21 @@ module Apipie
         template("README.tt", "README")
         template("Gemfile.tt", "Gemfile")
         template("Rakefile.tt", "Rakefile")
-        template("client.gemspec.tt", "#{full_name}.gemspec")
-        template("client.rb.tt", "lib/#{full_name}.rb")
-        template("base.rb.tt", "lib/#{full_name}/base.rb")
-        template("rest_client_oauth.rb.tt", "lib/#{full_name}/rest_client_oauth.rb")
-        template("version.rb.tt", "lib/#{full_name}/version.rb")
+        template("a_name.gemspec.tt", "#{full_name}.gemspec")
+        template("lib/a_name.rb.tt", "lib/#{full_name}.rb")
+        template("lib/a_name/version.rb.tt", "lib/#{full_name}/version.rb")
+        create_file "lib/#{full_name}/documentation.json", JSON.dump(Apipie.to_json)
+        copy_file "lib/a_name/config.yml", "lib/#{full_name}/config.yml"
         if all?
-          template("bin.rb.tt", "bin/#{full_name}")
+          template("bin/bin.rb.tt", "bin/#{full_name}")
           chmod("bin/#{full_name}", 0755)
-          template("cli_command.rb.tt", "lib/#{full_name}/cli_command.rb")
         end
         doc[:resources].each do |key, resource|
-          @resource = resource
+          @resource_key, @resource = key, resource
           if all?
-            template("cli.rb.tt", "lib/#{full_name}/commands/#{resource_name}.thor")
+            template("lib/a_name/commands/cli.rb.tt", "lib/#{full_name}/commands/#{resource_name}.thor")
           end
-          template("resource.rb.tt", "lib/#{full_name}/resources/#{resource_name}.rb")
+          template("lib/a_name/resources/resource.rb.tt", "lib/#{full_name}/resources/#{resource_name}.rb")
         end
       end
 
@@ -83,13 +83,13 @@ module Apipie
       end
 
       def plaintext(text)
-        text.gsub(/<.*?>/, '').gsub("\n",' ').strip
+        text.gsub(/<.*?>/, '').gsub("\n", ' ').strip
       end
 
       # Resource related helper methods:
 
       def resource_name
-        resource[:name].gsub(/\s/,"_").downcase.singularize
+        resource[:name].gsub(/\s/, "_").downcase.singularize
       end
 
       def api(method)
@@ -101,30 +101,33 @@ module Apipie
       end
 
       def client_args(method)
-        client_args = params_in_path(method).dup
-        client_args << "params = {}"
-        client_args << 'headers = {}'
-        client_args
-      end
-
-      def validation_hash(method)
-        if method[:params].any? { |p| p[:params] }
-          method[:params].reduce({}) do |h, p|
-            h.update(p[:name] => (p[:params] ? p[:params].map { |pp| pp[:name] } : nil))
-          end
-        else
-          method[:params].map { |p| p[:name] }
-        end
+        params_in_path(method).dup
       end
 
       def substituted_url(method)
-        params_in_path(method).reduce(api(method)[:api_url]) { |u, p| u.sub(":#{p}","\#{#{p}}")}
+        params_in_path(method).reduce(api(method)[:api_url]) { |u, p| u.sub(":#{p}", "\#{#{p}}") }
       end
 
       def transformation_hash(method)
-        method[:params].find_all { |p| p[:expected_type] == "hash" && !p[:params].nil? }.reduce({}) do |h, p|
+        method[:params].find_all { |p| p[:expected_type] == "hash" && !p[:params].nil? }.reduce({ }) do |h, p|
           h.update(p[:name] => p[:params].map { |pp| pp[:name] })
         end
+      end
+
+      def validation(method)
+        stringify = lambda do |object|
+          case object
+            when Hash
+              clone = object.dup
+              object.keys.each { |key| clone[key.to_s] = stringify[clone.delete(key)] }
+              clone
+            when Array
+              object.map { |value| stringify[value] }
+            else
+              object
+          end
+        end
+        Apipie::Client::Base.construct_validation_hash(stringify[method])
       end
     end
 

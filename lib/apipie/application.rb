@@ -27,6 +27,11 @@ module Apipie
 
     # create new method api description
     def define_method_description(controller, method_name)
+      if ignored?(controller, method_name)
+        clear_last
+        return
+      end
+
       resource_description = get_resource_description(controller)
       if resource_description.nil?
         resource_description = define_resource_description(controller)
@@ -37,6 +42,11 @@ module Apipie
 
     # create new resource api description
     def define_resource_description(controller, &block)
+      if ignored?(controller)
+        clear_last
+        return
+      end
+
       resource_name = get_resource_name(controller)
       resource_description = Apipie::ResourceDescription.new(controller, resource_name, &block)
       version = get_resource_version(resource_description)
@@ -262,6 +272,12 @@ module Apipie
     def load_controller_from_file(controller_file)
       controller_class_name = controller_file.gsub(/\A.*\/app\/controllers\//,"").gsub(/\.\w*\Z/,"").camelize
       controller_class_name.constantize
+    end
+
+    def ignored?(controller, method = nil)
+      ignored = Apipie.configuration.ignored
+      return true if ignored.include?(controller.name)
+      return true if ignored.include?("#{controller.name}##{method}")
     end
 
   end

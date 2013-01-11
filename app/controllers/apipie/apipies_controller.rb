@@ -1,6 +1,6 @@
 module Apipie
   class ApipiesController < ActionController::Base
-    layout 'apipie/apipie'
+    layout Apipie.configuration.layout
 
     def index
 
@@ -31,6 +31,8 @@ module Apipie
             render 'method'
           elsif @resource
             render 'resource'
+          elsif params[:resource].present? || params[:method].present?
+            render 'apipie_404', :status => 404
           else
             render 'index'
           end
