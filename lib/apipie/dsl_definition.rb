@@ -142,7 +142,8 @@ module Apipie
         end
 
       end
-
+    ensure
+      Apipie.clear_last
     end # def method_added
   end # module DSL
 end # module Apipie

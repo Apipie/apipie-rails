@@ -153,39 +153,27 @@ module Apipie
     end
 
     def get_errors
-      errors = @last_errors.clone
-      @last_errors.clear
-      errors
+      @last_errors.clone
     end
 
     def get_api_args
-      api_args = @last_api_args.clone
-      @last_api_args.clear
-      api_args
+      @last_api_args.clone
     end
 
     def get_see
-      see = @last_see
-      @last_see = nil
-      see
+      @last_see
     end
 
     def get_formats
-      formats = @last_formats
-      @last_formats = nil
-      formats
+      @last_formats
     end
 
     def get_params
-      params = @last_params.clone
-      @last_params.clear
-      params
+      @last_params.clone
     end
 
     def get_examples
-      examples = @last_examples.clone
-      @last_examples.clear
-      examples
+      @last_examples.clone
     end
 
     def recorded_examples
