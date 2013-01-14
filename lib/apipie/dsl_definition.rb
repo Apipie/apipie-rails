@@ -32,6 +32,11 @@ module Apipie
       Apipie.add_method_description_args(method, path, desc)
     end
 
+    # What version is the api available
+    def api_version version
+      Apipie.last_api_versions << version
+    end
+
     # Describe the next method.
     #
     # Example:
@@ -112,7 +117,7 @@ module Apipie
 
       # remove method description if exists and create new one
       Apipie.remove_method_description(self, method_name)
-      description = Apipie.define_method_description(self, method_name)
+      description = Apipie.define_method_description(self, method_name, Apipie.last_api_versions)
 
       # redefine method only if validation is turned on
       if description && Apipie.configuration.validate == true

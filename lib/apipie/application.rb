@@ -12,7 +12,8 @@ module Apipie
       end
     end
 
-    attr_accessor :last_api_args, :last_errors, :last_params, :last_description, :last_examples, :last_see, :last_formats
+    attr_accessor :last_api_args, :last_errors, :last_params, :last_description,
+                  :last_examples, :last_see, :last_formats, :last_api_versions
     attr_reader :resource_descriptions
 
     def initialize
@@ -26,30 +27,31 @@ module Apipie
     end
 
     # create new method api description
-    def define_method_description(controller, method_name)
-      if ignored?(controller, method_name)
-        clear_last
-        return
-      end
+    def define_method_description(controller, method_name, versions = [])
+      return if ignored?(controller, method_name)
 
-      resource_description = get_resource_description(controller)
-      if resource_description.nil?
-        resource_description = define_resource_description(controller)
+      versions = [Apipie.configuration.default_version] if versions.empty?
+
+      versions.each do |version|
+        resource_name_with_version = "#{version}##{get_resource_name(controller)}"
+        resource_description = get_resource_description(resource_name_with_version)
+
+        if resource_description.nil?
+          resource_description = define_resource_description(controller, version)
+        end
+
+        method_description = Apipie::MethodDescription.new(method_name, resource_description, self)
+        resource_description.add_method_description(method_description)
       end
-      method_description = Apipie::MethodDescription.new(method_name, resource_description, self)
-      resource_description.add_method_description(method_description)
     end
 
     # create new resource api description
-    def define_resource_description(controller, &block)
-      if ignored?(controller)
-        clear_last
-        return
-      end
+    def define_resource_description(controller, version = nil, &block)
+      return if ignored?(controller)
 
       resource_name = get_resource_name(controller)
       resource_description = Apipie::ResourceDescription.new(controller, resource_name, &block)
-      version = get_resource_version(resource_description)
+      version ||= get_resource_version(resource_description)
 
       @resource_descriptions[version] ||= {}
       Apipie.debug("@resource_descriptions[#{version}][#{resource_name}] = #{resource_description}")
@@ -143,6 +145,7 @@ module Apipie
       @last_examples = []
       @last_see = nil
       @last_formats = []
+      @last_api_versions = []
     end
 
     # Return the current description, clearing it in the process.
