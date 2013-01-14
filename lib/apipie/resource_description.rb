@@ -12,9 +12,9 @@ module Apipie
   class ResourceDescription
 
     attr_reader :controller, :_short_description, :_full_description, :_methods, :_id,
-      :_path, :_version, :_name, :_params_ordered, :_errors_ordered, :_formats, :_parent
+      :_path, :_name, :_params_ordered, :_errors_ordered, :_formats, :_parent
 
-    def initialize(controller, resource_name, &block)
+    def initialize(controller, resource_name, version, &block)
 
       @_methods = ActiveSupport::OrderedHash.new
       @_params_ordered = []
@@ -22,14 +22,18 @@ module Apipie
 
       @controller = controller
       @_id = resource_name
-      @_version = nil
+      @_version = version
       @_name = @_id.humanize
       @_full_description = ""
       @_short_description = ""
       @_path = ""
-      @_parent = Apipie.get_resource_description(controller.superclass)
+      @_parent = Apipie.get_resource_description(controller.superclass, version)
       @_formats = []
 
+      eval_resource_description(&block)
+    end
+
+    def eval_resource_description(&block)
       block.arity < 1 ? instance_eval(&block) : block.call(self) if block_given?
     end
 
@@ -53,7 +57,8 @@ module Apipie
 
     def path(path); @_path = path; end
 
-    def version(version); @_version = version; end
+    # this keyword is handled by Apipie::ResourceDescription::VersionsExtractor
+    def api_version(version);; end
 
     def _version
       @_version || @_parent.try(:_version) || Apipie.configuration.default_version
@@ -105,6 +110,32 @@ module Apipie
         :formats => @_formats,
         :methods => methods
       }
+    end
+
+    # Get's versions that the resource is defined for. It can't be
+    # done inside the ResourceDescription itself, becuase the resource
+    # description belongs to one versions, i.e. every version has it's
+    # own ResourceDescription instance.
+    class VersionsExtractor
+      attr_reader :_versions
+
+      def initialize(&block)
+        @_versions = []
+        instance_eval(&block)
+      end
+
+      def self.versions(&block)
+        self.new(&block)._versions
+      end
+
+      def api_version(api_version)
+        @_versions << api_version
+      end
+
+      def method_missing(*args)
+        # we ignore the rest of DSL
+        true
+      end
     end
   end
 end

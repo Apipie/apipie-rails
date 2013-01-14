@@ -18,7 +18,7 @@ module Apipie
 
     def initialize
       super
-      @resource_descriptions = HashWithIndifferentAccess.new
+      init_env
       clear_last
     end
 
@@ -26,11 +26,15 @@ module Apipie
       @resource_descriptions.keys.sort
     end
 
+    def set_resource_id(controller, resource_id)
+      @controller_to_resource_id[controller] = resource_id
+    end
+
     # create new method api description
     def define_method_description(controller, method_name, versions = [])
       return if ignored?(controller, method_name)
 
-      versions = [Apipie.configuration.default_version] if versions.empty?
+      versions = controller_versions(controller) if versions.empty?
 
       versions.each do |version|
         resource_name_with_version = "#{version}##{get_resource_name(controller)}"
@@ -46,16 +50,49 @@ module Apipie
     end
 
     # create new resource api description
-    def define_resource_description(controller, version = nil, &block)
+    def define_resource_description(controller, version, &block)
       return if ignored?(controller)
 
       resource_name = get_resource_name(controller)
-      resource_description = Apipie::ResourceDescription.new(controller, resource_name, &block)
-      version ||= get_resource_version(resource_description)
+      resource_description = @resource_descriptions[version][resource_name]
+      if resource_description
+        # we already defined the description somewhere (probably in
+        # some method. Updating just the description
+        resource_description.eval_resource_description(&block) if block_given?
+      else
+        resource_description = Apipie::ResourceDescription.new(controller, resource_name, version, &block)
 
-      @resource_descriptions[version] ||= {}
-      Apipie.debug("@resource_descriptions[#{version}][#{resource_name}] = #{resource_description}")
-      @resource_descriptions[version][resource_name] ||= resource_description
+        Apipie.debug("@resource_descriptions[#{version}][#{resource_name}] = #{resource_description}")
+        @resource_descriptions[version][resource_name] ||= resource_description
+      end
+
+      return resource_description
+    end
+
+    # what versions is the resource defined for?
+    def get_resource_versions(controller, &block)
+      ret = Apipie::ResourceDescription::VersionsExtractor.versions(&block)
+      if ret.empty?
+        ret = controller_versions(controller.superclass)
+      end
+      return ret
+    end
+
+    # recursively searches what versions has the controller specified in
+    # resource_description? It's used to derivate the default value of
+    # versions for methods.
+    def controller_versions(controller)
+      ret = @controller_versions[controller]
+      return ret unless ret.empty?
+      if controller == ActionController::Base
+        return [Apipie.configuration.default_version]
+      else
+        return controller_versions(controller.superclass)
+      end
+    end
+
+    def set_controller_versions(controller, versions)
+      @controller_versions[controller] = versions
     end
 
     def add_method_description_args(method, path, desc)
@@ -94,7 +131,7 @@ module Apipie
           method_name = crumbs.pop
           resource_description = get_resource_description(crumbs.join('#'))
         end
-      elsif resource_name.respond_to? :apipie_resource_description
+      elsif resource_name.respond_to? :apipie_resource_descriptions
         resource_description = get_resource_description(resource_name)
       else
         raise ArgumentError.new("Resource #{resource_name} does not exists.")
@@ -109,7 +146,7 @@ module Apipie
     # => "users"
     # => "v2#users"
     # =>  V2::UsersController
-    def get_resource_description(resource)
+    def get_resource_description(resource, version = nil)
       if resource.is_a?(String)
         crumbs = resource.split('#')
         if crumbs.size == 1
@@ -117,16 +154,22 @@ module Apipie
         elsif crumbs.size == 2 && @resource_descriptions.has_key?(crumbs.first)
           @resource_descriptions[crumbs.first][crumbs.last]
         end
-      elsif resource.respond_to?(:apipie_resource_description)
+      elsif resource.respond_to?(:apipie_resource_descriptions)
         return nil if resource == ActionController::Base
-        resource.apipie_resource_description
+        return nil unless resource.apipie_resource_descriptions
+        resource.apipie_resource_descriptions.find do |r|
+          r._version == version
+        end
       end
     end
 
-    def remove_method_description(resource, method_name)
-      resource_description = get_resource_description(resource)
-      if resource_description && resource_description._methods.has_key?(method_name)
-        resource_description._methods.delete method_name
+    def remove_method_description(resource, versions, method_name)
+      versions.each do |version|
+        resource = get_resource_name(resource)
+        resource_description = get_resource_description("#{version}##{resource}")
+        if resource_description && resource_description._methods.has_key?(method_name)
+          resource_description._methods.delete method_name
+        end
       end
     end
 
@@ -136,6 +179,14 @@ module Apipie
       @method_descriptions.clear
     end
 
+    # initialize variables for gathering dsl data
+    def init_env
+      @resource_descriptions = HashWithIndifferentAccess.new { |h, version| h[version] = {} }
+      @controller_to_resource_id = {}
+
+      # what versions does the controller belong in (specified by resource_description)?
+      @controller_versions = Hash.new { |h, controller| h[controller] = [] }
+    end
     # clear all saved data
     def clear_last
       @last_api_args = []
@@ -226,6 +277,7 @@ module Apipie
     end
 
     def reload_documentation
+      init_env
       reload_examples
       api_controllers_paths.each do |f|
         load_controller_from_file f
@@ -244,6 +296,8 @@ module Apipie
     def get_resource_name(klass)
       if klass.class == String
         klass
+      elsif @controller_to_resource_id.has_key?(klass)
+        @controller_to_resource_id[klass]
       elsif klass.respond_to?(:controller_name)
         return nil if klass == ActionController::Base
         klass.controller_name

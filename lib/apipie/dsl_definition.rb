@@ -5,7 +5,7 @@ module Apipie
   # DSL is a module that provides #api, #error, #param, #error.
   module DSL
 
-    attr_reader :apipie_resource_description
+    attr_reader :apipie_resource_descriptions
 
     private
 
@@ -19,7 +19,21 @@ module Apipie
     # EOS
     def resource_description(options = {}, &block) #:doc:
       return unless Apipie.active_dsl?
-      @apipie_resource_description = Apipie.define_resource_description(self, &block) if block_given?
+      raise ArgumentError, "Block expected" unless block_given?
+
+      versions = Apipie.get_resource_versions(self, &block)
+      @apipie_resource_descriptions = versions.map do |version|
+        Apipie.define_resource_description(self, version, &block)
+      end
+      Apipie.set_controller_versions(self, versions)
+    end
+
+    # by default, the resource id is derived from controller_name
+    # it can be overwritten with.
+    #
+    #    resource_id "my_own_resource_id"
+    def resource_id(resource_id)
+      Apipie.set_resource_id(self, resource_id)
     end
 
     # Declare an api.
@@ -116,7 +130,7 @@ module Apipie
       return unless Apipie.apipie_provided?
 
       # remove method description if exists and create new one
-      Apipie.remove_method_description(self, method_name)
+      Apipie.remove_method_description(self, Apipie.last_api_versions, method_name)
       description = Apipie.define_method_description(self, method_name, Apipie.last_api_versions)
 
       # redefine method only if validation is turned on
