@@ -1,3 +1,0 @@
-module <%= class_base %><%= class_suffix %>
-  VERSION = "0.0.1"
-end
