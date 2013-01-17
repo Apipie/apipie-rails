@@ -5,6 +5,7 @@ describe Apipie::MethodDescription do
   describe "params descriptions" do
 
     before(:each) do
+      Apipie.clear_last
       @resource = Apipie::ResourceDescription.new(ApplicationController, "dummy")
       Apipie.last_params << Apipie::ParamDescription.new(:a, String)
       Apipie.last_params << Apipie::ParamDescription.new(:b, String)

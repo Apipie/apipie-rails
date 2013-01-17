@@ -166,6 +166,7 @@ module Apipie
       elsif resource.respond_to?(:apipie_resource_descriptions)
         return nil if resource == ActionController::Base
         return nil unless resource.apipie_resource_descriptions
+        version ||= Apipie.configuration.default_version
         resource.apipie_resource_descriptions.find do |r|
           r._version == version
         end
@@ -204,7 +205,7 @@ module Apipie
       @last_description = nil
       @last_examples = []
       @last_see = nil
-      @last_formats = []
+      @last_formats = nil
       @last_api_versions = []
     end
 

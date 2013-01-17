@@ -21,7 +21,9 @@ end
 describe UsersController do
 
   describe "resource description" do
-    subject { a = Apipie.get_resource_description(UsersController) }
+    subject do
+      Apipie.get_resource_description(UsersController, Apipie.configuration.default_version)
+    end
 
     it "should contain all resource methods" do
       methods = subject._methods

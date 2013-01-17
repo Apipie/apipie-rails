@@ -14,7 +14,7 @@ module Apipie
     attr_reader :controller, :_short_description, :_full_description, :_methods, :_id,
       :_path, :_name, :_params_ordered, :_errors_ordered, :_formats, :_parent
 
-    def initialize(controller, resource_name, version, &block)
+    def initialize(controller, resource_name, version = nil, &block)
 
       @_methods = ActiveSupport::OrderedHash.new
       @_params_ordered = []
@@ -22,7 +22,7 @@ module Apipie
 
       @controller = controller
       @_id = resource_name
-      @_version = version
+      @_version = version || Apipie.configuration.default_version
       @_name = @_id.humanize
       @_full_description = ""
       @_short_description = ""
