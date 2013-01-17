@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 require 'fileutils'
-require 'apipie/client/generator'
 
 namespace :apipie do
 
@@ -129,27 +128,14 @@ namespace :apipie do
     FileUtils.cp_r "#{src}/.", dest
   end
 
-  namespace :client do
-    task :all, [:suffix] => [:environment] do |t, args|
-      args.with_defaults(:suffix => "_client")
-      Apipie.configuration.use_cache = false # we don't want to skip DSL evaluation
-      Apipie.api_controllers_paths.each { |file| require file }
-
-      Apipie::Client::Generator.start(Apipie.configuration.app_name, :all, args[:suffix])
-    end
-
-    desc "Generate only ruby bindings for API documented with apipie gem."
-    task :bindings, [:suffix] => [:environment] do |t, args|
-      args.with_defaults(:suffix => "_client")
-      Apipie.configuration.use_cache = false # we don't want to skip DSL evaluation
-      Apipie.api_controllers_paths.each { |file| require file }
-
-      Apipie::Client::Generator.start(Apipie.configuration.app_name, :bindings, args[:suffix])
-    end
+  desc "Generate CLI client for API documented with apipie gem. (deprecated)"
+  task :client do
+    puts <<MESSAGE
+The apipie gem itself doesn't provide client code generator. See
+https://github.com/Pajk/apipie-rails/wiki/CLI-client for more information on
+how to write your own generator.
+MESSAGE
   end
-
-  desc "Generate CLI client for API documented with apipie gem."
-  task :client, [:suffix] => 'client:all'
 
   def plaintext(text)
     text.gsub(/<.*?>/, '').gsub("\n",' ').strip
