@@ -129,9 +129,13 @@ module Apipie
       return unless Apipie.active_dsl?
       return unless Apipie.apipie_provided?
 
-      # remove method description if exists and create new one
-      Apipie.remove_method_description(self, Apipie.last_api_versions, method_name)
-      description = Apipie.define_method_description(self, method_name, Apipie.last_api_versions)
+      begin
+        # remove method description if exists and create new one
+        Apipie.remove_method_description(self, Apipie.last_api_versions, method_name)
+        description = Apipie.define_method_description(self, method_name, Apipie.last_api_versions)
+      ensure
+        Apipie.clear_last
+      end
 
       # redefine method only if validation is turned on
       if description && Apipie.configuration.validate == true
@@ -161,8 +165,6 @@ module Apipie
         end
 
       end
-    ensure
-      Apipie.clear_last
     end # def method_added
   end # module DSL
 end # module Apipie

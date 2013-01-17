@@ -33,6 +33,7 @@ module Apipie
     # create new method api description
     def define_method_description(controller, method_name, versions = [])
       return if ignored?(controller, method_name)
+      ret_method_description = nil
 
       versions = controller_versions(controller) if versions.empty?
 
@@ -45,8 +46,16 @@ module Apipie
         end
 
         method_description = Apipie::MethodDescription.new(method_name, resource_description, self)
+
+        # we create separate method description for each version in
+        # case the method belongs to more versions. We return just one
+        # becuase the version doesn't matter for the purpose it's used
+        # (to wrap the original version with validators)
+        ret_method_description ||= method_description
         resource_description.add_method_description(method_description)
       end
+
+      return ret_method_description
     end
 
     # create new resource api description
@@ -277,8 +286,10 @@ module Apipie
     end
 
     def reload_documentation
+      rails_mark_classes_for_reload
       init_env
       reload_examples
+
       api_controllers_paths.each do |f|
         load_controller_from_file f
       end
@@ -323,6 +334,16 @@ module Apipie
       ignored = Apipie.configuration.ignored
       return true if ignored.include?(controller.name)
       return true if ignored.include?("#{controller.name}##{method}")
+    end
+
+    # Since Rails 3.2, the classes are reloaded only on file change.
+    # We need to reload all the controller classes to rebuild the
+    # docs, therefore we just force to reload all the code. This
+    # happens only when reload_controllers is set to true and only
+    # when showing the documentation.
+    def rails_mark_classes_for_reload
+      ActiveSupport::DescendantsTracker.clear
+      ActiveSupport::Dependencies.clear
     end
 
   end
