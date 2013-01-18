@@ -48,12 +48,12 @@ namespace :apipie do
       generate_index_page(file_base, doc, true)
       Apipie.available_versions.each do |version|
         file_base_version = File.join(file_base, version)
-        doc = Apipie.to_json(version)
-        Apipie.url_prefix = "./#{subdir}"
-        generate_index_page(file_base_version, doc, true, true)
         Apipie.url_prefix = "../#{subdir}"
-        generate_resource_pages(version, file_base_version, doc, true)
+        doc = Apipie.to_json(version)
+        generate_index_page(file_base_version, doc, true, true)
         Apipie.url_prefix = "../../#{subdir}"
+        generate_resource_pages(version, file_base_version, doc, true)
+        Apipie.url_prefix = "../../../#{subdir}"
         generate_method_pages(version, file_base_version, doc, true)
       end
     end

@@ -93,7 +93,7 @@ module Apipie
     def controller_versions(controller)
       ret = @controller_versions[controller]
       return ret unless ret.empty?
-      if controller == ActionController::Base
+      if controller == ActionController::Base || controller.nil?
         return [Apipie.configuration.default_version]
       else
         return controller_versions(controller.superclass)
