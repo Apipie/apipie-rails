@@ -109,8 +109,9 @@ module Apipie
         end
 
         def process_with_api_recording(*args) # action, parameters = nil, session = nil, flash = nil, http_method = 'GET')
-          process_without_api_recording(*args)
+          ret = process_without_api_recording(*args)
           Apipie::Extractor.call_recorder.analyze_functional_test(self)
+          ret
         ensure
           Apipie::Extractor.call_finished
         end
