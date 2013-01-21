@@ -77,6 +77,10 @@ module Apipie
       return @merged_errors
     end
 
+    def version
+      resource._version
+    end
+
     def doc_url
       crumbs = []
       crumbs << @resource._version if Apipie.configuration.version_in_url
@@ -145,6 +149,7 @@ module Apipie
     def load_recorded_examples
       (Apipie.recorded_examples[id] || []).
         find_all { |ex| ex["show_in_doc"].to_i > 0 }.
+        find_all { |ex| ex["versions"].nil? || ex["versions"].include?(self.version) }.
         sort_by { |ex| ex["show_in_doc"] }.
         map { |ex| format_example(ex.symbolize_keys) }
     end

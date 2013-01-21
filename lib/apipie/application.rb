@@ -134,12 +134,11 @@ module Apipie
     def get_method_description(resource_name, method_name = nil)
       if resource_name.is_a?(String)
         crumbs = resource_name.split('#')
-        if crumbs.size == 2
-          resource_description = get_resource_description(resource_name)
-        elsif crumbs.size == 3
+        if crumbs.size == 3
           method_name = crumbs.pop
-          resource_description = get_resource_description(crumbs.join('#'))
         end
+        resource_name = crumbs.join("#")
+        resource_description = get_resource_description(resource_name)
       elsif resource_name.respond_to? :apipie_resource_descriptions
         resource_description = get_resource_description(resource_name)
       else
@@ -158,27 +157,48 @@ module Apipie
     def get_resource_description(resource, version = nil)
       if resource.is_a?(String)
         crumbs = resource.split('#')
-        if crumbs.size == 1
-          @resource_descriptions[Apipie.configuration.default_version][resource]
-        elsif crumbs.size == 2 && @resource_descriptions.has_key?(crumbs.first)
-          @resource_descriptions[crumbs.first][crumbs.last]
+        if crumbs.size == 2
+          version = crumbs.first
         end
-      elsif resource.respond_to?(:apipie_resource_descriptions)
-        return nil if resource == ActionController::Base
-        return nil unless resource.apipie_resource_descriptions
         version ||= Apipie.configuration.default_version
-        resource.apipie_resource_descriptions.find do |r|
-          r._version == version
+        if @resource_descriptions.has_key?(version)
+          return @resource_descriptions[version][crumbs.last]
+        end
+      else
+        resource_name = get_resource_name(resource)
+        if version
+          resource_name = "#{version}##{resource_name}"
+        end
+
+        if resource_name.nil?
+          return nil
+        end
+        resource_description = get_resource_description(resource_name)
+        if resource_description && resource_description.controller == resource
+          return resource_description
         end
       end
+    end
+
+    # get all versions of resource description
+    def get_resource_descriptions(resource)
+      available_versions.map do |version|
+        get_resource_description(resource, version)
+      end.compact
+    end
+
+    # get all versions of method description
+    def get_method_descriptions(resource, method)
+      get_resource_descriptions(resource).map do |resource_description|
+        resource_description.method_description(method.to_sym)
+      end.compact
     end
 
     def remove_method_description(resource, versions, method_name)
       versions.each do |version|
         resource = get_resource_name(resource)
-        resource_description = get_resource_description("#{version}##{resource}")
-        if resource_description && resource_description._methods.has_key?(method_name)
-          resource_description._methods.delete method_name
+        if resource_description = get_resource_description("#{version}##{resource}")
+          resource_description.remove_method_description(method_name)
         end
       end
     end
