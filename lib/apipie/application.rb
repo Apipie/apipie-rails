@@ -183,12 +183,6 @@ module Apipie
       end
     end
 
-    # Clear all apis in this application.
-    def clear
-      @resource_descriptions.clear
-      @method_descriptions.clear
-    end
-
     # initialize variables for gathering dsl data
     def init_env
       @resource_descriptions = HashWithIndifferentAccess.new { |h, version| h[version] = {} }
