@@ -83,6 +83,16 @@ module Apipie
       @_methods[method_description.method.to_sym] = method_description
     end
 
+    def method_description(method_name)
+      @_methods[method_name.to_sym]
+    end
+
+    def remove_method_description(method_name)
+      if @_methods.has_key?(method_name)
+        @_methods.delete(method_name)
+      end
+    end
+
     def doc_url
       crumbs = []
       crumbs << _version if Apipie.configuration.version_in_url

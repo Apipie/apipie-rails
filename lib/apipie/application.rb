@@ -146,7 +146,7 @@ module Apipie
         raise ArgumentError.new("Resource #{resource_name} does not exists.")
       end
       unless resource_description.nil?
-        resource_description._methods[method_name.to_sym]
+        resource_description.method_description(method_name.to_sym)
       end
     end
     alias :[] :get_method_description
