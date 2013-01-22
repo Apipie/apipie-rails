@@ -228,6 +228,9 @@ module Apipie
     def get_resource_name(klass)
       if klass.class == String
         klass
+      elsif klass.respond_to?(:controller_path)
+        klass.controller_path
+      end
       elsif klass.respond_to?(:controller_name)
         klass.controller_name
       end
