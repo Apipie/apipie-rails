@@ -98,8 +98,12 @@ module Apipie
     end
 
     # What version is the api available
-    def api_version version
+    def api_version(version)
       Apipie.last_dsl_data[:api_versions] << version
+    end
+
+    def api_versions(*versions)
+      Apipie.last_dsl_data[:api_versions].concat(versions)
     end
 
     # Describe the next method.
