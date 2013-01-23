@@ -125,7 +125,7 @@ module Apipie
     def get_method_description(resource_name, method_name = nil)
       if resource_name.is_a?(String)
         crumbs = resource_name.split('#')
-        if crumbs.size == 3
+        if method_name.nil?
           method_name = crumbs.pop
         end
         resource_name = crumbs.join("#")
