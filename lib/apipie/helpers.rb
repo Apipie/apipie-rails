@@ -1,6 +1,7 @@
 module Apipie
   module Helpers
     def markup_to_html(text)
+      return "" if text.nil?
       if Apipie.configuration.markup.respond_to? :to_html
         Apipie.configuration.markup.to_html(text.strip_heredoc)
       else

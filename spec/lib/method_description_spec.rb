@@ -7,9 +7,9 @@ describe Apipie::MethodDescription do
     before(:each) do
       Apipie.clear_last
       @resource = Apipie::ResourceDescription.new(ApplicationController, "dummy")
-      Apipie.last_params << Apipie::ParamDescription.new(:a, String)
-      Apipie.last_params << Apipie::ParamDescription.new(:b, String)
-      Apipie.last_params << Apipie::ParamDescription.new(:c, String)
+      Apipie.last_dsl_data[:params] << Apipie::ParamDescription.new(:a, String)
+      Apipie.last_dsl_data[:params] << Apipie::ParamDescription.new(:b, String)
+      Apipie.last_dsl_data[:params] << Apipie::ParamDescription.new(:c, String)
       @method = Apipie::MethodDescription.new(:a, @resource, Apipie.app)
       @resource.add_method_description @method
     end

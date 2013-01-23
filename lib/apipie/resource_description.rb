@@ -14,7 +14,7 @@ module Apipie
     attr_reader :controller, :_short_description, :_full_description, :_methods, :_id,
       :_path, :_name, :_params_ordered, :_errors_ordered, :_formats, :_parent
 
-    def initialize(controller, resource_name, version = nil, &block)
+    def initialize(controller, resource_name, dsl_data = nil, version = nil, &block)
 
       @_methods = ActiveSupport::OrderedHash.new
       @_params_ordered = []
@@ -24,59 +24,30 @@ module Apipie
       @_id = resource_name
       @_version = version || Apipie.configuration.default_version
       @_name = @_id.humanize
-      @_full_description = ""
-      @_short_description = ""
-      @_path = ""
       @_parent = Apipie.get_resource_description(controller.superclass, version)
-      @_formats = []
 
-      eval_resource_description(&block)
+      update_from_dsl_data(dsl_data) if dsl_data
     end
 
-    def eval_resource_description(&block)
-      block.arity < 1 ? instance_eval(&block) : block.call(self) if block_given?
+    def update_from_dsl_data(dsl_data)
+      @_name = dsl_data[:resource_name] if dsl_data[:resource_name]
+      @_full_description = Apipie.markup_to_html(dsl_data[:description])
+      @_short_description = dsl_data[:short_description]
+      @_path = dsl_data[:path] || ""
+      @_formats = dsl_data[:formats]
+      @_errors_ordered = dsl_data[:errors]
+      @_params_ordered = dsl_data[:params]
+      if dsl_data[:app_info]
+        Apipie.configuration.app_info[_version] = dsl_data[:app_info]
+      end
+      if dsl_data[:api_base_url]
+        Apipie.configuration.api_base_url[_version] = dsl_data[:api_base_url]
+      end
     end
-
-    def app_info(description)
-      Apipie.configuration.app_info[_version] = description
-    end
-
-    def api_base_url(url)
-      Apipie.configuration.api_base_url[_version] = url
-    end
-
-    def param(param_name, validator, desc_or_options = nil, options = {}, &block)
-      param_description = Apipie::ParamDescription.new(param_name, validator, desc_or_options, options, &block)
-      @_params_ordered << param_description
-    end
-
-    def error(*args)
-      error_description = Apipie::ErrorDescription.new(args)
-      @_errors_ordered << error_description
-    end
-
-    def path(path); @_path = path; end
-
-    # this keyword is handled by Apipie::ResourceDescription::VersionsExtractor
-    def api_version(version);; end
 
     def _version
       @_version || @_parent.try(:_version) || Apipie.configuration.default_version
     end
-
-    def formats(formats); @_formats = formats; end
-
-    def name(name); @_name = name; end
-
-    def short(short); @_short_description = short; end
-    alias :short_description :short
-
-    def desc(description)
-      description ||= ''
-      @_full_description = Apipie.markup_to_html(description)
-    end
-    alias :description :desc
-    alias :full_description :desc
 
     def add_method_description(method_description)
       Apipie.debug "@resource_descriptions[#{self._version}][#{self._name}]._methods[#{method_description.method}] = #{method_description}"
@@ -122,30 +93,5 @@ module Apipie
       }
     end
 
-    # Get's versions that the resource is defined for. It can't be
-    # done inside the ResourceDescription itself, becuase the resource
-    # description belongs to one versions, i.e. every version has it's
-    # own ResourceDescription instance.
-    class VersionsExtractor
-      attr_reader :_versions
-
-      def initialize(&block)
-        @_versions = []
-        instance_eval(&block)
-      end
-
-      def self.versions(&block)
-        self.new(&block)._versions
-      end
-
-      def api_version(api_version)
-        @_versions << api_version
-      end
-
-      def method_missing(*args)
-        # we ignore the rest of DSL
-        true
-      end
-    end
   end
 end

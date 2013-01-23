@@ -12,8 +12,8 @@ module Apipie
       end
     end
 
-    attr_accessor :last_api_args, :last_errors, :last_params, :last_description,
-                  :last_examples, :last_see, :last_formats, :last_api_versions
+    attr_accessor :last_dsl_data
+
     attr_reader :resource_descriptions
 
     def initialize
@@ -59,32 +59,23 @@ module Apipie
     end
 
     # create new resource api description
-    def define_resource_description(controller, version, &block)
+    def define_resource_description(controller, version, dsl_data = nil)
       return if ignored?(controller)
 
       resource_name = get_resource_name(controller)
       resource_description = @resource_descriptions[version][resource_name]
       if resource_description
         # we already defined the description somewhere (probably in
-        # some method. Updating just the description
-        resource_description.eval_resource_description(&block) if block_given?
+        # some method. Updating just meta data from dsl
+        resource_description.update_from_dsl_data(dsl_data) if dsl_data
       else
-        resource_description = Apipie::ResourceDescription.new(controller, resource_name, version, &block)
+        resource_description = Apipie::ResourceDescription.new(controller, resource_name, dsl_data, version)
 
         Apipie.debug("@resource_descriptions[#{version}][#{resource_name}] = #{resource_description}")
         @resource_descriptions[version][resource_name] ||= resource_description
       end
 
       return resource_description
-    end
-
-    # what versions is the resource defined for?
-    def get_resource_versions(controller, &block)
-      ret = Apipie::ResourceDescription::VersionsExtractor.versions(&block)
-      if ret.empty?
-        ret = controller_versions(controller.superclass)
-      end
-      return ret
     end
 
     # recursively searches what versions has the controller specified in
@@ -105,16 +96,16 @@ module Apipie
     end
 
     def add_method_description_args(method, path, desc)
-      @last_api_args << MethodDescription::Api.new(method, path, desc)
+      @last_dsl_data[:api_args] << MethodDescription::Api.new(method, path, desc)
     end
 
     def add_example(example)
-      @last_examples << example.strip_heredoc
+      @last_dsl_data[:examples] << example.strip_heredoc
     end
 
     # check if there is some saved description
     def apipie_provided?
-      true unless last_api_args.blank?
+      true unless last_dsl_data[:api_args].blank?
     end
 
     # get api for given method
@@ -213,45 +204,18 @@ module Apipie
     end
     # clear all saved data
     def clear_last
-      @last_api_args = []
-      @last_errors = []
-      @last_params = []
-      @last_description = nil
-      @last_examples = []
-      @last_see = nil
-      @last_formats = nil
-      @last_api_versions = []
-    end
-
-    # Return the current description, clearing it in the process.
-    def get_description
-      desc = @last_description
-      @last_description = nil
-      desc
-    end
-
-    def get_errors
-      @last_errors.clone
-    end
-
-    def get_api_args
-      @last_api_args.clone
-    end
-
-    def get_see
-      @last_see
-    end
-
-    def get_formats
-      @last_formats
-    end
-
-    def get_params
-      @last_params.clone
-    end
-
-    def get_examples
-      @last_examples.clone
+      @last_dsl_data = {
+        :api_args          => [],
+        :errors            => [],
+        :params            => [],
+        :resouce_id        => nil,
+        :short_description => nil,
+        :description       => nil,
+        :examples          => [],
+        :see               => nil,
+        :formats           => nil,
+        :api_versions      => []
+      }
     end
 
     def recorded_examples

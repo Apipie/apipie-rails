@@ -21,15 +21,15 @@ module Apipie
       @method = method.to_s
       @resource = resource
 
-      @apis = app.get_api_args
-      @see = app.get_see
-      @formats = app.get_formats
+      @apis = app.last_dsl_data[:api_args]
+      @see = app.last_dsl_data[:see]
+      @formats = app.last_dsl_data[:formats]
 
-      desc = app.get_description || ''
+      desc = app.last_dsl_data[:description] || ''
       @full_description = Apipie.markup_to_html(desc)
-      @errors = app.get_errors
-      @params_ordered = app.get_params
-      @examples = app.get_examples
+      @errors = app.last_dsl_data[:errors]
+      @params_ordered = app.last_dsl_data[:params]
+      @examples = app.last_dsl_data[:examples]
 
       @examples += load_recorded_examples
 
