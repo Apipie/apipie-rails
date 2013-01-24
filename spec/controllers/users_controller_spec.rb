@@ -21,23 +21,25 @@ end
 describe UsersController do
 
   describe "resource description" do
-    subject { a = Apipie.get_resource_description(UsersController) }
+    subject do
+      Apipie.get_resource_description(UsersController, Apipie.configuration.default_version)
+    end
 
     it "should contain all resource methods" do
       methods = subject._methods
       methods.count.should == 5
-      methods.should include("users#show")
-      methods.should include("users#create")
-      methods.should include("users#index")
-      methods.should include("users#two_urls")
+      methods.keys.should include(:show)
+      methods.keys.should include(:index)
+      methods.keys.should include(:create)
+      methods.keys.should include(:two_urls)
     end
 
     it "should contain info about resource" do
       subject._short_description.should eq('Site members')
       subject._id.should eq('users')
       subject._path.should eq('/users')
-      subject._version.should eq('1.0 - 3.4.2012')
-      subject._name.should eq('Members')
+      subject._version.should eq('development')
+      subject._name.should eq('Users')
       subject._formats.should eq(['json'])
     end
 
@@ -210,30 +212,30 @@ describe UsersController do
       a.formats.should eq(['json'])
       api = a.apis.first
       api.short_description.should eq("Create user")
-      api.api_url.should eq("/api/users")
+      api.path.should eq("/users")
       api.http_method.should eq("POST")
 
       b = Apipie.get_method_description(UsersController, :show)
       b.should eq(Apipie[UsersController, :show])
-      b.method.should eq(:show)
+      b.method.should eq('show')
       b.resource._id.should eq('users')
 
       b.apis.count.should == 1
       b.formats.should eq(['json', 'jsonp'])
       api = b.apis.first
       api.short_description.should eq("Show user profile")
-      api.api_url.should eq("#{Apipie.configuration.api_base_url}/users/:id")
+      api.path.should eq("/users/:id")
       api.http_method.should eq("GET")
       b.full_description.length.should be > 400
     end
 
     context "contain :see option" do
 
-      context "the key is valid" do 
+      context "the key is valid" do
         it "should contain reference to another method" do
           api = Apipie[UsersController, :see_another]
-          api.see.should eq('users#create')
-          Apipie['users#see_another'].should eq(Apipie[UsersController, :see_another])
+          api.see.should eq('development#users#create')
+          Apipie['development#users#see_another'].should eq(Apipie[UsersController, :see_another])
           api.see_url.should eq(Apipie[UsersController, :create].doc_url)
         end
       end
@@ -274,11 +276,11 @@ describe UsersController do
       a1, a2 = method_description.apis
 
       a1.short_description.should eq('Get company users')
-      a1.api_url.should eq('/api/company_users')
+      a1.path.should eq('/company_users')
       a1.http_method.should eq('GET')
 
       a2.short_description.should eq('Get users working in given company')
-      a2.api_url.should eq('/api/company/:id/users')
+      a2.path.should eq('/company/:id/users')
       a2.http_method.should eq('GET')
     end
 
@@ -288,7 +290,7 @@ describe UsersController do
         :errors => [{:code=>404, :description=>"Missing"},
                     {:code=>500, :description=>"Server crashed for some <%= reason %>"}],
         :examples => [],
-        :doc_url => "#{Apipie.configuration.doc_base_url}/users/two_urls",
+        :doc_url => "#{Apipie.configuration.doc_base_url}/development/users/two_urls",
         :formats=>["json"],
         :full_description => '',
         :params => [{:full_name=>"oauth",
@@ -326,16 +328,16 @@ describe UsersController do
                      :name=>"id", :full_name=>"id",
                      :expected_type=>"numeric"},
        ],
-        :name => :two_urls,
+        :name => 'two_urls',
         :apis => [
           {
             :http_method => 'GET',
             :short_description => 'Get company users',
-            :api_url => "#{Apipie.configuration.api_base_url}/company_users"
+            :api_url => "#{Apipie.api_base_url}/company_users"
           },{
             :http_method => 'GET',
             :short_description => 'Get users working in given company',
-            :api_url =>"#{Apipie.configuration.api_base_url}/company/:id/users"
+            :api_url =>"#{Apipie.api_base_url}/company/:id/users"
           }
         ]
       }

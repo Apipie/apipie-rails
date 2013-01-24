@@ -92,7 +92,7 @@ Example:
       config.app_info = <<-DOC
         This is where you can inform user about your application and API
         in general.
-      DOC
+      DOC, '1.0'
     end
 
 === Routes

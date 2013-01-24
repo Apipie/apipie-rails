@@ -5,20 +5,12 @@ module Apipie
 
     class Api
 
-      attr_accessor :short_description, :api_url, :http_method
+      attr_accessor :short_description, :path, :http_method
 
       def initialize(method, path, desc)
         @http_method = method.to_s
-        @api_url = create_api_url(path)
+        @path = path
         @short_description = desc
-      end
-
-      private
-
-      def create_api_url(path)
-        path = "#{Apipie.configuration.api_base_url}#{path}"
-        path = path[0..-2] if path[-1..-1] == '/'
-        return path
       end
 
     end
@@ -26,18 +18,18 @@ module Apipie
     attr_reader :full_description, :method, :resource, :apis, :examples, :see, :formats
 
     def initialize(method, resource, app)
-      @method = method
+      @method = method.to_s
       @resource = resource
 
-      @apis = app.get_api_args
-      @see = app.get_see
-      @formats = app.get_formats
+      @apis = app.last_dsl_data[:api_args]
+      @see = app.last_dsl_data[:see]
+      @formats = app.last_dsl_data[:formats]
 
-      desc = app.get_description || ''
+      desc = app.last_dsl_data[:description] || ''
       @full_description = Apipie.markup_to_html(desc)
-      @errors = app.get_errors
-      @params_ordered = app.get_params
-      @examples = app.get_examples
+      @errors = app.last_dsl_data[:errors]
+      @params_ordered = app.last_dsl_data[:params]
+      @examples = app.last_dsl_data[:examples]
 
       @examples += load_recorded_examples
 
@@ -45,7 +37,6 @@ module Apipie
       if parent != ActionController::Base
         @parent_resource = parent.controller_name
       end
-      @resource.add_method(id)
     end
 
     def id
@@ -53,7 +44,7 @@ module Apipie
     end
 
     def params
-      params_ordered.reduce({}) { |h,p| h[p.name] = p; h }
+      params_ordered.reduce(ActiveSupport::OrderedHash.new) { |h,p| h[p.name] = p; h }
     end
 
     def params_ordered
@@ -86,14 +77,28 @@ module Apipie
       return @merged_errors
     end
 
+    def version
+      resource._version
+    end
+
     def doc_url
-      Apipie.full_url("#{@resource._id}/#{@method}")
+      crumbs = []
+      crumbs << @resource._version if Apipie.configuration.version_in_url
+      crumbs << @resource._id
+      crumbs << @method
+      Apipie.full_url crumbs.join('/')
+    end
+
+    def create_api_url(api)
+      path = "#{Apipie.api_base_url(@resource._version)}#{api.path}"
+      path = path[0..-2] if path[-1..-1] == '/'
+      return path
     end
 
     def method_apis_to_json
       @apis.each.collect do |api|
         {
-          :api_url => api.api_url,
+          :api_url => create_api_url(api),
           :http_method => api.http_method.to_s,
           :short_description => api.short_description
         }
@@ -144,6 +149,7 @@ module Apipie
     def load_recorded_examples
       (Apipie.recorded_examples[id] || []).
         find_all { |ex| ex["show_in_doc"].to_i > 0 }.
+        find_all { |ex| ex["versions"].nil? || ex["versions"].include?(self.version) }.
         sort_by { |ex| ex["show_in_doc"] }.
         map { |ex| format_example(ex.symbolize_keys) }
     end

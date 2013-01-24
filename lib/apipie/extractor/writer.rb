@@ -1,3 +1,5 @@
+require 'set'
+
 module Apipie
   module Extractor
     class Writer
@@ -47,7 +49,7 @@ module Apipie
       def ordered_call(call)
         call = call.stringify_keys
         ordered_call = OrderedHash.new
-        %w[verb path query request_data response_data code show_in_doc recorded].each do |k|
+        %w[verb path versions query request_data response_data code show_in_doc recorded].each do |k|
           next unless call.has_key?(k)
           ordered_call[k] = case call[k]
                        when ActiveSupport::HashWithIndifferentAccess
@@ -76,10 +78,15 @@ module Apipie
 
       def load_new_examples
         @collector.records.reduce({}) do |h, (method, calls)|
-          show_in_doc = nil
+          showed_in_versions = Set.new
+          # we have already shown some example
           recorded_examples = calls.map do |call|
-            if show_in_doc.nil?
-              show_in_doc = 1 if showable_in_doc?(call.with_indifferent_access)
+            method_descriptions = Apipie.get_method_descriptions(call[:controller], call[:action])
+            call[:versions] = method_descriptions.map(&:version)
+
+            if call[:versions].any? { |v| ! showed_in_versions.include?(v) }
+              call[:versions].each { |v| showed_in_versions << v }
+              show_in_doc = 1
             else
               show_in_doc = 0
             end
