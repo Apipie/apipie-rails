@@ -2,6 +2,8 @@ module Apipie
   class ApipiesController < ActionController::Base
     layout Apipie.configuration.layout
 
+    around_filter :set_script_name
+
     def index
 
       params[:version] ||= Apipie.configuration.default_version
@@ -75,5 +77,11 @@ module Apipie
       end
     end
 
+    def set_script_name
+      Apipie.request_script_name = request.env["SCRIPT_NAME"]
+      yield
+    ensure
+      Apipie.request_script_name = nil
+    end
   end
 end
