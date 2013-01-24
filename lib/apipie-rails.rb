@@ -1,6 +1,7 @@
 require "apipie/routing"
 require "apipie/markup"
 require "apipie/apipie_module"
+require "apipie/configuration"
 require "apipie/method_description"
 require "apipie/resource_description"
 require "apipie/param_description"

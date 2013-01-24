@@ -1,7 +1,9 @@
 module Apipie
   class Configuration
+
     attr_accessor :app_name, :app_info, :copyright, :markup, :disqus_shortname,
-      :validate, :api_base_url, :doc_base_url, :required_by_default, :layout
+      :validate, :api_base_url, :doc_base_url, :required_by_default, :layout,
+      :default_version, :debug, :version_in_url
 
     alias_method :validate?, :validate
     alias_method :required_by_default?, :required_by_default
@@ -61,7 +63,7 @@ module Apipie
       @ignored ||= []
       @ignored.map(&:to_s)
     end
- 
+
     # comment to put before docs that was generated automatically. It's used to
     # determine if the description should be overwritten next recording.
     # If you want to keep the documentation (prevent from overriding), remove
@@ -75,21 +77,36 @@ module Apipie
       !@disqus_shortname.blank?
     end
 
-    def app_info
-      Apipie.markup_to_html(@app_info)
+    # set app description for default version
+    # to maintain backward compatibility
+    # new way: config.app_info[version] = description
+    def app_info=(description)
+      version = Apipie.configuration.default_version
+      @app_info[version] = description
+    end
+
+    # set base url for default version of API
+    # to set it for specific version use
+    # config.api_base_url[version] = url
+    def api_base_url=(url)
+      version = Apipie.configuration.default_version
+      @api_base_url[version] = url
     end
 
     def initialize
       @markup = Apipie::Markup::RDoc.new
       @app_name = "Another API"
-      @app_info = "Another API description"
+      @app_info = HashWithIndifferentAccess.new
       @copyright = nil
       @validate = true
       @required_by_default = false
-      @api_base_url = ""
+      @api_base_url = HashWithIndifferentAccess.new
       @doc_base_url = "/apipie"
       @layout = "apipie/apipie"
       @disqus_shortname = nil
+      @default_version = "1.0"
+      @debug = false
+      @version_in_url = true
     end
   end
 end

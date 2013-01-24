@@ -1,14 +1,21 @@
 <ul class='breadcrumb'>
-  <li class='active'><a href='<%= @doc[:doc_url] %>.html'><%= @doc[:name] %></a></li>
+  <li class='active'><a href='<%= @doc[:doc_url] %>.html'><%= @doc[:name] %> <%= @doc[:resources].values.first[:version] %></a></li>
+  <% if @versions && @versions.size > 1 %>
+  <li class='pull-right'>
+    <%= @versions.collect { |v| link_to v, Apipie.full_url(v) }.join(' / ').html_safe %>
+  </li>
+  <% end %>
 </ul>
 
-<div><%= @doc[:info].html_safe %></div>
+<div><%= raw @doc[:info] %></div>
 
 <h1 class='page-header'>Resources</h1>
 
 <% @doc[:resources].sort_by(&:first).each do |key, api| %>
   <h2>
-    <a href='<%= api[:doc_url] %>.html'><%= api[:name] %></a><br>
+    <a href='<%= api[:doc_url] %>.html'>
+      <%= api[:name] %>
+    </a><br>
     <small><%= api[:short_description] %></small>
   </h2>
   <table class='table'>

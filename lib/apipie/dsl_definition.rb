@@ -5,6 +5,8 @@ module Apipie
   # DSL is a module that provides #api, #error, #param, #error.
   module DSL
 
+    attr_reader :apipie_resource_descriptions
+
     private
 
     # Describe whole resource
@@ -17,9 +19,73 @@ module Apipie
     # EOS
     def resource_description(options = {}, &block) #:doc:
       return unless Apipie.active_dsl?
-      Apipie.remove_resource_description(self)
-      Apipie.define_resource_description(self, &block) if block_given?
+      raise ArgumentError, "Block expected" unless block_given?
+
+      dsl_data = ResourceDescriptionDsl.eval_dsl(self, &block)
+      versions = dsl_data[:api_versions]
+      @apipie_resource_descriptions = versions.map do |version|
+        Apipie.define_resource_description(self, version, dsl_data)
+      end
+      Apipie.set_controller_versions(self, versions)
     end
+
+    class ResourceDescriptionDsl
+      include Apipie::DSL
+
+      NO_RESOURCE_KEYWORDS = %w[api see example]
+
+      NO_RESOURCE_KEYWORDS.each do |method|
+        define_method method do
+          raise "#{method} is not defined for resource description"
+        end
+      end
+
+      def initialize(controller)
+        @controller = controller
+      end
+
+      # by default, the resource id is derived from controller_name
+      # it can be overwritten with.
+      #
+      #    resource_id "my_own_resource_id"
+      def resource_id(resource_id)
+        Apipie.set_resource_id(@controller, resource_id)
+      end
+
+      def name(name)
+        Apipie.last_dsl_data[:resource_name] = name
+      end
+
+      def api_base_url(url)
+        Apipie.last_dsl_data[:api_base_url] = url
+      end
+
+      def short(short)
+        Apipie.last_dsl_data[:short_description] = short
+      end
+      alias :short_description :short
+
+      def path(path)
+        Apipie.last_dsl_data[:path] = path
+      end
+
+      def app_info(app_info)
+        Apipie.last_dsl_data[:app_info] = app_info
+      end
+
+      # evaluates resource description DSL and returns results
+      def self.eval_dsl(controller, &block)
+        self.new(controller).instance_eval(&block)
+        dsl_data = Apipie.last_dsl_data
+        if dsl_data[:api_versions].empty?
+          dsl_data[:api_versions] = Apipie.controller_versions(controller)
+        end
+        dsl_data
+      ensure
+        Apipie.clear_last
+      end
+    end
+
 
     # Declare an api.
     #
@@ -31,6 +97,11 @@ module Apipie
       Apipie.add_method_description_args(method, path, desc)
     end
 
+    def api_versions(*versions)
+      Apipie.last_dsl_data[:api_versions].concat(versions)
+    end
+    alias :api_version :api_versions
+
     # Describe the next method.
     #
     # Example:
@@ -41,12 +112,13 @@ module Apipie
     #
     def desc(description) #:doc:
       return unless Apipie.active_dsl?
-      if Apipie.last_description
+      if Apipie.last_dsl_data[:description]
         raise "Double method description."
       end
-      Apipie.last_description = description
+      Apipie.last_dsl_data[:description] = description
     end
     alias :description :desc
+    alias :full_description :desc
 
     # Reference other similar method
     #
@@ -55,8 +127,8 @@ module Apipie
     #   def update; end
     def see(method_key)
       return unless Apipie.active_dsl?
-      raise "'See' method called twice." if Apipie.last_see
-      Apipie.last_see = method_key
+      raise "'See' method called twice." if Apipie.last_dsl_data[:see]
+      Apipie.last_dsl_data[:see] = method_key
     end
 
     # Show some example of what does the described
@@ -71,7 +143,7 @@ module Apipie
     #   formats ['json', 'jsonp', 'xml']
     def formats(formats) #:doc:
       return unless Apipie.active_dsl?
-      Apipie.last_formats = formats
+      Apipie.last_dsl_data[:formats] = formats
     end
 
     # Describe possible errors
@@ -86,7 +158,7 @@ module Apipie
     #
     def error(*args) #:doc:
       return unless Apipie.active_dsl?
-      Apipie.last_errors << Apipie::ErrorDescription.new(args)
+      Apipie.last_dsl_data[:errors] << Apipie::ErrorDescription.new(args)
     end
 
     # Describe method's parameter
@@ -99,19 +171,25 @@ module Apipie
     #
     def param(param_name, validator, desc_or_options = nil, options = {}, &block) #:doc:
       return unless Apipie.active_dsl?
-      Apipie.last_params << Apipie::ParamDescription.new(param_name, validator, desc_or_options, options, &block)
+      Apipie.last_dsl_data[:params] << Apipie::ParamDescription.new(param_name, validator, desc_or_options, options, &block)
     end
 
     # create method api and redefine newly added method
     def method_added(method_name) #:doc:
       super
 
-      return unless Apipie.active_dsl?
-      return unless Apipie.apipie_provided?
+      if ! Apipie.active_dsl? || ! Apipie.apipie_provided?
+        Apipie.clear_last
+        return
+      end
 
-      # remove method description if exists and create new one
-      Apipie.remove_method_description(self, method_name)
-      description = Apipie.define_method_description(self, method_name)
+      begin
+        # remove method description if exists and create new one
+        Apipie.remove_method_description(self, Apipie.last_dsl_data[:api_versions], method_name)
+        description = Apipie.define_method_description(self, method_name, Apipie.last_dsl_data[:api_versions])
+      ensure
+        Apipie.clear_last
+      end
 
       # redefine method only if validation is turned on
       if description && Apipie.configuration.validate == true
@@ -141,7 +219,6 @@ module Apipie
         end
 
       end
-
     end # def method_added
   end # module DSL
 end # module Apipie

@@ -1,16 +1,15 @@
 class UsersController < ApplicationController
 
   resource_description do
-    name 'Members'
     short 'Site members'
     path '/users'
-    version '1.0 - 3.4.2012'
     formats ['json']
     param :id, Fixnum, :desc => "User ID", :required => false
     param :resource_param, Hash, :desc => 'Param description for all methods' do
       param :ausername, String, :desc => "Username for login", :required => true
       param :apassword, String, :desc => "Password for login", :required => true
     end
+    api_version "development"
     error 404, "Missing"
     error 500, "Server crashed for some <%= reason %>"
     description <<-EOS
@@ -220,7 +219,7 @@ class UsersController < ApplicationController
   end
 
   api :GET, '/users/see_another', 'Boring method'
-  see 'users#create'
+  see 'development#users#create'
   desc 'This method is boring, look at users#create'
   def see_another
     render :text => 'This is very similar to create action'
