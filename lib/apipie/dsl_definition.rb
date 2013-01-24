@@ -97,14 +97,10 @@ module Apipie
       Apipie.add_method_description_args(method, path, desc)
     end
 
-    # What version is the api available
-    def api_version(version)
-      Apipie.last_dsl_data[:api_versions] << version
-    end
-
     def api_versions(*versions)
       Apipie.last_dsl_data[:api_versions].concat(versions)
     end
+    alias :api_version :api_versions
 
     # Describe the next method.
     #
