@@ -46,7 +46,6 @@ module Apipie
       case env['REQUEST_METHOD']
       when 'GET', 'HEAD'
         path = env['PATH_INFO'].sub("#{@baseurl}/","/apipie/").chomp('/')
-        path.sub!("#{ENV["RAILS_RELATIVE_URL_ROOT"]}",'')
 
         if match = @file_handler.match?(path)
           env["PATH_INFO"] = match
