@@ -333,7 +333,7 @@ Example:
      config.markup = Apipie::Markup::Markdown.new
      config.reload_controllers = true
      config.api_controllers_matcher = File.join(Rails.root, "app", "controllers", "**","*.rb")
-     config.app_info = <<-"
+     config.app_info = "
        This is where you can inform user about your application and API
        in general.
      ", '1.0'
