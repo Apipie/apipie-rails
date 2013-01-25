@@ -47,8 +47,7 @@ Apipie.configure do |config|
   # set default version info, to describe specific version use
   # config.app_info[version] = description
   # or put this in your base or application controller
-  path = File.expand_path(File.dirname(__FILE__)+'/../../../../README.rdoc')
-  config.app_info = File.read(path)
+  config.app_info = "Dummy app for testing"
 
   # show debug informations
   config.debug = false
