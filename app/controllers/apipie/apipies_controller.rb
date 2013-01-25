@@ -55,6 +55,11 @@ module Apipie
       if [:resource, :method, :format].any? { |p| params[p].to_s =~ /\W/ }
         head :bad_request and return
       end
+      # version can contain dot, but only one in row
+      if params[:version].to_s.gsub(".", "") =~ /\W/ ||
+        params[:version].to_s =~ /\.\./
+        head :bad_request and return
+      end
 
       path << "/" << params[:version] if params[:version].present?
       path << "/" << params[:resource] if params[:resource].present?
@@ -64,6 +69,14 @@ module Apipie
       else
         path << ".html"
       end
+
+      # we sanitize the params before so in ideal case, this condition
+      # will be never satisfied. It's here for cases somebody adds new
+      # param into the path later and forgets about sanitation.
+      if path =~ /\.\./
+        head :bad_request and return
+      end
+
       cache_file = File.join(Apipie.configuration.cache_dir, path)
       if File.exists?(cache_file)
         content_type = case params[:format]
