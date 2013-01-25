@@ -8,6 +8,12 @@ module Apipie
                  :desc => "What path should be the doc available on",
                  :default => "/apipie")
 
+    class_option(:api_path,
+                 :alias => "-a",
+                 :type => :string,
+                 :desc => "What path are API requests on",
+                 :default => "/api")
+
     def create_initializer
       template 'initializer.rb.erb', 'config/initializers/apipie.rb'
     end
