@@ -9,12 +9,12 @@ API. Instead of traditional use of ``#comments``, Apipie let's you
 describe the code by code. This brings advantages like:
 
 * no need to learn yet another syntax, you already know Ruby, right?
-* possibility reuse the doc for other purposes (like validation)
+* possibility reuse the doc for other purposes (such as validation)
 * easier to extend and maintain (no string parsing involved)
 * possibility to use other sources for documentation purposes (such as
   routes etc.)
 
-The documenatation is available right in your app (by default under
+The documentation is available right in your app (by default under
 ``/apipie`` path. In development mode, you can see the changes as you
 go. It's markup language agnostic and even provides an API for reusing
 the documentation data in form of JSON.
@@ -48,7 +48,7 @@ use ``http://localhost:3000/apipie.json``.
 
 For more comprehensive getting started guide, see
 `this demo <https://github.com/iNecas/apipie-demo>`_, that includes
-features like generating documenation from tests, recording examples etc.
+features such as generating documenation from tests, recording examples etc.
 
 Screenshots
 -----------
@@ -85,16 +85,16 @@ Apipie-rails is released under the `MIT License <http://opensource.org/licenses/
 Resource Description
 --------------------
 
-You can describe a resource on controller level. The description is introcudes by calling
-``resource description do ... end``.
+You can describe a resource on controller level. The description is introduced by calling
+``resource_description do ... end``.
 
-Inheritance is supported, so you can specify common params for group of controlelrs in their parent
+Inheritance is supported, so you can specify common params for group of controllers in their parent
 class.
 
 The following keywords are available (all are optional):
 
 resource_id
-  How will be the resource referenced in Apipie (paths, ``see`` command etc.), by default `controller_name.downcase` is used.
+  How will the resource be referenced in Apipie (paths, ``see`` command etc.), by default `controller_name.downcase` is used.
 
 name
   Human readable name of resource. By default ``class.name.humanize`` is used.
@@ -103,10 +103,10 @@ short (also short_description)
   Short description of the resource (it's shown on both list of resources and resource details)
 
 desc (also description and full_description)
-  Full description of the resource (shown only on resource details)
+  Full description of the resource (shown only in resource details)
 
 param
-  Common params for all method defined in controller/child controllers.
+  Common params for all methods defined in controller/child controllers.
 
 api_base_url
   What url is the resource available under.
@@ -118,11 +118,11 @@ formats
   request / response formats.
 
 error
-  Describe each possible error that can happen what calling all
-  methods define in controller. HTTP response code and description can be provided.
+  Describe every possible error that can happen what calling all
+  methods defined in controller. HTTP response code and description can be provided.
 
 app_info
-  In case of versioning, this set's app info description on per_version basis.
+  In case of versioning, this sets app info description on per_version basis.
 
 Example:
 ~~~~~~~~
@@ -312,7 +312,9 @@ markup
   processor.
 
 layout
-  Name of a layout template to use instead of Apipie's layout. You can use Apipie.include_stylesheets and Apipie.include_javascripts helpers to include Apipie's stylesheets and javascripts.
+  Name of a layout template to use instead of Apipie's layout. You can use
+  Apipie.include_stylesheets and Apipie.include_javascripts helpers to include
+  Apipie's stylesheets and javascripts.
 
 ignored
   An array of controller names (strings) (might include actions as well)
