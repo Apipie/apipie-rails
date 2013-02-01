@@ -13,7 +13,8 @@ module Apipie
       respond_to do |format|
 
         if Apipie.configuration.use_cache?
-          render_from_cache and return
+          render_from_cache 
+          return
         end
 
         Apipie.reload_documentation if Apipie.configuration.reload_controllers?
