@@ -220,6 +220,7 @@ class UsersController < ApplicationController
 
   api :GET, '/users/see_another', 'Boring method'
   see 'development#users#create'
+  see 'development#users#index', "very interesting method reference"
   desc 'This method is boring, look at users#create'
   def see_another
     render :text => 'This is very similar to create action'
