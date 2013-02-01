@@ -125,10 +125,9 @@ module Apipie
     #   api :PUT, '/articles/:id'
     #   see "articles#create"
     #   def update; end
-    def see(method_key)
+    def see(*args)
       return unless Apipie.active_dsl?
-      raise "'See' method called twice." if Apipie.last_dsl_data[:see]
-      Apipie.last_dsl_data[:see] = method_key
+      Apipie.last_dsl_data[:see] << Apipie::SeeDescription.new(args)
     end
 
     # Show some example of what does the described

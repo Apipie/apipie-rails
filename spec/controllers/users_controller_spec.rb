@@ -234,20 +234,28 @@ describe UsersController do
       context "the key is valid" do
         it "should contain reference to another method" do
           api = Apipie[UsersController, :see_another]
-          api.see.should eq('development#users#create')
+          see = api.see.first
+          see.see_url.should == Apipie[UsersController, :create].doc_url
+          see.link.should == 'development#users#create'
+          see.description.should == 'development#users#create'
+
+          see_with_desc = api.see.last
+          see_with_desc.see_url.should == Apipie[UsersController, :index].doc_url
+          see_with_desc.link.should == 'development#users#index'
+          see_with_desc.description.should == 'very interesting method reference'
+
           Apipie['development#users#see_another'].should eq(Apipie[UsersController, :see_another])
-          api.see_url.should eq(Apipie[UsersController, :create].doc_url)
         end
       end
 
       context "the key is not valid" do
         it "should raise exception" do
           api = Apipie[UsersController, :see_another]
-          api.instance_variable_set :@see, 'doesnot#exist'
+          api.instance_variable_set :@see, [Apipie::SeeDescription.new(['doesnot#exist'])]
           lambda {
-            api.see_url
+            api.see.first.see_url
           }.should raise_error(ArgumentError, /does not exist/)
-          api.instance_variable_set :@see, nil
+          api.instance_variable_set :@see, []
         end
       end
     end
