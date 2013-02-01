@@ -101,16 +101,6 @@ module Apipie
       end
     end
 
-    def see_url
-      if @see
-        method_description = Apipie[@see]
-        if method_description.nil?
-          raise ArgumentError.new("Method #{@see} referenced in 'see' does not exist.")
-        end
-        method_description.doc_url
-      end
-    end
-
     def see
       @see
     end
@@ -129,8 +119,7 @@ module Apipie
         :errors => errors.map(&:to_json),
         :params => params_ordered.map(&:to_json).flatten,
         :examples => @examples,
-        :see => @see,
-        :see_url => see_url
+        :see => see.map(&:to_json)
       }
     end
 

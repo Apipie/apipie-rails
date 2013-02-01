@@ -51,7 +51,7 @@ module Apipie
     end
 
     def add_example(example)
-      @last_examples << example.strip_heredoc
+     @last_examples << example.strip_heredoc
     end
 
     # check if there is some saved description
@@ -131,7 +131,7 @@ module Apipie
       @last_params = []
       @last_description = nil
       @last_examples = []
-      @last_see = nil
+      @last_see = []
       @last_formats = []
     end
 
@@ -155,8 +155,8 @@ module Apipie
     end
 
     def get_see
-      see = @last_see
-      @last_see = nil
+      see = @last_see.clone
+      @last_see.clear
       see
     end
 
