@@ -47,8 +47,8 @@
       <% end %>
     </div>
 
-    <% unless m[:see_url].blank? %>
-      Also see <%= link_to m[:see], m[:see_url] %>
+    <% unless m[:see].empty? %>
+      Also see <%= m[:see].map { |s| link_to(s[:description], s[:link]) }.to_sentence.html_safe %>.
     <% end %>
 
     <div id='description-<%= m[:name] %>' class='collapse accordion-body'>
