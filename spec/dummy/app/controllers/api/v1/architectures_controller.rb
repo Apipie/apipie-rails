@@ -10,10 +10,14 @@ module Api
       def show
       end
 
-      api :POST, "/architectures/", "Create an architecture."
-      param :architecture, Hash, :required => true do
-        param :name, String, :required => true
+      def_param_group :arch do
+        param :architecture, Hash, :required => true do
+          param :name, String, :required => true
+        end
       end
+
+      api :POST, "/architectures/", "Create an architecture."
+      param_group :arch
       def create
       end
 

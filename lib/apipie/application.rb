@@ -93,6 +93,20 @@ module Apipie
       @controller_versions[controller] = versions
     end
 
+    def add_param_group(controller, name, &block)
+      key = "#{controller.controller_path}##{name}"
+      @param_groups[key] = block
+    end
+
+    def get_param_group(controller, name)
+      key = "#{controller.controller_path}##{name}"
+      if @param_groups.has_key?(key)
+        return @param_groups[key]
+      else
+        raise "param group #{key} not defined"
+      end
+    end
+
     # get api for given method
     #
     # There are two ways how this method can be used:
@@ -183,6 +197,7 @@ module Apipie
     def init_env
       @resource_descriptions = HashWithIndifferentAccess.new { |h, version| h[version] = {} }
       @controller_to_resource_id = {}
+      @param_groups = {}
 
       # what versions does the controller belong in (specified by resource_description)?
       @controller_versions = Hash.new { |h, controller| h[controller] = [] }

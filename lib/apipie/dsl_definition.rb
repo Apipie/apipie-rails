@@ -66,6 +66,11 @@ module Apipie
     end
 
     module Action
+
+      def def_param_group(name, &block)
+        Apipie.add_param_group(self, name, &block)
+      end
+
       # Declare an api.
       #
       # Example:
@@ -228,6 +233,14 @@ module Apipie
                                       desc_or_options,
                                       options,
                                       block]
+      end
+
+      # Reuses param group for this method. The definition is looked up
+      # in scope of this controller. If the group was defined in
+      # different controller, the second param can be used to specify it.
+      def param_group(name, scope = nil)
+        scope ||= self
+        self.instance_exec(&Apipie.get_param_group(scope, name))
       end
     end
 

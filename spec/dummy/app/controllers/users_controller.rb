@@ -190,14 +190,24 @@ class UsersController < ApplicationController
     render :text => "OK"
   end
 
-  api :POST, "/users", "Create user"
-  param :user, Hash, :desc => "User info", :required => true do
-    param :name, String, :desc => "Username for login", :required => true
-    param :pass, String, :desc => "Password for login", :required => true
-    param :membership, ["standard","premium"], :desc => "User membership"
+  def_param_group :user do
+    param :user, Hash, :desc => "User info", :required => true do
+      param :name, String, :desc => "Username for login", :required => true
+      param :pass, String, :desc => "Password for login", :required => true
+      param :membership, ["standard","premium"], :desc => "User membership"
+    end
   end
+
+  api :POST, "/users", "Create user"
+  param_group :user
   param :facts, Hash, :desc => "Additional optional facts about the user", :allow_nil => true
   def create
+    render :text => "OK #{params.inspect}"
+  end
+
+  api :PUT, "/users/:id", "Create user"
+  param_group :user
+  def update
     render :text => "OK #{params.inspect}"
   end
 
