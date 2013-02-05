@@ -2,16 +2,18 @@ require "spec_helper"
 
 describe Apipie::ResourceDescription do
 
+  let(:dsl_data) { ActionController::Base.send(:_apipie_dsl_data_init) }
+
   describe "methods descriptions" do
 
     before(:each) do
       @resource = Apipie::ResourceDescription.new(ApplicationController, "dummy")
-      a = Apipie::MethodDescription.new(:a, @resource, Apipie.app)
-      b = Apipie::MethodDescription.new(:b, @resource, Apipie.app)
-      c = Apipie::MethodDescription.new(:c, @resource, Apipie.app)
-      @resource.add_method_description a
-      @resource.add_method_description b
-      @resource.add_method_description c
+      a = Apipie::MethodDescription.new(:a, @resource, Apipie.app, dsl_data)
+      b = Apipie::MethodDescription.new(:b, @resource, Apipie.app, dsl_data)
+      c = Apipie::MethodDescription.new(:c, @resource, Apipie.app, dsl_data)
+      @resource.add_method_description(a)
+      @resource.add_method_description(b)
+      @resource.add_method_description(c)
     end
 
     it "should be ordered" do

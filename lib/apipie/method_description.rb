@@ -17,19 +17,19 @@ module Apipie
 
     attr_reader :full_description, :method, :resource, :apis, :examples, :see, :formats
 
-    def initialize(method, resource, app)
+    def initialize(method, resource, app, dsl_data)
       @method = method.to_s
       @resource = resource
 
-      @apis = app.last_dsl_data[:api_args]
-      @see = app.last_dsl_data[:see]
-      @formats = app.last_dsl_data[:formats]
+      @apis = dsl_data[:api_args]
+      @see = dsl_data[:see]
+      @formats = dsl_data[:formats]
 
-      desc = app.last_dsl_data[:description] || ''
+      desc = dsl_data[:description] || ''
       @full_description = Apipie.markup_to_html(desc)
-      @errors = app.last_dsl_data[:errors]
-      @params_ordered = app.last_dsl_data[:params]
-      @examples = app.last_dsl_data[:examples]
+      @errors = dsl_data[:errors]
+      @params_ordered = dsl_data[:params]
+      @examples = dsl_data[:examples]
 
       @examples += load_recorded_examples
 

@@ -12,14 +12,11 @@ module Apipie
       end
     end
 
-    attr_accessor :last_dsl_data
-
     attr_reader :resource_descriptions
 
     def initialize
       super
       init_env
-      clear_last
     end
 
     def available_versions
@@ -31,10 +28,11 @@ module Apipie
     end
 
     # create new method api description
-    def define_method_description(controller, method_name, versions = [])
+    def define_method_description(controller, method_name, dsl_data)
       return if ignored?(controller, method_name)
       ret_method_description = nil
 
+      versions = dsl_data[:api_versions] || []
       versions = controller_versions(controller) if versions.empty?
 
       versions.each do |version|
@@ -45,7 +43,7 @@ module Apipie
           resource_description = define_resource_description(controller, version)
         end
 
-        method_description = Apipie::MethodDescription.new(method_name, resource_description, self)
+        method_description = Apipie::MethodDescription.new(method_name, resource_description, self, dsl_data)
 
         # we create separate method description for each version in
         # case the method belongs to more versions. We return just one
@@ -93,19 +91,6 @@ module Apipie
 
     def set_controller_versions(controller, versions)
       @controller_versions[controller] = versions
-    end
-
-    def add_method_description_args(method, path, desc)
-      @last_dsl_data[:api_args] << MethodDescription::Api.new(method, path, desc)
-    end
-
-    def add_example(example)
-      @last_dsl_data[:examples] << example.strip_heredoc
-    end
-
-    # check if there is some saved description
-    def apipie_provided?
-      true unless last_dsl_data[:api_args].blank?
     end
 
     # get api for given method
@@ -201,21 +186,6 @@ module Apipie
 
       # what versions does the controller belong in (specified by resource_description)?
       @controller_versions = Hash.new { |h, controller| h[controller] = [] }
-    end
-    # clear all saved data
-    def clear_last
-      @last_dsl_data = {
-        :api_args          => [],
-        :errors            => [],
-        :params            => [],
-        :resouce_id        => nil,
-        :short_description => nil,
-        :description       => nil,
-        :examples          => [],
-        :see               => [],
-        :formats           => nil,
-        :api_versions      => []
-      }
     end
 
     def recorded_examples

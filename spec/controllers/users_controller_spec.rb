@@ -20,6 +20,8 @@ end
 
 describe UsersController do
 
+  let(:dsl_data) { ActionController::Base.send(:_apipie_dsl_data_init) }
+
   describe "resource description" do
     subject do
       Apipie.get_resource_description(UsersController, Apipie.configuration.default_version)
@@ -425,10 +427,10 @@ EOS2
       end
 
       it "skips the listed  actions from the documentation" do
-        Apipie.define_method_description(UsersController, :ignore)
+        Apipie.define_method_description(UsersController, :ignore, dsl_data)
         Apipie.get_method_description(UsersController, :ignore).should be_nil
 
-        Apipie.define_method_description(UsersController, :dont_ignore)
+        Apipie.define_method_description(UsersController, :dont_ignore, dsl_data)
         Apipie.get_method_description(UsersController, :dont_ignore).should_not be_nil
       end
     end
@@ -439,9 +441,9 @@ EOS2
       end
 
       it "skips the listed controller from the documentation" do
-        Apipie.define_method_description(IgnoredController, :ignore)
+        Apipie.define_method_description(IgnoredController, :ignore, dsl_data)
         Apipie.get_method_description(IgnoredController, :ignore).should be_nil
-        Apipie.define_method_description(IgnoredController, :ignore)
+        Apipie.define_method_description(IgnoredController, :ignore, dsl_data)
         Apipie.get_method_description(IgnoredController, :ignore).should be_nil
       end
     end
