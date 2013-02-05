@@ -73,7 +73,7 @@ module Apipie
       #
       def api(method, path, desc = nil) #:doc:
         return unless Apipie.active_dsl?
-        _apipie_dsl_data[:api_args] << MethodDescription::Api.new(method, path, desc)
+        _apipie_dsl_data[:api_args] << [method, path, desc]
       end
 
       # Reference other similar method
@@ -83,7 +83,7 @@ module Apipie
       #   def update; end
       def see(*args)
         return unless Apipie.active_dsl?
-        _apipie_dsl_data[:see] << Apipie::SeeDescription.new(args)
+        _apipie_dsl_data[:see] << args
       end
 
       # Show some example of what does the described
@@ -205,7 +205,7 @@ module Apipie
       #
       def error(*args) #:doc:
         return unless Apipie.active_dsl?
-        _apipie_dsl_data[:errors] << Apipie::ErrorDescription.new(args)
+        _apipie_dsl_data[:errors] << args
       end
 
     end
@@ -223,7 +223,11 @@ module Apipie
       #
       def param(param_name, validator, desc_or_options = nil, options = {}, &block) #:doc:
         return unless Apipie.active_dsl?
-        _apipie_dsl_data[:params] << Apipie::ParamDescription.new(param_name, validator, desc_or_options, options, &block)
+        _apipie_dsl_data[:params] << [param_name,
+                                      validator,
+                                      desc_or_options,
+                                      options,
+                                      block]
       end
     end
 

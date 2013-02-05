@@ -35,8 +35,14 @@ module Apipie
       @_short_description = dsl_data[:short_description]
       @_path = dsl_data[:path] || ""
       @_formats = dsl_data[:formats]
-      @_errors_ordered = dsl_data[:errors]
-      @_params_ordered = dsl_data[:params]
+      @_errors_ordered = dsl_data[:errors].map do |args|
+        Apipie::ErrorDescription.new(args)
+      end
+
+      @_params_ordered = dsl_data[:params] = dsl_data[:params].map do |args|
+        Apipie::ParamDescription.from_dsl_data(args)
+      end
+
       if dsl_data[:app_info]
         Apipie.configuration.app_info[_version] = dsl_data[:app_info]
       end

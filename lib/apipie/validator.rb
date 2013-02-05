@@ -187,7 +187,9 @@ module Apipie
       end
 
       def hash_params_ordered
-        _apipie_dsl_data[:params]
+        @hash_params_ordered ||= _apipie_dsl_data[:params].map do |args|
+          Apipie::ParamDescription.from_dsl_data(args)
+        end
       end
 
       def validate(value)

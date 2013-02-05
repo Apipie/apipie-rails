@@ -8,9 +8,9 @@ describe Apipie::MethodDescription do
 
     before(:each) do
       @resource = Apipie::ResourceDescription.new(ApplicationController, "dummy")
-      dsl_data[:params] = [Apipie::ParamDescription.new(:a, String),
-                           Apipie::ParamDescription.new(:b, String),
-                           Apipie::ParamDescription.new(:c, String)]
+      dsl_data[:params] = [[:a, String, nil, {}, nil],
+                           [:b, String, nil, {}, nil],
+                           [:c, String, nil, {}, nil]]
       @method = Apipie::MethodDescription.new(:a, @resource, Apipie.app, dsl_data)
       @resource.add_method_description @method
     end

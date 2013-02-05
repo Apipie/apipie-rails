@@ -12,6 +12,15 @@ module Apipie
 
     attr_accessor :parent
 
+    def self.from_dsl_data(args)
+      param_name, validator, desc_or_options, options, block = args
+      Apipie::ParamDescription.new(param_name,
+                                   validator,
+                                   desc_or_options,
+                                   options,
+                                   &block)
+    end
+
     def initialize(name, validator, desc_or_options = nil, options = {}, &block)
 
       if desc_or_options.is_a?(Hash) && options.empty?
