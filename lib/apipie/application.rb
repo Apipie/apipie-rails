@@ -281,8 +281,6 @@ module Apipie
       Apipie.configuration.validate? || ! Apipie.configuration.use_cache? || Apipie.configuration.force_dsl?
     end
 
-    private
-
     def get_resource_name(klass)
       if klass.class == String
         klass
@@ -295,6 +293,8 @@ module Apipie
         raise "Apipie: Can not resolve resource #{klass} name."
       end
     end
+
+    private
 
     def get_resource_version(resource_description)
       if resource_description.respond_to? :_version
