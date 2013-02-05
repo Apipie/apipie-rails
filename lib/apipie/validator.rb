@@ -169,8 +169,8 @@ module Apipie
     end
 
     class HashValidator < BaseValidator
-
-      attr_reader :hash_params_ordered
+      include Apipie::DSL::Base
+      include Apipie::DSL::Param
 
       def self.build(param_description, argument, options, block)
         self.new(param_description, block) if block.is_a?(Proc) && block.arity <= 0 && argument == Hash
@@ -179,10 +179,15 @@ module Apipie
       def initialize(param_description, argument)
         super(param_description)
         @proc = argument
-        @hash_params_ordered = []
-        @hash_params = {}
-
         self.instance_exec(&@proc)
+        @hash_params = hash_params_ordered.reduce({}) do |h, param|
+          param.parent = self.param_description
+          h.update(param.name.to_sym => param)
+        end
+      end
+
+      def hash_params_ordered
+        _apipie_dsl_data[:params]
       end
 
       def validate(value)
@@ -196,13 +201,6 @@ module Apipie
 
       def description
         "Must be a Hash"
-      end
-
-      def param(param_name, validator, desc_or_options = nil, options = {}, &block)
-        param_description = Apipie::ParamDescription.new(param_name, validator, desc_or_options, options, &block)
-        param_description.parent = self.param_description
-        @hash_params_ordered << param_description
-        @hash_params[param_name.to_sym] = param_description
       end
 
       def expected_type
