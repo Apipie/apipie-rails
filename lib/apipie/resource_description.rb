@@ -64,6 +64,10 @@ module Apipie
       end
     end
 
+    def method_descriptions
+      @_methods.values
+    end
+
     def doc_url
       crumbs = []
       crumbs << _version if Apipie.configuration.version_in_url
