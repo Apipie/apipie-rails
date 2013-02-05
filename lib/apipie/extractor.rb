@@ -98,18 +98,19 @@ module Apipie
         end
         @apis_from_routes
 
-        method_descriptions = Apipie.resource_descriptions.map(&:method_descriptions).flatten
-        apis_from_docs = method_descriptions.reduce({}) do |h, (method, desc)|
-          apis = desc.apis.map do |api|
-            { :method => api.http_method,
-              :path => api.api_url,
-              :desc => api.short_description }
+        resource_descriptions = Apipie.resource_descriptions.values.map(&:values).flatten
+        method_descriptions = resource_descriptions.map(&:method_descriptions).flatten
+        apis_from_docs = method_descriptions.reduce({}) do |h, desc|
+          apis = desc.method_apis_to_json.map do |api|
+            { :method => api[:http_method],
+              :path => api[:api_url],
+              :desc => api[:short_description] }
           end
-          h.update(method => apis)
+          h.update(desc.id => apis)
         end
 
         @apis_from_routes.each do |(controller, action), new_apis|
-          method_key = "#{controller.constantize.controller_name}##{action}"
+          method_key = "#{Apipie.get_resource_name(controller.constantize)}##{action}"
           old_apis = apis_from_docs[method_key] || []
           new_apis.each do |new_api|
             new_api[:path].sub!(/\(\.:format\)$/,"")
