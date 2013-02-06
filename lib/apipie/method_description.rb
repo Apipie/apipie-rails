@@ -32,10 +32,6 @@ module Apipie
         Apipie::ErrorDescription.new(args)
       end
 
-      @params_ordered = dsl_data[:params].map do |args|
-        Apipie::ParamDescription.from_dsl_data(args)
-      end
-
       @see = dsl_data[:see].map do |args|
         Apipie::SeeDescription.new(args)
       end
@@ -44,9 +40,8 @@ module Apipie
       @examples = dsl_data[:examples]
       @examples += load_recorded_examples
 
-      parent = @resource.controller.superclass
-      if parent != ActionController::Base
-        @parent_resource = parent.controller_name
+      @params_ordered = dsl_data[:params].map do |args|
+        Apipie::ParamDescription.from_dsl_data(args)
       end
     end
 
@@ -60,15 +55,14 @@ module Apipie
 
     def params_ordered
       all_params = []
-      # get params from parent resource description
-      if @parent_resource
-        parent = Apipie.get_resource_description(@parent_resource)
-        merge_params(all_params, parent._params_ordered) if parent
-      end
+      parent = Apipie.get_resource_description(@resource.controller.superclass)
 
-      # get params from actual resource description
-      if @resource
-        merge_params(all_params, resource._params_ordered)
+      # get params from parent resource description
+      [parent, @resource].compact.each do |resource|
+        resource_params = resource._params_args.map do |args|
+          Apipie::ParamDescription.from_dsl_data(args)
+        end
+        merge_params(all_params, resource_params)
       end
 
       merge_params(all_params, @params_ordered)
@@ -79,8 +73,12 @@ module Apipie
       return @merged_errors if @merged_errors
       @merged_errors = []
       if @resource
+        resource_errors = @resource._errors_args.map do |args|
+          Apipie::ErrorDescription.new(args)
+        end
+
         # exclude overwritten parent errors
-        @merged_errors = @resource._errors_ordered.find_all do |err|
+        @merged_errors = resource_errors.find_all do |err|
           !@errors.any? { |e| e.code == err.code }
         end
       end

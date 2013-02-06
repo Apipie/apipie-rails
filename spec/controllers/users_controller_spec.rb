@@ -46,20 +46,9 @@ describe UsersController do
     end
 
     it "should contain params defined on resource level" do
-      subject._params_ordered.count.should == 2
-      p = subject._params_ordered.first
-      p.should_not be(nil)
-      p.name.should eq(:id)
-      p.desc.should eq("\n<p>User ID</p>\n")
-      p.required.should eq(false)
-      p.validator.class.should eq(Apipie::Validator::IntegerValidator)
-
-      p = subject._params_ordered.second
-      p.should_not be(nil)
-      p.name.should eq(:resource_param)
-      p.desc.should eq("\n<p>Param description for all methods</p>\n")
-      p.required.should eq(false)
-      p.validator.class.should eq(Apipie::Validator::HashValidator)
+      subject._params_args.count.should == 2
+      expected = [:id, Fixnum, {:required=>false, :desc=>"User ID"}, {}, nil]
+      subject._params_args.first.should == expected
     end
   end
 
