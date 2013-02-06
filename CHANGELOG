@@ -1,0 +1,11 @@
+===========
+ Changelog
+===========
+
+v0.0.15
+-------
+
+* Fix case when there is no documentation yet: with link to how to
+  start
+* Fix handling bad requests when cache is on
+* Fix params extractor in case there is already some documentation
