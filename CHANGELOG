@@ -2,6 +2,11 @@
  Changelog
 ===========
 
+v0.0.16
+-------
+
+* Fix getting started being rendered even when documentation was available.
+
 v0.0.15
 -------
 
