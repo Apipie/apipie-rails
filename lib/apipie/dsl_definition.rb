@@ -239,8 +239,14 @@ module Apipie
       # in scope of this controller. If the group was defined in
       # different controller, the second param can be used to specify it.
       def param_group(name, scope = nil)
-        scope ||= self
+        scope ||= _default_param_group_scope
         self.instance_exec(&Apipie.get_param_group(scope, name))
+      end
+
+      # where the group definition should be looked up when no scope
+      # given. This is expected to return a controller.
+      def _default_param_group_scope
+        self
       end
     end
 

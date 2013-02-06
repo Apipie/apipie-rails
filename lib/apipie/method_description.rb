@@ -41,7 +41,7 @@ module Apipie
       @examples += load_recorded_examples
 
       @params_ordered = dsl_data[:params].map do |args|
-        Apipie::ParamDescription.from_dsl_data(args)
+        Apipie::ParamDescription.from_dsl_data(self, args)
       end
     end
 
@@ -60,7 +60,7 @@ module Apipie
       # get params from parent resource description
       [parent, @resource].compact.each do |resource|
         resource_params = resource._params_args.map do |args|
-          Apipie::ParamDescription.from_dsl_data(args)
+          Apipie::ParamDescription.from_dsl_data(self, args)
         end
         merge_params(all_params, resource_params)
       end

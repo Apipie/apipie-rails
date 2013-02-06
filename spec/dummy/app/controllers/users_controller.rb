@@ -190,10 +190,14 @@ class UsersController < ApplicationController
     render :text => "OK"
   end
 
+  def_param_group :credentials do
+    param :name, String, :desc => "Username for login", :required => true
+    param :pass, String, :desc => "Password for login", :required => true
+  end
+
   def_param_group :user do
     param :user, Hash, :desc => "User info", :required => true do
-      param :name, String, :desc => "Username for login", :required => true
-      param :pass, String, :desc => "Password for login", :required => true
+      param_group :credentials
       param :membership, ["standard","premium"], :desc => "User membership"
     end
   end

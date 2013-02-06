@@ -188,7 +188,7 @@ module Apipie
 
       def hash_params_ordered
         @hash_params_ordered ||= _apipie_dsl_data[:params].map do |args|
-          Apipie::ParamDescription.from_dsl_data(args)
+          Apipie::ParamDescription.from_dsl_data(param_description.method_description, args)
         end
       end
 
@@ -208,6 +208,13 @@ module Apipie
       def expected_type
         'hash'
       end
+
+      # where the group definition should be looked up when no scope
+      # given. This is expected to return a controller.
+      def _default_param_group_scope
+        param_description.method_description.resource.controller
+      end
+
     end
 
 
