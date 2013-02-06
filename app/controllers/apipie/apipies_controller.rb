@@ -25,12 +25,11 @@ module Apipie
         end
 
         format.html do
+          @versions = Apipie.available_versions
+          @doc = @doc[:docs]
           if @doc[:resources].blank?
             render "getting_started" and return
           end
-
-          @versions = Apipie.available_versions
-          @doc = @doc[:docs]
           @resource = @doc[:resources].first if params[:resource].present?
           @method = @resource[:methods].first if params[:method].present?
 
