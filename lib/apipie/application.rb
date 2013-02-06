@@ -212,7 +212,7 @@ module Apipie
         :short_description => nil,
         :description       => nil,
         :examples          => [],
-        :see               => nil,
+        :see               => [],
         :formats           => nil,
         :api_versions      => []
       }
