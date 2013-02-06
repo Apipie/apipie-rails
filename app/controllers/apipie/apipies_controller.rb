@@ -13,7 +13,7 @@ module Apipie
       respond_to do |format|
 
         if Apipie.configuration.use_cache?
-          render_from_cache 
+          render_from_cache
           return
         end
 
@@ -25,6 +25,10 @@ module Apipie
         end
 
         format.html do
+          if @doc[:resources].blank?
+            render "getting_started" and return
+          end
+
           @versions = Apipie.available_versions
           @doc = @doc[:docs]
           @resource = @doc[:resources].first if params[:resource].present?
