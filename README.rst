@@ -224,7 +224,8 @@ Example:
    description "method description"
    formats ['json', 'jsonp', 'xml']
    example " 'user': {...} "
-   see "users#showme"
+   see "users#showme", "link description"
+   see :link => "users#update", :desc => "another link description"
    def show
      #...
    end
