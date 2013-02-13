@@ -2,10 +2,16 @@
  Changelog
 ===========
 
+v0.0.17
+-------
+
+* support for multiple see links at action and ability to provide
+  description of see links
+
 v0.0.16
 -------
 
-* Fix getting started being rendered even when documentation was available.
+* Fix getting started being rendered even when documentation was available
 
 v0.0.15
 -------
