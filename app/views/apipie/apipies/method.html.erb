@@ -24,7 +24,7 @@
 
 <div>
   <% unless @method[:see].empty? %>
-    Also see <%= @method[:see].map { |s| link_to(s[:description], s[:link]) }.to_sentence.html_safe %>.
+    Also see <%= @method[:see].map { |s| link_to(s[:description], "#{s[:link]}.html") }.to_sentence.html_safe %>.
   <% end %>
 
   <%= raw @method[:full_description] %>
