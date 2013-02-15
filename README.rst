@@ -564,7 +564,7 @@ Textile
   Use Apipie::Markup::Textile.new. You need RedCloth gem.
 
 Or provide you own object with ``to_html(text)`` method.
-For inspiration this is how Textile look like:
+For inspiration this is how Textile markup usage looks like:
 
 .. code:: ruby
 
