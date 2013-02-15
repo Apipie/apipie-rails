@@ -43,7 +43,7 @@ module Apipie
           resource_description = define_resource_description(controller, version)
         end
 
-        method_description = Apipie::MethodDescription.new(method_name, resource_description, self, dsl_data)
+        method_description = Apipie::MethodDescription.new(method_name, resource_description, dsl_data)
 
         # we create separate method description for each version in
         # case the method belongs to more versions. We return just one

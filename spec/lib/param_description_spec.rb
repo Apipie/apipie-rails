@@ -9,7 +9,7 @@ describe Apipie::ParamDescription do
   end
 
   let(:method_desc) do
-    Apipie::MethodDescription.new(:show, resource_desc, nil, dsl_data)
+    Apipie::MethodDescription.new(:show, resource_desc, dsl_data)
   end
 
 

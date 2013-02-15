@@ -17,7 +17,7 @@ module Apipie
 
     attr_reader :full_description, :method, :resource, :apis, :examples, :see, :formats
 
-    def initialize(method, resource, app, dsl_data)
+    def initialize(method, resource, dsl_data)
       @method = method.to_s
       @resource = resource
 

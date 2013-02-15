@@ -11,7 +11,7 @@ describe Apipie::MethodDescription do
       dsl_data[:params] = [[:a, String, nil, {}, nil],
                            [:b, String, nil, {}, nil],
                            [:c, String, nil, {}, nil]]
-      @method = Apipie::MethodDescription.new(:a, @resource, Apipie.app, dsl_data)
+      @method = Apipie::MethodDescription.new(:a, @resource, dsl_data)
       @resource.add_method_description @method
     end
 

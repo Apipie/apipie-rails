@@ -8,9 +8,9 @@ describe Apipie::ResourceDescription do
 
     before(:each) do
       @resource = Apipie::ResourceDescription.new(ApplicationController, "dummy")
-      a = Apipie::MethodDescription.new(:a, @resource, Apipie.app, dsl_data)
-      b = Apipie::MethodDescription.new(:b, @resource, Apipie.app, dsl_data)
-      c = Apipie::MethodDescription.new(:c, @resource, Apipie.app, dsl_data)
+      a = Apipie::MethodDescription.new(:a, @resource, dsl_data)
+      b = Apipie::MethodDescription.new(:b, @resource, dsl_data)
+      c = Apipie::MethodDescription.new(:c, @resource, dsl_data)
       @resource.add_method_description(a)
       @resource.add_method_description(b)
       @resource.add_method_description(c)
