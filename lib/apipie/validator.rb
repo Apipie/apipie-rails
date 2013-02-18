@@ -66,6 +66,10 @@ module Apipie
         'string'
       end
 
+      def merge_with(other_validator)
+        raise NotImplementedError, "Dont know how to merge #{self.inspect} with #{other_validator.inspect}"
+      end
+
     end
 
     # validate arguments type
@@ -181,10 +185,7 @@ module Apipie
         @proc = argument
         @param_group = param_group
         self.instance_exec(&@proc)
-        @hash_params = hash_params_ordered.reduce({}) do |h, param|
-          param.parent = self.param_description
-          h.update(param.name.to_sym => param)
-        end
+        prepare_hash_params
       end
 
       def hash_params_ordered
@@ -216,6 +217,21 @@ module Apipie
         @param_group && @param_group[:scope]
       end
 
+      def merge_with(other_validator)
+        if other_validator.is_a? HashValidator
+          @hash_params_ordered = ParamDescription.unify(self.hash_params_ordered + other_validator.hash_params_ordered)
+          prepare_hash_params
+        else
+          super
+        end
+      end
+
+      def prepare_hash_params
+        @hash_params = hash_params_ordered.reduce({}) do |h, param|
+          param.parent = self.param_description
+          h.update(param.name.to_sym => param)
+        end
+      end
     end
 
 
