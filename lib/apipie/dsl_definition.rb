@@ -231,7 +231,7 @@ module Apipie
         _apipie_dsl_data[:params] << [param_name,
                                       validator,
                                       desc_or_options,
-                                      options,
+                                      options.merge(:param_group => @_current_param_group),
                                       block]
       end
 
@@ -240,7 +240,10 @@ module Apipie
       # different controller, the second param can be used to specify it.
       def param_group(name, scope = nil)
         scope ||= _default_param_group_scope
+        @_current_param_group = {:scope => scope, :name => name}
         self.instance_exec(&Apipie.get_param_group(scope, name))
+      ensure
+        @_current_param_group = nil
       end
 
       # where the group definition should be looked up when no scope

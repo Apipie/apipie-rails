@@ -10,9 +10,15 @@ module Api
       def show
       end
 
+      def_param_group :timestamps do
+        param :created_at, String
+        param :updated_at, String
+      end
+
       def_param_group :arch do
         param :architecture, Hash, :required => true do
           param :name, String, :required => true
+          param_group :timestamps
         end
       end
 

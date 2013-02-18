@@ -48,8 +48,10 @@ describe UsersController do
 
     it "should contain params defined on resource level" do
       subject._params_args.count.should == 2
-      expected = [:id, Fixnum, {:required=>false, :desc=>"User ID"}, {}, nil]
-      subject._params_args.first.should == expected
+      name, type, options = subject._params_args.first
+      name.should == :id
+      type.should == Fixnum
+      options.should == {:required=>false, :desc=>"User ID"}
     end
   end
 

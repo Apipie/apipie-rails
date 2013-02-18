@@ -173,12 +173,13 @@ module Apipie
       include Apipie::DSL::Param
 
       def self.build(param_description, argument, options, block)
-        self.new(param_description, block) if block.is_a?(Proc) && block.arity <= 0 && argument == Hash
+        self.new(param_description, block, options[:param_group]) if block.is_a?(Proc) && block.arity <= 0 && argument == Hash
       end
 
-      def initialize(param_description, argument)
+      def initialize(param_description, argument, param_group)
         super(param_description)
         @proc = argument
+        @param_group = param_group
         self.instance_exec(&@proc)
         @hash_params = hash_params_ordered.reduce({}) do |h, param|
           param.parent = self.param_description
@@ -212,7 +213,7 @@ module Apipie
       # where the group definition should be looked up when no scope
       # given. This is expected to return a controller.
       def _default_param_group_scope
-        param_description.method_description.resource.controller
+        @param_group && @param_group[:scope]
       end
 
     end

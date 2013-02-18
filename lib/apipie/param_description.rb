@@ -24,8 +24,8 @@ module Apipie
 
     def initialize(method_description, name, validator, desc_or_options = nil, options = {}, &block)
 
-      if desc_or_options.is_a?(Hash) && options.empty?
-        options = desc_or_options
+      if desc_or_options.is_a?(Hash)
+        options = options.merge(desc_or_options)
       elsif desc_or_options.is_a?(String)
         options[:desc] = desc_or_options
       elsif !desc_or_options.nil?
