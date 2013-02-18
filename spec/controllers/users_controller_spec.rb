@@ -156,7 +156,7 @@ describe UsersController do
         param.count.should == 1
         param.first.validator.class.should eq(Apipie::Validator::HashValidator)
         hash_params = param.first.validator.hash_params_ordered
-        hash_params.count.should == 3
+        hash_params.count.should == 4
         hash_params[0].name == :name
         hash_params[1].name == :pass
         hash_params[2].name == :membership

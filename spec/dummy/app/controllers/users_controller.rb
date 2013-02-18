@@ -204,6 +204,9 @@ class UsersController < ApplicationController
 
   api :POST, "/users", "Create user"
   param_group :user
+  param :user, Hash do
+    param :permalink, String
+  end
   param :facts, Hash, :desc => "Additional optional facts about the user", :allow_nil => true
   def create
     render :text => "OK #{params.inspect}"

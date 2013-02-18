@@ -43,6 +43,7 @@ module Apipie
       @params_ordered = dsl_data[:params].map do |args|
         Apipie::ParamDescription.from_dsl_data(self, args)
       end
+      @params_ordered = ParamDescription.unify(@params_ordered)
     end
 
     def id
