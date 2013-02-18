@@ -2,15 +2,16 @@ require "spec_helper"
 
 describe Apipie::MethodDescription do
 
+  let(:dsl_data) { ActionController::Base.send(:_apipie_dsl_data_init) }
+
   describe "params descriptions" do
 
     before(:each) do
-      Apipie.clear_last
       @resource = Apipie::ResourceDescription.new(ApplicationController, "dummy")
-      Apipie.last_dsl_data[:params] << Apipie::ParamDescription.new(:a, String)
-      Apipie.last_dsl_data[:params] << Apipie::ParamDescription.new(:b, String)
-      Apipie.last_dsl_data[:params] << Apipie::ParamDescription.new(:c, String)
-      @method = Apipie::MethodDescription.new(:a, @resource, Apipie.app)
+      dsl_data[:params] = [[:a, String, nil, {}, nil],
+                           [:b, String, nil, {}, nil],
+                           [:c, String, nil, {}, nil]]
+      @method = Apipie::MethodDescription.new(:a, @resource, dsl_data)
       @resource.add_method_description @method
     end
 

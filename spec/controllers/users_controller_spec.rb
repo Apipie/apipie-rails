@@ -20,6 +20,8 @@ end
 
 describe UsersController do
 
+  let(:dsl_data) { ActionController::Base.send(:_apipie_dsl_data_init) }
+
   describe "resource description" do
     subject do
       Apipie.get_resource_description(UsersController, Apipie.configuration.default_version)
@@ -27,10 +29,11 @@ describe UsersController do
 
     it "should contain all resource methods" do
       methods = subject._methods
-      methods.count.should == 5
+      methods.count.should == 6
       methods.keys.should include(:show)
       methods.keys.should include(:index)
       methods.keys.should include(:create)
+      methods.keys.should include(:update)
       methods.keys.should include(:two_urls)
     end
 
@@ -44,20 +47,11 @@ describe UsersController do
     end
 
     it "should contain params defined on resource level" do
-      subject._params_ordered.count.should == 2
-      p = subject._params_ordered.first
-      p.should_not be(nil)
-      p.name.should eq(:id)
-      p.desc.should eq("\n<p>User ID</p>\n")
-      p.required.should eq(false)
-      p.validator.class.should eq(Apipie::Validator::IntegerValidator)
-
-      p = subject._params_ordered.second
-      p.should_not be(nil)
-      p.name.should eq(:resource_param)
-      p.desc.should eq("\n<p>Param description for all methods</p>\n")
-      p.required.should eq(false)
-      p.validator.class.should eq(Apipie::Validator::HashValidator)
+      subject._params_args.count.should == 2
+      name, type, options = subject._params_args.first
+      name.should == :id
+      type.should == Fixnum
+      options.should == {:required=>false, :desc=>"User ID"}
     end
   end
 
@@ -425,10 +419,10 @@ EOS2
       end
 
       it "skips the listed  actions from the documentation" do
-        Apipie.define_method_description(UsersController, :ignore)
+        Apipie.define_method_description(UsersController, :ignore, dsl_data)
         Apipie.get_method_description(UsersController, :ignore).should be_nil
 
-        Apipie.define_method_description(UsersController, :dont_ignore)
+        Apipie.define_method_description(UsersController, :dont_ignore, dsl_data)
         Apipie.get_method_description(UsersController, :dont_ignore).should_not be_nil
       end
     end
@@ -439,9 +433,9 @@ EOS2
       end
 
       it "skips the listed controller from the documentation" do
-        Apipie.define_method_description(IgnoredController, :ignore)
+        Apipie.define_method_description(IgnoredController, :ignore, dsl_data)
         Apipie.get_method_description(IgnoredController, :ignore).should be_nil
-        Apipie.define_method_description(IgnoredController, :ignore)
+        Apipie.define_method_description(IgnoredController, :ignore, dsl_data)
         Apipie.get_method_description(IgnoredController, :ignore).should be_nil
       end
     end

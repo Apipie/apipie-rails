@@ -11,9 +11,7 @@ module Api
       end
 
       api :POST, "/architectures/", "Create an architecture."
-      param :architecture, Hash, :required => true do
-        param :name, String, :required => true
-      end
+      param_group :arch, Api::V1::ArchitecturesController
       def create
       end
 

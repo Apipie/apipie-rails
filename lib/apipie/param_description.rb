@@ -8,14 +8,24 @@ module Apipie
   # validator - Validator::BaseValidator subclass
   class ParamDescription
 
-    attr_reader :name, :desc, :required, :allow_nil, :validator
+    attr_reader :method_description, :name, :desc, :required, :allow_nil, :validator
 
     attr_accessor :parent
 
-    def initialize(name, validator, desc_or_options = nil, options = {}, &block)
+    def self.from_dsl_data(method_description, args)
+      param_name, validator, desc_or_options, options, block = args
+      Apipie::ParamDescription.new(method_description,
+                                   param_name,
+                                   validator,
+                                   desc_or_options,
+                                   options,
+                                   &block)
+    end
 
-      if desc_or_options.is_a?(Hash) && options.empty?
-        options = desc_or_options
+    def initialize(method_description, name, validator, desc_or_options = nil, options = {}, &block)
+
+      if desc_or_options.is_a?(Hash)
+        options = options.merge(desc_or_options)
       elsif desc_or_options.is_a?(String)
         options[:desc] = desc_or_options
       elsif !desc_or_options.nil?
@@ -24,6 +34,7 @@ module Apipie
 
       options.symbolize_keys!
 
+      @method_description = method_description
       @name = name
       @desc = Apipie.markup_to_html(options[:desc] || '')
       @required = if options.has_key? :required
