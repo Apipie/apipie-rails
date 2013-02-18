@@ -266,6 +266,58 @@ Example:
      #...
    end
 
+DRY with param_group
+--------------------
+
+Often, params occur together in more actions. Typically, most of the
+params for ``create`` and ``update`` actions are common for both of
+them.
+
+This params can be extracted with ``def_param_group`` and
+``param_group`` keywords.
+
+The definition is looked up in the scope of the controller. If the
+group is defined in a different controller, it might be referenced by
+specifying the second argument.
+
+Example:
+~~~~~~~~
+
+.. code:: ruby
+
+   # v1/users_controller.rb
+   def_param_group :address do
+     param :street, String
+     param :number, Integer
+     param :zip, String
+   end
+
+   def_param_group :user do
+     param :user, Hash do
+       param :name, String, "Name of the user"
+       param_group :address
+     end
+   end
+
+   api :POST, "/users", "Create an user"
+   param_group :user
+   def create
+     # ...
+   end
+
+   api :PUT, "/users/:id", "Update an user"
+   param_group :user
+   def update
+     # ...
+   end
+
+   # v2/users_controller.rb
+   api :POST, "/users", "Create an user"
+   param_group :user, V1::UsersController
+   def create
+     # ...
+   end
+
 
 =========================
  Configuration Reference

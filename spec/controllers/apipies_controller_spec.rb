@@ -110,13 +110,14 @@ describe Apipie::ApipiesController do
 
       Apipie.configuration.use_cache = true
       Apipie.configuration.cache_dir = cache_dir
-      @old_default_version = Apipie.configuration.default_version
+      @orig_version = Apipie.configuration.default_version
       Apipie.configuration.default_version = 'v1'
     end
 
     after do
+      Apipie.configuration.use_cache = false
+      Apipie.configuration.default_version = @orig_version
       # FileUtils.rm_r(cache_dir) if File.exists?(cache_dir)
-      Apipie.configuration.default_version = @old_default_version
     end
 
     it "uses the file in cache dir instead of generating the content on runtime" do

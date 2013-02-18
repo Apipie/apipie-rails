@@ -169,20 +169,28 @@ module Apipie
     end
 
     class HashValidator < BaseValidator
-
-      attr_reader :hash_params_ordered
+      include Apipie::DSL::Base
+      include Apipie::DSL::Param
 
       def self.build(param_description, argument, options, block)
-        self.new(param_description, block) if block.is_a?(Proc) && block.arity <= 0 && argument == Hash
+        self.new(param_description, block, options[:param_group]) if block.is_a?(Proc) && block.arity <= 0 && argument == Hash
       end
 
-      def initialize(param_description, argument)
+      def initialize(param_description, argument, param_group)
         super(param_description)
         @proc = argument
-        @hash_params_ordered = []
-        @hash_params = {}
-
+        @param_group = param_group
         self.instance_exec(&@proc)
+        @hash_params = hash_params_ordered.reduce({}) do |h, param|
+          param.parent = self.param_description
+          h.update(param.name.to_sym => param)
+        end
+      end
+
+      def hash_params_ordered
+        @hash_params_ordered ||= _apipie_dsl_data[:params].map do |args|
+          Apipie::ParamDescription.from_dsl_data(param_description.method_description, args)
+        end
       end
 
       def validate(value)
@@ -198,16 +206,16 @@ module Apipie
         "Must be a Hash"
       end
 
-      def param(param_name, validator, desc_or_options = nil, options = {}, &block)
-        param_description = Apipie::ParamDescription.new(param_name, validator, desc_or_options, options, &block)
-        param_description.parent = self.param_description
-        @hash_params_ordered << param_description
-        @hash_params[param_name.to_sym] = param_description
-      end
-
       def expected_type
         'hash'
       end
+
+      # where the group definition should be looked up when no scope
+      # given. This is expected to return a controller.
+      def _default_param_group_scope
+        @param_group && @param_group[:scope]
+      end
+
     end
 
 

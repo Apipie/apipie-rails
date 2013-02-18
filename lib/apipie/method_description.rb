@@ -17,25 +17,31 @@ module Apipie
 
     attr_reader :full_description, :method, :resource, :apis, :examples, :see, :formats
 
-    def initialize(method, resource, app)
+    def initialize(method, resource, dsl_data)
       @method = method.to_s
       @resource = resource
 
-      @apis = app.last_dsl_data[:api_args]
-      @see = app.last_dsl_data[:see]
-      @formats = app.last_dsl_data[:formats]
+      @apis = dsl_data[:api_args].map do |method, path, desc|
+        MethodDescription::Api.new(method, path, desc)
+      end
 
-      desc = app.last_dsl_data[:description] || ''
+      desc = dsl_data[:description] || ''
       @full_description = Apipie.markup_to_html(desc)
-      @errors = app.last_dsl_data[:errors]
-      @params_ordered = app.last_dsl_data[:params]
-      @examples = app.last_dsl_data[:examples]
 
+      @errors = dsl_data[:errors].map do |args|
+        Apipie::ErrorDescription.new(args)
+      end
+
+      @see = dsl_data[:see].map do |args|
+        Apipie::SeeDescription.new(args)
+      end
+
+      @formats = dsl_data[:formats]
+      @examples = dsl_data[:examples]
       @examples += load_recorded_examples
 
-      parent = @resource.controller.superclass
-      if parent != ActionController::Base
-        @parent_resource = parent.controller_name
+      @params_ordered = dsl_data[:params].map do |args|
+        Apipie::ParamDescription.from_dsl_data(self, args)
       end
     end
 
@@ -49,15 +55,14 @@ module Apipie
 
     def params_ordered
       all_params = []
-      # get params from parent resource description
-      if @parent_resource
-        parent = Apipie.get_resource_description(@parent_resource)
-        merge_params(all_params, parent._params_ordered) if parent
-      end
+      parent = Apipie.get_resource_description(@resource.controller.superclass)
 
-      # get params from actual resource description
-      if @resource
-        merge_params(all_params, resource._params_ordered)
+      # get params from parent resource description
+      [parent, @resource].compact.each do |resource|
+        resource_params = resource._params_args.map do |args|
+          Apipie::ParamDescription.from_dsl_data(self, args)
+        end
+        merge_params(all_params, resource_params)
       end
 
       merge_params(all_params, @params_ordered)
@@ -68,8 +73,12 @@ module Apipie
       return @merged_errors if @merged_errors
       @merged_errors = []
       if @resource
+        resource_errors = @resource._errors_args.map do |args|
+          Apipie::ErrorDescription.new(args)
+        end
+
         # exclude overwritten parent errors
-        @merged_errors = @resource._errors_ordered.find_all do |err|
+        @merged_errors = resource_errors.find_all do |err|
           !@errors.any? { |e| e.code == err.code }
         end
       end
