@@ -102,6 +102,35 @@ module Apipie
       end
     end
 
+    def merge_with(other_param_desc)
+      if self.validator && other_param_desc.validator
+        self.validator.merge_with(other_param_desc.validator)
+      else
+        self.validator ||= other_param_desc.validator
+      end
+      self
+    end
+
+    # merge param descripsiont. Allows defining hash params on more places
+    # (e.g. in param_groups). For example:
+    #
+    #     def_param_group :user do
+    #       param :user, Hash do
+    #         param :name, String
+    #       end
+    #     end
+    #
+    #     param_group :user
+    #     param :user, Hash do
+    #       param :password, String
+    #     end
+    def self.unify(params)
+      ordering = params.map(&:name)
+      params.group_by(&:name).map do |name, param_descs|
+        param_descs.reduce(&:merge_with)
+      end.sort_by { |param| ordering.index(param.name) }
+    end
+
   end
 
 end
