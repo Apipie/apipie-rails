@@ -34,20 +34,27 @@ module Apipie
 
       options.symbolize_keys!
 
+      # we save options to know what was passed in DSL
+      @options = options
+
       @method_description = method_description
       @name = name
-      @desc = Apipie.markup_to_html(options[:desc] || '')
-      @required = if options.has_key? :required
-        options[:required]
+      @desc = Apipie.markup_to_html(@options[:desc] || '')
+      @parent = @options[:parent]
+      @required = if @options.has_key? :required
+        @options[:required]
       else
         Apipie.configuration.required_by_default?
       end
-      @allow_nil = options[:allow_nil] || false
+
+      @allow_nil = @options[:allow_nil] || false
+
+      action_awareness
 
       @validator = nil
       unless validator.nil?
         @validator =
-          Validator::BaseValidator.find(self, validator, options, block)
+          Validator::BaseValidator.find(self, validator, @options, block)
         raise "Validator not found." unless validator
       end
     end
@@ -129,6 +136,36 @@ module Apipie
       params.group_by(&:name).map do |name, param_descs|
         param_descs.reduce(&:merge_with)
       end.sort_by { |param| ordering.index(param.name) }
+    end
+
+    # action awareness is being inherited from ancestors (in terms of
+    # nested params)
+    def action_aware?
+      if @options.has_key?(:action_aware)
+        return @options[:action_aware]
+      elsif @parent
+        @parent.action_aware?
+      else
+        false
+      end
+    end
+
+    # makes modification that are based on the action that the param
+    # is defined for. Typical for required and allow_nil variations in
+    # crate/update actions.
+    def action_awareness
+      if action_aware?
+        if !@options.has_key?(:allow_nil)
+          if @required
+            @allow_nil = false
+          else
+            @allow_nil = true
+          end
+        end
+        if @method_description.method != "create"
+          @required = false
+        end
+      end
     end
 
   end

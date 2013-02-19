@@ -190,6 +190,8 @@ module Apipie
 
       def hash_params_ordered
         @hash_params_ordered ||= _apipie_dsl_data[:params].map do |args|
+          options = args.find { |arg| arg.is_a? Hash }
+          options[:parent] = self.param_description
           Apipie::ParamDescription.from_dsl_data(param_description.method_description, args)
         end
       end
@@ -228,7 +230,6 @@ module Apipie
 
       def prepare_hash_params
         @hash_params = hash_params_ordered.reduce({}) do |h, param|
-          param.parent = self.param_description
           h.update(param.name.to_sym => param)
         end
       end
