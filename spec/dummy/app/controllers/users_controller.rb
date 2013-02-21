@@ -218,6 +218,12 @@ class UsersController < ApplicationController
     render :text => "OK #{params.inspect}"
   end
 
+  api :POST, "/users/admin", "Create admin user"
+  param_group :user, :as => :create
+  def admin_create
+    render :text => "OK #{params.inspect}"
+  end
+
   api :GET, "/users", "List users"
   error :code => 401, :desc => "Unauthorized"
   error :code => 404, :desc => "Not Found"
