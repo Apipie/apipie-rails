@@ -8,9 +8,9 @@ module Apipie
   # validator - Validator::BaseValidator subclass
   class ParamDescription
 
-    attr_reader :method_description, :name, :desc, :required, :allow_nil, :validator
+    attr_reader :method_description, :name, :desc, :allow_nil, :validator, :options
 
-    attr_accessor :parent
+    attr_accessor :parent, :required
 
     def self.from_dsl_data(method_description, args)
       param_name, validator, desc_or_options, options, block = args

@@ -25,6 +25,13 @@ describe "param groups" do
     user_create_params.map(&:to_s).sort.should == %w[membership name pass permalink]
   end
 
+  context "hash param" do
+    it "influences only its childs" do
+      Apipie["users#create"].params[:user].required.should be true
+      Apipie["users#update"].params[:user].required.should be true
+    end
+  end
+
   it "lets you reuse a group definition from different controller" do
     arch_v1_desc = Apipie["1.0#architectures#create"].params[:architecture]
     arch_v1_params = arch_v1_desc.validator.hash_params_ordered.map(&:name)

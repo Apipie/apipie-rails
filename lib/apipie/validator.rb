@@ -185,6 +185,12 @@ module Apipie
         @proc = argument
         @param_group = param_group
         self.instance_exec(&@proc)
+        # specifying action_aware on Hash influences the child params,
+        # not the hash param itself: assuming it's required when
+        # updating as well
+        if param_description.options[:action_aware] && param_description.options[:required]
+          param_description.required = true
+        end
         prepare_hash_params
       end
 
