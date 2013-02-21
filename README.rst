@@ -318,6 +318,50 @@ Example:
      # ...
    end
 
+Action Aware params
+-------------------
+
+In CRUD operations, this pattern occurs quite often: params that need
+to be set are:
+
+* for create action: ``required => true`` and ``allow_nil => false``
+* for update action: ``required => false`` and ``allow_nil => false``
+
+This makes it hard to share the param definitions across theses
+actions. Therefore, you can make the description a bit smarter by
+setting ``:action_aware => true``.
+
+Example
+~~~~~~~
+
+.. code:: ruby
+
+   def_param_group :user do
+     param :user, Hash, :action_aware => true do
+       param :name, String, :required => true
+       param :description, :String
+     end
+   end
+
+   api :POST, "/users", "Create an user"
+   param_group :user
+   def create
+     # ...
+   end
+
+   api :PUT, "/users/:id", "Update an user"
+   param_group :user
+   def update
+     # ...
+   end
+
+In this case, ``user[name]`` will be not be allowed nil for both
+actions and required only for create. Params with ``allow_nil`` set
+explicitly don't have this value changed.
+
+Action awareness is being inherited from ancestors (in terms of
+nested params).
+
 
 =========================
  Configuration Reference

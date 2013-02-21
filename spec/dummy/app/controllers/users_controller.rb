@@ -196,9 +196,9 @@ class UsersController < ApplicationController
   end
 
   def_param_group :user do
-    param :user, Hash, :desc => "User info", :required => true do
+    param :user, Hash, :desc => "User info", :required => true, :action_aware => true do
       param_group :credentials
-      param :membership, ["standard","premium"], :desc => "User membership"
+      param :membership, ["standard","premium"], :desc => "User membership", :allow_nil => false
     end
   end
 

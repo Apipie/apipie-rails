@@ -48,4 +48,54 @@ describe Apipie::ParamDescription do
 
   end
 
+  describe "required params in action aware validator" do
+
+    subject { method_description.params[:user].validator.hash_params_ordered }
+
+    let(:required) do
+      subject.find_all(&:required).map(&:name)
+    end
+
+    let(:allowed_nil) do
+      subject.find_all(&:allow_nil).map(&:name)
+    end
+
+    context "with resource creation" do
+
+      let(:method_description) do
+        Apipie.get_method_description(UsersController, :create)
+      end
+
+      it "makes the param required" do
+        required.should include :name
+        required.should include :pass
+      end
+
+      it "doesn't allow nil" do
+        allowed_nil.should_not include :name
+        allowed_nil.should_not include :pass
+      end
+    end
+
+    context "with resource update" do
+
+      let(:method_description) do
+        Apipie.get_method_description(UsersController, :update)
+      end
+
+      it "doesn't make the param required" do
+        required.should_not include :name
+        required.should_not include :pass
+      end
+
+      it "doesn't allow nil" do
+        allowed_nil.should_not include :name
+        allowed_nil.should_not include :pass
+      end
+
+      it "doesn't touch params with explicitly set allow_nil" do
+        allowed_nil.should_not include :membership
+      end
+    end
+  end
 end
