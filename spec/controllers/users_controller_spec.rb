@@ -29,7 +29,6 @@ describe UsersController do
 
     it "should contain all resource methods" do
       methods = subject._methods
-      methods.count.should == 6
       methods.keys.should include(:show)
       methods.keys.should include(:index)
       methods.keys.should include(:create)

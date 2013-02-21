@@ -97,5 +97,21 @@ describe Apipie::ParamDescription do
         allowed_nil.should_not include :membership
       end
     end
+
+    context "with explicitly setting action type in param group" do
+      let(:method_description) do
+        Apipie.get_method_description(UsersController, :admin_create)
+      end
+
+      it "makes the param required" do
+        required.should include :name
+        required.should include :pass
+      end
+
+      it "doesn't allow nil" do
+        allowed_nil.should_not include :name
+        allowed_nil.should_not include :pass
+      end
+    end
   end
 end
