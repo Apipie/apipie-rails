@@ -331,6 +331,9 @@ This makes it hard to share the param definitions across theses
 actions. Therefore, you can make the description a bit smarter by
 setting ``:action_aware => true``.
 
+You can specify explicitly how the param group should be evaluated
+with ``:as`` option (either :create  or :update)
+
 Example
 ~~~~~~~
 
@@ -349,15 +352,21 @@ Example
      # ...
    end
 
+   api :PUT, "/users/admin", "Create an admin"
+   param_group :user, :as => :create
+   def create_admin
+     # ...
+   end
+
    api :PUT, "/users/:id", "Update an user"
    param_group :user
    def update
      # ...
    end
 
-In this case, ``user[name]`` will be not be allowed nil for both
-actions and required only for create. Params with ``allow_nil`` set
-explicitly don't have this value changed.
+In this case, ``user[name]`` will be not be allowed nil for all
+actions and required only for ``create`` and ``create_admin``. Params
+with ``allow_nil`` set explicitly don't have this value changed.
 
 Action awareness is being inherited from ancestors (in terms of
 nested params).

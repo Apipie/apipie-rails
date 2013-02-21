@@ -150,6 +150,17 @@ module Apipie
       end
     end
 
+    def as_action
+      if @options[:param_group] && @options[:param_group][:options] &&
+          @options[:param_group][:options][:as]
+        @options[:param_group][:options][:as].to_s
+      elsif @parent
+        @parent.as_action
+      else
+        @method_description.method
+      end
+    end
+
     # makes modification that are based on the action that the param
     # is defined for. Typical for required and allow_nil variations in
     # crate/update actions.
@@ -162,7 +173,7 @@ module Apipie
             @allow_nil = true
           end
         end
-        if @method_description.method != "create"
+        if as_action != "create"
           @required = false
         end
       end

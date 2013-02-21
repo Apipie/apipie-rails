@@ -238,9 +238,17 @@ module Apipie
       # Reuses param group for this method. The definition is looked up
       # in scope of this controller. If the group was defined in
       # different controller, the second param can be used to specify it.
-      def param_group(name, scope = nil)
+      # when using action_aware parmas, you can specify :as =>
+      # :create or :update to explicitly say how it should behave
+      def param_group(name, scope_or_options = nil, options = {})
+        if scope_or_options.is_a? Hash
+          options.merge!(scope_or_options)
+          scope = options[:scope]
+        else
+          scope = scope_or_options
+        end
         scope ||= _default_param_group_scope
-        @_current_param_group = {:scope => scope, :name => name}
+        @_current_param_group = {:scope => scope, :name => name, :options => options}
         self.instance_exec(&Apipie.get_param_group(scope, name))
       ensure
         @_current_param_group = nil
