@@ -2,6 +2,12 @@
  Changelog
 ===========
 
+v0.0.18
+-------
+
+* ``param_group`` and ``def_param_group`` keywords
+* ``:action_aware`` options for reusing param groups for create/update actions
+
 v0.0.17
 -------
 
