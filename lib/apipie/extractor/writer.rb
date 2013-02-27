@@ -99,7 +99,11 @@ module Apipie
 
       def load_old_examples
         if File.exists?(@examples_file)
-          return YAML.load(File.read(@examples_file))
+           if defined? SafeYAML
+              return YAML.load_file(@examples_file, :safe=>false)
+            else
+              return YAML.load_file(@examples_file)
+            end
         end
         return {}
       end
