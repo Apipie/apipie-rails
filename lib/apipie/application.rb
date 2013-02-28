@@ -207,7 +207,12 @@ module Apipie
       return @recorded_examples if @recorded_examples
       tape_file = File.join(Rails.root,"doc","apipie_examples.yml")
       if File.exists?(tape_file)
-        @recorded_examples = YAML.load_file(tape_file)
+        #if SafeYAML gem is enabled, it will load examples as an array of Hash, instead of hash
+        if defined? SafeYAML
+          @recorded_examples = YAML.load_file(tape_file, :safe=>false)
+        else
+          @recorded_examples = YAML.load_file(tape_file)
+        end
       else
         @recorded_examples = {}
       end

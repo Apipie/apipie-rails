@@ -13,6 +13,7 @@ module Apipie
         @params.merge!(env["action_dispatch.request.request_parameters"] || {})
         if data = parse_data(env["rack.input"].read)
           @request_data = data
+          env["rack.input"].rewind
         end
       end
 
