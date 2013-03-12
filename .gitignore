@@ -7,3 +7,5 @@ spec/dummy/tmp/
 .idea
 Gemfile.lock
 .rvmrc
+
+.DS_Store
