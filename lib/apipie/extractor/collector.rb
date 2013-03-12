@@ -19,7 +19,7 @@ module Apipie
       def ignore_call?(record)
         return true unless record[:controller]
         return true if @ignored.include?(record[:controller].name)
-        return true if @ignored.include?("#{record[:controller].name}##{record[:action]}")
+        return true if @ignored.include?("#{Apipie.get_resource_name(record[:controller].name)}##{record[:action]}")
         return true unless @api_controllers_paths.include?(controller_full_path(record[:controller]))
       end
 
@@ -33,7 +33,7 @@ module Apipie
       end
 
       def add_to_records(record)
-        key = "#{record[:controller].controller_name}##{record[:action]}"
+        key = "#{Apipie.get_resource_name(record[:controller])}##{record[:action]}"
         @records[key] << record
       end
 
