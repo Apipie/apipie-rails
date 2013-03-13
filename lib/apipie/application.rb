@@ -276,6 +276,10 @@ module Apipie
         klass
       elsif @controller_to_resource_id.has_key?(klass)
         @controller_to_resource_id[klass]
+      elsif Apipie.configuration.namespaced_resources? && klass.respond_to?(:controller_path)
+        return nil if klass == ActionController::Base
+        path = klass.controller_path
+        path.gsub(version_prefix(klass), "").gsub("/", "-")
       elsif klass.respond_to?(:controller_name)
         return nil if klass == ActionController::Base
         klass.controller_name
@@ -285,6 +289,12 @@ module Apipie
     end
 
     private
+
+    def version_prefix(klass)
+      version = controller_versions(klass).first
+      path = Apipie.configuration.api_base_url[version]
+      path[1..-1] + "/"
+    end
 
     def get_resource_version(resource_description)
       if resource_description.respond_to? :_version
