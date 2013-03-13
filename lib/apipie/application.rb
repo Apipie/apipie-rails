@@ -94,12 +94,12 @@ module Apipie
     end
 
     def add_param_group(controller, name, &block)
-      key = "#{controller.controller_path}##{name}"
+      key = "#{controller.name}##{name}"
       @param_groups[key] = block
     end
 
     def get_param_group(controller, name)
-      key = "#{controller.controller_path}##{name}"
+      key = "#{controller.name}##{name}"
       if @param_groups.has_key?(key)
         return @param_groups[key]
       else
