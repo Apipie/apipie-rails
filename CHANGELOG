@@ -2,6 +2,12 @@
  Changelog
 ===========
 
+v0.0.19
+-------
+
+* fix examples recording when resource_id is set
+* use safe_yaml for loading examples file when available
+
 v0.0.18
 -------
 
