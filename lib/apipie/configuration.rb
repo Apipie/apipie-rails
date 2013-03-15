@@ -3,10 +3,11 @@ module Apipie
 
     attr_accessor :app_name, :app_info, :copyright, :markup, :disqus_shortname,
       :validate, :api_base_url, :doc_base_url, :required_by_default, :layout,
-      :default_version, :debug, :version_in_url
+      :default_version, :debug, :version_in_url, :namespaced_resources
 
     alias_method :validate?, :validate
     alias_method :required_by_default?, :required_by_default
+    alias_method :namespaced_resources?, :namespaced_resources
 
     # matcher to be used in Dir.glob to find controllers to be reloaded e.g.
     #
@@ -107,6 +108,7 @@ module Apipie
       @default_version = "1.0"
       @debug = false
       @version_in_url = true
+      @namespaced_resources = false
     end
   end
 end
