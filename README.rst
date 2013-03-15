@@ -427,6 +427,10 @@ ignored
   to be ignored when generationg the documentation
   e.g. ``%w[Api::CommentsController Api::PostsController#post]``
 
+namespaced_resources
+  Use controller paths instead of controller names as resource id.
+  This prevents same named controllers overwriting each other.
+
 
 Example:
 
