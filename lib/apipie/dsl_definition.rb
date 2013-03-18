@@ -118,52 +118,6 @@ module Apipie
         Apipie.set_controller_versions(self, versions)
       end
 
-      # create method api and redefine newly added method
-      def method_added(method_name) #:doc:
-        super
-
-        if ! Apipie.active_dsl? || _apipie_dsl_data[:api_args].blank?
-          _apipie_dsl_data_clear
-          return
-        end
-
-        begin
-          # remove method description if exists and create new one
-          Apipie.remove_method_description(self, _apipie_dsl_data[:api_versions], method_name)
-          description = Apipie.define_method_description(self, method_name, _apipie_dsl_data)
-        ensure
-          _apipie_dsl_data_clear
-        end
-
-        # redefine method only if validation is turned on
-        if description && Apipie.configuration.validate == true
-
-          old_method = instance_method(method_name)
-
-          define_method(method_name) do |*args|
-
-            if Apipie.configuration.validate == true
-              description.params.each do |_, param|
-
-                # check if required parameters are present
-                if param.required && !params.has_key?(param.name)
-                  raise ParamMissing.new(param.name)
-                end
-
-                # params validations
-                if params.has_key?(param.name)
-                  param.validate(params[:"#{param.name}"])
-                end
-
-              end
-            end
-
-            # run the original method code
-            old_method.bind(self).call(*args)
-          end
-
-        end
-      end # def method_added
     end
 
     module Common
@@ -211,6 +165,38 @@ module Apipie
       def error(*args) #:doc:
         return unless Apipie.active_dsl?
         _apipie_dsl_data[:errors] << args
+      end
+
+      def _apipie_define_validators(description)
+        # redefine method only if validation is turned on
+        if description && Apipie.configuration.validate == true
+
+          old_method = instance_method(description.method)
+
+          define_method(description.method) do |*args|
+
+            if Apipie.configuration.validate == true
+              description.params.each do |_, param|
+
+                # check if required parameters are present
+                if param.required && !params.has_key?(param.name)
+                  raise ParamMissing.new(param.name)
+                end
+
+                # params validations
+                if params.has_key?(param.name)
+                  param.validate(params[:"#{param.name}"])
+                end
+
+              end
+            end
+
+            # run the original method code
+            old_method.bind(self).call(*args)
+          end
+
+        end
+
       end
 
     end
@@ -261,6 +247,111 @@ module Apipie
       end
     end
 
+    module Controller
+      include Apipie::DSL::Base
+      include Apipie::DSL::Common
+      include Apipie::DSL::Action
+      include Apipie::DSL::Param
+
+      # defines the substitutions to be made in the API paths deifned
+      # in concerns included. For example:
+      #
+      # There is this method defined in concern:
+      #
+      #    api GET ':controller_path/:id'
+      #    def show
+      #      # ...
+      #    end
+      #
+      # If you include the concern into some controller, you can
+      # specify the value for :controller_path like this:
+      #
+      #      apipie_concern_subst(:controller_path => '/users')
+      #      include ::Concerns::SampleController
+      #
+      # The resulting path will be '/users/:id'.
+      #
+      # It has to be specified before the concern is included.
+      #
+      # If not specified, the default predefined substitions are
+      #
+      #    {:conroller_path => controller.controller_path,
+      #     :resource_id  => `resource_id_from_apipie` }
+      def apipie_concern_subst(subst_hash)
+        _apipie_concern_subst.merge!(subst_hash)
+      end
+
+      def _apipie_concern_subst
+        @_apipie_concern_subst ||= {:controller_path => self.controller_path,
+                                    :resource_id => Apipie.get_resource_name(self)}
+      end
+
+      def _apipie_perform_concern_subst(string)
+        return _apipie_concern_subst.reduce(string) do |ret, (key, val)|
+          ret.gsub(":#{key}", val)
+        end
+      end
+
+      # create method api and redefine newly added method
+      def method_added(method_name) #:doc:
+        super
+
+        if ! Apipie.active_dsl? || _apipie_dsl_data[:api_args].blank?
+          _apipie_dsl_data_clear
+          return
+        end
+
+        begin
+          # remove method description if exists and create new one
+          Apipie.remove_method_description(self, _apipie_dsl_data[:api_versions], method_name)
+          description = Apipie.define_method_description(self, method_name, _apipie_dsl_data)
+        ensure
+          _apipie_dsl_data_clear
+        end
+
+        _apipie_define_validators(description)
+      end # def method_added
+    end
+
+    module Concern
+      include Apipie::DSL::Base
+      include Apipie::DSL::Common
+      include Apipie::DSL::Action
+      include Apipie::DSL::Param
+
+      # the concern was included into a controller
+      def included(controller)
+        super
+        _apipie_concern_data.each do |method_name, _apipie_dsl_data|
+          # remove method description if exists and create new one
+          description = Apipie.define_method_description(controller, method_name, _apipie_dsl_data)
+          controller._apipie_define_validators(description)
+        end
+      end
+
+      def _apipie_concern_data
+        @_apipie_concern_data ||= []
+      end
+
+      # create method api and redefine newly added method
+      def method_added(method_name) #:doc:
+        super
+
+        if ! Apipie.active_dsl? || _apipie_dsl_data[:api_args].blank?
+          _apipie_dsl_data_clear
+          return
+        end
+
+        begin
+          _apipie_concern_data << [method_name, _apipie_dsl_data.merge(:from_concern => true)]
+        ensure
+          _apipie_dsl_data_clear
+        end
+
+      end # def method_added
+
+    end
+
     class ResourceDescriptionDsl
       include Apipie::DSL::Base
       include Apipie::DSL::Common
@@ -270,7 +361,6 @@ module Apipie
       def initialize(controller)
         @controller = controller
       end
-
 
       def _eval_dsl(&block)
         instance_eval(&block)
