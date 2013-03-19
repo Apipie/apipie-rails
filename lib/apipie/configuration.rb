@@ -2,8 +2,10 @@ module Apipie
   class Configuration
 
     attr_accessor :app_name, :app_info, :copyright, :markup, :disqus_shortname,
-      :validate, :api_base_url, :doc_base_url, :required_by_default, :layout,
-      :default_version, :debug, :version_in_url, :namespaced_resources
+      :api_base_url, :doc_base_url, :required_by_default, :layout,
+      :default_version, :debug, :version_in_url, :namespaced_resources,
+      :validate, :validate_type, :validate_presence
+
 
     alias_method :validate?, :validate
     alias_method :required_by_default?, :required_by_default
@@ -23,6 +25,16 @@ module Apipie
       @reload_controllers = Rails.env.development? unless defined? @reload_controllers
       return @reload_controllers && @api_controllers_matcher
     end
+
+    def validate_type
+      return (validate? && @validate_type)
+    end
+    alias_method :validate_type?, :validate_type
+
+    def validate_presence
+      return (validate? && @validate_presence)
+    end
+    alias_method :validate_presence?, :validate_presence
 
     # set to true if you want to use pregenerated documentation cache and avoid
     # generating the documentation on runtime (usefull for production
@@ -100,6 +112,8 @@ module Apipie
       @app_info = HashWithIndifferentAccess.new
       @copyright = nil
       @validate = true
+      @validate_type = true
+      @validate_presence = true
       @required_by_default = false
       @api_base_url = HashWithIndifferentAccess.new
       @doc_base_url = "/apipie"
