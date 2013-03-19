@@ -2,6 +2,14 @@
  Changelog
 ===========
 
+v0.0.20
+-------
+
+* namespaced resources - prevent collisions when one resource defined
+  in more modules
+* ``Apipie::DSL::Concern`` for being able to use the DSL in module
+  that is included into controllers
+
 v0.0.19
 -------
 
