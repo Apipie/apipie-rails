@@ -371,6 +371,85 @@ with ``allow_nil`` set explicitly don't have this value changed.
 Action awareness is being inherited from ancestors (in terms of
 nested params).
 
+Concerns
+--------
+
+Sometimes, the actions are not defined in the controller class
+directly but included from a module instead. You can load the Apipie
+DSL into the module by extending it with ``Apipie::DSL::Concern``.
+
+The module can be used in more controllers. Therefore there is a way
+how to substitute parts of the documentation in the module with controller
+specific values. The substitutions can be stated explicitly with
+``apipie_concern_subst(:key => "value")`` (needs to be called before
+the module is included to take effect). The substitutions are
+performed in paths and descriptions of APIs and names and descriptions
+of params.
+
+There are some default substitutions available:
+
+:controller_path
+  value of ``controller.controller_path``, e.g. ``api/users`` for
+  ``Api::UsersController``
+
+:resource_id
+  Apipie identifier of the resource, e.g. ``users`` for
+  ``Api::UsersController`` or set by ``resource_id``
+
+Example
+~~~~~~~
+
+.. code:: ruby
+
+   # users_module.rb
+   module UsersModule
+     extend Apipie::DSL::Concern
+
+     api :GET, '/:controller_path', 'List :resource_id'
+     def index
+       # ...
+     end
+
+     api :GET, '/:resource_id/:id', 'Show a :resource'
+     def show
+       # ...
+     end
+
+     api :POST, '/:resource_id', "Create a :resource"
+     param :concern, Hash, :required => true
+       param :name, String, 'Name of a :resource'
+       param :resource_type, ['standard','vip']
+     end
+     def create
+       # ...
+     end
+
+     api :GET, '/:resource_id/:custom_subst'
+     def custom
+       # ...
+     end
+   end
+
+   # users_controller.rb
+   class UsersController < ApplicationController
+
+     resource_description { resource_id 'customers' }
+
+     apipie_concern_subst(:custom_subst => 'custom', :resource => 'customer')
+     include UsersModule
+
+     # the following paths are documented
+     # api :GET, '/users'
+     # api :GET, '/customers/:id', 'Show a customer'
+     # api :POST, '/customers', 'Create a customer'
+     #   param :customer, :required => true do
+     #     param :name, String, 'Name of a customer'
+     #     param :customer_type, ['standard', 'vip']
+     #   end
+     # api :GET, '/customers/:custom'
+   end
+
+
 
 =========================
  Configuration Reference

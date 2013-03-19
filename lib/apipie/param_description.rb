@@ -38,8 +38,8 @@ module Apipie
       @options = options
 
       @method_description = method_description
-      @name = name
-      @desc = Apipie.markup_to_html(@options[:desc] || '')
+      @name = concern_subst(name)
+      @desc = concern_subst(Apipie.markup_to_html(@options[:desc] || ''))
       @parent = @options[:parent]
       @required = if @options.has_key? :required
         @options[:required]
@@ -176,6 +176,19 @@ module Apipie
         if as_action != "create"
           @required = false
         end
+      end
+    end
+
+    def concern_subst(string)
+      return if string.nil?
+      original = string
+      if method_description.from_concern?
+        string = ":#{original}" if original.is_a? Symbol
+        ret = method_description.resource.controller._apipie_perform_concern_subst(string)
+        ret = ret.to_sym if original.is_a? Symbol
+        ret
+      else
+        string
       end
     end
 

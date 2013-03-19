@@ -20,9 +20,10 @@ module Apipie
     def initialize(method, resource, dsl_data)
       @method = method.to_s
       @resource = resource
+      @from_concern = dsl_data[:from_concern]
 
       @apis = dsl_data[:api_args].map do |method, path, desc|
-        MethodDescription::Api.new(method, path, desc)
+        MethodDescription::Api.new(method, concern_subst(path), concern_subst(desc))
       end
 
       desc = dsl_data[:description] || ''
@@ -137,6 +138,11 @@ module Apipie
       }
     end
 
+    # was the description defines in a module instead of directly in controller?
+    def from_concern?
+      @from_concern
+    end
+
     private
 
     def merge_params(params, new_params)
@@ -169,6 +175,15 @@ module Apipie
       example << "\n" << ex[:code].to_s
       example << "\n" << format_example_data(ex[:response_data]).to_s if ex[:response_data]
       example
+    end
+
+    def concern_subst(string)
+      return if string.nil?
+      if from_concern?
+        resource.controller._apipie_perform_concern_subst(string)
+      else
+        string
+      end
     end
 
   end
