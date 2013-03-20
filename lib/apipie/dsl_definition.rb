@@ -175,19 +175,17 @@ module Apipie
 
           define_method(description.method) do |*args|
 
-            if Apipie.configuration.validate == true
+            if Apipie.configuration.validate_presence?
               description.params.each do |_, param|
-
                 # check if required parameters are present
-                if param.required && !params.has_key?(param.name)
-                  raise ParamMissing.new(param.name)
-                end
+                raise ParamMissing.new(param.name) if param.required && !params.has_key?(param.name)
+              end
+            end
 
+            if Apipie.configuration.validate_type?
+              description.params.each do |_, param|
                 # params validations
-                if params.has_key?(param.name)
-                  param.validate(params[:"#{param.name}"])
-                end
-
+                param.validate(params[:"#{param.name}"]) if params.has_key?(param.name)
               end
             end
 

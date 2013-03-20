@@ -57,7 +57,11 @@ describe UsersController do
   describe "validators" do
 
     context "validations are disabled" do
-      before { Apipie.configuration.validate = false }
+      before do
+        Apipie.configuration.validate = false
+        Apipie.configuration.validate_type = true
+        Apipie.configuration.validate_presence = true
+      end
 
       it "should reply to valid request" do
         get :show, :id => '5', :session => "secret_hash"
@@ -70,9 +74,36 @@ describe UsersController do
 
     end
 
+    context "only presence validations are enabled" do
+      before do
+        Apipie.configuration.validate = true
+        Apipie.configuration.validate_type = false
+        Apipie.configuration.validate_presence = true
+      end
+
+      it "should reply to valid request" do
+        lambda { get :show, :id => 5, :session => "secret_hash" }.should_not raise_error
+        assert_response :success
+      end
+
+      it "should fail if required parameter is missing" do
+        lambda { get :show, :id => 5 }.should raise_error(Apipie::ParamMissing, /\bsession\b/)
+      end
+
+      it "should pass if required parameter has wrong type" do
+        lambda { get :show, :id => 5, :session => "secret_hash" }.should_not raise_error
+        lambda { get :show, :id => "ten", :session => "secret_hash" }.should_not raise_error
+      end
+
+    end
+
 
     context "validations are enabled" do
-      before { Apipie.configuration.validate = true }
+      before do
+        Apipie.configuration.validate = true
+        Apipie.configuration.validate_type = true
+        Apipie.configuration.validate_presence = true
+      end
 
       it "should reply to valid request" do
         get :show, :id => '5', :session => "secret_hash"
@@ -166,7 +197,7 @@ describe UsersController do
 
         lambda {
           post :create, :user => { :name => "root" }
-        }.should raise_error(Apipie::ParamInvalid, /pass/)
+        }.should raise_error(Apipie::ParamMissing, /pass/)
 
         post :create, :user => { :name => "root", :pass => "pwd" }
         assert_response :success
