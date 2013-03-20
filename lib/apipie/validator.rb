@@ -205,7 +205,12 @@ module Apipie
       def validate(value)
         if @hash_params
           @hash_params.each do |k, p|
-            p.validate(value[k]) if value.has_key?(k) || p.required
+            if Apipie.configuration.validate_presence?
+              raise ParamMissing.new(k) if p.required && !value.has_key?(k)
+            end
+            if Apipie.configuration.validate_type?
+              p.validate(value[k]) if value.has_key?(k)
+            end
           end
         end
         return true
