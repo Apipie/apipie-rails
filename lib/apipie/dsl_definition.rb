@@ -182,7 +182,7 @@ module Apipie
               end
             end
 
-            if Apipie.configuration.validate_type?
+            if Apipie.configuration.validate_value?
               description.params.each do |_, param|
                 # params validations
                 param.validate(params[:"#{param.name}"]) if params.has_key?(param.name)

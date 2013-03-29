@@ -4,7 +4,7 @@ module Apipie
     attr_accessor :app_name, :app_info, :copyright, :markup, :disqus_shortname,
       :api_base_url, :doc_base_url, :required_by_default, :layout,
       :default_version, :debug, :version_in_url, :namespaced_resources,
-      :validate, :validate_type, :validate_presence
+      :validate, :validate_value, :validate_presence
 
 
     alias_method :validate?, :validate
@@ -26,10 +26,10 @@ module Apipie
       return @reload_controllers && @api_controllers_matcher
     end
 
-    def validate_type
-      return (validate? && @validate_type)
+    def validate_value
+      return (validate? && @validate_value)
     end
-    alias_method :validate_type?, :validate_type
+    alias_method :validate_value?, :validate_value
 
     def validate_presence
       return (validate? && @validate_presence)
@@ -112,7 +112,7 @@ module Apipie
       @app_info = HashWithIndifferentAccess.new
       @copyright = nil
       @validate = true
-      @validate_type = true
+      @validate_value = true
       @validate_presence = true
       @required_by_default = false
       @api_base_url = HashWithIndifferentAccess.new
