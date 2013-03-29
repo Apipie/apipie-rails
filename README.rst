@@ -478,6 +478,13 @@ default_version
 validate
   Parameters validation is turned off when set to false.
 
+validate_value
+  Check the value of params against specified validators (true by
+  default)
+
+validate_presence
+  Check the params presence against the documentation.
+
 app_info
   Application long description.
 

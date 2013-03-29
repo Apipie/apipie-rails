@@ -208,7 +208,7 @@ module Apipie
             if Apipie.configuration.validate_presence?
               raise ParamMissing.new(k) if p.required && !value.has_key?(k)
             end
-            if Apipie.configuration.validate_type?
+            if Apipie.configuration.validate_value?
               p.validate(value[k]) if value.has_key?(k)
             end
           end

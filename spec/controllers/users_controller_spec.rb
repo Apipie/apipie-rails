@@ -59,7 +59,7 @@ describe UsersController do
     context "validations are disabled" do
       before do
         Apipie.configuration.validate = false
-        Apipie.configuration.validate_type = true
+        Apipie.configuration.validate_value = true
         Apipie.configuration.validate_presence = true
       end
 
@@ -77,7 +77,7 @@ describe UsersController do
     context "only presence validations are enabled" do
       before do
         Apipie.configuration.validate = true
-        Apipie.configuration.validate_type = false
+        Apipie.configuration.validate_value = false
         Apipie.configuration.validate_presence = true
       end
 
@@ -101,7 +101,7 @@ describe UsersController do
     context "validations are enabled" do
       before do
         Apipie.configuration.validate = true
-        Apipie.configuration.validate_type = true
+        Apipie.configuration.validate_value = true
         Apipie.configuration.validate_presence = true
       end
 
