@@ -2,6 +2,13 @@
  Changelog
 ===========
 
+v0.0.21
+-------
+
+* fix RDoc 4.0 compatibility issue
+* ``validate_value`` and ``validate_presence`` options for better
+  validation granularity
+
 v0.0.20
 -------
 
