@@ -7,7 +7,11 @@ module Apipie
       def initialize
         require 'rdoc'
         require 'rdoc/markup/to_html'
-        @rdoc ||= ::RDoc::Markup::ToHtml.new
+        if Gem::Version.new(::RDoc::VERSION) < Gem::Version.new('4.0.0')
+          @rdoc ||= ::RDoc::Markup::ToHtml.new()
+        else
+          @rdoc ||= ::RDoc::Markup::ToHtml.new(::RDoc::Options.new)
+        end
       end
 
       def to_html(text)
