@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.email       = ["pajkycz@gmail.com", "inecas@redhat.com"]
   s.homepage    = "http://github.com/Pajk/apipie-rails"
   s.summary     = %q{Rails REST API documentation tool}
-  s.description = %q{Maintain your API documentation up to date!}
+  s.description = %q{Rails REST API documentation tool}
 
 
   s.files         = `git ls-files`.split("\n")
