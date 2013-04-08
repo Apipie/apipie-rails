@@ -292,8 +292,13 @@ module Apipie
 
     def version_prefix(klass)
       version = controller_versions(klass).first
-      path = Apipie.configuration.api_base_url[version]
-      path[1..-1] + "/"
+      base_url = get_base_url(version)
+      return "/" if base_url.nil?
+      base_url[1..-1] + "/"
+    end
+
+    def get_base_url(version)
+      Apipie.configuration.api_base_url[version]
     end
 
     def get_resource_version(resource_description)
