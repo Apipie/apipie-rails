@@ -2,7 +2,8 @@
  API Documentation Tool
 ========================
 
-.. image:: https://secure.travis-ci.org/Pajk/apipie-rails.png?branch=master
+.. image:: https://travis-ci.org/Pajk/apipie-rails.png?branch=master
+    :target: https://travis-ci.org/Pajk/apipie-rails
 
 Apipie-rails is a DSL and Rails engine for documenting you RESTful
 API. Instead of traditional use of ``#comments``, Apipie let's you
