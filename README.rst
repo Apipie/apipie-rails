@@ -148,20 +148,20 @@ Example:
         These can now be accessed in <tt>shared/header</tt> with:
           Headline: <%= headline %>
           First name: <%= person.first_name %>
-    
+
         If you need to find out whether a certain local variable has been
         assigned a value in a particular render call, you need to use the
         following pattern:
-    
+
         <% if local_assigns.has_key? :headline %>
            Headline: <%= headline %>
         <% end %>
-    
+
        Testing using <tt>defined? headline</tt> will not work. This is an
        implementation restriction.
-    
+
        === Template caching
-    
+
        By default, Rails will compile each template to a method in order
        to render it. When you alter a template, Rails will check the
        file's modification time and recompile it in development mode.
@@ -219,7 +219,7 @@ Example:
    param :regexp_param, /^[0-9]* years/, :desc => "regexp param"
    param :array_param, [100, "one", "two", 1, 2], :desc => "array validator"
    param :boolean_param, [true, false], :desc => "array validator with boolean"
-   param :proc_param, lambda { |val| 
+   param :proc_param, lambda { |val|
      val == "param value" ? true : "The only good value is 'param value'."
    }, :desc => "proc validator"
    description "method description"
@@ -657,23 +657,23 @@ So we create apipie_validators.rb initializer with this content:
 .. code:: ruby
 
    class IntegerValidator < Apipie::Validator::BaseValidator
-    
+
      def initialize(param_description, argument)
        super(param_description)
        @type = argument
      end
-    
+
      def validate(value)
        return false if value.nil?
        !!(value.to_s =~ /^[-+]?[0-9]+$/)
      end
-    
+
      def self.build(param_description, argument, options, block)
        if argument == Integer || argument == Fixnum
          self.new(param_description, argument)
        end
      end
-    
+
      def description
        "Must be #{@type}."
      end
@@ -833,10 +833,59 @@ tests or a running server, setting ``APIPIE_RECORD=examples``
    APIPIE_RECORD=examples rake test:functionals
    APIPIE_RECORD=examples rails server
 
-The data are written into ``doc/apipie_examples.yml``. By default,
+The data is written into ``doc/apipie_examples.yml``. By default,
 only the first example is shown for each action. You can customize
 this by setting ``show_in_doc`` attribute at each example.
 
+.. code::
+   --- !omap
+     - announcements#index:
+       - !omap
+         - verb: :GET
+         - path: /api/blabla/1
+         - versions:
+           - '1.0'
+         - query:
+         - request_data:
+         - response_data:
+           ...
+         - code: 200
+         - show_in_doc: 1   # If 1, show. If 0, do not show.
+         - recorded: true
+
+In RSpec you can add metadata to examples. We can use that feature
+to mark selected examples – the ones that perform the requests that we want to
+show as examples in the documentation.
+
+For example, we can add ``show_in_doc`` to examples, like this:
+
+.. code:: ruby
+   describe "This is the correct path" do
+     it "some test", :show_in_doc do
+       ....
+     end
+   end
+
+   context "These are edge cases" do
+     it "Can't authenticate" do
+       ....
+     end
+
+      it "record not found" do
+        ....
+      end
+   end
+
+And then configure RSpec in this way:
+
+.. code:: ruby
+   RSpec.configure do |config|
+     config.treat_symbols_as_metadata_keys_with_true_values = true
+     config.filter_run :show_in_doc => true if ENV['APIPIE_RECORD']
+   end
+
+This way, when running in recording mode, only the tests that has been marked with the
+``:show_in_doc`` metadata will be ran, and hence only those will be used as examples.
 
 ====================
  Bindings Generator
