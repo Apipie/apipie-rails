@@ -838,6 +838,7 @@ only the first example is shown for each action. You can customize
 this by setting ``show_in_doc`` attribute at each example.
 
 .. code::
+
    --- !omap
      - announcements#index:
        - !omap
@@ -860,6 +861,7 @@ show as examples in the documentation.
 For example, we can add ``show_in_doc`` to examples, like this:
 
 .. code:: ruby
+
    describe "This is the correct path" do
      it "some test", :show_in_doc do
        ....
@@ -879,6 +881,7 @@ For example, we can add ``show_in_doc`` to examples, like this:
 And then configure RSpec in this way:
 
 .. code:: ruby
+
    RSpec.configure do |config|
      config.treat_symbols_as_metadata_keys_with_true_values = true
      config.filter_run :show_in_doc => true if ENV['APIPIE_RECORD']
