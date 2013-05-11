@@ -21,6 +21,12 @@ module Apipie
     end
   end
 
+  class UnknownParam < DefinedParamError
+    def to_s
+      "Unknown parameter #{@param}"
+    end
+  end
+
   class ParamInvalid < DefinedParamError
     attr_accessor :value, :error
 

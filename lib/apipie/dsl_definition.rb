@@ -212,6 +212,15 @@ module Apipie
               end
             end
 
+            # Only allow params passed in that are defined keys in the api
+            # Auto skip the default params (format, controller, action)
+            if Apipie.configuration.validate_key?
+              params.reject{|k,_| [:format, :controller, :action].include?(k.to_sym) }.each_key do |param|
+                # params allowed
+                raise UnknownParam.new(param) unless description.params.select {|_,p| p.name == param.to_sym}.size > 0
+              end
+            end
+
             if Apipie.configuration.process_value?
               @api_params = {}
 
