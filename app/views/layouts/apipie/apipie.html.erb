@@ -1,26 +1,24 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>API documentation</title>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <%= Apipie.include_stylesheets %>
-  <link type='text/css' rel='stylesheet' href='<%= Apipie.full_url("stylesheets/application.css")%>'/>
-  <!-- IE6-8 support of HTML5 elements -->
-  <!--[if lt IE 9]>
-    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-  <![endif]-->
-</head>
-<body>
-  <div class="container">
-    <div class="row">
-      <div id='container'>
+  <head>
+    <title>API documentation</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <%= Apipie.include_stylesheets %>
+    <link type='text/css' rel='stylesheet' href='<%= Apipie.full_url("stylesheets/application.css")%>'/>
+    <!-- IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row-fluid">
         <%= yield %>
         <%= render 'disqus' if Apipie.configuration.use_disqus? %>
       </div>
+      <hr>
+      <footer><%= yield :apipie_footer %></footer>
     </div>
-    <hr>
-    <footer><%= yield :apipie_footer %></footer>
-  </div>
-  <%= Apipie.include_javascripts %>
-</body>
+    <%= Apipie.include_javascripts %>
+  </body>
 </html>
