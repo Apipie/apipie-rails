@@ -63,12 +63,12 @@ module Apipie
             # we specify what type it might be. At the end the first type
             # that left is taken as the more general one
             unless param_desc[:type]
-              param_desc[:type] = [:bool, :number]
+              param_desc[:type] = [:bool, :boolean, :number]
               param_desc[:type] << Hash if value.is_a? Hash
               param_desc[:type] << :undef
             end
 
-            if param_desc[:type].first == :bool && (! [true, false].include?(value))
+            if [:boolean, :bool].include?(param_desc[:type].first) && (! [true, false, 1, 0].include?(value))
               param_desc[:type].shift
             end
 
