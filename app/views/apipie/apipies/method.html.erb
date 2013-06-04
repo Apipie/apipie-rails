@@ -43,11 +43,7 @@
 
   <% unless @method[:errors].blank? %>
     <h2>Errors</h2>
-    <% @method[:errors].each do |err| %>
-      <%= err[:code] %>
-      <%= err[:description] %>
-      <br>
-    <% end %>
+    <%= render(:partial => "errors", :locals => {:errors => @method[:errors]}) %>
   <% end %>
 
   <% unless @method[:params].blank? %>

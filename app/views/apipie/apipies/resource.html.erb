@@ -61,11 +61,7 @@
 
       <% unless m[:errors].blank? %>
         <h3>Errors</h3>
-        <% m[:errors].each do |err| %>
-          <%= err[:code] %>
-          <%= err[:description] %>
-          <br>
-        <% end %>
+        <%= render(:partial => "errors", :locals => {:errors => m[:errors]}) %>
       <% end %>
 
       <% unless m[:examples].blank? %>

@@ -1,0 +1,17 @@
+<table class="table table-bordered">
+	<thead>
+		<tr>
+			<th>Code</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<% errors.each do |err| %>
+			<tr>
+				<td><span class="<%= err[:label] %>"> <%= err[:code] %> </span></td>
+				<td><%= err[:description] %></td>
+			</tr>
+		<% end %>
+	</tbody>
+</table>
