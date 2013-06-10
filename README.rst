@@ -132,7 +132,6 @@ Example:
 
    resource_description do
      short 'Site members'
-     path '/users'
      formats ['json']
      param :id, Fixnum, :desc => "User ID", :required => false
      param :resource_param, Hash, :desc => 'Param description for all methods' do
