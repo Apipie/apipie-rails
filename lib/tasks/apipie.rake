@@ -124,7 +124,7 @@ namespace :apipie do
 
   def with_loaded_documentation
     Apipie.configuration.use_cache = false # we don't want to skip DSL evaluation
-    Dir[File.join(Rails.root, "app", "controllers", "**","*.rb")].each {|f| load f}
+    Apipie.reload_documentation
     yield
   end
 
