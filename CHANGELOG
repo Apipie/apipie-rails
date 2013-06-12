@@ -2,6 +2,12 @@
  Changelog
 ===========
 
+v0.0.22
+-------
+
+* fix "named_resources" option
+* fix generating static files when concerns used
+
 v0.0.21
 -------
 
