@@ -6,15 +6,11 @@ module Apipie
 
       def initialize(collector)
         @collector = collector
-        @examples_file = File.join(Rails.root, "doc", "apipie_examples.yml")
       end
 
       def write_examples
         merged_examples = merge_old_new_examples
-        FileUtils.mkdir_p(File.dirname(@examples_file))
-        File.open(@examples_file, "w") do |f|
-          f << YAML.dump(OrderedHash[*merged_examples.sort_by(&:first).flatten(1)])
-        end
+        self.class.write_recorded_examples(merged_examples)
       end
 
       def write_docs
@@ -40,7 +36,37 @@ module Apipie
         logger.warn("REST_API: Couldn't find action #{action} in #{controller}")
       end
 
+      def self.write_recorded_examples(examples)
+        examples_file = self.examples_file
+        FileUtils.mkdir_p(File.dirname(examples_file))
+        File.open(examples_file, "w") do |f|
+          f << JSON.pretty_generate(OrderedHash[*examples.sort_by(&:first).flatten(1)])
+        end
+      end
+
+      def self.load_recorded_examples
+        examples_file = self.examples_file
+        if File.exists?(examples_file)
+          return load_json_examples
+        end
+        return {}
+      end
+
+      def self.examples_file
+        File.join(Rails.root,"doc","apipie_examples.json")
+      end
+
       protected
+
+      def self.load_json_examples
+        examples = JSON.load(IO.read(examples_file))
+        return {} if examples.nil?
+        examples.each do |method, records|
+          records.each do |record|
+            record["verb"] = record["verb"].to_sym if record["verb"]
+          end
+        end
+      end
 
       def desc_to_s(description)
         "#{description[:controller].name}##{description[:action]}"
@@ -61,9 +87,13 @@ module Apipie
         return ordered_call
       end
 
+      def load_recorded_examples
+        self.class.load_recorded_examples
+      end
+
       def merge_old_new_examples
         new_examples = self.load_new_examples
-        old_examples = self.load_old_examples
+        old_examples = self.load_recorded_examples
         merged_examples = []
         (new_examples.keys + old_examples.keys).uniq.each do |key|
           if new_examples.has_key?(key)
@@ -364,6 +394,5 @@ module Apipie
         end
       end
     end
-
   end
 end

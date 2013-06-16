@@ -190,4 +190,20 @@ MESSAGE
     end
   end
 
+  desc "Convert your examples from the old yaml into the new json format"
+  task :convert_examples => :environment do
+    yaml_examples_file = File.join(Rails.root, "doc", "apipie_examples.yml")
+    if File.exists?(yaml_examples_file)
+      #if SafeYAML gem is enabled, it will load examples as an array of Hash, instead of hash
+      if defined? SafeYAML
+        examples = YAML.load_file(yaml_examples_file, :safe=>false)
+      else
+        examples = YAML.load_file(yaml_examples_file)
+      end
+    else
+      examples = {}
+    end
+    Apipie::Extractor::Writer.write_recorded_examples(examples)
+  end
+
 end
