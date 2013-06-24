@@ -170,7 +170,7 @@ module Apipie
 
     def format_example(ex)
       example = ""
-      example << "<span class='nocode'><strong>#{ex[:title]}</strong><br/></span>" if ex[:title].present?
+      example << ex[:title] if ex[:title].present?
       example << "#{ex[:verb]} #{ex[:path]}"
       example << "?#{ex[:query]}" unless ex[:query].blank?
       example << "\n" << format_example_data(ex[:request_data]).to_s if ex[:request_data]
