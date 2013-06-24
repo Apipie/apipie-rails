@@ -836,11 +836,15 @@ The data is written into ``doc/apipie_examples.yml``. By default,
 only the first example is shown for each action. You can customize
 this by setting ``show_in_doc`` attribute at each example.
 
+You can add a title to the examples (useful when showing more than
+one example per method) by adding a 'title' attribute.
+
 .. code::
 
    --- !omap
      - announcements#index:
        - !omap
+         - title: This is a custom title for this example
          - verb: :GET
          - path: /api/blabla/1
          - versions:
