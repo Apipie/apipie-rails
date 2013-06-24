@@ -4,7 +4,7 @@ module Apipie
     attr_accessor :app_name, :app_info, :copyright, :markup, :disqus_shortname,
       :api_base_url, :doc_base_url, :required_by_default, :layout,
       :default_version, :debug, :version_in_url, :namespaced_resources,
-      :validate, :validate_value, :validate_presence
+      :validate, :validate_value, :validate_presence, :persist_show_in_doc
 
 
     alias_method :validate?, :validate
@@ -77,6 +77,10 @@ module Apipie
       @ignored.map(&:to_s)
     end
 
+    # Persist the show_in_doc value in the examples if true. Use this if you
+    # cannot set the flag in the tests themselves (no rspec for example).
+    attr_writer :persist_show_in_doc
+
     # comment to put before docs that was generated automatically. It's used to
     # determine if the description should be overwritten next recording.
     # If you want to keep the documentation (prevent from overriding), remove
@@ -123,6 +127,7 @@ module Apipie
       @debug = false
       @version_in_url = true
       @namespaced_resources = false
+      @persist_show_in_doc = false
     end
   end
 end
