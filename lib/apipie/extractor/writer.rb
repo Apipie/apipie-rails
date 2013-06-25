@@ -77,6 +77,7 @@ module Apipie
       end
 
       def deep_merge_examples(new_examples, old_examples)
+        old_examples ||= []
         new_examples.map do |new_example|
           # Use ordered to get compareble output (mainly for the query)
           new_example = ordered_call(new_example)
