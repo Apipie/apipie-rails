@@ -15,17 +15,23 @@
     </td>
     <td>
       <%= param[:description].html_safe %>
-      <% unless param[:validator].blank? %>
-        <br>
-        Value: <%= param[:validator] %>
-      <% end %>
+      <%- if param[:validations].present? || param[:validator].present? %>
+        <p><strong>Validations:</strong></p>
+        <ul>
+          <%- if param[:validator].present? %>
+            <li><%= param[:validator] %></li>
+          <%- end %>
+          <%- param[:validations].each do |item| %>
+            <li><%= item.html_safe %></li>
+          <%- end %>
+        </ul>
+      <%- end %>
 
       <% unless param[:metadata].blank? %>
         <br>
         Metadata:
         <%= render(:partial => "metadata", :locals => {:meta => param[:metadata]}) %>
       <% end %>
-
     </td>
 
   </tr>

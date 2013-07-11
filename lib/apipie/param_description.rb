@@ -8,7 +8,7 @@ module Apipie
   # validator - Validator::BaseValidator subclass
   class ParamDescription
 
-    attr_reader :method_description, :name, :desc, :allow_nil, :validator, :options, :metadata, :show, :as
+    attr_reader :method_description, :name, :desc, :allow_nil, :validator, :options, :metadata, :show, :as, :validations
     attr_accessor :parent, :required
 
     def self.from_dsl_data(method_description, args)
@@ -64,6 +64,8 @@ module Apipie
         @validator = Validator::BaseValidator.find(self, validator, @options, block)
         raise "Validator for #{validator} not found." unless @validator
       end
+
+      @validations = Array(options[:validations]).map {|v| concern_subst(Apipie.markup_to_html(v)) }
     end
 
     def validate(value)
@@ -109,7 +111,8 @@ module Apipie
                :validator => validator.to_s,
                :expected_type => validator.expected_type,
                :metadata => metadata,
-               :show => show }
+               :show => show,
+               :validations => validations }
       if sub_params = validator.params_ordered
         hash[:params] = sub_params.map { |p| p.to_json(lang)}
       end

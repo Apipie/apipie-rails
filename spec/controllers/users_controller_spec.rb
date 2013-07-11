@@ -224,7 +224,8 @@ describe UsersController do
                               :allow_nil => true,
                               :metadata => nil,
                               :show => true,
-                              :expected_type => "hash")
+                              :expected_type => "hash",
+                              :validations => [])
       end
 
       it "should allow nil when allow_nil is set to true" do
