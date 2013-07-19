@@ -51,11 +51,9 @@ module Apipie
 
       action_awareness
 
-      @validator = nil
-      unless validator.nil?
-        @validator =
-          Validator::BaseValidator.find(self, validator, @options, block)
-        raise "Validator not found." unless validator
+      if validator
+        @validator = Validator::BaseValidator.find(self, validator, @options, block)
+        raise "Validator for #{validator} not found." unless @validator
       end
     end
 
