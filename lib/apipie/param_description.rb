@@ -178,16 +178,16 @@ module Apipie
     end
 
     def concern_subst(string)
-      return if string.nil?
+      return string if string.nil? or !method_description.from_concern?
+
       original = string
-      if method_description.from_concern?
-        string = ":#{original}" if original.is_a? Symbol
-        ret = method_description.resource.controller._apipie_perform_concern_subst(string)
-        ret = ret.to_sym if original.is_a? Symbol
-        ret
-      else
-        string
-      end
+      string = ":#{original}" if original.is_a? Symbol
+
+      replaced = method_description.resource.controller._apipie_perform_concern_subst(string)
+
+      return original if replaced == string
+      return replaced.to_sym if original.is_a? Symbol
+      return replaced
     end
 
   end
