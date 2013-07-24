@@ -98,6 +98,8 @@ module Apipie
       def expected_type
         if @type.ancestors.include? Hash
           'hash'
+        elsif @type.ancestors.include? Array
+          'array'
         elsif @type.ancestors.include? Numeric
           'numeric'
         else
