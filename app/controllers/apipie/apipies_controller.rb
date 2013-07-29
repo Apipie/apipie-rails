@@ -4,6 +4,8 @@ module Apipie
 
     around_filter :set_script_name
 
+    before_filter :authenticate
+
     def index
 
       params[:version] ||= Apipie.configuration.default_version
@@ -99,6 +101,14 @@ module Apipie
       yield
     ensure
       Apipie.request_script_name = nil
+    end
+
+    def authenticate
+      unless Apipie.configuration.username.nil? or Apipie.configuration.password.nil?
+        authenticate_or_request_with_http_basic { |username, password|
+          username == Apipie.configuration.username && password == Apipie.configuration.password
+        }
+      end
     end
   end
 end
