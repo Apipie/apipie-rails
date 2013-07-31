@@ -101,30 +101,39 @@ describe Apipie::ApipiesController do
 
     before do
       FileUtils.rm_r(cache_dir) if File.exists?(cache_dir)
-      FileUtils.mkdir_p(File.join(cache_dir, "apidoc", "resource"))
-      File.open(File.join(cache_dir, "apidoc.html"), "w") { |f| f << "apidoc.html cache" }
-      File.open(File.join(cache_dir, "apidoc.json"), "w") { |f| f << "apidoc.json cache" }
-      File.open(File.join(cache_dir, "apidoc", "resource.html"), "w") { |f| f << "resource.html cache" }
-      File.open(File.join(cache_dir, "apidoc", "resource", "method.html"), "w") { |f| f << "method.html cache" }
+      FileUtils.mkdir_p(File.join(cache_dir, "apidoc", "v1", "resource"))
+      File.open(File.join(cache_dir, "apidoc", "v1.html"), "w") { |f| f << "apidoc.html cache v1" }
+      File.open(File.join(cache_dir, "apidoc", "v2.html"), "w") { |f| f << "apidoc.html cache v2" }
+      File.open(File.join(cache_dir, "apidoc", "v1.json"), "w") { |f| f << "apidoc.json cache" }
+      File.open(File.join(cache_dir, "apidoc", "v1", "resource.html"), "w") { |f| f << "resource.html cache" }
+      File.open(File.join(cache_dir, "apidoc", "v1", "resource", "method.html"), "w") { |f| f << "method.html cache" }
 
       Apipie.configuration.use_cache = true
       Apipie.configuration.cache_dir = cache_dir
+      @orig_version = Apipie.configuration.default_version
+      Apipie.configuration.default_version = 'v1'
     end
 
     after do
-      FileUtils.rm_r(cache_dir) if File.exists?(cache_dir)
+      Apipie.configuration.use_cache = false
+      Apipie.configuration.default_version = @orig_version
+      # FileUtils.rm_r(cache_dir) if File.exists?(cache_dir)
     end
 
     it "uses the file in cache dir instead of generating the content on runtime" do
       get :index
-      response.body.should == "apidoc.html cache"
-      get :index, :format => "html"
-      response.body.should == "apidoc.html cache"
-      get :index, :format => "json"
+      response.body.should == "apidoc.html cache v1"
+      get :index, :version => 'v1'
+      response.body.should == "apidoc.html cache v1"
+      get :index, :version => 'v2'
+      response.body.should == "apidoc.html cache v2"
+      get :index, :version => 'v1', :format => "html"
+      response.body.should == "apidoc.html cache v1"
+      get :index, :version => 'v1', :format => "json"
       response.body.should == "apidoc.json cache"
-      get :index, :format => "html", :resource => "resource"
+      get :index, :version => 'v1', :format => "html", :resource => "resource"
       response.body.should == "resource.html cache"
-      get :index, :format => "html", :resource => "resource", :method => "method"
+      get :index, :version => 'v1', :format => "html", :resource => "resource", :method => "method"
       response.body.should == "method.html cache"
     end
 

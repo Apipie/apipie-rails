@@ -13,6 +13,7 @@ module Apipie
         @params.merge!(env["action_dispatch.request.request_parameters"] || {})
         if data = parse_data(env["rack.input"].read)
           @request_data = data
+          env["rack.input"].rewind
         end
       end
 
@@ -109,8 +110,9 @@ module Apipie
         end
 
         def process_with_api_recording(*args) # action, parameters = nil, session = nil, flash = nil, http_method = 'GET')
-          process_without_api_recording(*args)
+          ret = process_without_api_recording(*args)
           Apipie::Extractor.call_recorder.analyze_functional_test(self)
+          ret
         ensure
           Apipie::Extractor.call_finished
         end

@@ -5,47 +5,46 @@ module Apipie
 
     class Api
 
-      attr_accessor :short_description, :api_url, :http_method
+      attr_accessor :short_description, :path, :http_method
 
       def initialize(method, path, desc)
         @http_method = method.to_s
-        @api_url = create_api_url(path)
+        @path = path
         @short_description = desc
-      end
-
-      private
-
-      def create_api_url(path)
-        path = "#{Apipie.configuration.api_base_url}#{path}"
-        path = path[0..-2] if path[-1..-1] == '/'
-        return path
       end
 
     end
 
     attr_reader :full_description, :method, :resource, :apis, :examples, :see, :formats
 
-    def initialize(method, resource, app)
-      @method = method
+    def initialize(method, resource, dsl_data)
+      @method = method.to_s
       @resource = resource
+      @from_concern = dsl_data[:from_concern]
 
-      @apis = app.get_api_args
-      @see = app.get_see
-      @formats = app.get_formats
+      @apis = dsl_data[:api_args].map do |method, path, desc|
+        MethodDescription::Api.new(method, concern_subst(path), concern_subst(desc))
+      end
 
-      desc = app.get_description || ''
+      desc = dsl_data[:description] || ''
       @full_description = Apipie.markup_to_html(desc)
-      @errors = app.get_errors
-      @params_ordered = app.get_params
-      @examples = app.get_examples
 
+      @errors = dsl_data[:errors].map do |args|
+        Apipie::ErrorDescription.new(args)
+      end
+
+      @see = dsl_data[:see].map do |args|
+        Apipie::SeeDescription.new(args)
+      end
+
+      @formats = dsl_data[:formats]
+      @examples = dsl_data[:examples]
       @examples += load_recorded_examples
 
-      parent = @resource.controller.superclass
-      if parent != ActionController::Base
-        @parent_resource = parent.controller_name
+      @params_ordered = dsl_data[:params].map do |args|
+        Apipie::ParamDescription.from_dsl_data(self, args)
       end
-      @resource.add_method(id)
+      @params_ordered = ParamDescription.unify(@params_ordered)
     end
 
     def id
@@ -53,20 +52,19 @@ module Apipie
     end
 
     def params
-      params_ordered.reduce({}) { |h,p| h[p.name] = p; h }
+      params_ordered.reduce(ActiveSupport::OrderedHash.new) { |h,p| h[p.name] = p; h }
     end
 
     def params_ordered
       all_params = []
-      # get params from parent resource description
-      if @parent_resource
-        parent = Apipie.get_resource_description(@parent_resource)
-        merge_params(all_params, parent._params_ordered) if parent
-      end
+      parent = Apipie.get_resource_description(@resource.controller.superclass)
 
-      # get params from actual resource description
-      if @resource
-        merge_params(all_params, resource._params_ordered)
+      # get params from parent resource description
+      [parent, @resource].compact.each do |resource|
+        resource_params = resource._params_args.map do |args|
+          Apipie::ParamDescription.from_dsl_data(self, args)
+        end
+        merge_params(all_params, resource_params)
       end
 
       merge_params(all_params, @params_ordered)
@@ -77,8 +75,12 @@ module Apipie
       return @merged_errors if @merged_errors
       @merged_errors = []
       if @resource
+        resource_errors = @resource._errors_args.map do |args|
+          Apipie::ErrorDescription.new(args)
+        end
+
         # exclude overwritten parent errors
-        @merged_errors = @resource._errors_ordered.find_all do |err|
+        @merged_errors = resource_errors.find_all do |err|
           !@errors.any? { |e| e.code == err.code }
         end
       end
@@ -86,27 +88,31 @@ module Apipie
       return @merged_errors
     end
 
+    def version
+      resource._version
+    end
+
     def doc_url
-      Apipie.full_url("#{@resource._id}/#{@method}")
+      crumbs = []
+      crumbs << @resource._version if Apipie.configuration.version_in_url
+      crumbs << @resource._id
+      crumbs << @method
+      Apipie.full_url crumbs.join('/')
+    end
+
+    def create_api_url(api)
+      path = "#{Apipie.api_base_url(@resource._version)}#{api.path}"
+      path = path[0..-2] if path[-1..-1] == '/'
+      return path
     end
 
     def method_apis_to_json
       @apis.each.collect do |api|
         {
-          :api_url => api.api_url,
+          :api_url => create_api_url(api),
           :http_method => api.http_method.to_s,
           :short_description => api.short_description
         }
-      end
-    end
-
-    def see_url
-      if @see
-        method_description = Apipie[@see]
-        if method_description.nil?
-          raise ArgumentError.new("Method #{@see} referenced in 'see' does not exist.")
-        end
-        method_description.doc_url
       end
     end
 
@@ -128,9 +134,13 @@ module Apipie
         :errors => errors.map(&:to_json),
         :params => params_ordered.map(&:to_json).flatten,
         :examples => @examples,
-        :see => @see,
-        :see_url => see_url
+        :see => see.map(&:to_json)
       }
+    end
+
+    # was the description defines in a module instead of directly in controller?
+    def from_concern?
+      @from_concern
     end
 
     private
@@ -144,6 +154,7 @@ module Apipie
     def load_recorded_examples
       (Apipie.recorded_examples[id] || []).
         find_all { |ex| ex["show_in_doc"].to_i > 0 }.
+        find_all { |ex| ex["versions"].nil? || ex["versions"].include?(self.version) }.
         sort_by { |ex| ex["show_in_doc"] }.
         map { |ex| format_example(ex.symbolize_keys) }
     end
@@ -164,6 +175,15 @@ module Apipie
       example << "\n" << ex[:code].to_s
       example << "\n" << format_example_data(ex[:response_data]).to_s if ex[:response_data]
       example
+    end
+
+    def concern_subst(string)
+      return if string.nil?
+      if from_concern?
+        resource.controller._apipie_perform_concern_subst(string)
+      else
+        string
+      end
     end
 
   end

@@ -12,72 +12,78 @@ module Apipie
   class ResourceDescription
 
     attr_reader :controller, :_short_description, :_full_description, :_methods, :_id,
-      :_path, :_version, :_name, :_params_ordered, :_errors_ordered, :_formats
+      :_path, :_name, :_params_args, :_errors_args, :_formats, :_parent
 
-    def initialize(controller, resource_name, &block)
-      @_methods = []
-      @_params_ordered = []
-      @_errors_ordered = []
+    def initialize(controller, resource_name, dsl_data = nil, version = nil, &block)
+
+      @_methods = ActiveSupport::OrderedHash.new
+      @_params_args = []
+      @_errors_args = []
 
       @controller = controller
       @_id = resource_name
-      @_version = "1"
+      @_version = version || Apipie.configuration.default_version
       @_name = @_id.humanize
-      @_full_description = ""
-      @_short_description = ""
-      @_path = ""
-      @_formats = []
+      @_parent = Apipie.get_resource_description(controller.superclass, version)
 
-      block.arity < 1 ? instance_eval(&block) : block.call(self) if block_given?
+      update_from_dsl_data(dsl_data) if dsl_data
     end
 
-    def param(param_name, validator, desc_or_options = nil, options = {}, &block)
-      param_description = Apipie::ParamDescription.new(param_name, validator, desc_or_options, options, &block)
-      @_params_ordered << param_description
+    def update_from_dsl_data(dsl_data)
+      @_name = dsl_data[:resource_name] if dsl_data[:resource_name]
+      @_full_description = Apipie.markup_to_html(dsl_data[:description])
+      @_short_description = dsl_data[:short_description]
+      @_path = dsl_data[:path] || ""
+      @_formats = dsl_data[:formats]
+      @_errors_args = dsl_data[:errors]
+      @_params_args = dsl_data[:params]
+
+      if dsl_data[:app_info]
+        Apipie.configuration.app_info[_version] = dsl_data[:app_info]
+      end
+      if dsl_data[:api_base_url]
+        Apipie.configuration.api_base_url[_version] = dsl_data[:api_base_url]
+      end
     end
 
-    def error(*args)
-      error_description = Apipie::ErrorDescription.new(args)
-      @_errors_ordered << error_description
+    def _version
+      @_version || @_parent.try(:_version) || Apipie.configuration.default_version
     end
 
-
-    def path(path); @_path = path; end
-
-    def version(version); @_version = version; end
-
-    def formats(formats); @_formats = formats; end
-
-    def name(name); @_name = name; end
-
-    def short(short); @_short_description = short; end
-    alias :short_description :short
-
-    def desc(description)
-      description ||= ''
-      @_full_description = Apipie.markup_to_html(description)
+    def add_method_description(method_description)
+      Apipie.debug "@resource_descriptions[#{self._version}][#{self._name}]._methods[#{method_description.method}] = #{method_description}"
+      @_methods[method_description.method.to_sym] = method_description
     end
-    alias :description :desc
-    alias :full_description :desc
 
-    # add description of resource method
-    def add_method(mapi_key)
-      @_methods << mapi_key
-      @_methods.uniq!
+    def method_description(method_name)
+      @_methods[method_name.to_sym]
+    end
+
+    def remove_method_description(method_name)
+      if @_methods.has_key?(method_name)
+        @_methods.delete(method_name)
+      end
+    end
+
+    def method_descriptions
+      @_methods.values
     end
 
     def doc_url
-      Apipie.full_url(@_id)
+      crumbs = []
+      crumbs << _version if Apipie.configuration.version_in_url
+      crumbs << @_id
+      Apipie.full_url crumbs.join('/')
     end
 
-    def api_url; "#{Apipie.configuration.api_base_url}#{@_path}"; end
+    def api_url; "#{Apipie.api_base_url(_version)}#{@_path}"; end
 
     def to_json(method_name = nil)
 
-      _methods = if method_name.blank?
-        @_methods.collect { |key| Apipie.method_descriptions[key].to_json }
+      methods = if method_name.blank?
+        @_methods.collect { |key, method_description| method_description.to_json}
       else
-        [Apipie.method_descriptions[[@_id, method_name].join('#')].to_json]
+        [@_methods[method_name.to_sym].to_json]
       end
 
       {
@@ -86,10 +92,11 @@ module Apipie
         :name => @_name,
         :short_description => @_short_description,
         :full_description => @_full_description,
-        :version => @_version,
+        :version => _version,
         :formats => @_formats,
-        :methods => _methods
+        :methods => methods
       }
     end
+
   end
 end

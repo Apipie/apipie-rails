@@ -1,11 +1,18 @@
 <ul class='breadcrumb'>
-  <li><a href='<%= @doc[:doc_url] %>.html'><%= @doc[:name] %></a><span class='divider'>/</span></li>
-  <li class='active'><%= @resource[:name] %></li>
+  <li>
+    <a href='<%= @doc[:doc_url] %>.html'><%= @doc[:name] %> <%= @resource[:version] %></a>
+    <span class='divider'>/</span>
+  </li>
+  <li class='active'>
+    <%= @resource[:name] %>
+    <% if @resource[:version] %><% end %>
+  </li>
 </ul>
 
 <div class='page-header'>
   <h1>
-    <%= @resource[:name] %><br>
+    <%= @resource[:name] %>
+    <br>
     <small><%= raw @resource[:short_description] %></small>
   </h1>
 </div>
@@ -40,8 +47,8 @@
       <% end %>
     </div>
 
-    <% unless m[:see_url].blank? %>
-      Also see <%= link_to m[:see], m[:see_url] %>
+    <% unless m[:see].empty? %>
+      Also see <%= m[:see].map { |s| link_to(s[:description], "#{s[:link]}.html") }.to_sentence.html_safe %>.
     <% end %>
 
     <div id='description-<%= m[:name] %>' class='collapse accordion-body'>
@@ -64,7 +71,7 @@
       <% unless m[:examples].blank? %>
         <h3>Examples</h3>
         <% m[:examples].each do |example| %>
-          <pre><%= example %></pre>
+          <pre class="prettyprint"><%= example %></pre>
         <% end %>
       <% end %>
 

@@ -9,20 +9,18 @@ Gem::Specification.new do |s|
   s.email       = ["pajkycz@gmail.com", "inecas@redhat.com"]
   s.homepage    = "http://github.com/Pajk/apipie-rails"
   s.summary     = %q{Rails REST API documentation tool}
-  s.description = %q{Maintain your API documentation up to date!}
+  s.description = %q{Rails REST API documentation tool}
 
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.require_paths = ["lib"]
 
+  s.add_dependency "rails", ">= 3.0.10"
   s.add_development_dependency "rspec-rails"
-  s.add_development_dependency "rails", ">= 3.0.10"
   s.add_development_dependency "sqlite3"
-  s.add_development_dependency "minitest"
-  s.add_development_dependency "redcarpet"
+  s.add_development_dependency "minitest", '~> 4.0'
+  s.add_development_dependency "maruku"
   s.add_development_dependency "RedCloth"
   s.add_development_dependency "rake"
-  s.add_development_dependency "rest-client"
-  s.add_development_dependency "oauth"
 end

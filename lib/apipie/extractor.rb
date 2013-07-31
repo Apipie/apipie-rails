@@ -53,10 +53,11 @@ module Apipie
         Writer.new(@collector).write_examples if @collector
       end
 
+      # TODO: this is a loooooooooong method :)
       def apis_from_routes
         return @apis_from_routes if @apis_from_routes
 
-        api_prefix = Apipie.configuration.api_base_url.sub(/\/$/,"")
+        api_prefix = Apipie.api_base_url.sub(/\/$/,"")
         all_routes = Rails.application.routes.routes.map do |r|
           {
             :verb => case r.verb
@@ -74,7 +75,7 @@ module Apipie
 
         end
         api_routes = all_routes.find_all do |r|
-          r[:path].starts_with?(Apipie.configuration.api_base_url)
+          r[:path].starts_with?(Apipie.api_base_url)
         end
 
         @apis_from_routes = Hash.new { |h, k| h[k] = [] }
@@ -97,19 +98,26 @@ module Apipie
         end
         @apis_from_routes
 
-        apis_from_docs = Apipie.method_descriptions.reduce({}) do |h, (method, desc)|
-          apis = desc.apis.map do |api|
-            {:method => api.http_method, :path => api.api_url, :desc => api.short_description}
+        resource_descriptions = Apipie.resource_descriptions.values.map(&:values).flatten
+        method_descriptions = resource_descriptions.map(&:method_descriptions).flatten
+        apis_from_docs = method_descriptions.reduce({}) do |h, desc|
+          apis = desc.method_apis_to_json.map do |api|
+            { :method => api[:http_method],
+              :path => api[:api_url],
+              :desc => api[:short_description] }
           end
-          h.update(method => apis)
+          h.update(desc.id => apis)
         end
 
         @apis_from_routes.each do |(controller, action), new_apis|
-          method_key = "#{controller.constantize.controller_name}##{action}"
+          method_key = "#{Apipie.get_resource_name(controller.constantize)}##{action}"
           old_apis = apis_from_docs[method_key] || []
           new_apis.each do |new_api|
             new_api[:path].sub!(/\(\.:format\)$/,"")
-            if old_api = old_apis.find { |api| api[:path] == "#{api_prefix}#{new_api[:path]}" }
+            old_api = old_apis.find do |api|
+              api[:path] == "#{api_prefix}#{new_api[:path]}"
+            end
+            if old_api
               new_api[:desc] = old_api[:desc]
             end
           end

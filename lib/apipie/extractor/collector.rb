@@ -19,7 +19,7 @@ module Apipie
       def ignore_call?(record)
         return true unless record[:controller]
         return true if @ignored.include?(record[:controller].name)
-        return true if @ignored.include?("#{record[:controller].name}##{record[:action]}")
+        return true if @ignored.include?("#{Apipie.get_resource_name(record[:controller].name)}##{record[:action]}")
         return true unless @api_controllers_paths.include?(controller_full_path(record[:controller]))
       end
 
@@ -33,7 +33,7 @@ module Apipie
       end
 
       def add_to_records(record)
-        key = "#{record[:controller].controller_name}##{record[:action]}"
+        key = "#{Apipie.get_resource_name(record[:controller])}##{record[:action]}"
         @records[key] << record
       end
 
@@ -92,7 +92,7 @@ module Apipie
       end
 
       def add_routes_info(desc)
-        api_prefix = Apipie.configuration.api_base_url.sub(/\/$/,"")
+        api_prefix = Apipie.api_base_url.sub(/\/$/,"")
         desc[:api] = Apipie::Extractor.apis_from_routes[[desc[:controller].name, desc[:action]]]
         if desc[:api]
           desc[:params].each do |name, param|

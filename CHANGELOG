@@ -1,0 +1,55 @@
+===========
+ Changelog
+===========
+
+v0.0.22
+-------
+
+* fix "named_resources" option
+* fix generating static files when concerns used
+
+v0.0.21
+-------
+
+* fix RDoc 4.0 compatibility issue
+* ``validate_value`` and ``validate_presence`` options for better
+  validation granularity
+
+v0.0.20
+-------
+
+* namespaced resources - prevent collisions when one resource defined
+  in more modules
+* ``Apipie::DSL::Concern`` for being able to use the DSL in module
+  that is included into controllers
+
+v0.0.19
+-------
+
+* fix examples recording when resource_id is set
+* use safe_yaml for loading examples file when available
+
+v0.0.18
+-------
+
+* ``param_group`` and ``def_param_group`` keywords
+* ``:action_aware`` options for reusing param groups for create/update actions
+
+v0.0.17
+-------
+
+* support for multiple see links at action and ability to provide
+  description of see links
+
+v0.0.16
+-------
+
+* Fix getting started being rendered even when documentation was available
+
+v0.0.15
+-------
+
+* Fix case when there is no documentation yet: with link to how to
+  start
+* Fix handling bad requests when cache is on
+* Fix params extractor in case there is already some documentation

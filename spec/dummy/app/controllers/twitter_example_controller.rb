@@ -1,7 +1,7 @@
 class TwitterExampleController < ApplicationController
   
   resource_description do
-    name 'Users'
+    name 'TwitterUsers'
     short_description 'Users are at the center of everything Twitter: they follow, they favorite, and tweet & retweet.'
     path '/twitter_example/'
     description "Long description of this resource."

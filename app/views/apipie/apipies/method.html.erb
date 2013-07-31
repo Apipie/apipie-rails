@@ -1,10 +1,13 @@
 <ul class='breadcrumb'>
   <li>
-    <a href='<%= @doc[:doc_url] %>.html'><%= @doc[:name] %></a>
+    <a href='<%= @doc[:doc_url] %>.html'><%= @doc[:name] %> <%= @resource[:version] %></a>
     <span class='divider'>/</span>
   </li>
   <li>
-    <a href='<%= @resource[:doc_url] %>.html'><%= @resource[:name] %></a>
+    <a href='<%= @resource[:doc_url] %>.html'>
+      <%= @resource[:name] %>
+      <% if @resource[:version] %><% end %>
+    </a>
     <span class='divider'>/</span>
   </li>
   <li class='active'><%= @method[:name] %></li>
@@ -20,8 +23,8 @@
 <% end %>
 
 <div>
-  <% unless @method[:see_url].blank? %>
-    Also see <%= link_to @method[:see], @method[:see_url] %>.
+  <% unless @method[:see].empty? %>
+    Also see <%= @method[:see].map { |s| link_to(s[:description], "#{s[:link]}.html") }.to_sentence.html_safe %>.
   <% end %>
 
   <%= raw @method[:full_description] %>
@@ -29,7 +32,7 @@
   <% unless @method[:examples].blank? %>
     <h2>Examples</h2>
     <% @method[:examples].each do |example| %>
-      <pre><%= example %></pre>
+      <pre class="prettyprint"><%= example %></pre>
     <% end %>
   <% end %>
 

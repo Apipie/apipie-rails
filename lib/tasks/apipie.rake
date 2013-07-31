@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 require 'fileutils'
-require 'apipie/client/generator'
 
 namespace :apipie do
 
@@ -17,22 +16,22 @@ namespace :apipie do
   #    | - resource2.html
   #
   # By default OUT="#{Rails.root}/doc/apidoc"
-  task :static => :environment do
+  task :static, [:version] => :environment do |t, args|
     with_loaded_documentation do
+      args.with_defaults(:version => Apipie.configuration.default_version)
       out = ENV["OUT"] || File.join(::Rails.root, 'doc', 'apidoc')
       subdir = File.basename(out)
-
       copy_jscss(out)
-
+      Apipie.configuration.version_in_url = false
       Apipie.url_prefix = "./#{subdir}"
-      doc = Apipie.to_json
+      doc = Apipie.to_json(args[:version])
       generate_one_page(out, doc)
       generate_plain_page(out, doc)
       generate_index_page(out, doc)
       Apipie.url_prefix = "../#{subdir}"
-      generate_resource_pages(out, doc)
+      generate_resource_pages(args[:version], out, doc)
       Apipie.url_prefix = "../../#{subdir}"
-      generate_method_pages(out, doc)
+      generate_method_pages(args[:version], out, doc)
     end
   end
 
@@ -40,11 +39,22 @@ namespace :apipie do
   task :cache => :environment do
     with_loaded_documentation do
       cache_dir = Apipie.configuration.cache_dir
+      subdir = Apipie.configuration.doc_base_url.sub(/\A\//,"")
+
       file_base = File.join(cache_dir, Apipie.configuration.doc_base_url)
-      doc = Apipie.to_json
+      Apipie.url_prefix = "./#{subdir}"
+      doc = Apipie.to_json(Apipie.configuration.default_version)
       generate_index_page(file_base, doc, true)
-      generate_resource_pages(file_base, doc, true)
-      generate_method_pages(file_base, doc, true)
+      Apipie.available_versions.each do |version|
+        file_base_version = File.join(file_base, version)
+        Apipie.url_prefix = "../#{subdir}"
+        doc = Apipie.to_json(version)
+        generate_index_page(file_base_version, doc, true, true)
+        Apipie.url_prefix = "../../#{subdir}"
+        generate_resource_pages(version, file_base_version, doc, true)
+        Apipie.url_prefix = "../../../#{subdir}"
+        generate_method_pages(version, file_base_version, doc, true)
+      end
     end
   end
 
@@ -76,33 +86,33 @@ namespace :apipie do
     render_page("#{file_base}-plain.html", "plain", {:doc => doc[:docs]}, nil)
   end
 
-  def generate_index_page(file_base, doc, include_json = false)
+  def generate_index_page(file_base, doc, include_json = false, show_versions = false)
     FileUtils.mkdir_p(File.dirname(file_base)) unless File.exists?(File.dirname(file_base))
-
-    render_page("#{file_base}.html", "index", {:doc => doc[:docs]})
+    versions = show_versions && Apipie.available_versions
+    render_page("#{file_base}.html", "index", {:doc => doc[:docs], :versions => versions})
 
     File.open("#{file_base}.json", "w") { |f| f << doc.to_json } if include_json
   end
 
-  def generate_resource_pages(file_base, doc, include_json = false)
+  def generate_resource_pages(version, file_base, doc, include_json = false)
     doc[:docs][:resources].each do |resource_name, _|
       resource_file_base = File.join(file_base, resource_name.to_s)
       FileUtils.mkdir_p(File.dirname(resource_file_base)) unless File.exists?(File.dirname(resource_file_base))
 
-      doc = Apipie.to_json(resource_name)
+      doc = Apipie.to_json(version, resource_name)
       render_page("#{resource_file_base}.html", "resource", {:doc => doc[:docs],
                                                           :resource => doc[:docs][:resources].first})
       File.open("#{resource_file_base}.json", "w") { |f| f << doc.to_json } if include_json
     end
   end
 
-  def generate_method_pages(file_base, doc, include_json = false)
+  def generate_method_pages(version, file_base, doc, include_json = false)
     doc[:docs][:resources].each do |resource_name, resource_params|
       resource_params[:methods].each do |method|
         method_file_base = File.join(file_base, resource_name.to_s, method[:name].to_s)
         FileUtils.mkdir_p(File.dirname(method_file_base)) unless File.exists?(File.dirname(method_file_base))
 
-        doc = Apipie.to_json(resource_name, method[:name])
+        doc = Apipie.to_json(version, resource_name, method[:name])
         render_page("#{method_file_base}.html", "method", {:doc => doc[:docs],
                                                            :resource => doc[:docs][:resources].first,
                                                            :method => doc[:docs][:resources].first[:methods].first})
@@ -114,7 +124,7 @@ namespace :apipie do
 
   def with_loaded_documentation
     Apipie.configuration.use_cache = false # we don't want to skip DSL evaluation
-    Dir[File.join(Rails.root, "app", "controllers", "**","*.rb")].each {|f| load f}
+    Apipie.reload_documentation
     yield
   end
 
@@ -124,27 +134,14 @@ namespace :apipie do
     FileUtils.cp_r "#{src}/.", dest
   end
 
-  namespace :client do
-    task :all, [:suffix] => [:environment] do |t, args|
-      args.with_defaults(:suffix => "_client")
-      Apipie.configuration.use_cache = false # we don't want to skip DSL evaluation
-      Apipie.api_controllers_paths.each { |file| require file }
-
-      Apipie::Client::Generator.start(Apipie.configuration.app_name, :all, args[:suffix])
-    end
-
-    desc "Generate only ruby bindings for API documented with apipie gem."
-    task :bindings, [:suffix] => [:environment] do |t, args|
-      args.with_defaults(:suffix => "_client")
-      Apipie.configuration.use_cache = false # we don't want to skip DSL evaluation
-      Apipie.api_controllers_paths.each { |file| require file }
-
-      Apipie::Client::Generator.start(Apipie.configuration.app_name, :bindings, args[:suffix])
-    end
+  desc "Generate CLI client for API documented with apipie gem. (deprecated)"
+  task :client do
+    puts <<MESSAGE
+The apipie gem itself doesn't provide client code generator. See
+https://github.com/Pajk/apipie-rails/wiki/CLI-client for more information on
+how to write your own generator.
+MESSAGE
   end
-
-  desc "Generate CLI client for API documented with apipie gem."
-  task :client, [:suffix] => 'client:all'
 
   def plaintext(text)
     text.gsub(/<.*?>/, '').gsub("\n",' ').strip

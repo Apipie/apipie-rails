@@ -1,16 +1,15 @@
 class UsersController < ApplicationController
 
   resource_description do
-    name 'Members'
     short 'Site members'
     path '/users'
-    version '1.0 - 3.4.2012'
     formats ['json']
     param :id, Fixnum, :desc => "User ID", :required => false
     param :resource_param, Hash, :desc => 'Param description for all methods' do
       param :ausername, String, :desc => "Username for login", :required => true
       param :apassword, String, :desc => "Password for login", :required => true
     end
+    api_version "development"
     error 404, "Missing"
     error 500, "Server crashed for some <%= reason %>"
     description <<-EOS
@@ -191,14 +190,37 @@ class UsersController < ApplicationController
     render :text => "OK"
   end
 
-  api :POST, "/users", "Create user"
-  param :user, Hash, :desc => "User info", :required => true do
+  def_param_group :credentials do
     param :name, String, :desc => "Username for login", :required => true
     param :pass, String, :desc => "Password for login", :required => true
-    param :membership, ["standard","premium"], :desc => "User membership"
+  end
+
+  def_param_group :user do
+    param :user, Hash, :desc => "User info", :required => true, :action_aware => true do
+      param_group :credentials
+      param :membership, ["standard","premium"], :desc => "User membership", :allow_nil => false
+    end
+  end
+
+  api :POST, "/users", "Create user"
+  param_group :user
+  param :user, Hash do
+    param :permalink, String
   end
   param :facts, Hash, :desc => "Additional optional facts about the user", :allow_nil => true
   def create
+    render :text => "OK #{params.inspect}"
+  end
+
+  api :PUT, "/users/:id", "Create user"
+  param_group :user
+  def update
+    render :text => "OK #{params.inspect}"
+  end
+
+  api :POST, "/users/admin", "Create admin user"
+  param_group :user, :as => :create
+  def admin_create
     render :text => "OK #{params.inspect}"
   end
 
@@ -220,7 +242,8 @@ class UsersController < ApplicationController
   end
 
   api :GET, '/users/see_another', 'Boring method'
-  see 'users#create'
+  see 'development#users#create'
+  see 'development#users#index', "very interesting method reference"
   desc 'This method is boring, look at users#create'
   def see_another
     render :text => 'This is very similar to create action'

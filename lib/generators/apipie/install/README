@@ -1,0 +1,6 @@
+Description:
+    Sets up Apipie-rails in your project.
+Examples:
+    `rails generate apipie:install`
+
+    `rails generate apipie:install --help`

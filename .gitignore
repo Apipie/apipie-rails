@@ -5,3 +5,7 @@ spec/dummy/db/*.sqlite3
 spec/dummy/log/*.log
 spec/dummy/tmp/
 .idea
+Gemfile.lock
+.rvmrc
+
+.DS_Store

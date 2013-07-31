@@ -20,49 +20,48 @@ end
 
 describe UsersController do
 
+  let(:dsl_data) { ActionController::Base.send(:_apipie_dsl_data_init) }
+
   describe "resource description" do
-    subject { a = Apipie.get_resource_description(UsersController) }
+    subject do
+      Apipie.get_resource_description(UsersController, Apipie.configuration.default_version)
+    end
 
     it "should contain all resource methods" do
       methods = subject._methods
-      methods.count.should == 5
-      methods.should include("users#show")
-      methods.should include("users#create")
-      methods.should include("users#index")
-      methods.should include("users#two_urls")
+      methods.keys.should include(:show)
+      methods.keys.should include(:index)
+      methods.keys.should include(:create)
+      methods.keys.should include(:update)
+      methods.keys.should include(:two_urls)
     end
 
     it "should contain info about resource" do
       subject._short_description.should eq('Site members')
       subject._id.should eq('users')
       subject._path.should eq('/users')
-      subject._version.should eq('1.0 - 3.4.2012')
-      subject._name.should eq('Members')
+      subject._version.should eq('development')
+      subject._name.should eq('Users')
       subject._formats.should eq(['json'])
     end
 
     it "should contain params defined on resource level" do
-      subject._params_ordered.count.should == 2
-      p = subject._params_ordered.first
-      p.should_not be(nil)
-      p.name.should eq(:id)
-      p.desc.should eq("\n<p>User ID</p>\n")
-      p.required.should eq(false)
-      p.validator.class.should eq(Apipie::Validator::IntegerValidator)
-
-      p = subject._params_ordered.second
-      p.should_not be(nil)
-      p.name.should eq(:resource_param)
-      p.desc.should eq("\n<p>Param description for all methods</p>\n")
-      p.required.should eq(false)
-      p.validator.class.should eq(Apipie::Validator::HashValidator)
+      subject._params_args.count.should == 2
+      name, type, options = subject._params_args.first
+      name.should == :id
+      type.should == Fixnum
+      options.should == {:required=>false, :desc=>"User ID"}
     end
   end
 
   describe "validators" do
 
     context "validations are disabled" do
-      before { Apipie.configuration.validate = false }
+      before do
+        Apipie.configuration.validate = false
+        Apipie.configuration.validate_value = true
+        Apipie.configuration.validate_presence = true
+      end
 
       it "should reply to valid request" do
         get :show, :id => '5', :session => "secret_hash"
@@ -75,9 +74,36 @@ describe UsersController do
 
     end
 
+    context "only presence validations are enabled" do
+      before do
+        Apipie.configuration.validate = true
+        Apipie.configuration.validate_value = false
+        Apipie.configuration.validate_presence = true
+      end
+
+      it "should reply to valid request" do
+        lambda { get :show, :id => 5, :session => "secret_hash" }.should_not raise_error
+        assert_response :success
+      end
+
+      it "should fail if required parameter is missing" do
+        lambda { get :show, :id => 5 }.should raise_error(Apipie::ParamMissing, /\bsession\b/)
+      end
+
+      it "should pass if required parameter has wrong type" do
+        lambda { get :show, :id => 5, :session => "secret_hash" }.should_not raise_error
+        lambda { get :show, :id => "ten", :session => "secret_hash" }.should_not raise_error
+      end
+
+    end
+
 
     context "validations are enabled" do
-      before { Apipie.configuration.validate = true }
+      before do
+        Apipie.configuration.validate = true
+        Apipie.configuration.validate_value = true
+        Apipie.configuration.validate_presence = true
+      end
 
       it "should reply to valid request" do
         get :show, :id => '5', :session => "secret_hash"
@@ -93,7 +119,7 @@ describe UsersController do
           get :show,
               :id => "not a number",
               :session => "secret_hash"
-        }.should raise_error(ArgumentError, / id /) # old-style error rather than ParamInvalid
+        }.should raise_error(Apipie::ParamError, /id/) # old-style error rather than ParamInvalid
       end
 
       it "should work with Regexp validator" do
@@ -108,7 +134,7 @@ describe UsersController do
               :id => 5,
               :session => "secret_hash",
               :regexp_param => "ten years"
-        }.should raise_error(Apipie::ParamInvalid, / regexp_param /)
+        }.should raise_error(Apipie::ParamInvalid, /regexp_param/)
       end
 
       it "should work with Array validator" do
@@ -126,14 +152,14 @@ describe UsersController do
               :id => 5,
               :session => "secret_hash",
               :array_param => "blabla"
-        }.should raise_error(Apipie::ParamInvalid, / array_param /)
+        }.should raise_error(Apipie::ParamInvalid, /array_param/)
 
         lambda {
           get :show,
               :id => 5,
               :session => "secret_hash",
               :array_param => 3
-        }.should raise_error(Apipie::ParamInvalid, / array_param /)
+        }.should raise_error(Apipie::ParamInvalid, /array_param/)
       end
 
       it "should work with Proc validator" do
@@ -142,7 +168,7 @@ describe UsersController do
               :id => 5,
               :session => "secret_hash",
               :proc_param => "asdgsag"
-        }.should raise_error(Apipie::ParamInvalid, / proc_param /)
+        }.should raise_error(Apipie::ParamInvalid, /proc_param/)
 
         get :show,
             :id => 5,
@@ -160,18 +186,18 @@ describe UsersController do
         param.count.should == 1
         param.first.validator.class.should eq(Apipie::Validator::HashValidator)
         hash_params = param.first.validator.hash_params_ordered
-        hash_params.count.should == 3
+        hash_params.count.should == 4
         hash_params[0].name == :name
         hash_params[1].name == :pass
         hash_params[2].name == :membership
 
         lambda {
           post :create, :user => { :name => "root", :pass => "12345", :membership => "____" }
-        }.should raise_error(Apipie::ParamInvalid, / membership /)
+        }.should raise_error(Apipie::ParamInvalid, /membership/)
 
         lambda {
           post :create, :user => { :name => "root" }
-        }.should raise_error(Apipie::ParamInvalid, / pass /)
+        }.should raise_error(Apipie::ParamMissing, /pass/)
 
         post :create, :user => { :name => "root", :pass => "pwd" }
         assert_response :success
@@ -210,42 +236,50 @@ describe UsersController do
       a.formats.should eq(['json'])
       api = a.apis.first
       api.short_description.should eq("Create user")
-      api.api_url.should eq("/api/users")
+      api.path.should eq("/users")
       api.http_method.should eq("POST")
 
       b = Apipie.get_method_description(UsersController, :show)
       b.should eq(Apipie[UsersController, :show])
-      b.method.should eq(:show)
+      b.method.should eq('show')
       b.resource._id.should eq('users')
 
       b.apis.count.should == 1
       b.formats.should eq(['json', 'jsonp'])
       api = b.apis.first
       api.short_description.should eq("Show user profile")
-      api.api_url.should eq("#{Apipie.configuration.api_base_url}/users/:id")
+      api.path.should eq("/users/:id")
       api.http_method.should eq("GET")
       b.full_description.length.should be > 400
     end
 
     context "contain :see option" do
 
-      context "the key is valid" do 
+      context "the key is valid" do
         it "should contain reference to another method" do
           api = Apipie[UsersController, :see_another]
-          api.see.should eq('users#create')
-          Apipie['users#see_another'].should eq(Apipie[UsersController, :see_another])
-          api.see_url.should eq(Apipie[UsersController, :create].doc_url)
+          see = api.see.first
+          see.see_url.should == Apipie[UsersController, :create].doc_url
+          see.link.should == 'development#users#create'
+          see.description.should == 'development#users#create'
+
+          see_with_desc = api.see.last
+          see_with_desc.see_url.should == Apipie[UsersController, :index].doc_url
+          see_with_desc.link.should == 'development#users#index'
+          see_with_desc.description.should == 'very interesting method reference'
+
+          Apipie['development#users#see_another'].should eq(Apipie[UsersController, :see_another])
         end
       end
 
       context "the key is not valid" do
         it "should raise exception" do
           api = Apipie[UsersController, :see_another]
-          api.instance_variable_set :@see, 'doesnot#exist'
+          api.instance_variable_set :@see, [Apipie::SeeDescription.new(['doesnot#exist'])]
           lambda {
-            api.see_url
+            api.see.first.see_url
           }.should raise_error(ArgumentError, /does not exist/)
-          api.instance_variable_set :@see, nil
+          api.instance_variable_set :@see, []
         end
       end
     end
@@ -274,11 +308,11 @@ describe UsersController do
       a1, a2 = method_description.apis
 
       a1.short_description.should eq('Get company users')
-      a1.api_url.should eq('/api/company_users')
+      a1.path.should eq('/company_users')
       a1.http_method.should eq('GET')
 
       a2.short_description.should eq('Get users working in given company')
-      a2.api_url.should eq('/api/company/:id/users')
+      a2.path.should eq('/company/:id/users')
       a2.http_method.should eq('GET')
     end
 
@@ -288,7 +322,7 @@ describe UsersController do
         :errors => [{:code=>404, :description=>"Missing"},
                     {:code=>500, :description=>"Server crashed for some <%= reason %>"}],
         :examples => [],
-        :doc_url => "#{Apipie.configuration.doc_base_url}/users/two_urls",
+        :doc_url => "#{Apipie.configuration.doc_base_url}/development/users/two_urls",
         :formats=>["json"],
         :full_description => '',
         :params => [{:full_name=>"oauth",
@@ -326,16 +360,16 @@ describe UsersController do
                      :name=>"id", :full_name=>"id",
                      :expected_type=>"numeric"},
        ],
-        :name => :two_urls,
+        :name => 'two_urls',
         :apis => [
           {
             :http_method => 'GET',
             :short_description => 'Get company users',
-            :api_url => "#{Apipie.configuration.api_base_url}/company_users"
+            :api_url => "#{Apipie.api_base_url}/company_users"
           },{
             :http_method => 'GET',
             :short_description => 'Get users working in given company',
-            :api_url =>"#{Apipie.configuration.api_base_url}/company/:id/users"
+            :api_url =>"#{Apipie.api_base_url}/company/:id/users"
           }
         ]
       }
@@ -400,5 +434,40 @@ EOS2
       param.validator.class.should be(Apipie::Validator::TypeValidator)
     end
 
+  end
+
+  describe "ignored option" do
+    class IgnoredController < ApplicationController; end
+
+    after do
+      Apipie.configuration.ignored = %w[]
+    end
+
+    describe "ignored action" do
+      before do
+        Apipie.configuration.ignored = %w[UsersController#ignore]
+      end
+
+      it "skips the listed  actions from the documentation" do
+        Apipie.define_method_description(UsersController, :ignore, dsl_data)
+        Apipie.get_method_description(UsersController, :ignore).should be_nil
+
+        Apipie.define_method_description(UsersController, :dont_ignore, dsl_data)
+        Apipie.get_method_description(UsersController, :dont_ignore).should_not be_nil
+      end
+    end
+
+    describe "ignored controller" do
+      before do
+        Apipie.configuration.ignored = %w[IgnoredController]
+      end
+
+      it "skips the listed controller from the documentation" do
+        Apipie.define_method_description(IgnoredController, :ignore, dsl_data)
+        Apipie.get_method_description(IgnoredController, :ignore).should be_nil
+        Apipie.define_method_description(IgnoredController, :ignore, dsl_data)
+        Apipie.get_method_description(IgnoredController, :ignore).should be_nil
+      end
+    end
   end
 end

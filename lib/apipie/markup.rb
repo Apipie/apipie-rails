@@ -7,7 +7,11 @@ module Apipie
       def initialize
         require 'rdoc'
         require 'rdoc/markup/to_html'
-        @rdoc ||= ::RDoc::Markup::ToHtml.new
+        if Gem::Version.new(::RDoc::VERSION) < Gem::Version.new('4.0.0')
+          @rdoc ||= ::RDoc::Markup::ToHtml.new()
+        else
+          @rdoc ||= ::RDoc::Markup::ToHtml.new(::RDoc::Options.new)
+        end
       end
 
       def to_html(text)
@@ -19,12 +23,11 @@ module Apipie
     class Markdown
 
       def initialize
-        require 'redcarpet'
-        @redcarpet ||= ::Redcarpet::Markdown.new(::Redcarpet::Render::HTML.new)
+        require 'maruku'
       end
 
       def to_html(text)
-        @redcarpet.render(text)
+        Maruku.new(text).to_html
       end
 
     end

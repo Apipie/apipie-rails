@@ -13,6 +13,7 @@
 <body>
   <div class="container">
     <%= yield %>
+    <%= render 'disqus' if Apipie.configuration.use_disqus? %>
     <hr>
     <footer><%= yield :apipie_footer %></footer>
   </div>
