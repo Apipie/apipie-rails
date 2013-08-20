@@ -58,8 +58,13 @@ namespace :apipie do
     end
   end
 
+  # Attempt to use the Rails application views, otherwise default to built in views
   def renderer
-    ActionView::Base.new(File.expand_path("../../../app/views/apipie/apipies", __FILE__))
+    if File.directory?("#{Rails.root}/app/views/apipie/apipies")
+      ActionView::Base.new("#{Rails.root}/app/views/apipie/apipies")
+    else
+      ActionView::Base.new(File.expand_path("../../../app/views/apipie/apipies", __FILE__))
+    end
   end
 
   def render_page(file_name, template, variables, layout = 'apipie')
