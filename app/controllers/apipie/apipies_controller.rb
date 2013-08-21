@@ -3,6 +3,13 @@ module Apipie
     layout Apipie.configuration.layout
 
     around_filter :set_script_name
+    before_filter :authenticate
+
+    def authenticate
+      if Apipie.configuration.authenticate
+        instance_eval(&Apipie.configuration.authenticate)
+      end
+    end
 
     def index
 
