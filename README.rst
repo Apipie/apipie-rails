@@ -517,6 +517,9 @@ namespaced_resources
   Use controller paths instead of controller names as resource id.
   This prevents same named controllers overwriting each other.
 
+authenticate
+  Pass a proc in order to authenticate user. Pass nil for
+  no authentication (by default).
 
 Example:
 
@@ -535,6 +538,11 @@ Example:
        This is where you can inform user about your application and API
        in general.
      ", '1.0'
+     config.authenticate = Proc.new do
+        authenticate_or_request_with_http_basic do |username, password|
+          username == "test" && password == "supersecretpassword"
+       end 
+     end
    end
 
 
