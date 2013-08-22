@@ -95,6 +95,17 @@ describe Apipie::ApipiesController do
     end
   end
 
+  describe "authenticate user" do
+    it "authenticate user if an authentication method is setted" do
+      test = false
+      Apipie.configuration.authenticate = Proc.new do
+        test = true
+      end
+      get :index
+      test.should == true
+    end
+  end
+
   describe "documentation cache" do
 
     let(:cache_dir) { File.join(Rails.root, "tmp", "apipie-cache") }
