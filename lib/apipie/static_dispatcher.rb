@@ -34,7 +34,7 @@ module Apipie
   end
 
   class StaticDispatcher
-    # Dispatches the statis files. Simillar to ActionDispatch::Static, but
+    # Dispatches the static files. Similar to ActionDispatch::Static, but
     # it supports different baseurl configurations
     def initialize(app, path, baseurl)
       @app = app
