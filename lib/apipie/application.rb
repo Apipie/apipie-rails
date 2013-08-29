@@ -80,7 +80,6 @@ module Apipie
     # resource_description? It's used to derivate the default value of
     # versions for methods.
     def controller_versions(controller)
-      binding.pry
       ret = @controller_versions[controller]
       return ret unless ret.empty?
       if controller == ActionController::Base || controller.nil?
@@ -91,7 +90,6 @@ module Apipie
     end
 
     def set_controller_versions(controller, versions)
-      binding.pry
       @controller_versions[controller] = versions
     end
 
@@ -274,7 +272,6 @@ module Apipie
     end
 
     def get_resource_name(klass)
-      binding.pry
       if klass.class == String
         klass
       elsif @controller_to_resource_id.has_key?(klass)
