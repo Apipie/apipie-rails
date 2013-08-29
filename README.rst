@@ -492,7 +492,7 @@ reload_controllers
   Set to enable/disable reloading controllers (and the documentation with it), by default enabled in development.
 
 api_controllers_matcher
-  For reloading to work properly you need to specify where your API controllers are.
+  For reloading to work properly you need to specify where your API controllers are. Can be an array if multuple paths are needed
 
 markup
   You can choose markup language for descriptions of your application,
