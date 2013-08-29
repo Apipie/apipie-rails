@@ -251,7 +251,7 @@ module Apipie
     end
 
     def api_controllers_paths
-      Dir[Apipie.configuration.api_controllers_matcher]
+      Dir.glob(Apipie.configuration.api_controllers_matcher)
     end
 
     def reload_documentation
