@@ -2,6 +2,17 @@ require "spec_helper"
 
 describe Apipie::Application do
 
+  describe "api_controllers_paths" do
+    before { Apipie.configuration.api_controllers_matcher = [File.join(Rails.root, "app", "controllers", "**","*.rb"), File.join(Rails.root, "lib", "**","*.rb")] }
+
+    it "should support receiving array as parameter" do
+      expect { Apipie.api_controllers_paths}.
+        not_to raise_error
+    end
+
+
+  end
+
   describe "get_resource_name" do
     subject {Apipie.get_resource_name(Api::V2::Nested::ArchitecturesController)}
 
