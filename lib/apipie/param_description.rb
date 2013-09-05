@@ -61,7 +61,7 @@ module Apipie
       return true if @allow_nil && value.nil?
       unless @validator.valid?(value)
         error = @validator.error
-        error = ParamError.new(error) unless error.is_a? Exception
+        error = ParamError.new(error) unless error.is_a? StandardError
         raise error
       end
     end

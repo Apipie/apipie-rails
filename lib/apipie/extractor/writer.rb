@@ -140,9 +140,9 @@ module Apipie
 
     class ActionDescriptionUpdater
 
-      class ControllerNotFound < Exception; end
+      class ControllerNotFound < StandardError; end
 
-      class ActionNotFound < Exception; end
+      class ActionNotFound < StandardError; end
 
       def initialize(controller, action)
         @controller = controller
