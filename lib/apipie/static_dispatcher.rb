@@ -27,9 +27,18 @@ module Apipie
 
     def ext
       @ext ||= begin
-        ext = ::ActionController::Base.page_cache_extension
+        ext = cache_extension
         "{,#{ext},/index#{ext}}"
       end
+    end
+
+    def cache_extension
+      if ::ActionController::Base.respond_to?(:default_static_extension)
+        ::ActionController::Base.default_static_extension
+      else
+        ::ActionController::Base.page_cache_extension
+      end
+
     end
   end
 
