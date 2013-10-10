@@ -113,6 +113,7 @@ module Apipie
           ret = process_without_api_recording(*args)
           Apipie::Extractor.call_recorder.analyze_functional_test(self)
           ret
+        ensure
           Apipie::Extractor.call_finished
         end
       end
