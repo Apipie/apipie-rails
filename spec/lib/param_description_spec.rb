@@ -24,7 +24,7 @@ describe Apipie::ParamDescription do
     end
 
     it "should pick type validator" do
-      Apipie::Validator::BaseValidator.should receive(:find).and_return(:validator_instance)
+      Apipie::Validator::BaseValidator.should_receive(:find).and_return(:validator_instance)
       param = Apipie::ParamDescription.new(method_desc, :param, String)
       param.validator.should == :validator_instance
     end
