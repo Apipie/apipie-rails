@@ -781,11 +781,20 @@ For inspiration this is how Textile markup usage looks like:
    end
 
 
+================
+Modifying Views
+================
+
+To modify the views of your documentation, run ``rails g apipie:views``.
+This will copy the Apipie views to ``app/views/apipie/apipies`` and
+``app/views/layouts/apipie``.
+
+
 ==============
  Static files
 ==============
 
-To generate static version of documentation (perhaps to put it on
+To generate a static version of documentation (perhaps to put it on
 project site or something) run ``rake apipie:static`` task. It will
 create set of html files (multi-pages, single-page, plain) in your doc
 directory. By default the documentation for default API version is
