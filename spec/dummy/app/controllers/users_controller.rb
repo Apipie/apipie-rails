@@ -248,4 +248,11 @@ class UsersController < ApplicationController
   def see_another
     render :text => 'This is very similar to create action'
   end
+
+
+  api :GET, '/users/desc_from_file', 'desc from file'
+  document 'users/desc_from_file.md'
+  def desc_from_file
+    render :text => 'document from file action'
+  end
 end

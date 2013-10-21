@@ -393,6 +393,12 @@ GET /users/15
 404
 EOS2
     end
+
+    describe "document" do
+      it "should be able to load document from markup file" do
+        Apipie.get_method_description(UsersController, :desc_from_file).full_description.should include("description from document")
+      end
+    end
   end
 
   describe "param description" do
