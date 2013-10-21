@@ -144,6 +144,18 @@ module Apipie
       alias :description :desc
       alias :full_description :desc
 
+      # describe next method with document in given path
+      # in convension, these doc located under "#{Rails.root}/doc"
+      # Example:
+      # document "hello_world.md"
+      # def hello_world
+      #   puts "hello world"
+      # end
+      def document path
+        content = File.open(File.join(Rails.root,  Apipie.configuration.doc_path, path)).read
+        desc content
+      end
+
       # Describe available request/response formats
       #
       #   formats ['json', 'jsonp', 'xml']
@@ -151,6 +163,7 @@ module Apipie
         return unless Apipie.active_dsl?
         _apipie_dsl_data[:formats] = formats
       end
+
 
       # Describe possible errors
       #
