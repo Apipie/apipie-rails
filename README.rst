@@ -32,7 +32,7 @@ The easiest way to get Apipie up and running with your app is:
    $ rails g apipie:install
 
 Now you can start documenting your resources and actions (see
-`DSL Reference`_ for more info:
+`DSL Reference`_ for more info):
 
 .. code:: ruby
 
