@@ -3,9 +3,6 @@
   <% if @versions && @versions.size > 1 %>
   <li class='pull-right'>
     <%#= @versions.collect { |v| link_to v, Apipie.full_url(v) }.join(' / ').html_safe %>
-    <% @versions.each do |v| %>
-      <%= link_to v, Apipie.full_url(v) %>
-    <% end %>
   </li>
   <% end %>
 </ul>
