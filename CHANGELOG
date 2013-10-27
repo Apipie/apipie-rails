@@ -2,6 +2,14 @@
  Changelog
 ===========
 
+v0.0.23
+-------
+
+* fix exceptions on unknown validator
+* fix concerns substitution in parameters
+* possibility to authenticate the API doc
+* support for array in api_controllers_matcher
+
 v0.0.22
 -------
 

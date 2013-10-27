@@ -46,7 +46,7 @@ module Apipie
       def parse_data(data)
         return nil if data.to_s =~ /^\s*$/
         JSON.parse(data)
-      rescue Exception => e
+      rescue StandardError => e
         data
       end
 
@@ -98,9 +98,10 @@ module Apipie
           Apipie::Extractor.call_recorder.analyse_env(env)
           response = block.call
           Apipie::Extractor.call_recorder.analyse_response(response)
+          Apipie::Extractor.call_finished
           response
         ensure
-          Apipie::Extractor.call_finished
+          Apipie::Extractor.clean_call_recorder
         end
       end
 
@@ -112,9 +113,10 @@ module Apipie
         def process_with_api_recording(*args) # action, parameters = nil, session = nil, flash = nil, http_method = 'GET')
           ret = process_without_api_recording(*args)
           Apipie::Extractor.call_recorder.analyze_functional_test(self)
+          Apipie::Extractor.call_finished
           ret
         ensure
-          Apipie::Extractor.call_finished
+          Apipie::Extractor.clean_call_recorder
         end
       end
 

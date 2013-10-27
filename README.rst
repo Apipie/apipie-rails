@@ -492,7 +492,7 @@ reload_controllers
   Set to enable/disable reloading controllers (and the documentation with it), by default enabled in development.
 
 api_controllers_matcher
-  For reloading to work properly you need to specify where your API controllers are.
+  For reloading to work properly you need to specify where your API controllers are. Can be an array if multiple paths are needed
 
 markup
   You can choose markup language for descriptions of your application,
@@ -517,6 +517,9 @@ namespaced_resources
   Use controller paths instead of controller names as resource id.
   This prevents same named controllers overwriting each other.
 
+authenticate
+  Pass a proc in order to authenticate user. Pass nil for
+  no authentication (by default).
 
 Example:
 
@@ -535,6 +538,11 @@ Example:
        This is where you can inform user about your application and API
        in general.
      ", '1.0'
+     config.authenticate = Proc.new do
+        authenticate_or_request_with_http_basic do |username, password|
+          username == "test" && password == "supersecretpassword"
+       end 
+     end
    end
 
 
@@ -773,11 +781,20 @@ For inspiration this is how Textile markup usage looks like:
    end
 
 
+================
+Modifying Views
+================
+
+To modify the views of your documentation, run ``rails g apipie:views``.
+This will copy the Apipie views to ``app/views/apipie/apipies`` and
+``app/views/layouts/apipie``.
+
+
 ==============
  Static files
 ==============
 
-To generate static version of documentation (perhaps to put it on
+To generate a static version of documentation (perhaps to put it on
 project site or something) run ``rake apipie:static`` task. It will
 create set of html files (multi-pages, single-page, plain) in your doc
 directory. By default the documentation for default API version is

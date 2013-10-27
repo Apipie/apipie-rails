@@ -41,7 +41,9 @@ module Apipie
         if record = call_recorder.record
           @collector.handle_record(record)
         end
-      ensure
+      end
+
+      def clean_call_recorder
         Thread.current[:apipie_call_recorder] = nil
       end
 

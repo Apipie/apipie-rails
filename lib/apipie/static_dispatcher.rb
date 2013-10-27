@@ -27,14 +27,23 @@ module Apipie
 
     def ext
       @ext ||= begin
-        ext = ::ActionController::Base.page_cache_extension
+        ext = cache_extension
         "{,#{ext},/index#{ext}}"
       end
+    end
+
+    def cache_extension
+      if ::ActionController::Base.respond_to?(:default_static_extension)
+        ::ActionController::Base.default_static_extension
+      else
+        ::ActionController::Base.page_cache_extension
+      end
+
     end
   end
 
   class StaticDispatcher
-    # Dispatches the statis files. Simillar to ActionDispatch::Static, but
+    # Dispatches the static files. Similar to ActionDispatch::Static, but
     # it supports different baseurl configurations
     def initialize(app, path, baseurl)
       @app = app
