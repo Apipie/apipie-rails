@@ -2,7 +2,7 @@
   <li class='active'><a href='<%= @doc[:doc_url] %>.html'><%= @doc[:name] %> <%= @doc[:resources].values.first[:version] %></a></li>
   <% if @versions && @versions.size > 1 %>
   <li class='pull-right'>
-    <%= @versions.collect { |v| link_to v, Apipie.full_url(v) }.join(' / ').html_safe %>
+    <%#= @versions.collect { |v| link_to v, Apipie.full_url(v) }.join(' / ').html_safe %>
   </li>
   <% end %>
 </ul>
