@@ -2,6 +2,15 @@
  Changelog
 ===========
 
+v0.0.24
+-------
+
+* fix DOS vulnerability for running in production without use_cache
+* ability to load descriptions from external files
+* improved examples extractor
+* fixed deprecation warnings in Rails 4
+* using StandardError instead of Exception for errors
+
 v0.0.23
 -------
 
