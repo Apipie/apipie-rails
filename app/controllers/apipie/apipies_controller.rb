@@ -28,10 +28,19 @@ module Apipie
         @doc = Apipie.to_json(params[:version], params[:resource], params[:method])
 
         format.json do
-          render :json => @doc
+          if @doc
+            render :json => @doc
+          else
+            head :not_found
+          end
         end
 
         format.html do
+          unless @doc
+            render 'apipie_404', :status => 404
+            return
+          end
+
           @versions = Apipie.available_versions
           @doc = @doc[:docs]
           if @doc[:resources].blank?
