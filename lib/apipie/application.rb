@@ -225,6 +225,8 @@ module Apipie
 
     def to_json(version, resource_name, method_name)
 
+      return unless resource_descriptions.has_key?(version)
+
       _resources = if resource_name.blank?
         # take just resources which have some methods because
         # we dont want to show eg ApplicationController as resource

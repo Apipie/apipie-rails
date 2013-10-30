@@ -9,4 +9,6 @@
   </small>
 </h1>
 
-Try going to <a href='<%= @doc[:doc_url] %>.html'><%= @doc[:name] %> API documentation homepage</a>
+<% if @doc %>
+  Try going to <a href='<%= @doc[:doc_url] %>.html'><%= @doc[:name] %> API documentation homepage</a>
+<% end %>
