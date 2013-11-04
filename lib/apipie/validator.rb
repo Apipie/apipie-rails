@@ -150,6 +150,28 @@ module Apipie
       end
     end
 
+    class ArrayClassValidator < BaseValidator
+
+      def initialize(param_description, argument)
+        super(param_description)
+        @array = argument
+      end
+
+      def validate(value)
+        @array.include?(value.class)
+      end
+
+      def self.build(param_description, argument, options, proc)
+        if argument.is_a?(Array) && argument.first.class == Class
+          self.new(param_description, argument)
+        end
+      end
+
+      def description
+        "Must be one of: #{@array.join(', ')}."
+      end
+    end
+
     class ProcValidator < BaseValidator
 
       def initialize(param_description, argument)

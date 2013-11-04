@@ -171,4 +171,14 @@ describe Apipie::ParamDescription do
       end
     end
   end
+
+
+  describe "Array with classes" do
+    it "should be valid for objects included in class array" do
+      param = Apipie::ParamDescription.new(method_desc, :param, [Fixnum, String])
+      expect { param.validate("1") }.should_not raise_error
+      expect { param.validate(Fixnum) }.should raise_error
+    end
+  end
+
 end
