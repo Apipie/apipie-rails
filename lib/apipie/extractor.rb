@@ -86,7 +86,8 @@ module Apipie
           controller_path, action = route[:controller], route[:action]
           next unless controller_path && action
 
-          controller = "#{controller_path}_controller".camelize
+          controller_path = controller_path.split('::').map(&:camelize).join('::')
+          controller = "#{controller_path}Controller"
 
           path = if /^#{Regexp.escape(api_prefix)}(.*)$/ =~ route[:path]
                    $1.sub!(/\(\.:format\)$/,"")
