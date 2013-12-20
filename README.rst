@@ -498,7 +498,7 @@ markup
   You can choose markup language for descriptions of your application,
   resources and methods. RDoc is the default but you can choose from
   Apipie::Markup::Markdown.new or Apipie::Markup::Textile.new.
-  In order to use Markdown you need Redcarpet gem and for Textile you
+  In order to use Markdown you need the Maruku gem and for Textile you
   need RedCloth. Add those to your gemfile and run bundle if you
   want to use them. You can also add any other markup language
   processor.
