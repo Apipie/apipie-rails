@@ -8,7 +8,7 @@ module Apipie
   # validator - Validator::BaseValidator subclass
   class ParamDescription
 
-    attr_reader :method_description, :name, :desc, :allow_nil, :validator, :options, :metadata, :show
+    attr_reader :method_description, :name, :desc, :allow_nil, :validator, :options, :metadata, :show, :internal_name
 
     attr_accessor :parent, :required
 
@@ -39,6 +39,7 @@ module Apipie
 
       @method_description = method_description
       @name = concern_subst(name)
+      @internal_name = options[:internal_name] || @name
       @desc = concern_subst(Apipie.markup_to_html(@options[:desc] || ''))
       @parent = @options[:parent]
       @metadata = @options[:meta]
@@ -71,6 +72,14 @@ module Apipie
         error = @validator.error
         error = ParamError.new(error) unless error.is_a? StandardError
         raise error
+      end
+    end
+
+    def process_value(value)
+      if @validator.respond_to?(:process_value)
+        @validator.process_value(value)
+      else
+        value
       end
     end
 
