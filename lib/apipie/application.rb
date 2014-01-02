@@ -4,6 +4,7 @@ require 'yaml'
 module Apipie
 
   class Application
+    API_METHODS = %w{GET POST PUT PATCH OPTIONS DELETE}
 
     # we need engine just for serving static assets
     class Engine < Rails::Engine
@@ -25,6 +26,34 @@ module Apipie
 
     def set_resource_id(controller, resource_id)
       @controller_to_resource_id[controller] = resource_id
+    end
+
+    def route(controller, method)
+      regex = Regexp.new("\\A#{Apipie.configuration.api_base_url[Apipie.configuration.default_version]}")
+
+      @apipie_api_routes ||= Rails.application.routes.routes.select { |x| regex =~ x.path.spec.to_s }
+
+      route_selected = @apipie_api_routes.select{|route|
+        controller == route.app.controller(route.defaults) && method.to_s == route.defaults[:action]
+      }.first
+
+      path = route_selected.path.spec.to_s.gsub(Apipie.configuration.api_base_url[Apipie.configuration.default_version], '')
+      path.gsub!('(.:format)', '')
+      path.gsub!('(', '')
+      path.gsub!(')', '')
+
+      {path: path, verb: human_verb(route_selected)}
+    end
+
+    def human_verb(route)
+      verb = API_METHODS.select{|defined_verb| defined_verb =~ route.verb}
+      if verb.count != 1
+        verb = API_METHODS.select{|defined_verb| defined_verb == route.constraints[:method]}
+        if verb.blank?
+          raise "Unknow verb #{route.path.spec.to_s}"
+        end
+      end
+      verb.first
     end
 
     # create new method api description

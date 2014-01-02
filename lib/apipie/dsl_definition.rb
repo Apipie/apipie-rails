@@ -82,6 +82,12 @@ module Apipie
         _apipie_dsl_data[:api_args] << [method, path, desc]
       end
 
+      def api_route(desc = nil)
+        return unless Apipie.active_dsl?
+        _apipie_dsl_data[:api_args] << [nil, nil, desc]
+        _apipie_dsl_data[:from_route] = true
+      end
+
       # Reference other similar method
       #
       #   api :PUT, '/articles/:id'
@@ -323,6 +329,10 @@ module Apipie
         begin
           # remove method description if exists and create new one
           Apipie.remove_method_description(self, _apipie_dsl_data[:api_versions], method_name)
+          if _apipie_dsl_data[:from_route]
+            _apipie_dsl_data[:api_args][0][0] = Apipie.route(self, method_name)[:verb]
+            _apipie_dsl_data[:api_args][0][1] = Apipie.route(self, method_name)[:path]
+          end
           description = Apipie.define_method_description(self, method_name, _apipie_dsl_data)
         ensure
           _apipie_dsl_data_clear
