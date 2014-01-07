@@ -12,7 +12,7 @@ module Apipie
   class ResourceDescription
 
     attr_reader :controller, :_short_description, :_full_description, :_methods, :_id,
-      :_path, :_name, :_params_args, :_errors_args, :_formats, :_parent
+      :_path, :_name, :_params_args, :_errors_args, :_formats, :_parent, :_metadata
 
     def initialize(controller, resource_name, dsl_data = nil, version = nil, &block)
 
@@ -37,6 +37,7 @@ module Apipie
       @_formats = dsl_data[:formats]
       @_errors_args = dsl_data[:errors]
       @_params_args = dsl_data[:params]
+      @_metadata = dsl_data[:meta]
 
       if dsl_data[:app_info]
         Apipie.configuration.app_info[_version] = dsl_data[:app_info]
@@ -94,6 +95,7 @@ module Apipie
         :full_description => @_full_description,
         :version => _version,
         :formats => @_formats,
+        :metadata => @_metadata,
         :methods => methods
       }
     end

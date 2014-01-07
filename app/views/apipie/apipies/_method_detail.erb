@@ -1,0 +1,46 @@
+<%= raw method[:full_description] %>
+
+<% unless method[:formats].blank? %>
+  <%= heading('Supported Formats', h_level) %>
+  <%= method[:formats].join(', ') %>
+<% end %>
+
+<% unless method[:errors].blank? %>
+  <%= heading('Errors', h_level) %>
+  <% method[:errors].each do |err| %>
+    <%= err[:code] %>
+    <%= err[:description] %>
+    <br>
+    <% unless err[:metadata].blank? %>
+      Metadata:
+      <pre class="prettyprint lang-yaml"><%= err[:metadata].to_yaml %></pre>
+    <% end %>
+  <% end %>
+<% end %>
+
+<% unless method[:metadata].blank? %>
+  <%= heading('Metadata', h_level) %>
+  <%= render(:partial => "metadata", :locals => {:meta => method[:metadata]}) %>
+<% end %>
+
+<% unless method[:examples].blank? %>
+  <%= heading('Examples', h_level) %>
+  <% method[:examples].each do |example| %>
+    <pre class="prettyprint"><%= example %></pre>
+  <% end %>
+<% end %>
+
+<% unless method[:params].blank? %>
+  <%= heading('Params', h_level) %>
+  <table class='table'>
+    <thead>
+      <tr>
+        <th>Param name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= render(:partial => "params", :locals => {:params => method[:params]}) %>
+    </tbody>
+  </table>
+<% end %>

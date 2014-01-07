@@ -8,7 +8,7 @@ module Apipie
   # validator - Validator::BaseValidator subclass
   class ParamDescription
 
-    attr_reader :method_description, :name, :desc, :allow_nil, :validator, :options
+    attr_reader :method_description, :name, :desc, :allow_nil, :validator, :options, :metadata
 
     attr_accessor :parent, :required
 
@@ -41,6 +41,8 @@ module Apipie
       @name = concern_subst(name)
       @desc = concern_subst(Apipie.markup_to_html(@options[:desc] || ''))
       @parent = @options[:parent]
+      @metadata = @options[:meta]
+
       @required = if @options.has_key? :required
         @options[:required]
       else
@@ -92,6 +94,7 @@ module Apipie
           :allow_nil => allow_nil,
           :validator => validator.to_s,
           :expected_type => validator.expected_type,
+          :metadata => metadata,
           :params => validator.hash_params_ordered.map(&:to_json)
         }
       else
@@ -102,6 +105,7 @@ module Apipie
           :required => required,
           :allow_nil => allow_nil,
           :validator => validator.to_s,
+          :metadata => metadata,
           :expected_type => validator.expected_type
         }
       end

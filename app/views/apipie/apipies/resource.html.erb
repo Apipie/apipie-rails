@@ -21,6 +21,11 @@
   <div><%= raw @resource[:full_description] %></div>
 <% end %>
 
+<% unless @resource[:metadata].blank? %>
+  <h2>Metadata</h2>
+  <%= render(:partial => "metadata", :locals => {:meta => @resource[:metadata]}) %>
+<% end %>
+
 <% unless @resource[:formats].blank? %>
   <h2>Supported Formats</h2>
   <%= @resource[:formats].join(', ') %>
@@ -52,43 +57,7 @@
     <% end %>
 
     <div id='description-<%= m[:name] %>' class='collapse accordion-body'>
-      <%= raw m[:full_description] %>
-
-      <% unless m[:formats].blank? %>
-        <h3>Supported Formats</h3>
-        <%= m[:formats].join(', ') %>
-      <% end %>
-
-      <% unless m[:errors].blank? %>
-        <h3>Errors</h3>
-        <% m[:errors].each do |err| %>
-          <%= err[:code] %>
-          <%= err[:description] %>
-          <br>
-        <% end %>
-      <% end %>
-
-      <% unless m[:examples].blank? %>
-        <h3>Examples</h3>
-        <% m[:examples].each do |example| %>
-          <pre class="prettyprint"><%= example %></pre>
-        <% end %>
-      <% end %>
-
-      <% unless m[:params].blank? %>
-        <h3>Params</h3>
-        <table class='table'>
-          <thead>
-            <tr>
-              <th>Param name</th>
-              <th>Description</th>
-            </tr>
-          </thead>
-          <tbody>
-            <%= render(:partial => "params", :locals => {:params => m[:params]}) %>
-          </tbody>
-        </table>
-      <% end %>
+      <%= render(:partial => "method_detail", :locals => {:method => m, :h_level => 3}) %>
     </div>
   <% end %>
 </div>

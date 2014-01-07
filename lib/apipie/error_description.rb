@@ -2,22 +2,34 @@ module Apipie
 
   class ErrorDescription
 
-    attr_reader :code, :description
+    attr_reader :code, :description, :metadata
 
-    def initialize(args)
-      if args.first.is_a? Hash
-        args = args.first
-      elsif args.count == 2
-        args = {:code => args.first, :description => args.second}
+    def self.from_dsl_data(args)
+      code_or_options, desc, options = args
+      Apipie::ErrorDescription.new(code_or_options,
+                                   desc,
+                                   options)
+    end
+
+    def initialize(code_or_options, desc=nil, options={})
+      if code_or_options.is_a? Hash
+        code_or_options.symbolize_keys!
+        @code = code_or_options[:code]
+        @metadata = code_or_options[:meta]
+        @description = code_or_options[:desc] || code_or_options[:description]
       else
-        raise ArgumentError "ApipieError: Bad use of error method."
+        @code = code_or_options
+        @metadata = options[:meta]
+        @description = desc
       end
-      @code = args[:code] || args['code']
-      @description = args[:desc] || args[:description] || args['desc'] || args['description']
     end
 
     def to_json
-      {:code => code, :description => description}
+      {
+        :code => code,
+        :description => description,
+        :metadata => metadata
+      }
     end
 
   end

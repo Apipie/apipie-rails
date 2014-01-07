@@ -10,8 +10,9 @@ class UsersController < ApplicationController
       param :apassword, String, :desc => "Password for login", :required => true
     end
     api_version "development"
-    error 404, "Missing"
+    error 404, "Missing", :meta => {:some => "metadata"}
     error 500, "Server crashed for some <%= reason %>"
+    meta :new_style => true, :author => { :name => 'John', :surname => 'Doe' }
     description <<-EOS
       == Long description
 
@@ -177,6 +178,8 @@ class UsersController < ApplicationController
     val == "param value" ? true : "The only good value is 'param value'."
   }, :desc => "proc validator"
   param :briefer_dsl, String, "You dont need :desc => from now"
+  param :meta_param, String, :desc => "A parameter with some additional metadata", :meta => [:some, :more, :info]
+  meta :success_message => "Some message"
   def show
     unless params[:session] == "secret_hash"
       render :text => "Not authorized", :status => 401

@@ -27,43 +27,7 @@
     Also see <%= @method[:see].map { |s| link_to(s[:description], "#{s[:link]}.html") }.to_sentence.html_safe %>.
   <% end %>
 
-  <%= raw @method[:full_description] %>
-
-  <% unless @method[:examples].blank? %>
-    <h2>Examples</h2>
-    <% @method[:examples].each do |example| %>
-      <pre class="prettyprint"><%= example %></pre>
-    <% end %>
-  <% end %>
-
-  <% unless @method[:formats].blank? %>
-    <h2>Supported Formats</h2>
-    <%= @method[:formats].join(', ') %>
-  <% end %>
-
-  <% unless @method[:errors].blank? %>
-    <h2>Errors</h2>
-    <% @method[:errors].each do |err| %>
-      <%= err[:code] %>
-      <%= err[:description] %>
-      <br>
-    <% end %>
-  <% end %>
-
-  <% unless @method[:params].blank? %>
-    <h2>Params</h2>
-    <table class='table'>
-      <thead>
-        <tr>
-          <th>Param name</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-        <%= render(:partial => "params", :locals => {:params => @method[:params]}) %>
-      </tbody>
-    </table>
-  <% end %>
+  <%= render(:partial => "method_detail", :locals => {:method => @method, :h_level => 2}) %>
 </div>
 
 <% content_for :apipie_footer do %>
