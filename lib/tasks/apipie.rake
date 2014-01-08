@@ -35,6 +35,16 @@ namespace :apipie do
     end
   end
 
+  desc "Generate static documentation json"
+  task :static_json, [:version] => :environment do |t, args|
+    with_loaded_documentation do
+      args.with_defaults(:version => Apipie.configuration.default_version)
+      out = ENV["OUT"] || File.join(::Rails.root, 'doc', 'apidoc')
+      doc = Apipie.to_json(args[:version])
+      generate_json_page(out, doc)
+    end
+  end
+
   desc "Generate cache to avoid production dependencies on markup languages"
   task :cache => :environment do
     with_loaded_documentation do
@@ -77,6 +87,13 @@ namespace :apipie do
         :template => "#{template}",
         :layout => (layout && "../../layouts/apipie/#{layout}"))
     end
+  end
+
+  def generate_json_page(file_base, doc)
+    FileUtils.mkdir_p(file_base) unless File.exists?(file_base)
+
+    filename = 'schema_apipie.json'
+    File.open("#{file_base}/#{filename}", 'w') { |file| file.write(JSON.pretty_generate(doc)) }
   end
 
   def generate_one_page(file_base, doc)
