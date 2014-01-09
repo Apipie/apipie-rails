@@ -6,7 +6,7 @@
     :target: https://travis-ci.org/Pajk/apipie-rails
 
 Apipie-rails is a DSL and Rails engine for documenting you RESTful
-API. Instead of traditional use of ``#comments``, Apipie let's you
+API. Instead of traditional use of ``#comments``, Apipie lets you
 describe the code by code. This brings advantages like:
 
 * no need to learn yet another syntax, you already know Ruby, right?
