@@ -54,9 +54,11 @@ module Apipie
           elsif @resource
             render 'resource'
           elsif params[:resource].present? || params[:method].present?
-						render "custom/#{params[:resource]}"
-						rescue
+						begin
+							render "custom/#{params[:resource]}"
+						rescue ActionView::TemplateMissing
 	            render 'apipie_404', :status => 404
+						end
           else
             render 'index'
           end
