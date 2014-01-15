@@ -38,7 +38,7 @@ module Apipie
         format.html do
           unless @doc
             begin
-              render "apipie/apipies/custom/#{params[:vesion]}"
+              render "apipie/apipies/custom/#{params[:version]}"
             rescue ActionView::MissingTemplate => e
               Rails.logger.warn e
               render 'apipie_404', :status => 404
