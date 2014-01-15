@@ -68,7 +68,7 @@ module Apipie
           elsif params[:resource].present? || params[:method].present?
 						begin
               # Try to render custom view
-							render "apipie/apipies/custom/#{params[:version]}"
+							render "apipie/apipies/custom/#{custom}"
             rescue ActionView::MissingTemplate => e
               Rails.logger.warn e.message
 	            # Default to 404
