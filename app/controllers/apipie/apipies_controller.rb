@@ -35,15 +35,19 @@ module Apipie
           end
         end
 
+        # find custom view path, if needed
+        custom = "#{params[:version]}"
+        custom += "/#{params[:resource]}" if params[:resource].present?
+        custom += "/#{params[:method]}" if params[:method].present?
+
         format.html do
           unless @doc
+            # Try to render custom view
             begin
-              custom = "#{params[:version]}"
-              custom += "/#{params[:resource]}" if params[:resource].present?
-              custom += "/#{params[:method]}" if params[:method].present?
               render "apipie/apipies/custom/#{custom}"
             rescue ActionView::MissingTemplate => e
               Rails.logger.warn e
+              # Default to 404
               render 'apipie_404', :status => 404
             end
             return
@@ -63,10 +67,12 @@ module Apipie
             render 'resource'
           elsif params[:resource].present? || params[:method].present?
 						begin
+              # Try to render custom view
 							render "apipie/apipies/custom/#{params[:version]}"
             rescue ActionView::MissingTemplate => e
               Rails.logger.warn e.message
-	            render 'apipie_404', :status => 404
+	            # Default to 404
+              render 'apipie_404', :status => 404
 						end
           else
             render 'index'
