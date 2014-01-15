@@ -11,6 +11,10 @@ module Apipie
       end
     end
 
+		def custom_page
+			render "apipie/apipies/custom/#{params[:custom_page]}"
+		end
+
     def index
 
       params[:version] ||= Apipie.configuration.default_version
