@@ -37,7 +37,11 @@ module Apipie
 
         format.html do
           unless @doc
-            render 'apipie_404', :status => 404
+            begin
+              render "apipie/apipies/custom/#{params[:vesion]}"
+            rescue ActionView::TemplateMissing
+              render 'apipie_404', :status => 404
+            end
             return
           end
 
@@ -55,7 +59,7 @@ module Apipie
             render 'resource'
           elsif params[:resource].present? || params[:method].present?
 						begin
-							render "custom/#{params[:resource]}"
+							render "apipie/apipies/custom/#{params[:version]}"
 						rescue ActionView::TemplateMissing
 	            render 'apipie_404', :status => 404
 						end
