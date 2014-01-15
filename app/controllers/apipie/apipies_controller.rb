@@ -11,10 +11,6 @@ module Apipie
       end
     end
 
-		def custom_page
-			render "apipie/apipies/custom/#{params[:custom_page]}"
-		end
-
     def index
 
       params[:version] ||= Apipie.configuration.default_version
@@ -58,7 +54,9 @@ module Apipie
           elsif @resource
             render 'resource'
           elsif params[:resource].present? || params[:method].present?
-            render 'apipie_404', :status => 404
+						render "custom/#{params[:resource]}"
+						rescue
+	            render 'apipie_404', :status => 404
           else
             render 'index'
           end
