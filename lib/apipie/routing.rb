@@ -4,7 +4,7 @@ module Apipie
       def apipie
         namespace "apipie", :path => Apipie.configuration.doc_base_url do
           constraints(:version => /[^\/]+/) do
-            get("(:version)/(:resource)/(:method)" => "apipies#index", :as => :apipie)
+            get("(*version)/(:resource)/(:method)" => "apipies#index", :as => :apipie)
           end
         end
       end
