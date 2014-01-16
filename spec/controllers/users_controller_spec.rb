@@ -199,6 +199,10 @@ describe UsersController do
           post :create, :user => { :name => "root" }
         }.should raise_error(Apipie::ParamMissing, /pass/)
 
+        lambda {
+          post :create, :user => "a string is not a hash"
+        }.should raise_error(Apipie::ParamInvalid, /user/)
+
         post :create, :user => { :name => "root", :pass => "pwd" }
         assert_response :success
       end
