@@ -227,9 +227,7 @@ module Apipie
       end
 
       def validate(value)
-        if !value.is_a? Hash
-          return false
-        end
+        return false if !value.is_a? Hash
         if @hash_params
           @hash_params.each do |k, p|
             if Apipie.configuration.validate_presence?
