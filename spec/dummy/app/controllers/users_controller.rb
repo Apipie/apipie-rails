@@ -177,6 +177,11 @@ class UsersController < ApplicationController
     val == "param value" ? true : "The only good value is 'param value'."
   }, :desc => "proc validator"
   param :briefer_dsl, String, "You dont need :desc => from now"
+  param :hash_param, Hash, :desc => "Hash param" do
+    param :dummy_hash, Hash do
+      param :dummy_2, String, :required => true
+    end
+  end
   def show
     unless params[:session] == "secret_hash"
       render :text => "Not authorized", :status => 401

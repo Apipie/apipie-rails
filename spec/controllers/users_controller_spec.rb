@@ -110,6 +110,13 @@ describe UsersController do
         assert_response :success
       end
 
+      it "should work with nil value for a required hash param" do
+        expect {
+          get :show, :id => '5', :session => "secret_hash", :hash_param => {:dummy_hash => nil}
+        }.to raise_error(Apipie::ParamInvalid, /dummy_hash/)
+        assert_response :success
+      end
+
       it "should fail if required parameter is missing" do
         lambda { get :show, :id => 5 }.should raise_error(Apipie::ParamMissing, /\bsession\b/)
       end
@@ -301,8 +308,8 @@ describe UsersController do
 
     it "should contain all params description" do
       a = Apipie.get_method_description(UsersController, :show)
-      a.params.count.should == 9
-      a.instance_variable_get('@params_ordered').count.should == 7
+      a.params.count.should == 10
+      a.instance_variable_get('@params_ordered').count.should == 8
     end
 
     it "should contain all api method description" do
