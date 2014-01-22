@@ -29,9 +29,13 @@ module Apipie
     end
 
     def route(controller, method)
-      regex = Regexp.new("\\A#{Apipie.configuration.api_base_url[Apipie.configuration.default_version]}")
 
-      @apipie_api_routes ||= Rails.application.routes.routes.select { |x| regex =~ x.path.spec.to_s }
+      # ensure routes are loaded
+      Rails.application.reload_routes! unless Rails.application.routes.routes.any?
+
+      regexps = controller_versions(controller).map{|version| Regexp.new("\\A#{Apipie.configuration.api_base_url[version]}")}
+
+      @apipie_api_routes ||= Rails.application.routes.routes.select { |x| regexps.map{|regex| regex =~ x.path.spec.to_s}.compact.any? }
 
       route_selected = @apipie_api_routes.select{|route|
         controller == route.app.controller(route.defaults) && method.to_s == route.defaults[:action]
