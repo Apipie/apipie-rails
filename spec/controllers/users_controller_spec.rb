@@ -30,6 +30,7 @@ describe UsersController do
     it "should contain all resource methods" do
       methods = subject._methods
       methods.keys.should include(:show)
+      methods.keys.should include(:create_route)
       methods.keys.should include(:index)
       methods.keys.should include(:create)
       methods.keys.should include(:update)
@@ -380,6 +381,18 @@ describe UsersController do
       api.path.should eq("/users/:id")
       api.http_method.should eq("GET")
       b.full_description.length.should be > 400
+    end
+
+    context "Usign routes.rb" do
+      it "should contain basic info about method" do
+        a = Apipie[UsersController, :create_route]
+        a.apis.count.should == 1
+        a.formats.should eq(['json'])
+        api = a.apis.first
+        api.short_description.should eq("Create user")
+        api.path.should eq("/users/create_route")
+        api.http_method.should eq("POST")
+      end
     end
 
     context "contain :see option" do

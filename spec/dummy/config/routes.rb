@@ -3,7 +3,11 @@ Dummy::Application.routes.draw do
   scope ENV['RAILS_RELATIVE_URL_ROOT'] || '/' do
 
     scope '/api' do
-      resources :users
+      resources :users do
+        collection do
+          post :create_route
+        end
+      end
       resources :concerns, :only => [:index, :show]
       resources :twitter_example do
         collection do
