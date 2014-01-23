@@ -379,8 +379,9 @@ module Apipie
           # remove method description if exists and create new one
           Apipie.remove_method_description(self, _apipie_dsl_data[:api_versions], method_name)
           if _apipie_dsl_data[:from_route]
-            _apipie_dsl_data[:api_args][0][0] = Apipie.route(self, method_name)[:verb]
-            _apipie_dsl_data[:api_args][0][1] = Apipie.route(self, method_name)[:path]
+            conf_from_route = Apipie.route(self, method_name)
+            _apipie_dsl_data[:api_args][0][0] = conf_from_route[:verb]
+            _apipie_dsl_data[:api_args][0][1] = conf_from_route[:path]
           end
           description = Apipie.define_method_description(self, method_name, _apipie_dsl_data)
         ensure
