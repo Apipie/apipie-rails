@@ -28,20 +28,29 @@ module Apipie
       @controller_to_resource_id[controller] = resource_id
     end
 
+    def apipie_routes
+      unless @apipie_api_routes
+        # ensure routes are loaded
+        Rails.application.reload_routes! unless Rails.application.routes.routes.any?
+
+        regex = Regexp.new("\\A#{Apipie.configuration.api_base_url.values.join('|')}")
+        @apipie_api_routes = Rails.application.routes.routes.select { |x| regex =~ x.path.spec.to_s }
+      end
+      @apipie_api_routes
+    end
+
     def route(controller, method)
 
-      # ensure routes are loaded
-      Rails.application.reload_routes! unless Rails.application.routes.routes.any?
-
-      regexps = controller_versions(controller).map{|version| Regexp.new("\\A#{Apipie.configuration.api_base_url[version]}")}
-
-      @apipie_api_routes ||= Rails.application.routes.routes.select { |x| regexps.map{|regex| regex =~ x.path.spec.to_s}.compact.any? }
-
-      route_selected = @apipie_api_routes.select{|route|
+      route_selected = apipie_routes.select{|route|
         controller == route.app.controller(route.defaults) && method.to_s == route.defaults[:action]
       }.first
 
-      path = route_selected.path.spec.to_s.gsub(Apipie.configuration.api_base_url[Apipie.configuration.default_version], '')
+      path = route_selected.path.spec.to_s
+
+      Apipie.configuration.api_base_url.values.each do |values|
+        path.gsub!("#{values}/", '/')
+      end
+
       path.gsub!('(.:format)', '')
       path.gsub!('(', '')
       path.gsub!(')', '')
