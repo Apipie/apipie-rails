@@ -185,6 +185,13 @@ api
   You can use this +api+ method more than once for one method. It could
   be useful when there are more routes mapped to it.
 
+api_route (experimental)
+  Say how is this method exposed and provide short description.
+  Replace `api`. Retrieve HTTP method and URL path from routes
+  of the application.
+  limitation: could retrieve only one (first to match) corresponding
+  route from routes.rb
+
 api_versions (also api_version)
   What version(s) does the action belong to. (See `Versioning`_ for details.)
 
