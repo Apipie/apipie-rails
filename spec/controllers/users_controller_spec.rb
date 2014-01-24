@@ -237,6 +237,67 @@ describe UsersController do
         assert_response :success
       end
 
+      describe "nested elements"  do
+
+        context "with valid input" do
+          it "should succeed" do
+            put :update,
+                {
+                  :id => 5,
+                  :user => {
+                    :name => "root",
+                    :pass => "12345"
+                  },
+                  :comments => [
+                    {
+                      :comment => 'comment1'
+                    },
+                    {
+                      :comment => 'comment2'
+                    }
+                  ]
+                }
+
+            assert_response :success
+          end
+        end
+        context "with bad input" do
+          it "should raise an error" do
+            expect{ put :update,
+                {
+                  :id => 5,
+                  :user => {
+                    :name => "root",
+                    :pass => "12345"
+                  },
+                  :comments => [
+                    {
+                      :comment => 'comment1'
+                    },
+                    {
+                      :comment => {bad_input: 5}
+                    }
+                  ]
+                }
+            }.to raise_error(Apipie::ParamInvalid)
+          end
+        end
+        it "should work with empty array" do
+          put :update,
+              {
+                :id => 5,
+                :user => {
+                  :name => "root",
+                  :pass => "12345"
+                },
+                :comments => [
+                ]
+              }
+
+          assert_response :success
+        end
+      end
+
     end
   end
 

@@ -220,8 +220,11 @@ class UsersController < ApplicationController
     render :text => "OK #{params.inspect}"
   end
 
-  api :PUT, "/users/:id", "Create user"
+  api :PUT, "/users/:id", "Update an user"
   param_group :user
+  param :comments, :nested do
+    param :comment, String
+  end
   def update
     render :text => "OK #{params.inspect}"
   end
