@@ -349,7 +349,7 @@ module Apipie
         value ||= [] # Rails convert empty array to nil
         @values = []
         value.each do |child|
-          @validator.process_value(child)
+          @values << @validator.process_value(child)
         end
         @values
       end
