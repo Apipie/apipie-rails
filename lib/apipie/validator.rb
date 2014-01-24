@@ -273,7 +273,7 @@ module Apipie
 
 
     # special type of validator: we say that it's not specified
-    class UndefValidator < Apipie::Validator::BaseValidator
+    class UndefValidator < BaseValidator
 
       def validate(value)
         true
@@ -290,7 +290,7 @@ module Apipie
       end
     end
 
-    class NumberValidator < Apipie::Validator::BaseValidator
+    class NumberValidator < BaseValidator
 
       def validate(value)
         self.class.validate(value)
@@ -311,7 +311,7 @@ module Apipie
       end
     end
 
-    class BooleanValidator < Apipie::Validator::BaseValidator
+    class BooleanValidator < BaseValidator
 
       def validate(value)
         %w[true false].include?(value.to_s)
