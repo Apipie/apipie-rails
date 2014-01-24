@@ -73,6 +73,7 @@
           <% method[:errors].each do |err| %>
             <%= err[:code] %>
             <%= err[:description] %>
+            <%= render(:partial => "metadata", :locals => {:meta => err[:metadata]}) %>
             <br>
           <% end %>
         <% end %>

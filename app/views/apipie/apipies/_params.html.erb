@@ -15,7 +15,15 @@
         <br>
         Value: <%= param[:validator] %>
       <% end %>
+
+      <% unless param[:metadata].blank? %>
+        <br>
+        Metadata:
+        <%= render(:partial => "metadata", :locals => {:meta => param[:metadata]}) %>
+      <% end %>
+
     </td>
+
   </tr>
 
   <%= render(:partial => "params", :locals => {:level => level + 1, :params => param[:params]}) unless param[:params].blank? %>

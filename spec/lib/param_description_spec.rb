@@ -12,6 +12,24 @@ describe Apipie::ParamDescription do
     Apipie::MethodDescription.new(:show, resource_desc, dsl_data)
   end
 
+  describe "metadata" do
+
+    it "should return nil when no metadata is provided" do
+      param = Apipie::ParamDescription.new(method_desc, :some_param, String)
+      param.to_json[:metadata].should == nil
+    end
+
+    it "should return the metadata" do
+      meta = {
+        :lenght => 32,
+        :weight => '830g'
+      }
+      param = Apipie::ParamDescription.new(method_desc, :some_param, String, :meta => meta)
+      param.to_json[:metadata].should == meta
+    end
+
+  end
+
   describe "validator selection" do
 
     it "should allow nil validator" do

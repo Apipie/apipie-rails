@@ -4,6 +4,24 @@ describe Apipie::ResourceDescription do
 
   let(:dsl_data) { ActionController::Base.send(:_apipie_dsl_data_init) }
 
+  describe "metadata" do
+
+    it "should return nil when no metadata is provided" do
+      resource = Apipie::ResourceDescription.new(ApplicationController, "dummy", dsl_data)
+      resource.to_json[:metadata].should == nil
+    end
+
+    it "should return the metadata" do
+      meta = {
+        :lenght => 32,
+        :weight => '830g'
+      }
+      resource = Apipie::ResourceDescription.new(ApplicationController, "dummy", dsl_data.update(:meta => meta))
+      resource.to_json[:metadata].should == meta
+    end
+
+  end
+
   describe "methods descriptions" do
 
     before(:each) do

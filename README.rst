@@ -125,6 +125,9 @@ error
 app_info
   In case of versioning, this sets app info description on per_version basis.
 
+meta
+  Hash or array with custom metadata.
+
 Example:
 ~~~~~~~~
 
@@ -140,7 +143,8 @@ Example:
      end
      api_version "development"
      error 404, "Missing"
-     error 500, "Server crashed for some <%= reason %>"
+     error 500, "Server crashed for some <%= reason %>", :meta => {:anything => "you can think of"}
+     meta :author => {:name => 'John', :surname => 'Doe'}
      description <<-EOS
        == Long description
         Example resource for rest api documentation
@@ -206,6 +210,9 @@ see
   Provide reference to another method, this has to be string with
   controller_name#method_name.
 
+meta
+  Hash or array with custom metadata.
+
 Example:
 ~~~~~~~~
 
@@ -213,7 +220,7 @@ Example:
 
    api :GET, "/users/:id", "Show user profile"
    error :code => 401, :desc => "Unauthorized"
-   error :code => 404, :desc => "Not Found"
+   error :code => 404, :desc => "Not Found", :meta => {:anything => "you can think of"}
    param :session, String, :desc => "user is logged in", :required => true
    param :regexp_param, /^[0-9]* years/, :desc => "regexp param"
    param :array_param, [100, "one", "two", 1, 2], :desc => "array validator"
@@ -221,8 +228,10 @@ Example:
    param :proc_param, lambda { |val|
      val == "param value" ? true : "The only good value is 'param value'."
    }, :desc => "proc validator"
+   param :param_with_metadata, String, :desc => "", :meta => [:your, :custom, :metadata]
    description "method description"
    formats ['json', 'jsonp', 'xml']
+   meta :message => "Some very important info"
    example " 'user': {...} "
    see "users#showme", "link description"
    see :link => "users#update", :desc => "another link description"
@@ -251,6 +260,9 @@ required
 
 allow_nil
   Set true is ``nil`` can be passed for this param.
+
+meta
+  Hash or array with custom metadata.
 
 Example:
 ~~~~~~~~
@@ -541,7 +553,7 @@ Example:
      config.authenticate = Proc.new do
         authenticate_or_request_with_http_basic do |username, password|
           username == "test" && password == "supersecretpassword"
-       end 
+       end
      end
    end
 

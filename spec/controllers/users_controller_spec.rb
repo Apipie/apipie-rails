@@ -215,6 +215,7 @@ describe UsersController do
                               :description => "\n<p>Additional optional facts about the user</p>\n",
                               :required => false,
                               :allow_nil => true,
+                              :metadata => nil,
                               :expected_type => "hash")
       end
 
@@ -301,8 +302,8 @@ describe UsersController do
 
     it "should contain all params description" do
       a = Apipie.get_method_description(UsersController, :show)
-      a.params.count.should == 9
-      a.instance_variable_get('@params_ordered').count.should == 7
+      a.params.count.should == 10
+      a.instance_variable_get('@params_ordered').count.should == 8
     end
 
     it "should contain all api method description" do
@@ -323,7 +324,7 @@ describe UsersController do
     it "should be described by valid json" do
       json = Apipie[UsersController, :two_urls].to_json
       expected_hash = {
-        :errors => [{:code=>404, :description=>"Missing"},
+        :errors => [{:code=>404, :description=>"Missing", :metadata => {:some => "metadata"}},
                     {:code=>500, :description=>"Server crashed for some <%= reason %>"}],
         :examples => [],
         :doc_url => "#{Apipie.configuration.doc_base_url}/development/users/two_urls",

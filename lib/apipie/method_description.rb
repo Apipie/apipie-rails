@@ -15,7 +15,7 @@ module Apipie
 
     end
 
-    attr_reader :full_description, :method, :resource, :apis, :examples, :see, :formats
+    attr_reader :full_description, :method, :resource, :apis, :examples, :see, :formats, :metadata
 
     def initialize(method, resource, dsl_data)
       @method = method.to_s
@@ -30,7 +30,7 @@ module Apipie
       @full_description = Apipie.markup_to_html(desc)
 
       @errors = dsl_data[:errors].map do |args|
-        Apipie::ErrorDescription.new(args)
+        Apipie::ErrorDescription.from_dsl_data(args)
       end
 
       @see = dsl_data[:see].map do |args|
@@ -40,6 +40,8 @@ module Apipie
       @formats = dsl_data[:formats]
       @examples = dsl_data[:examples]
       @examples += load_recorded_examples
+
+      @metadata = dsl_data[:meta]
 
       @params_ordered = dsl_data[:params].map do |args|
         Apipie::ParamDescription.from_dsl_data(self, args)
@@ -76,7 +78,7 @@ module Apipie
       @merged_errors = []
       if @resource
         resource_errors = @resource._errors_args.map do |args|
-          Apipie::ErrorDescription.new(args)
+          Apipie::ErrorDescription.from_dsl_data(args)
         end
 
         # exclude overwritten parent errors
@@ -134,6 +136,7 @@ module Apipie
         :errors => errors.map(&:to_json),
         :params => params_ordered.map(&:to_json).flatten,
         :examples => @examples,
+        :metadata => @metadata,
         :see => see.map(&:to_json)
       }
     end

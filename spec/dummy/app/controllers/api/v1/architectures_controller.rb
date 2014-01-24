@@ -18,6 +18,7 @@ module Api
       def_param_group :arch do
         param :architecture, Hash, :required => true do
           param :name, String, :required => true
+          param :description, String, :required => true
           param_group :timestamps
         end
       end
