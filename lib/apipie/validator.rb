@@ -328,6 +328,43 @@ module Apipie
       end
     end
 
+    class NestedValidator < BaseValidator
+
+      def initialize(param_description, argument, param_group)
+        super(param_description)
+        @validator = Apipie::Validator:: HashValidator.new(param_description, argument, param_group)
+        @type = argument
+      end
+
+      def validate(value)
+        value ||= [] # Rails convert empty array to nil
+        return false if value.class != Array
+        value.each do |child|
+          return false unless @validator.validate(child)
+        end
+        true
+      end
+
+      def process_value(value)
+        value ||= [] # Rails convert empty array to nil
+        @values = []
+        value.each do |child|
+          @validator.process_value(child)
+        end
+        @values
+      end
+
+      def self.build(param_description, argument, options, block)
+        if argument == :nested
+          self.new(param_description, block, options[:param_group])
+        end
+      end
+
+      def description
+        "Must be an Array of nested elements"
+      end
+    end
+
   end
 end
 
