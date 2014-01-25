@@ -809,7 +809,8 @@ This will copy the Apipie views to ``app/views/apipie/apipies`` and
 To generate a static version of documentation (perhaps to put it on
 project site or something) run ``rake apipie:static`` task. It will
 create set of html files (multi-pages, single-page, plain) in your doc
-directory. By default the documentation for default API version is
+directory. If you prefer a json version run ``rake apipie:static_json``.
+By default the documentation for default API version is
 used, you can specify the version with ``rake apipie:static[2.0]``
 
 When you want to avoid any unnecessary computation in production mode,
