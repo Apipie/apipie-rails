@@ -180,6 +180,11 @@ class UsersController < ApplicationController
   param :briefer_dsl, String, "You dont need :desc => from now"
   param :meta_param, String, :desc => "A parameter with some additional metadata", :meta => [:some, :more, :info]
   meta :success_message => "Some message"
+  param :hash_param, Hash, :desc => "Hash param" do
+    param :dummy_hash, Hash do
+      param :dummy_2, String, :required => true
+    end
+  end
   def show
     unless params[:session] == "secret_hash"
       render :text => "Not authorized", :status => 401
