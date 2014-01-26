@@ -70,11 +70,15 @@ namespace :apipie do
 
   # Attempt to use the Rails application views, otherwise default to built in views
   def renderer
-    if File.directory?("#{Rails.root}/app/views/apipie/apipies")
-      ActionView::Base.new("#{Rails.root}/app/views/apipie/apipies")
-    else
-      ActionView::Base.new(File.expand_path("../../../app/views/apipie/apipies", __FILE__))
-    end
+    return @apipie_renderer if @apipie_renderer
+    base_path = if File.directory?("#{Rails.root}/app/views/apipie/apipies")
+                  "#{Rails.root}/app/views/apipie/apipies"
+                else
+                  File.expand_path("../../../app/views/apipie/apipies", __FILE__)
+                end
+    @apipie_renderer = ActionView::Base.new(base_path)
+    @apipie_renderer.singleton_class.send(:include, ApipieHelper)
+    return @apipie_renderer
   end
 
   def render_page(file_name, template, variables, layout = 'apipie')
