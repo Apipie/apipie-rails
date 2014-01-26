@@ -269,7 +269,7 @@ class UsersController < ApplicationController
     render :text => 'document from file action'
   end
 
-  api_route 'Create user'
+  api 'Create user'
   param_group :user
   param :user, Hash do
     param :permalink, String
