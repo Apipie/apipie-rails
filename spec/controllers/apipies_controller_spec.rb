@@ -120,6 +120,7 @@ describe Apipie::ApipiesController do
       File.open(File.join(cache_dir, "apidoc", "v1", "resource", "method.html"), "w") { |f| f << "method.html cache" }
 
       Apipie.configuration.use_cache = true
+      @orig_cache_dir = Apipie.configuration.cache_dir
       Apipie.configuration.cache_dir = cache_dir
       @orig_version = Apipie.configuration.default_version
       Apipie.configuration.default_version = 'v1'
@@ -128,6 +129,7 @@ describe Apipie::ApipiesController do
     after do
       Apipie.configuration.use_cache = false
       Apipie.configuration.default_version = @orig_version
+      Apipie.configuration.cache_dir = @orig_cache_dir
       # FileUtils.rm_r(cache_dir) if File.exists?(cache_dir)
     end
 
