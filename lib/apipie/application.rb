@@ -35,9 +35,8 @@ module Apipie
 
         regex = Regexp.new("\\A#{Apipie.configuration.api_base_url.values.join('|')}")
         @apipie_api_routes = Rails.application.routes.routes.select { |x|
-        if Rails::VERSION::STRING < '3.2.0'
+          if Rails::VERSION::STRING < '3.2.0'
             regex =~ x.path.to_s
-            Rails.logger.warn 'using api_route with a version'
           else
             regex =~ x.path.spec.to_s
           end
@@ -46,27 +45,29 @@ module Apipie
       @apipie_api_routes
     end
 
-    def route(controller, method)
-
-      route_selected = apipie_routes.select{|route|
-        controller == route.app.controller(route.defaults) && method.to_s == route.defaults[:action]
-      }.first
-
-      path = if Rails::VERSION::STRING < '3.2.0'
-        route_selected.path.to_s
-      else
-        route_selected.path.spec.to_s
+    def routes_for_action(controller, method)
+      routes = apipie_routes.select do |route|
+        route.app.respond_to?(:controller) &&
+            controller == route.app.controller(route.defaults) &&
+            method.to_s == route.defaults[:action]
       end
 
-      Apipie.configuration.api_base_url.values.each do |values|
-        path.gsub!("#{values}/", '/')
+      routes.map do |route|
+        path = if Rails::VERSION::STRING < '3.2.0'
+                 route.path.to_s
+               else
+                 route.path.spec.to_s
+               end
+
+        Apipie.configuration.api_base_url.values.each do |values|
+          path.gsub!("#{values}/", '/')
+        end
+
+        path.gsub!('(.:format)', '')
+        path.gsub!('[()]', '')
+
+        { path: path, verb: human_verb(route) }
       end
-
-      path.gsub!('(.:format)', '')
-      path.gsub!('(', '')
-      path.gsub!(')', '')
-
-      {path: path, verb: human_verb(route_selected)}
     end
 
     def human_verb(route)

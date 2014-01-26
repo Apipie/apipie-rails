@@ -20,7 +20,9 @@ module Apipie
 
       def _apipie_dsl_data_init
         @_apipie_dsl_data =  {
+         :api               => false,
          :api_args          => [],
+         :api_from_routes   => nil,
          :errors            => [],
          :params            => [],
          :resouce_id        => nil,
@@ -74,18 +76,29 @@ module Apipie
 
       # Declare an api.
       #
-      # Example:
+      # Examples:
+      #   # specify the path explicitly
       #   api :GET, "/resource_route", "short description",
       #
-      def api(method, path, desc = nil, options={}) #:doc:
+      #   # load paths from routes
+      #   api "short description",
+      #
+      #   # load paths from routes and don't provide description
+      #   api
+      #
+      def api(*args) #:doc:
         return unless Apipie.active_dsl?
-        _apipie_dsl_data[:api_args] << [method, path, desc]
-      end
-
-      def api_route(desc = nil)
-        return unless Apipie.active_dsl?
-        _apipie_dsl_data[:api_args] << [nil, nil, desc]
-        _apipie_dsl_data[:from_route] = true
+        _apipie_dsl_data[:api] = true
+        case args.size
+        when 0..1
+          desc = args.first
+          _apipie_dsl_data[:api_from_routes] = { :desc => desc }
+        when 2..3
+          method, path, desc = *args
+          _apipie_dsl_data[:api_args] << [method, path, desc]
+        else
+          raise ArgumentError, 'Wrong number of arguments'
+        end
       end
 
       # Reference other similar method
@@ -320,27 +333,27 @@ module Apipie
       # create method api and redefine newly added method
       def method_added(method_name) #:doc:
         super
+        return if !Apipie.active_dsl? || !_apipie_dsl_data[:api]
 
-        if ! Apipie.active_dsl? || _apipie_dsl_data[:api_args].blank?
-          _apipie_dsl_data_clear
-          return
-        end
-
-        begin
-          # remove method description if exists and create new one
-          Apipie.remove_method_description(self, _apipie_dsl_data[:api_versions], method_name)
-          if _apipie_dsl_data[:from_route]
-            conf_from_route = Apipie.route(self, method_name)
-            _apipie_dsl_data[:api_args][0][0] = conf_from_route[:verb]
-            _apipie_dsl_data[:api_args][0][1] = conf_from_route[:path]
+        if _apipie_dsl_data[:api_from_routes]
+          desc = _apipie_dsl_data[:api_from_routes][:desc]
+          api_from_routes = Apipie.routes_for_action(self, method_name).map do |route_info|
+            [route_info[:verb], route_info[:path], desc]
           end
-          description = Apipie.define_method_description(self, method_name, _apipie_dsl_data)
-        ensure
-          _apipie_dsl_data_clear
+          _apipie_dsl_data[:api_args].concat(api_from_routes)
         end
 
+        return if _apipie_dsl_data[:api_args].blank?
+
+        # remove method description if exists and create new one
+        Apipie.remove_method_description(self, _apipie_dsl_data[:api_versions], method_name)
+        description = Apipie.define_method_description(self, method_name, _apipie_dsl_data)
+
+        _apipie_dsl_data_clear
         _apipie_define_validators(description)
-      end # def method_added
+      ensure
+        _apipie_dsl_data_clear
+      end
     end
 
     module Concern
@@ -367,18 +380,12 @@ module Apipie
       def method_added(method_name) #:doc:
         super
 
-        if ! Apipie.active_dsl? || _apipie_dsl_data[:api_args].blank?
-          _apipie_dsl_data_clear
-          return
-        end
+        return if ! Apipie.active_dsl? || !_apipie_dsl_data[:api]
 
-        begin
-          _apipie_concern_data << [method_name, _apipie_dsl_data.merge(:from_concern => true)]
-        ensure
-          _apipie_dsl_data_clear
-        end
-
-      end # def method_added
+        _apipie_concern_data << [method_name, _apipie_dsl_data.merge(:from_concern => true)]
+      ensure
+        _apipie_dsl_data_clear
+      end
 
     end
 
