@@ -36,7 +36,14 @@ module Apipie
         Rails.application.reload_routes! unless Rails.application.routes.routes.any?
 
         regex = Regexp.new("\\A#{Apipie.configuration.api_base_url.values.join('|')}")
-        @apipie_api_routes = Rails.application.routes.routes.select { |x| regex =~ x.path.spec.to_s }
+        @apipie_api_routes = Rails.application.routes.routes.select { |x|
+        if Rails::VERSION::STRING < '3.2.0'
+            regex =~ x.path.to_s
+            Rails.logger.warn 'using api_route with a version'
+          else
+            regex =~ x.path.spec.to_s
+          end
+        }
       end
       @apipie_api_routes
     end
@@ -47,7 +54,11 @@ module Apipie
         controller == route.app.controller(route.defaults) && method.to_s == route.defaults[:action]
       }.first
 
-      path = route_selected.path.spec.to_s
+      path = if Rails::VERSION::STRING < '3.2.0'
+        route_selected.path.to_s
+      else
+        route_selected.path.spec.to_s
+      end
 
       Apipie.configuration.api_base_url.values.each do |values|
         path.gsub!("#{values}/", '/')
@@ -61,7 +72,7 @@ module Apipie
     end
 
     def human_verb(route)
-      verb = API_METHODS.select{|defined_verb| defined_verb =~ route.verb}
+      verb = API_METHODS.select{|defined_verb| defined_verb =~ /\A#{route.verb}\z/}
       if verb.count != 1
         verb = API_METHODS.select{|defined_verb| defined_verb == route.constraints[:method]}
         if verb.blank?
