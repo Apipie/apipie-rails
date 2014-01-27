@@ -649,6 +649,20 @@ override parameters described on resource level.
      #...
    end
 
+NestedValidator
+-------------
+
+You can describe nested parameters in depth if you provide a block with
+description of nested values.
+
+.. code:: ruby
+
+   param :comments, Array, :desc => "User comments" do
+     param :name, String, :desc => "Name of the comment", :required => true
+     param :comment, String, :desc => "Full comment", :required => true
+   end
+
+
 
 Adding custom validator
 -----------------------
