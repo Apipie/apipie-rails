@@ -13,7 +13,7 @@ describe ConcernsController do
   end
 
   it "should pass if required parameter is missing" do
-    lambda { get :show, :id => 5 }.should_not raise_error
+    lambda { get :show, :id => '5' }.should_not raise_error
   end
 
   it "peserved the order of methods being defined in file" do
