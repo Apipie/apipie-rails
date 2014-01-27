@@ -161,8 +161,8 @@ module Apipie
         @array.include?(value.class)
       end
 
-      def self.build(param_description, argument, options, proc)
-        if argument.is_a?(Array) && argument.first.class == Class
+      def self.build(param_description, argument, options, block)
+        if argument.is_a?(Array) && argument.first.class == Class && !block.is_a?(Proc)
           self.new(param_description, argument)
         end
       end
@@ -355,9 +355,7 @@ module Apipie
       end
 
       def self.build(param_description, argument, options, block)
-        if argument == :nested
-          self.new(param_description, block, options[:param_group])
-        end
+        self.new(param_description, block, options[:param_group]) if block.is_a?(Proc) && block.arity <= 0 && argument == Array
       end
 
       def description

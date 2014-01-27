@@ -657,7 +657,7 @@ description of nested values.
 
 .. code:: ruby
 
-   param :comments, :nested, :desc => "User comments" do
+   param :comments, Array, :desc => "User comments" do
      param :name, String, :desc => "Name of the comment", :required => true
      param :comment, String, :desc => "Full comment", :required => true
    end

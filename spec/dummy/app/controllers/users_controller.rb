@@ -222,7 +222,7 @@ class UsersController < ApplicationController
 
   api :PUT, "/users/:id", "Update an user"
   param_group :user
-  param :comments, :nested do
+  param :comments, Array do
     param :comment, String
   end
   def update
