@@ -574,13 +574,13 @@ EOS2
     it "process correctly the parameters" do
       post :create, {:user => {:name => 'dummy', :pass => 'dummy', :membership => 'standard'}}
 
-      expect(assigns(:api_params)).to eq(:user => {:name=>"dummy", :pass=>"dummy", :membership=>"standard"})
+      expect(assigns(:api_params).with_indifferent_access).to eq({:user => {:name=>"dummy", :pass=>"dummy", :membership=>"standard"}}.with_indifferent_access)
     end
 
     it "ignore not described parameters" do
       post :create, {:user => {:name => 'dummy', :pass => 'dummy', :membership => 'standard', :id => 0}}
 
-      expect(assigns(:api_params)).to eq(:user => {:name=>"dummy", :pass=>"dummy", :membership=>"standard"})
+      expect(assigns(:api_params).with_indifferent_access).to eq({:user => {:name=>"dummy", :pass=>"dummy", :membership=>"standard"}}.with_indifferent_access)
     end
 
     after do
