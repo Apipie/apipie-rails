@@ -568,23 +568,23 @@ EOS2
 
   describe "Parameter processing / extraction" do
     before do
-      Apipie.configuration.process_values = true
+      Apipie.configuration.process_params = true
     end
 
     it "process correctly the parameters" do
       post :create, {:user => {:name => 'dummy', :pass => 'dummy', :membership => 'standard'}}
 
-      expect(assigns(:values)).to eq(:user => {:name=>"dummy", :pass=>"dummy", :membership=>"standard"})
+      expect(assigns(:api_params)).to eq(:user => {:name=>"dummy", :pass=>"dummy", :membership=>"standard"})
     end
 
     it "ignore not described parameters" do
       post :create, {:user => {:name => 'dummy', :pass => 'dummy', :membership => 'standard', :id => 0}}
 
-      expect(assigns(:values)).to eq(:user => {:name=>"dummy", :pass=>"dummy", :membership=>"standard"})
+      expect(assigns(:api_params)).to eq(:user => {:name=>"dummy", :pass=>"dummy", :membership=>"standard"})
     end
 
     after do
-      Apipie.configuration.process_values = false
+      Apipie.configuration.process_params = false
     end
   end
 end

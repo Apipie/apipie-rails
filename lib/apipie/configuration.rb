@@ -5,7 +5,7 @@ module Apipie
       :api_base_url, :doc_base_url, :required_by_default, :layout,
       :default_version, :debug, :version_in_url, :namespaced_resources,
       :validate, :validate_value, :validate_presence, :authenticate, :doc_path,
-      :show_all_examples, :process_values
+      :show_all_examples, :process_params
 
     alias_method :validate?, :validate
     alias_method :required_by_default?, :required_by_default
@@ -37,7 +37,7 @@ module Apipie
     alias_method :validate_presence?, :validate_presence
 
     def process_value?
-      @process_values
+      @process_params
     end
     # set to true if you want to use pregenerated documentation cache and avoid
     # generating the documentation on runtime (usefull for production
@@ -127,7 +127,7 @@ module Apipie
       @version_in_url = true
       @namespaced_resources = false
       @doc_path = "doc"
-      @process_values = false
+      @process_params = false
     end
   end
 end

@@ -7,7 +7,7 @@ module Apipie
 
     module Base
       attr_reader :apipie_resource_descriptions
-      attr_reader :values
+      attr_reader :api_params
 
       private
 
@@ -214,11 +214,11 @@ module Apipie
             end
 
             if Apipie.configuration.process_value?
-              @values = {}
+              @api_params = {}
 
               description.params.each do |_, param|
                 # params processing
-                @values[param.internal_name] = param.process_value(params[:"#{param.name}"]) if params.has_key?(param.name)
+                @api_params[param.internal_name] = param.process_value(params[:"#{param.name}"]) if params.has_key?(param.name)
               end
             end
 

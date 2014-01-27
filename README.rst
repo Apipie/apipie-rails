@@ -506,9 +506,9 @@ validate_value
 validate_presence
   Check the params presence against the documentation.
 
-processing_values
+process_params
   Process and extract parameter defined from the params of the request
-  to the values variable
+  to the api_params variable
 
 app_info
   Application long description.
@@ -586,7 +586,7 @@ want to support an enumeration type (comma separated values) and
 you want automatically transform this string to an array.
 
 To use it, set processing_value configuration variable to true.
-In your action, use values variable instead of params.
+In your action, use api_params variable instead of params.
 
 Also by using `internal_name` you can separate your API parameters
 names from the names you are using inside your code.
