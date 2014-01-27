@@ -263,6 +263,9 @@ required
 allow_nil
   Set true is ``nil`` can be passed for this param.
 
+internal_name
+  Use by the processing functionality to change the name of a key params.
+
 meta
   Hash or array with custom metadata.
 
@@ -584,6 +587,9 @@ you want automatically transform this string to an array.
 
 To use it, set processing_value configuration variable to true.
 In your action, use values variable instead of params.
+
+Also by using `internal_name` you can separate your API parameters
+names from the names you are using inside your code.
 
 To implement it, you just have to write a process_value
 function in your validator:
