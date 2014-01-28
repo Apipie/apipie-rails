@@ -70,12 +70,12 @@ module Apipie
                  route.path.spec.to_s
                end
 
+        path.gsub!('(.:format)', '')
+        path.gsub!(/[()]/, '')
+
         Apipie.configuration.api_base_url.values.each do |values|
           path.gsub!("#{values}/", '/')
         end
-
-        path.gsub!('(.:format)', '')
-        path.gsub!('[()]', '')
 
         { path: path, verb: human_verb(route) }
       end
