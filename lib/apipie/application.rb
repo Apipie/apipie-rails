@@ -34,21 +34,30 @@ module Apipie
         Rails.application.reload_routes! unless Rails.application.routes.routes.any?
 
         regex = Regexp.new("\\A#{Apipie.configuration.api_base_url.values.join('|')}")
-        @apipie_api_routes = Rails.application.routes.routes.select { |x|
+        @apipie_api_routes = Rails.application.routes.routes.select do |x|
           if Rails::VERSION::STRING < '3.2.0'
             regex =~ x.path.to_s
           else
             regex =~ x.path.spec.to_s
           end
-        }
+        end
       end
       @apipie_api_routes
     end
 
+    # the app might be nested when using contraints, namespaces etc.
+    # this method does in depth search for the route controller
+    def route_app_controller(app, route)
+      if app.respond_to?(:controller)
+        return app.controller(route.defaults)
+      elsif app.respond_to?(:app)
+        return route_app_controller(app.app, route)
+      end
+    end
+
     def routes_for_action(controller, method)
       routes = apipie_routes.select do |route|
-        route.app.respond_to?(:controller) &&
-            controller == route.app.controller(route.defaults) &&
+        controller == route_app_controller(route.app, route) &&
             method.to_s == route.defaults[:action]
       end
 
