@@ -3,6 +3,7 @@
 <head>
   <title>API documentation</title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <%= Apipie.include_stylesheets %>
   <link type='text/css' rel='stylesheet' href='<%= Apipie.full_url("stylesheets/application.css")%>'/>
   <!-- IE6-8 support of HTML5 elements -->
@@ -11,9 +12,9 @@
   <![endif]-->
 </head>
 <body>
-  <div class="container">
-    <div class="row">
-      <div id='container'>
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div id='container-fluid'>
         <%= yield %>
         <%= render 'disqus' if Apipie.configuration.use_disqus? %>
       </div>

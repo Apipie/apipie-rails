@@ -1,8 +1,22 @@
+<% if @versions && @versions.size > 1 %>
+<div id="versions-menu" class="container-fluid" style="display: none;">
+  <div class="row-fluid">
+    <ul class="nav nav-tabs nav-stacked">
+      <% @versions.each do |version| %>
+      <li><%= link_to(version, Apipie.full_url(version)).html_safe%></li>
+      <% end %>
+    </ul>
+  </div>
+</div>
+<% end %>
 <ul class='breadcrumb'>
   <li class='active'><a href='<%= @doc[:doc_url] %>.html'><%= @doc[:name] %> <%= @doc[:resources].values.first[:version] %></a></li>
   <% if @versions && @versions.size > 1 %>
   <li class='pull-right'>
-    <%= @versions.collect { |v| link_to v, Apipie.full_url(v) }.join(' / ').html_safe %>
+    <span class="hidden-phone"><%= @versions.collect { |v| link_to v, Apipie.full_url(v) }.join(' / ').html_safe %></span>
+    <span class="visible-phone">
+      <a href="#versions-menu" onclick="$('#versions-menu').slideToggle();">Versions</a>
+    </span>
   </li>
   <% end %>
 </ul>
@@ -10,33 +24,38 @@
 <div><%= raw @doc[:info] %></div>
 
 <h1 class='page-header'>Resources</h1>
-
-<% @doc[:resources].sort_by(&:first).each do |key, api| %>
-  <h2>
-    <a href='<%= api[:doc_url] %>.html'>
-      <%= api[:name] %>
-    </a><br>
-    <small><%= api[:short_description] %></small>
-  </h2>
-  <table class='table'>
-    <thead>
-      <tr>
-        <th>Resource</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% api[:methods].each do |m| %>
-        <% m[:apis].each do |a| %>
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span12">
+      <% @doc[:resources].sort_by(&:first).each do |key, api| %>
+        <h2>
+          <a href='<%= api[:doc_url] %>.html'>
+            <%= api[:name] %>
+          </a><br>
+          <small><%= api[:short_description] %></small>
+        </h2>
+        <table class='table'>
+          <thead>
           <tr>
-            <td><a href='<%= m[:doc_url] %>.html'><%= a[:http_method] %> <%= a[:api_url] %></a></td>
-            <td width='60%'><%= a[:short_description] %></td>
+            <th>Resource</th>
+            <th>Description</th>
           </tr>
-        <% end %>
+          </thead>
+          <tbody>
+          <% api[:methods].each do |m| %>
+            <% m[:apis].each do |a| %>
+              <tr>
+                <td><a href='<%= m[:doc_url] %>.html'><%= a[:http_method] %> <%= a[:api_url] %></a></td>
+                <td><%= a[:short_description] %></td>
+              </tr>
+            <% end %>
+          <% end %>
+          </tbody>
+        </table>
       <% end %>
-    </tbody>
-  </table>
-<% end %>
+    </div>
+  </div>
+</div>
 
 <% content_for :apipie_footer do %>
   <%= raw @doc[:copyright] %>

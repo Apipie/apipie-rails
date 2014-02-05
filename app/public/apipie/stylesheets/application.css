@@ -5,3 +5,23 @@ body {
 .sidebar-nav {
   padding: 9px 0;
 }
+
+@media (min-width: 1200px) {
+
+}
+
+@media (min-width: 768px) and (max-width: 979px) {
+
+}
+
+@media (max-width: 767px) {
+  h1, h2, h3, h4, h5, h6 {
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  h1, h2, h3, h4, h5, h6, td {
+    word-break: break-all;
+  }
+}
