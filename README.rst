@@ -544,7 +544,7 @@ Example:
      config.api_base_url = "/api"
      config.validate = false
      config.markup = Apipie::Markup::Markdown.new
-     config.reload_controllers = true
+     config.reload_controllers = Rails.env.development?
      config.api_controllers_matcher = File.join(Rails.root, "app", "controllers", "**","*.rb")
      config.app_info = "
        This is where you can inform user about your application and API
