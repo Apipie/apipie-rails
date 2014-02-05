@@ -62,6 +62,10 @@ module Apipie
       end
     end
 
+    rescue_from TypeError, ActionView::Template::Error do |exception|
+      render text: exception.message
+    end
+
     private
 
     def get_format

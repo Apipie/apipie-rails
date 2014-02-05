@@ -7,17 +7,13 @@
   <link type='text/css' rel='stylesheet' href='<%= Apipie.full_url("stylesheets/application.css")%>'/>
   <!-- IE6-8 support of HTML5 elements -->
   <!--[if lt IE 9]>
-    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
   <![endif]-->
 </head>
 <body>
   <div class="container">
-    <div class="row">
-      <div id='container'>
-        <%= yield %>
-        <%= render 'disqus' if Apipie.configuration.use_disqus? %>
-      </div>
-    </div>
+    <%= yield %>
+    <%= render 'disqus' if Apipie.configuration.use_disqus? %>
     <hr>
     <footer><%= yield :apipie_footer %></footer>
   </div>
