@@ -263,7 +263,7 @@ required
 allow_nil
   Set true is ``nil`` can be passed for this param.
 
-internal_name
+as
   Use by the processing functionality to change the name of a key params.
 
 meta
@@ -588,7 +588,7 @@ you want automatically transform this string to an array.
 To use it, set processing_value configuration variable to true.
 In your action, use api_params variable instead of params.
 
-Also by using `internal_name` you can separate your API parameters
+Also by using `as` you can separate your API parameters
 names from the names you are using inside your code.
 
 To implement it, you just have to write a process_value

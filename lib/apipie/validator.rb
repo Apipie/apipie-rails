@@ -245,7 +245,7 @@ module Apipie
         @api_params = {}
         if @hash_params && value
           @hash_params.each do |k, p|
-              @api_params[p.internal_name] = p.process_value(value[k]) if value.has_key?(k)
+              @api_params[p.as] = p.process_value(value[k]) if value.has_key?(k)
           end
           @api_params
         else

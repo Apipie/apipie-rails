@@ -218,7 +218,7 @@ module Apipie
 
               description.params.each do |_, param|
                 # params processing
-                @api_params[param.internal_name] = param.process_value(params[:"#{param.name}"]) if params.has_key?(param.name)
+                @api_params[param.as] = param.process_value(params[:"#{param.name}"]) if params.has_key?(param.name)
               end
             end
 
