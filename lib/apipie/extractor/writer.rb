@@ -84,7 +84,9 @@ module Apipie
             method_descriptions = Apipie.get_method_descriptions(call[:controller], call[:action])
             call[:versions] = method_descriptions.map(&:version)
 
-            if call[:versions].any? { |v| ! showed_in_versions.include?(v) }
+            if Apipie.configuration.show_all_examples
+              show_in_doc = 1
+            elsif call[:versions].any? { |v| ! showed_in_versions.include?(v) }
               call[:versions].each { |v| showed_in_versions << v }
               show_in_doc = 1
             else
@@ -99,11 +101,11 @@ module Apipie
 
       def load_old_examples
         if File.exists?(@examples_file)
-           if defined? SafeYAML
-              return YAML.load_file(@examples_file, :safe=>false)
-            else
-              return YAML.load_file(@examples_file)
-            end
+          if defined? SafeYAML
+            return YAML.load_file(@examples_file, :safe=>false)
+          else
+            return YAML.load_file(@examples_file)
+          end
         end
         return {}
       end
