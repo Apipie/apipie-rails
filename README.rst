@@ -266,6 +266,9 @@ allow_nil
 meta
   Hash or array with custom metadata.
 
+show
+  Parameter is hidden from documentation when set to false (true by default)
+
 Example:
 ~~~~~~~~
 
@@ -275,6 +278,7 @@ Example:
      param :username, String, :desc => "Username for login", :required => true
      param :password, String, :desc => "Password for login", :required => true
      param :membership, ["standard","premium"], :desc => "User membership"
+     param :admin_override, String, :desc => "Not shown in documentation", :show => false
    end
    def create
      #...
@@ -534,7 +538,7 @@ namespaced_resources
 authenticate
   Pass a proc in order to authenticate user. Pass nil for
   no authentication (by default).
-  
+
 show_all_examples
   Set this to true to set show_in_doc=1 in all recorded examples
 

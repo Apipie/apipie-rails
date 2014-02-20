@@ -1,6 +1,10 @@
 <% level ||= 0 %>
 <% col = 255 - level * 5 %>
 <% params.each do |param| %>
+  <% if !param[:show] %>
+    <%= render(:partial => "params", :locals => {:level => level, :params => param[:params]}) unless param[:params].blank? %>
+    <% next %>
+  <% end %>
   <tr style='background-color:rgb(<%= "#{col},#{col},#{col}" %>);'>
     <td>
       <strong><%= param[:full_name] %> </strong><br>

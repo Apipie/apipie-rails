@@ -5,9 +5,11 @@ class UsersController < ApplicationController
     path '/users'
     formats ['json']
     param :id, Fixnum, :desc => "User ID", :required => false
-    param :resource_param, Hash, :desc => 'Param description for all methods' do
-      param :ausername, String, :desc => "Username for login", :required => true
-      param :apassword, String, :desc => "Password for login", :required => true
+    param :legacy_param, Hash, :desc => 'Deprecated parameter not documented', :show => false, :required => false do
+      param :resource_param, Hash, :desc => 'Param description for all methods' do
+        param :ausername, String, :desc => "Username for login", :required => true
+        param :apassword, String, :desc => "Password for login", :required => true
+      end
     end
     api_version "development"
     error 404, "Missing", :meta => {:some => "metadata"}
