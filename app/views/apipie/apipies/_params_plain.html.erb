@@ -1,5 +1,9 @@
 <ul>
   <% params.each do |param| %>
+    <% if !param[:show] %>
+      <%= render(:partial => "params_plain", :locals => {:params => param[:params]}) unless param[:params].blank? %>
+      <% next %>
+    <% end %>
     <li>
       <strong><%= param[:name] %> </strong>:
       <small>

@@ -8,7 +8,7 @@ module Apipie
   # validator - Validator::BaseValidator subclass
   class ParamDescription
 
-    attr_reader :method_description, :name, :desc, :allow_nil, :validator, :options, :metadata
+    attr_reader :method_description, :name, :desc, :allow_nil, :validator, :options, :metadata, :show
 
     attr_accessor :parent, :required
 
@@ -49,6 +49,12 @@ module Apipie
         Apipie.configuration.required_by_default?
       end
 
+      @show = if @options.has_key? :show
+        @options[:show]
+      else
+        true
+      end
+
       @allow_nil = @options[:allow_nil] || false
 
       action_awareness
@@ -69,7 +75,8 @@ module Apipie
     end
 
     def full_name
-      name_parts = parents_and_self.map(&:name)
+      name_parts = parents_and_self.map{|p| p.name if p.show}.compact
+      return name.to_s if name_parts.blank?
       return ([name_parts.first] + name_parts[1..-1].map { |n| "[#{n}]" }).join("")
     end
 
@@ -95,6 +102,7 @@ module Apipie
           :validator => validator.to_s,
           :expected_type => validator.expected_type,
           :metadata => metadata,
+          :show => show,
           :params => validator.hash_params_ordered.map(&:to_json)
         }
       else
@@ -106,6 +114,7 @@ module Apipie
           :allow_nil => allow_nil,
           :validator => validator.to_s,
           :metadata => metadata,
+          :show => show,
           :expected_type => validator.expected_type
         }
       end
