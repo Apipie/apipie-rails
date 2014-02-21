@@ -242,14 +242,12 @@ module Apipie
       end
 
       def process_value(value)
-        @api_params = {}
         if @hash_params && value
-          @hash_params.each do |k, p|
-              @api_params[p.as] = p.process_value(value[k]) if value.has_key?(k)
+          return @hash_params.each_with_object({}) do |(key, param), api_params|
+            if value.has_key?(key)
+              api_params[param.as] = param.process_value(value[key])
+            end
           end
-          @api_params
-        else
-          nil
         end
       end
 
