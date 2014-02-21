@@ -6,7 +6,7 @@ module Apipie
   module DSL
 
     module Base
-      attr_reader :apipie_resource_descriptions
+      attr_reader :apipie_resource_descriptions, :api_params
 
       private
 
@@ -194,6 +194,8 @@ module Apipie
 
           old_method = instance_method(description.method)
 
+
+          # @todo we should use before_filter
           define_method(description.method) do |*args|
 
             if Apipie.configuration.validate_presence?
@@ -207,6 +209,15 @@ module Apipie
               description.params.each do |_, param|
                 # params validations
                 param.validate(params[:"#{param.name}"]) if params.has_key?(param.name)
+              end
+            end
+
+            if Apipie.configuration.process_value?
+              @api_params = {}
+
+              description.params.each do |_, param|
+                # params processing
+                @api_params[param.as] = param.process_value(params[:"#{param.name}"]) if params.has_key?(param.name)
               end
             end
 

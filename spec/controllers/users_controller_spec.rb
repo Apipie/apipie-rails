@@ -565,4 +565,26 @@ EOS2
       end
     end
   end
+
+  describe "Parameter processing / extraction" do
+    before do
+      Apipie.configuration.process_params = true
+    end
+
+    it "process correctly the parameters" do
+      post :create, {:user => {:name => 'dummy', :pass => 'dummy', :membership => 'standard'}, :facts => nil}
+
+      expect(assigns(:api_params).with_indifferent_access).to eq({:user => {:name=>"dummy", :pass=>"dummy", :membership=>"standard"}, :facts => nil}.with_indifferent_access)
+    end
+
+    it "ignore not described parameters" do
+      post :create, {:user => {:name => 'dummy', :pass => 'dummy', :membership => 'standard', :id => 0}}
+
+      expect(assigns(:api_params).with_indifferent_access).to eq({:user => {:name=>"dummy", :pass=>"dummy", :membership=>"standard"}}.with_indifferent_access)
+    end
+
+    after do
+      Apipie.configuration.process_params = false
+    end
+  end
 end

@@ -263,6 +263,9 @@ required
 allow_nil
   Set true is ``nil`` can be passed for this param.
 
+as
+  Use by the processing functionality to change the name of a key params.
+
 meta
   Hash or array with custom metadata.
 
@@ -503,6 +506,10 @@ validate_value
 validate_presence
   Check the params presence against the documentation.
 
+process_params
+  Process and extract parameter defined from the params of the request
+  to the api_params variable
+
 app_info
   Application long description.
 
@@ -566,6 +573,34 @@ Example:
      end
    end
 
+
+============
+ Processing
+============
+
+The goal is to extract and pre process parameters of the request.
+
+For example Rails, by default, transforms empty array to nil value,
+you want perhaps to transform it again to an empty array. Or you
+want to support an enumeration type (comma separated values) and
+you want automatically transform this string to an array.
+
+To use it, set processing_value configuration variable to true.
+In your action, use api_params variable instead of params.
+
+Also by using `as` you can separate your API parameters
+names from the names you are using inside your code.
+
+To implement it, you just have to write a process_value
+function in your validator:
+
+For an enumeration type:
+
+.. code:: ruby
+
+   def process_value(value)
+    value ? value.split(',') : []
+   end
 
 ============
  Validators

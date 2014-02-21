@@ -241,6 +241,16 @@ module Apipie
         return true
       end
 
+      def process_value(value)
+        if @hash_params && value
+          return @hash_params.each_with_object({}) do |(key, param), api_params|
+            if value.has_key?(key)
+              api_params[param.as] = param.process_value(value[key])
+            end
+          end
+        end
+      end
+
       def description
         "Must be a Hash"
       end
