@@ -9,6 +9,7 @@ module Apipie
   class ParamDescription
 
     attr_reader :method_description, :name, :desc, :allow_nil, :validator, :options, :metadata, :show, :as
+    attr_accessor :parent, :required
 
     def self.from_dsl_data(method_description, args)
       param_name, validator, desc_or_options, options, block = args

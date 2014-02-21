@@ -6,8 +6,7 @@ module Apipie
   module DSL
 
     module Base
-      attr_reader :apipie_resource_descriptions
-      attr_reader :api_params
+      attr_reader :apipie_resource_descriptions, :api_params
 
       private
 
