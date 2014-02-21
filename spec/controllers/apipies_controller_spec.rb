@@ -106,6 +106,35 @@ describe Apipie::ApipiesController do
     end
   end
 
+  describe "authorize document" do
+    it "if an authroize method is set" do
+      test = false
+      Apipie.configuration.is_authorized = Proc.new do |controller, method, doc|
+        test = true
+        true
+      end
+      get :index
+      test.should == true
+    end
+    it "remove all resources" do
+      Apipie.configuration.is_authorized = Proc.new do |&args|
+        false
+      end
+      get :index
+      assigns(:doc)[:resources].should == {}
+    end
+    it "remove all methods" do
+      Apipie.configuration.is_authorized = Proc.new do |controller, method, doc|
+        !method
+      end
+      get :index
+      pp assigns(:doc)
+      assigns(:doc)[:resources]["concern_resources"][:methods].should == []
+      assigns(:doc)[:resources]["twitter_example"][:methods].should == []
+      assigns(:doc)[:resources]["users"][:methods].should == []
+    end
+  end
+
   describe "documentation cache" do
 
     let(:cache_dir) { File.join(Rails.root, "tmp", "apipie-cache") }

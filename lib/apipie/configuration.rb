@@ -5,12 +5,13 @@ module Apipie
       :api_base_url, :doc_base_url, :required_by_default, :layout,
       :default_version, :debug, :version_in_url, :namespaced_resources,
       :validate, :validate_value, :validate_presence, :authenticate, :doc_path,
-      :show_all_examples
+      :show_all_examples, :is_authorized
 
 
     alias_method :validate?, :validate
     alias_method :required_by_default?, :required_by_default
     alias_method :namespaced_resources?, :namespaced_resources
+    alias_method :authorized?, :is_authorized
 
     # matcher to be used in Dir.glob to find controllers to be reloaded e.g.
     #
@@ -125,6 +126,7 @@ module Apipie
       @version_in_url = true
       @namespaced_resources = false
       @doc_path = "doc"
+      @is_authorized = ->(controller, method, document) { true }
     end
   end
 end
