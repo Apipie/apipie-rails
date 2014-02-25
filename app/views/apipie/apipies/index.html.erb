@@ -38,6 +38,6 @@
   </table>
 <% end %>
 
-<% content_for :apipie_footer do %>
-  <%= raw @doc[:copyright] %>
+<% unless content_for(:apipie_footer) == @doc[:copyright] %>
+  <%= provide :apipie_footer, raw(@doc[:copyright]) %>
 <% end %>
