@@ -62,6 +62,9 @@ module Apipie
       end
     end
 
+    def apipie_checksum
+    end
+
     private
 
     def get_format
