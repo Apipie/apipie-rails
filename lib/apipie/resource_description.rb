@@ -38,17 +38,19 @@ module Apipie
       @_errors_args = dsl_data[:errors]
       @_params_args = dsl_data[:params]
       @_metadata = dsl_data[:meta]
+      @_api_base_url = dsl_data[:api_base_url]
 
       if dsl_data[:app_info]
         Apipie.configuration.app_info[_version] = dsl_data[:app_info]
-      end
-      if dsl_data[:api_base_url]
-        Apipie.configuration.api_base_url[_version] = dsl_data[:api_base_url]
       end
     end
 
     def _version
       @_version || @_parent.try(:_version) || Apipie.configuration.default_version
+    end
+
+    def _api_base_url
+      @_api_base_url || @_parent.try(:_api_base_url) || Apipie.api_base_url(_version)
     end
 
     def add_method_description(method_description)

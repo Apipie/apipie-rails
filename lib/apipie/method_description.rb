@@ -103,7 +103,7 @@ module Apipie
     end
 
     def create_api_url(api)
-      path = "#{Apipie.api_base_url(@resource._version)}#{api.path}"
+      path = "#{@resource._api_base_url}#{api.path}"
       path = path[0..-2] if path[-1..-1] == '/'
       return path
     end
