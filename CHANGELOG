@@ -2,6 +2,23 @@
  Changelog
 ===========
 
+v0.1.0
+------
+
+* middleware for computing Apipie checksum for [dynamic bindings](https://github.com/Apipie/apipie-bindings) [#215](https://github.com/Apipie/apipie-rails/pull/215) [@mbacovsky][]
+* `api_base_url` inherited properly [#214](https://github.com/Apipie/apipie-rails/pull/214) [@mbacovsky][]
+* ability to hide specific parameters [#208](https://github.com/Apipie/apipie-rails/pull/208) [@nathanhoel][]
+* fix for SafeYAML compatibility [#207](https://github.com/Apipie/apipie-rails/pull/207) [@pivotalshiny][]
+* option to show all examples in the documentation [#203](https://github.com/Apipie/apipie-rails/pull/203) [@pivotalshiny][]
+* support for array of hashes validation [#189](https://github.com/Apipie/apipie-rails/pull/189) [@mtparet][]
+* support for saving the values based on documentation into `@api_params` variable [#188](https://github.com/Apipie/apipie-rails/pull/188) [@mtparet][]
+* support for json generated from rake task `rake apipie:static_json` [#186](https://github.com/Apipie/apipie-rails/pull/186) [@mtparet][]
+* fix `undefined method 'has_key?' for nil:NilClass` when validating Hash against non-hash value [#185](https://github.com/Apipie/apipie-rails/pull/185) [@mtparet][]
+* fix NoMethorError when validating Hash against non-hash value  [#183](https://github.com/Apipie/apipie-rails/pull/183) [@nathanhoel][]
+* support for metadata for params [#181](https://github.com/Apipie/apipie-rails/pull/181) [@tstrachota][]
+* fix camelization of class names [#170](https://github.com/Apipie/apipie-rails/pull/170) [@yonpols][]
+* new array class validator [#169](https://github.com/Apipie/apipie-rails/pull/169) [@mkrajewski][]
+
 v0.0.24
 -------
 
@@ -70,3 +87,11 @@ v0.0.15
   start
 * Fix handling bad requests when cache is on
 * Fix params extractor in case there is already some documentation
+
+[@mbacovsky]: https://github.com/mbacovsky
+[@tstrachota]: https://github.com/tstrachota
+[@nathanhoel]: https://github.com/nathanhoel
+[@pivotalshiny]: https://github.com/pivotalshiny
+[@mtparet]: https://github.com/mtparet
+[@yonpols]: https://github.com/yonpols
+[@mkrajewski]: https://github.com/mkrajewski
