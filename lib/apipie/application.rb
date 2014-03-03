@@ -1,5 +1,7 @@
 require 'apipie/static_dispatcher'
 require 'yaml'
+require 'digest/md5'
+require 'json'
 
 module Apipie
 
@@ -264,6 +266,18 @@ module Apipie
       api_controllers_paths.each do |f|
         load_controller_from_file f
       end
+      @checksum = compute_checksum if Apipie.configuration.update_checksum
+    end
+
+    def compute_checksum
+      all_docs = Apipie.available_versions.inject({}) do |all, version|
+        all.update(version => Apipie.to_json(version))
+      end
+      Digest::MD5.hexdigest(JSON.dump(all_docs))
+    end
+
+    def checksum
+      @checksum ||= compute_checksum
     end
 
     # Is there a reason to interpret the DSL for this run?
