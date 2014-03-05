@@ -1,6 +1,6 @@
 <ul class='breadcrumb'>
   <li>
-    <a href='<%= @doc[:doc_url] %>.html'><%= @doc[:name] %> <%= @resource[:version] %></a>
+    <a href='<%= @doc[:doc_url] %><%= @doc[:link_extension] %>'><%= @doc[:name] %> <%= @resource[:version] %></a>
     <span class='divider'>/</span>
   </li>
   <li class='active'>
@@ -36,7 +36,7 @@
   <% @resource[:methods].each do |m| %>
     <hr>
     <div class='pull-right small'>
-      <a href='<%= m[:doc_url] %>.html'> >>> </a>
+      <a href='<%= m[:doc_url] %><%= @doc[:link_extension] %>'> >>> </a>
     </div>
     <div>
       <% m[:apis].each do |api| %>
@@ -53,7 +53,7 @@
     </div>
 
     <% unless m[:see].empty? %>
-      Also see <%= m[:see].map { |s| link_to(s[:description], "#{s[:link]}.html") }.to_sentence.html_safe %>.
+      Also see <%= m[:see].map { |s| link_to(s[:description], "#{s[:link]}#{@doc[:link_extension]}") }.to_sentence.html_safe %>.
     <% end %>
 
     <div id='description-<%= m[:name] %>' class='collapse accordion-body'>

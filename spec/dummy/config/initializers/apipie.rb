@@ -64,6 +64,10 @@ Apipie.configure do |config|
   # specify disqus site shortname to show discusion on each page
   # to show it in custom layout, use `render 'disqus' if Apipie.configuration.use_disqus?`
   # config.disqus_shortname = 'paveltest'
+
+  # Hide '.html' extensions.  Note that '.html' extensions are forced
+  # when generating static documentation
+  # config.link_extension = ""
 end
 
 

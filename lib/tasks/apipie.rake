@@ -25,6 +25,7 @@ namespace :apipie do
       Apipie.configuration.version_in_url = false
       Apipie.url_prefix = "./#{subdir}"
       doc = Apipie.to_json(args[:version])
+      doc[:docs][:link_extension] = '.html'
       generate_one_page(out, doc)
       generate_plain_page(out, doc)
       generate_index_page(out, doc)

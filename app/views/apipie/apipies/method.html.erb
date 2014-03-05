@@ -1,10 +1,10 @@
 <ul class='breadcrumb'>
   <li>
-    <a href='<%= @doc[:doc_url] %>.html'><%= @doc[:name] %> <%= @resource[:version] %></a>
+    <a href='<%= @doc[:doc_url] %><%= @doc[:link_extension] %>'><%= @doc[:name] %> <%= @resource[:version] %></a>
     <span class='divider'>/</span>
   </li>
   <li>
-    <a href='<%= @resource[:doc_url] %>.html'>
+    <a href='<%= @resource[:doc_url] %><%= @doc[:link_extension] %>'>
       <%= @resource[:name] %>
       <% if @resource[:version] %><% end %>
     </a>
@@ -24,7 +24,7 @@
 
 <div>
   <% unless @method[:see].empty? %>
-    Also see <%= @method[:see].map { |s| link_to(s[:description], "#{s[:link]}.html") }.to_sentence.html_safe %>.
+    Also see <%= @method[:see].map { |s| link_to(s[:description], "#{s[:link]}#{@doc[:link_extension]}") }.to_sentence.html_safe %>.
   <% end %>
 
   <%= render(:partial => "method_detail", :locals => {:method => @method, :h_level => 2}) %>

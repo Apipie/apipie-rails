@@ -549,6 +549,10 @@ authenticate
 show_all_examples
   Set this to true to set show_in_doc=1 in all recorded examples
 
+link_extension
+  The extension to use for API pages ('.html' by default).  Link extensions
+  in static API docs cannot be changed from '.html'. 
+
 Example:
 
 .. code:: ruby

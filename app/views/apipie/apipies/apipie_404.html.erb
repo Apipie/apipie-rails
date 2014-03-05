@@ -10,5 +10,5 @@
 </h1>
 
 <% if @doc %>
-  Try going to <a href='<%= @doc[:doc_url] %>.html'><%= @doc[:name] %> API documentation homepage</a>
+  Try going to <a href='<%= @doc[:doc_url] %><%= @doc[:link_extension] %>'><%= @doc[:name] %> API documentation homepage</a>
 <% end %>
