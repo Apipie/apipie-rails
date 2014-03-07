@@ -266,12 +266,21 @@ module Apipie
       api_controllers_paths.each do |f|
         load_controller_from_file f
       end
-      @checksum = compute_checksum if Apipie.configuration.update_checksum
+      @checksum = nil if Apipie.configuration.update_checksum
     end
 
     def compute_checksum
-      all_docs = Apipie.available_versions.inject({}) do |all, version|
-        all.update(version => Apipie.to_json(version))
+      if Apipie.configuration.use_cache?
+        file_base = File.join(Apipie.configuration.cache_dir, Apipie.configuration.doc_base_url)
+        all_docs = {}
+        Dir.glob(file_base + '/*.json').sort.each do |f|
+          all_docs[File.basename(f, '.json')] = JSON.parse(File.read(f))
+        end
+      else
+        reload_documentation if available_versions == []
+        all_docs = Apipie.available_versions.inject({}) do |all, version|
+          all.update(version => Apipie.to_json(version))
+        end
       end
       Digest::MD5.hexdigest(JSON.dump(all_docs))
     end
