@@ -264,7 +264,8 @@ describe UsersController do
         end
         context "with bad input" do
           it "should raise an error" do
-            expect{ put :update,
+            expect{
+              put :update,
                 {
                   :id => 5,
                   :user => {
@@ -276,7 +277,7 @@ describe UsersController do
                       :comment => 'comment1'
                     },
                     {
-                      :comment => {bad_input: 5}
+                      :comment => {:bad_input => 5}
                     }
                   ]
                 }
