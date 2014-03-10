@@ -912,14 +912,12 @@ And in your apipie initializer allow checksum calculation
 
    Apipie.configuration.update_checksum = true
 
-and make sure your documentation is loaded.
-
-.. code::
-
-   Apipie.reload_documentation
 
 By default the header is added to responses for ``config.doc_base_url`` and ``/api``.
 It can be changed in configuration (see `Configuration Reference`_ for details).
+
+The checksum calculation is lazy, done with first request. If you run with ``use_cache = true``,
+do not forget to run the rake task ``apipie:cache``.
 
 
 ===================
