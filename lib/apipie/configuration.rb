@@ -5,7 +5,8 @@ module Apipie
       :api_base_url, :doc_base_url, :required_by_default, :layout,
       :default_version, :debug, :version_in_url, :namespaced_resources,
       :validate, :validate_value, :validate_presence, :authenticate, :doc_path,
-      :show_all_examples, :process_params, :update_checksum, :checksum_path
+      :show_all_examples, :process_params, :update_checksum, :checksum_path,
+      :link_extension
 
     alias_method :validate?, :validate
     alias_method :required_by_default?, :required_by_default
@@ -130,6 +131,7 @@ module Apipie
       @process_params = false
       @checksum_path = [@doc_base_url, '/api/']
       @update_checksum = false
+      @link_extension = ".html"
     end
   end
 end
