@@ -2,6 +2,14 @@
  Changelog
 ===========
 
+v0.1.1
+------
+
+* backward compatibility with Ruby 1.8 [#218](https://github.com/Apipie/apipie-rails/pull/218) [@mbacovsky][]
+* checksum calculation is lazy and respect use_cache config [#220](https://github.com/Apipie/apipie-rails/pull/220) [@mbacovsky][]
+* fix generating the cache in production environment [#223](https://github.com/Apipie/apipie-rails/pull/223) [@iNecas][]
+* fix loading regression with SafeYAML [#224](https://github.com/Apipie/apipie-rails/pull/224) [@iNecas][]
+
 v0.1.0
 ------
 
@@ -95,3 +103,4 @@ v0.0.15
 [@mtparet]: https://github.com/mtparet
 [@yonpols]: https://github.com/yonpols
 [@mkrajewski]: https://github.com/mkrajewski
+[@iNecas]: https://github.com/iNecas
