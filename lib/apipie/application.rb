@@ -259,9 +259,13 @@ module Apipie
     end
 
     def reload_documentation
-      rails_mark_classes_for_reload
-      init_env
-      reload_examples
+      if rails_mark_classes_for_reload
+        # if we are not able to mark classes for reload, we
+        # can't reinit the env, as we would loose the data that were
+        # already loaded
+        init_env
+        reload_examples
+      end
 
       api_controllers_paths.each do |f|
         load_controller_from_file f
@@ -350,9 +354,15 @@ module Apipie
     # docs, therefore we just force to reload all the code. This
     # happens only when reload_controllers is set to true and only
     # when showing the documentation.
+    #
+    # If cache_classes is set to false, it does nothing,
+    # as this would break loading of the controllers.
     def rails_mark_classes_for_reload
-      ActiveSupport::DescendantsTracker.clear
-      ActiveSupport::Dependencies.clear
+      unless Rails.application.config.cache_classes
+        ActiveSupport::DescendantsTracker.clear
+        ActiveSupport::Dependencies.clear
+        return true
+      end
     end
 
   end
