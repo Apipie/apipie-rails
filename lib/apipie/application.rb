@@ -211,7 +211,7 @@ module Apipie
       if File.exists?(tape_file)
         #if SafeYAML gem is enabled, it will load examples as an array of Hash, instead of hash
         if YAML.respond_to?(:safe_load_file) && defined?(SafeYAML)
-          @recorded_examples = SafeYAML.load_file(tape_file, :safe=>false)
+          @recorded_examples = YAML.load_file(tape_file, :safe=>false)
         else
           @recorded_examples = YAML.load_file(tape_file)
         end
