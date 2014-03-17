@@ -22,6 +22,11 @@ module Apipie
     # properly.
     attr_writer :reload_controllers
 
+    # specify routes if used router differ from default e.g.
+    #
+    # Api::Engine.routes
+    attr_accessor :api_routes
+
     def reload_controllers?
       @reload_controllers = Rails.env.development? unless defined? @reload_controllers
       return @reload_controllers && @api_controllers_matcher
@@ -108,6 +113,10 @@ module Apipie
     def api_base_url=(url)
       version = Apipie.configuration.default_version
       @api_base_url[version] = url
+    end
+
+    def api_routes
+      @api_routes || Rails.application.routes
     end
 
     def initialize
