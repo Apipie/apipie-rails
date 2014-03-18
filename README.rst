@@ -519,6 +519,9 @@ reload_controllers
 api_controllers_matcher
   For reloading to work properly you need to specify where your API controllers are. Can be an array if multiple paths are needed
 
+api_routes
+  Set if your application uses custom API router, different from Rails default
+
 markup
   You can choose markup language for descriptions of your application,
   resources and methods. RDoc is the default but you can choose from
@@ -566,6 +569,7 @@ Example:
      config.markup = Apipie::Markup::Markdown.new
      config.reload_controllers = Rails.env.development?
      config.api_controllers_matcher = File.join(Rails.root, "app", "controllers", "**","*.rb")
+     config.api_routes = Rails.application.routes
      config.app_info = "
        This is where you can inform user about your application and API
        in general.

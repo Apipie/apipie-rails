@@ -13,7 +13,7 @@ module Apipie
       end
 
       def controller_full_path(controller)
-        File.join(Rails.root, "app", "controllers", "#{controller.controller_path}_controller.rb")
+        Apipie::Extractor.controller_path controller.controller_path
       end
 
       def ignore_call?(record)
