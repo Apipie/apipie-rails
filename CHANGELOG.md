@@ -2,6 +2,14 @@
  Changelog
 ===========
 
+v0.1.2
+------
+
+* reloading works correctly with to_prepare blocks in the app
+  [#228](https://github.com/Apipie/apipie-rails/pull/228) [@iNecas][]
+* documentation bootstrapping now respects api_controllers_matcher
+  [#227](https://github.com/Apipie/apipie-rails/pull/227) [@clamoris][]
+
 v0.1.1
 ------
 
@@ -104,3 +112,4 @@ v0.0.15
 [@yonpols]: https://github.com/yonpols
 [@mkrajewski]: https://github.com/mkrajewski
 [@iNecas]: https://github.com/iNecas
+[@clamoris]: https://github.com/clamoris
