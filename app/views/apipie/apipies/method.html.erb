@@ -31,5 +31,5 @@
 </div>
 
 <% unless content_for(:apipie_footer) == @doc[:copyright] %>
-  <%= provide :apipie_footer, raw(@doc[:copyright]) %>
+  <%= content_for :apipie_footer, raw(@doc[:copyright]) %>
 <% end %>
