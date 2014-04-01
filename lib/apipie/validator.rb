@@ -70,6 +70,10 @@ module Apipie
         raise NotImplementedError, "Dont know how to merge #{self.inspect} with #{other_validator.inspect}"
       end
 
+      def params_ordered
+        nil
+      end
+
     end
 
     # validate arguments type
@@ -218,8 +222,8 @@ module Apipie
         prepare_hash_params
       end
 
-      def hash_params_ordered
-        @hash_params_ordered ||= _apipie_dsl_data[:params].map do |args|
+      def params_ordered
+        @params_ordered ||= _apipie_dsl_data[:params].map do |args|
           options = args.find { |arg| arg.is_a? Hash }
           options[:parent] = self.param_description
           Apipie::ParamDescription.from_dsl_data(param_description.method_description, args)
@@ -267,7 +271,7 @@ module Apipie
 
       def merge_with(other_validator)
         if other_validator.is_a? HashValidator
-          @hash_params_ordered = ParamDescription.unify(self.hash_params_ordered + other_validator.hash_params_ordered)
+          @params_ordered = ParamDescription.unify(self.params_ordered + other_validator.params_ordered)
           prepare_hash_params
         else
           super
@@ -275,7 +279,7 @@ module Apipie
       end
 
       def prepare_hash_params
-        @hash_params = hash_params_ordered.reduce({}) do |h, param|
+        @hash_params = params_ordered.reduce({}) do |h, param|
           h.update(param.name.to_sym => param)
         end
       end
@@ -372,6 +376,10 @@ module Apipie
 
       def description
         "Must be an Array of nested elements"
+      end
+
+      def params_ordered
+        @validator.params_ordered
       end
     end
 

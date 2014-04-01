@@ -34,7 +34,7 @@ describe ConcernsController do
 
   it "replaces placeholders in param names and descriptions" do
     create_desc = Apipie["concern_resources#create"].params[:user]
-    name_param, concern_type_param = create_desc.validator.hash_params_ordered
+    name_param, concern_type_param = create_desc.validator.params_ordered
     name_param.desc.should include "Name of a user"
     concern_type_param.name.should == :user_type
   end

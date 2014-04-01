@@ -100,32 +100,19 @@ module Apipie
     end
 
     def to_json
-      if validator.is_a? Apipie::Validator::HashValidator
-        {
-          :name => name.to_s,
-          :full_name => full_name,
-          :description => desc,
-          :required => required,
-          :allow_nil => allow_nil,
-          :validator => validator.to_s,
-          :expected_type => validator.expected_type,
-          :metadata => metadata,
-          :show => show,
-          :params => validator.hash_params_ordered.map(&:to_json)
-        }
-      else
-        {
-          :name => name.to_s,
-          :full_name => full_name,
-          :description => desc,
-          :required => required,
-          :allow_nil => allow_nil,
-          :validator => validator.to_s,
-          :metadata => metadata,
-          :show => show,
-          :expected_type => validator.expected_type
-        }
+      hash = { :name => name.to_s,
+               :full_name => full_name,
+               :description => desc,
+               :required => required,
+               :allow_nil => allow_nil,
+               :validator => validator.to_s,
+               :expected_type => validator.expected_type,
+               :metadata => metadata,
+               :show => show }
+      if sub_params = validator.params_ordered
+        hash[:params] = sub_params.map(&:to_json)
       end
+      hash
     end
 
     def merge_with(other_param_desc)
