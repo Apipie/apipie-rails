@@ -174,7 +174,7 @@ describe Apipie::ParamDescription do
 
   describe "required params in action aware validator" do
 
-    subject { method_description.params[:user].validator.hash_params_ordered }
+    subject { method_description.params[:user].validator.params_ordered }
 
     let(:required) do
       subject.find_all(&:required).map(&:name)
@@ -239,6 +239,58 @@ describe Apipie::ParamDescription do
     end
   end
 
+
+  describe 'sub params' do
+
+    context 'with HashValidator' do
+
+      subject do
+        Apipie::ParamDescription.new(method_desc, :param, Hash) do
+          param :answer, Fixnum
+        end
+      end
+
+      it "should include the nested params in the json" do
+        sub_params = subject.to_json[:params]
+        sub_params.size.should == 1
+        sub_param = sub_params.first
+        sub_param[:name].should == "answer"
+        sub_param[:full_name].should == "param[answer]"
+      end
+
+    end
+
+    context 'with NestedValidator' do
+
+      subject do
+        Apipie::ParamDescription.new(method_desc, :param, Array) do
+          param :answer, Fixnum
+        end
+      end
+
+      it "should include the nested params in the json" do
+        sub_params = subject.to_json[:params]
+        sub_params.size.should == 1
+        sub_param = sub_params.first
+        sub_param[:name].should == "answer"
+        sub_param[:full_name].should == "param[answer]"
+      end
+
+    end
+
+    context 'with flat validator' do
+
+      subject do
+        Apipie::ParamDescription.new(method_desc, :param, String)
+      end
+
+      it "should include the nested params in the json" do
+        subject.to_json[:params].should be_nil
+      end
+
+    end
+
+  end
 
   describe "Array with classes" do
     it "should be valid for objects included in class array" do
