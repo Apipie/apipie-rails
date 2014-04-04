@@ -2,6 +2,12 @@
  Changelog
 ===========
 
+v0.1.3
+------
+
+* nested attributes showing in the documentation
+  [#230](https://github.com/Apipie/apipie-rails/pull/230) [@iNecas][]
+
 v0.1.2
 ------
 
