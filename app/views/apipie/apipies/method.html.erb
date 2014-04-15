@@ -11,6 +11,8 @@
     <span class='divider'>/</span>
   </li>
   <li class='active'><%= @method[:name] %></li>
+  <%= render(:partial => "languages", :locals => {:doc_url => @method[:doc_url]}) %>
+
 </ul>
 
 <% @method[:apis].each do |api| %>

@@ -45,14 +45,14 @@
       <div>
         <%= raw method[:full_description] %>
         <% unless method[:examples].blank? %>
-          <h4>Examples</h4>
+          <h4><%= t('apipie.examples') %></h4>
           <% method[:examples].each do |example| %>
             <pre class="wiki"><%= example %></pre>
           <% end %>
         <% end %>
 
         <% unless method[:errors].blank? %>
-          <h4>Errors</h4>
+          <h4><%= t('apipie.errors') %></h4>
           <% method[:errors].each do |err| %>
             <%= err[:code] %>
             <%= err[:description] %>
@@ -62,7 +62,7 @@
         <% end %>
 
         <% unless method[:params].blank? %>
-          <h4>Params</h4>
+          <h4><%= t('apipie.params') %></h4>
           <%= render(:partial => "params_plain", :locals => {:params => method[:params]}) %>
         <% end %>
       </div>

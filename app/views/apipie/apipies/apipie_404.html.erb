@@ -1,14 +1,17 @@
 <h1 class='page-header'>
-  Oops!
+  <%= t('apipie.oops') %>
   <small>
   <% if @resource == 'null' %>
-    Resource <code><%= params[:resource] %></code> not found.
+    <%= t('apipie.resource_not_found_html', :resource => "<code>#{params[:resource]}</code>") %>
   <% else %>
-    Method <code><%= params[:method] %></code> not found for resource <code><%= params[:resource] %></code>.
+    <%= t('apipie.method_not_found_html', :resource => "<code>#{params[:resource]}</code>",
+        :method => "<code>#{params[:resource]}</code>" %>
   <% end %>
   </small>
 </h1>
 
 <% if @doc %>
-  Try going to <a href='<%= @doc[:doc_url] %><%= @doc[:link_extension] %>'><%= @doc[:name] %> API documentation homepage</a>
+  <%= t('apipie.goto_homepage_html', :href = link_to(
+    t('apipie.goto_homepage_href', :app_name => @doc[:name]),
+    File.join(@doc[:doc_url], @doc[:link_extension]))) %>
 <% end %>

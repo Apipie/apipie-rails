@@ -1,3 +1,4 @@
+require 'i18n'
 require "apipie/routing"
 require "apipie/markup"
 require "apipie/apipie_module"

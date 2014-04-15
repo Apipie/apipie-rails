@@ -24,8 +24,11 @@ module Apipie
           return
         end
 
+        @language = get_language
+
         Apipie.reload_documentation if Apipie.configuration.reload_controllers?
-        @doc = Apipie.to_json(params[:version], params[:resource], params[:method])
+        I18n.locale = @language
+        @doc = Apipie.to_json(params[:version], params[:resource], params[:method], @language)
 
         format.json do
           if @doc
@@ -43,12 +46,13 @@ module Apipie
 
           @versions = Apipie.available_versions
           @doc = @doc[:docs]
-          @doc[:link_extension] = Apipie.configuration.link_extension
+          @doc[:link_extension] = (@language ? ".#{@language}" : '')+Apipie.configuration.link_extension
           if @doc[:resources].blank?
             render "getting_started" and return
           end
           @resource = @doc[:resources].first if params[:resource].present?
           @method = @resource[:methods].first if params[:method].present?
+          @languages = Apipie.configuration.languages
 
           if @resource && @method
             render 'method'
@@ -68,20 +72,34 @@ module Apipie
 
     private
 
+    def get_language
+      lang = nil
+      [:resource, :method, :version].each do |par|
+        if params[par]
+          splitted = params[par].split('.')
+          if splitted.length > 1 && Apipie.configuration.languages.include?(splitted.last)
+            lang = splitted.last
+            params[par].sub!(".#{lang}", '')
+          end
+        end
+      end
+      lang
+    end
+
     def get_format
-      params[:format] = :html unless params[:version].sub!('.html', '').nil?
-      params[:format] = :json unless params[:version].sub!('.json', '').nil?
+      [:resource, :method, :version].each do |par|
+        if params[par]
+          params[:format] = :html unless params[par].sub!('.html', '').nil?
+          params[:format] = :json unless params[par].sub!('.json', '').nil?
+        end
+      end
       request.format = params[:format] if params[:format]
     end
 
     def render_from_cache
       path = Apipie.configuration.doc_base_url.dup
-      if [:resource, :method, :format].any? { |p| params[p].to_s =~ /\W/ }
-        head :bad_request and return
-      end
-      # version can contain dot, but only one in row
-      if params[:version].to_s.gsub(".", "") =~ /\W/ ||
-        params[:version].to_s =~ /\.\./
+      # some params can contain dot, but only one in row
+      if [:resource, :method, :format, :version].any? { |p| params[p].to_s.gsub(".", "") =~ /\W/ || params[p].to_s =~ /\.\./ }
         head :bad_request and return
       end
 

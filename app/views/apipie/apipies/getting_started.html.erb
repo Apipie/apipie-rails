@@ -1,4 +1,6 @@
-<h1 class='page-header'>No documentation found</h1>
-<p>We have not found any documentation for your API.</p>
-<p>Follow <a href="https://github.com/Pajk/apipie-rails#getting-started" target="_blank">further instructions</a> on how to describe your controllers.</p>
+<h1 class='page-header'><%= t('apipie.no_doc_found') %></h1>
+<p><%= t('apipie.no_docs_found_descr') %></p>
+<p><%= t('apipie.follow_instructions_html',
+    :href => link_to(t('apipie.follow_instructions_href'),
+        "https://github.com/Pajk/apipie-rails#getting-started", :target => "_blank")) %></p>
 

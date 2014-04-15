@@ -108,12 +108,12 @@ module Apipie
       return path
     end
 
-    def method_apis_to_json
+    def method_apis_to_json(lang = nil)
       @apis.each.collect do |api|
         {
           :api_url => create_api_url(api),
           :http_method => api.http_method.to_s,
-          :short_description => api.short_description
+          :short_description => Apipie.app.translate(api.short_description, lang)
         }
       end
     end
@@ -126,15 +126,15 @@ module Apipie
       @formats || @resource._formats
     end
 
-    def to_json
+    def to_json(lang=nil)
       {
         :doc_url => doc_url,
         :name => @method,
-        :apis => method_apis_to_json,
+        :apis => method_apis_to_json(lang),
         :formats => formats,
-        :full_description => @full_description,
+        :full_description => Apipie.app.translate(@full_description, lang),
         :errors => errors.map(&:to_json),
-        :params => params_ordered.map(&:to_json).flatten,
+        :params => params_ordered.map{ |param| param.to_json(lang) }.flatten,
         :examples => @examples,
         :metadata => @metadata,
         :see => see.map(&:to_json)
