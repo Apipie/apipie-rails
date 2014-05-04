@@ -89,8 +89,10 @@ module Apipie
         end
 
         def call(env)
-          analyze(env) do
-            @app.call(env)
+          if Apipie.configuration.record
+            analyze(env) do
+              @app.call(env)
+            end
           end
         end
 
@@ -112,15 +114,15 @@ module Apipie
 
         def process_with_api_recording(*args) # action, parameters = nil, session = nil, flash = nil, http_method = 'GET')
           ret = process_without_api_recording(*args)
-          Apipie::Extractor.call_recorder.analyze_functional_test(self)
-          Apipie::Extractor.call_finished
+          if Apipie.configuration.record
+            Apipie::Extractor.call_recorder.analyze_functional_test(self)
+            Apipie::Extractor.call_finished
+          end
           ret
         ensure
           Apipie::Extractor.clean_call_recorder
         end
       end
-
     end
-
   end
 end

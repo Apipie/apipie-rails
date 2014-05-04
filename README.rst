@@ -554,7 +554,7 @@ show_all_examples
 
 link_extension
   The extension to use for API pages ('.html' by default).  Link extensions
-  in static API docs cannot be changed from '.html'. 
+  in static API docs cannot be changed from '.html'.
 
 Example:
 
@@ -940,7 +940,7 @@ of information is already included in this tests, it just needs to be
 extracted somehow. Luckily, Apipie provides such a feature.
 
 When running the tests, set the ``APIPIE_RECORD=params`` environment
-variable. You can either use it with functional tests
+variable or call ``Apipie.record('params')`` from specs starter. You can either use it with functional tests
 
 .. code::
 
@@ -962,7 +962,7 @@ Examples Recording
 
 You can also use the tests to generate up-to-date examples for your
 code. Similarly to the bootstrapping, you can use it with functional
-tests or a running server, setting ``APIPIE_RECORD=examples``
+tests or a running server, setting ``APIPIE_RECORD=examples`` or by calling ``Apipie.record('examples')`` in your specs starter.
 
 .. code::
 

@@ -59,4 +59,7 @@ module Apipie
     version && self.configuration.api_base_url.has_key?(version)
   end
 
+  def self.record(record)
+    Apipie::Extractor.start record
+  end
 end

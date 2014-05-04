@@ -7,17 +7,17 @@ require 'apipie/extractor/writer'
 require 'apipie/extractor/collector'
 
 class Apipie::Railtie
-  if ENV["APIPIE_RECORD"]
-    initializer 'apipie.extractor' do |app|
-      ActiveSupport.on_load :action_controller do
-        before_filter do |controller|
+  initializer 'apipie.extractor' do |app|
+    ActiveSupport.on_load :action_controller do
+      before_filter do |controller|
+        if Apipie.configuration.record
           Apipie::Extractor.call_recorder.analyse_controller(controller)
         end
       end
-      app.middleware.use ::Apipie::Extractor::Recorder::Middleware
-      ActionController::TestCase::Behavior.instance_eval do
-        include Apipie::Extractor::Recorder::FunctionalTestRecording
-      end
+    end
+    app.middleware.use ::Apipie::Extractor::Recorder::Middleware
+    ActionController::TestCase::Behavior.instance_eval do
+      include Apipie::Extractor::Recorder::FunctionalTestRecording
     end
   end
 end
@@ -27,6 +27,29 @@ module Apipie
   module Extractor
 
     class << self
+
+      def start(record)
+        Apipie.configuration.record = record
+        Apipie.configuration.force_dsl = true
+      end
+
+      def finish
+        record_params, record_examples = false, false
+        case Apipie.configuration.record
+        when "params"   then record_params = true
+        when "examples" then record_examples = true
+        when "all"      then record_params = true, record_examples = true
+        end
+
+        if record_examples
+          puts "Writing examples to a file"
+          write_examples
+        end
+        if record_params
+          puts "Updating auto-generated documentation"
+          write_docs
+        end
+      end
 
       def logger
         Rails.logger
@@ -144,28 +167,14 @@ module Apipie
           end
         end
       end
-
     end
   end
 end
 
 if ENV["APIPIE_RECORD"]
-  Apipie.configuration.force_dsl = true
-  at_exit do
-    record_params, record_examples = false, false
-    case ENV["APIPIE_RECORD"]
-    when "params"   then record_params = true
-    when "examples" then record_examples = true
-    when "all"      then record_params = true, record_examples = true
-    end
+  Apipie::Extractor.start ENV["APIPIE_RECORD"]
+end
 
-    if record_examples
-      puts "Writing examples to a file"
-      Apipie::Extractor.write_examples
-    end
-    if record_params
-      puts "Updating auto-generated documentation"
-      Apipie::Extractor.write_docs
-    end
-  end
+at_exit do
+  Apipie::Extractor.finish
 end
