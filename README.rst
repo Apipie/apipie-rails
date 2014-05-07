@@ -556,6 +556,24 @@ link_extension
   The extension to use for API pages ('.html' by default).  Link extensions
   in static API docs cannot be changed from '.html'.
 
+languages
+  List of languages API documentation should be translated into. Empty list by default.
+
+default_locale
+  Locale used for generating documentation when no specific locale is set.
+  Set to 'en' by default.
+
+locale
+  Pass locale setter/getter
+
+.. code:: ruby
+
+    config.locale = lambda { |loc| loc ? FastGettext.set_locale(loc) : FastGettext.locale }
+
+translate
+  Pass proc to translate strings using localization library your project uses.
+  For example see `Localization`_
+
 Example:
 
 .. code:: ruby
@@ -862,6 +880,79 @@ For inspiration this is how Textile markup usage looks like:
        RedCloth.new(text).to_html
      end
    end
+
+============
+Localization
+============
+
+Apipie has support for localized API documentation in both formats (JSON and HTML).
+Apipie uses the library I18n for localization of itself.
+Check ``config/locales`` directory for available translation.
+
+Major part of strings in the documentation comes from the API.
+As prefferences about localization libraries differs among project, Apipie needs to know how to set locale for your project
+and how to translate a string using library your project use. That can be done using lambdas in configuration.
+
+Sample configuration when your project use FastGettext
+
+
+.. code:: ruby
+
+   Apipie.configure do |config|
+    ...
+    config.languages = ['en', 'cs']
+    config.default_locale = 'en'
+    config.locale = lambda { |loc| loc ? FastGettext.set_locale(loc) : FastGettext.locale }
+    config.translate = lambda do |str, loc|
+      old_loc = FastGettext.locale
+      FastGettext.set_locale(loc)
+      trans = _(str)
+      FastGettext.set_locale(old_loc)
+      trans
+    end
+   end
+
+And the strings in API documentation needs to be marked with the ``N_()`` function
+
+.. code:: ruby
+
+  api :GET, "/users/:id", N_("Show user profile")
+  param :session, String, :desc => N_("user is logged in"), :required => true
+
+
+
+When your project use I18n, localization related configuration could look like as follows
+
+.. code:: ruby
+
+   Apipie.configure do |config|
+    ...
+    config.languages = ['en', 'cs']
+    config.default_locale = 'en'
+    config.locale = lambda { |loc| loc ? I18n.locale = loc : I18n.locale }
+    config.translate = lambda do |str, loc|
+      old_loc = I18n.locale
+      I18n.locale = loc
+      trans = I18n.t(str)
+      I18n.locale = old_loc
+      trans
+    end
+   end
+
+And the strings in API documentation needs to be in the form of translation keys
+
+.. code:: ruby
+
+  api :GET, "/users/:id", "show_user_profile"
+  param :session, String, :desc => "user_is_logged_in", :required => true
+
+
+The localized versions of the documentation are distinguished by languge in the filename.
+E.g. ``doc/apidoc/apidoc.cs.html`` is static documentation in the Czech language.
+If the language is missing, e.g. ``doc/apidoc/apidoc.html``,
+the documentation is localized with the ``default_locale``.
+
+The dynamic documentation follows the same schema. The ``http://localhost:3000/apidoc/v1.cs.html`` is documentation for version '1' of the API in the Czech language. For JSON description of the API applies the same: ``http://localhost:3000/apidoc/v1.cs.json``
 
 
 ================
