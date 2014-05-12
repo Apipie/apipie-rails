@@ -93,6 +93,8 @@ module Apipie
             analyze(env) do
               @app.call(env)
             end
+          else
+            @app.call(env)
           end
         end
 
