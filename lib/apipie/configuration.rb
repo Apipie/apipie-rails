@@ -6,7 +6,7 @@ module Apipie
       :default_version, :debug, :version_in_url, :namespaced_resources,
       :validate, :validate_value, :validate_presence, :authenticate, :doc_path,
       :show_all_examples, :process_params, :update_checksum, :checksum_path,
-      :link_extension, :record
+      :link_extension, :record, :languages, :translate, :locale, :default_locale
 
     alias_method :validate?, :validate
     alias_method :required_by_default?, :required_by_default
@@ -142,6 +142,10 @@ module Apipie
       @update_checksum = false
       @link_extension = ".html"
       @record = false
+      @languages = []
+      @default_locale = 'en'
+      @locale = lambda { |locale| @default_locale }
+      @translate = lambda { |str, locale| str }
     end
   end
 end

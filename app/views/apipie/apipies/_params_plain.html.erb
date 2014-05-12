@@ -7,8 +7,8 @@
     <li>
       <strong><%= param[:name] %> </strong>:
       <small>
-        <%= param[:required] ? 'required' : 'optional' %>
-        <%= param[:allow_nil] ? ', nil allowed' : '' %>
+        <%= param[:required] ? t('apipie.required') : t('apipie.optional') %>
+        <%= param[:allow_nil] ? ', '+t('apipie.nil_allowed') : '' %>
         <% if param[:validator] %>
           [ <%= param[:validator] %> ]
         <% end %>

@@ -1,0 +1,6 @@
+<% if @languages && @languages.size > 1 %>
+<li class='pull-right'>
+  &nbsp;[ <%= @languages.collect { |lang| link = link_to(lang, "#{doc_url}.#{lang}.html");
+    lang==@language ? content_tag(:b, link) : link }.join(' | ').html_safe %> ]
+</li>
+<% end %>

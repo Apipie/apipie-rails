@@ -23,16 +23,19 @@ namespace :apipie do
       subdir = File.basename(out)
       copy_jscss(out)
       Apipie.configuration.version_in_url = false
-      Apipie.url_prefix = "./#{subdir}"
-      doc = Apipie.to_json(args[:version])
-      doc[:docs][:link_extension] = '.html'
-      generate_one_page(out, doc)
-      generate_plain_page(out, doc)
-      generate_index_page(out, doc)
-      Apipie.url_prefix = "../#{subdir}"
-      generate_resource_pages(args[:version], out, doc)
-      Apipie.url_prefix = "../../#{subdir}"
-      generate_method_pages(args[:version], out, doc)
+      ([nil] + Apipie.configuration.languages).each do |lang|
+        I18n.locale = lang || Apipie.configuration.default_locale
+        Apipie.url_prefix = "./#{subdir}"
+        doc = Apipie.to_json(args[:version], nil, nil, lang)
+        doc[:docs][:link_extension] = "#{lang_ext(lang)}.html"
+        generate_one_page(out, doc, lang)
+        generate_plain_page(out, doc, lang)
+        generate_index_page(out, doc, false, false, lang)
+        Apipie.url_prefix = "../#{subdir}"
+        generate_resource_pages(args[:version], out, doc, false, lang)
+        Apipie.url_prefix = "../../#{subdir}"
+        generate_method_pages(args[:version], out, doc, false, lang)
+      end
     end
   end
 
@@ -41,32 +44,43 @@ namespace :apipie do
     with_loaded_documentation do
       args.with_defaults(:version => Apipie.configuration.default_version)
       out = ENV["OUT"] || File.join(::Rails.root, 'doc', 'apidoc')
-      doc = Apipie.to_json(args[:version])
-      generate_json_page(out, doc)
+      ([nil] + Apipie.configuration.languages).each do |lang|
+        doc = Apipie.to_json(args[:version], nil, nil, lang)
+        generate_json_page(out, doc, lang)
+      end
     end
   end
 
   desc "Generate cache to avoid production dependencies on markup languages"
   task :cache => :environment do
+    puts "#{Time.now} | Started"
     with_loaded_documentation do
-      cache_dir = Apipie.configuration.cache_dir
-      subdir = Apipie.configuration.doc_base_url.sub(/\A\//,"")
+      puts "#{Time.now} | Documents loaded..."
+      ([nil] + Apipie.configuration.languages).each do |lang|
+        I18n.locale = lang || Apipie.configuration.default_locale
+        puts "#{Time.now} | Processing docs for #{lang}"
+        cache_dir = Apipie.configuration.cache_dir
+        subdir = Apipie.configuration.doc_base_url.sub(/\A\//,"")
 
-      file_base = File.join(cache_dir, Apipie.configuration.doc_base_url)
-      Apipie.url_prefix = "./#{subdir}"
-      doc = Apipie.to_json(Apipie.configuration.default_version)
-      generate_index_page(file_base, doc, true)
-      Apipie.available_versions.each do |version|
-        file_base_version = File.join(file_base, version)
-        Apipie.url_prefix = "../#{subdir}"
-        doc = Apipie.to_json(version)
-        generate_index_page(file_base_version, doc, true, true)
-        Apipie.url_prefix = "../../#{subdir}"
-        generate_resource_pages(version, file_base_version, doc, true)
-        Apipie.url_prefix = "../../../#{subdir}"
-        generate_method_pages(version, file_base_version, doc, true)
+        file_base = File.join(cache_dir, Apipie.configuration.doc_base_url)
+        Apipie.url_prefix = "./#{subdir}"
+        doc = Apipie.to_json(Apipie.configuration.default_version, nil, nil, lang)
+        doc[:docs][:link_extension] = (lang ? ".#{lang}.html" : ".html")
+        generate_index_page(file_base, doc, true, false, lang)
+        Apipie.available_versions.each do |version|
+          file_base_version = File.join(file_base, version)
+          Apipie.url_prefix = "../#{subdir}"
+          doc = Apipie.to_json(version, nil, nil, lang)
+          doc[:docs][:link_extension] = (lang ? ".#{lang}.html" : ".html")
+          generate_index_page(file_base_version, doc, true, true, lang)
+          Apipie.url_prefix = "../../#{subdir}"
+          generate_resource_pages(version, file_base_version, doc, true, lang)
+          Apipie.url_prefix = "../../../#{subdir}"
+          generate_method_pages(version, file_base_version, doc, true, lang)
+        end
       end
     end
+    puts "#{Time.now} | Finished"
   end
 
   # Attempt to use the Rails application views, otherwise default to built in views
@@ -94,57 +108,64 @@ namespace :apipie do
     end
   end
 
-  def generate_json_page(file_base, doc)
+  def generate_json_page(file_base, doc, lang = nil)
     FileUtils.mkdir_p(file_base) unless File.exists?(file_base)
 
-    filename = 'schema_apipie.json'
+    filename = "schema_apipie#{lang_ext(lang)}.json"
     File.open("#{file_base}/#{filename}", 'w') { |file| file.write(JSON.pretty_generate(doc)) }
   end
 
-  def generate_one_page(file_base, doc)
+  def generate_one_page(file_base, doc, lang = nil)
     FileUtils.mkdir_p(File.dirname(file_base)) unless File.exists?(File.dirname(file_base))
 
-    render_page("#{file_base}-onepage.html", "static", {:doc => doc[:docs]})
+    render_page("#{file_base}-onepage#{lang_ext(lang)}.html", "static", {:doc => doc[:docs],
+      :language => lang, :languages => Apipie.configuration.languages})
   end
 
-  def generate_plain_page(file_base, doc)
+  def generate_plain_page(file_base, doc, lang = nil)
     FileUtils.mkdir_p(File.dirname(file_base)) unless File.exists?(File.dirname(file_base))
 
-    render_page("#{file_base}-plain.html", "plain", {:doc => doc[:docs]}, nil)
+    render_page("#{file_base}-plain#{lang_ext(lang)}.html", "plain", {:doc => doc[:docs],
+      :language => lang, :languages => Apipie.configuration.languages}, nil)
   end
 
-  def generate_index_page(file_base, doc, include_json = false, show_versions = false)
+  def generate_index_page(file_base, doc, include_json = false, show_versions = false, lang = nil)
     FileUtils.mkdir_p(File.dirname(file_base)) unless File.exists?(File.dirname(file_base))
     versions = show_versions && Apipie.available_versions
-    render_page("#{file_base}.html", "index", {:doc => doc[:docs], :versions => versions})
+    render_page("#{file_base}#{lang_ext(lang)}.html", "index", {:doc => doc[:docs],
+      :versions => versions, :language => lang, :languages => Apipie.configuration.languages})
 
-    File.open("#{file_base}.json", "w") { |f| f << doc.to_json } if include_json
+    File.open("#{file_base}#{lang_ext(lang)}.json", "w") { |f| f << doc.to_json } if include_json
   end
 
-  def generate_resource_pages(version, file_base, doc, include_json = false)
+  def generate_resource_pages(version, file_base, doc, include_json = false, lang = nil)
     doc[:docs][:resources].each do |resource_name, _|
       resource_file_base = File.join(file_base, resource_name.to_s)
       FileUtils.mkdir_p(File.dirname(resource_file_base)) unless File.exists?(File.dirname(resource_file_base))
 
-      doc = Apipie.to_json(version, resource_name)
-      render_page("#{resource_file_base}.html", "resource", {:doc => doc[:docs],
-                                                          :resource => doc[:docs][:resources].first})
-      File.open("#{resource_file_base}.json", "w") { |f| f << doc.to_json } if include_json
+      doc = Apipie.to_json(version, resource_name, nil, lang)
+      doc[:docs][:link_extension] = (lang ? ".#{lang}.html" : ".html")
+      render_page("#{resource_file_base}#{lang_ext(lang)}.html", "resource", {:doc => doc[:docs],
+        :resource => doc[:docs][:resources].first, :language => lang, :languages => Apipie.configuration.languages})
+      File.open("#{resource_file_base}#{lang_ext(lang)}.json", "w") { |f| f << doc.to_json } if include_json
     end
   end
 
-  def generate_method_pages(version, file_base, doc, include_json = false)
+  def generate_method_pages(version, file_base, doc, include_json = false, lang = nil)
     doc[:docs][:resources].each do |resource_name, resource_params|
       resource_params[:methods].each do |method|
         method_file_base = File.join(file_base, resource_name.to_s, method[:name].to_s)
         FileUtils.mkdir_p(File.dirname(method_file_base)) unless File.exists?(File.dirname(method_file_base))
 
-        doc = Apipie.to_json(version, resource_name, method[:name])
-        render_page("#{method_file_base}.html", "method", {:doc => doc[:docs],
+        doc = Apipie.to_json(version, resource_name, method[:name], lang)
+        doc[:docs][:link_extension] = (lang ? ".#{lang}.html" : ".html")
+        render_page("#{method_file_base}#{lang_ext(lang)}.html", "method", {:doc => doc[:docs],
                                                            :resource => doc[:docs][:resources].first,
-                                                           :method => doc[:docs][:resources].first[:methods].first})
+                                                           :method => doc[:docs][:resources].first[:methods].first,
+                                                           :language => lang,
+                                                           :languages => Apipie.configuration.languages})
 
-        File.open("#{method_file_base}.json", "w") { |f| f << doc.to_json } if include_json
+        File.open("#{method_file_base}#{lang_ext(lang)}.json", "w") { |f| f << doc.to_json } if include_json
       end
     end
   end
@@ -155,10 +176,15 @@ namespace :apipie do
     yield
   end
 
+
   def copy_jscss(dest)
     src = File.expand_path(File.join(File.dirname(__FILE__), '..', '..', 'app', 'public', 'apipie'))
     FileUtils.mkdir_p dest
     FileUtils.cp_r "#{src}/.", dest
+  end
+
+  def lang_ext(lang = nil)
+    lang ? ".#{lang}" : ""
   end
 
   desc "Generate CLI client for API documented with apipie gem. (deprecated)"

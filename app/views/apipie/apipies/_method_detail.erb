@@ -1,12 +1,12 @@
 <%= raw method[:full_description] %>
 
 <% unless method[:formats].blank? %>
-  <%= heading('Supported Formats', h_level) %>
+  <%= heading(t('apipie.supported_formats'), h_level) %>
   <%= method[:formats].join(', ') %>
 <% end %>
 
 <% unless method[:errors].blank? %>
-  <%= heading('Errors', h_level) %>
+  <%= heading(t('apipie.errors'), h_level) %>
   <% method[:errors].each do |err| %>
     <%= err[:code] %>
     <%= err[:description] %>
@@ -19,24 +19,24 @@
 <% end %>
 
 <% unless method[:metadata].blank? %>
-  <%= heading('Metadata', h_level) %>
+  <%= heading(t('apipie.metadata'), h_level) %>
   <%= render(:partial => "metadata", :locals => {:meta => method[:metadata]}) %>
 <% end %>
 
 <% unless method[:examples].blank? %>
-  <%= heading('Examples', h_level) %>
+  <%= heading(t('apipie.examples'), h_level) %>
   <% method[:examples].each do |example| %>
     <pre class="prettyprint"><%= example %></pre>
   <% end %>
 <% end %>
 
 <% unless method[:params].blank? %>
-  <%= heading('Params', h_level) %>
+  <%= heading(t('apipie.params'), h_level) %>
   <table class='table'>
     <thead>
       <tr>
-        <th>Param name</th>
-        <th>Description</th>
+        <th><%= t('aapipie.param_name') %></th>
+        <th><%= t('apipie.description') %></th>
       </tr>
     </thead>
     <tbody>

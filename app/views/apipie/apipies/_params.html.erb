@@ -9,8 +9,8 @@
     <td>
       <strong><%= param[:full_name] %> </strong><br>
       <small>
-        <%= param[:required] ? 'required' : 'optional' %>
-        <%= param[:allow_nil] ? ', nil allowed' : '' %>
+        <%= param[:required] ? t('apipie.required') : t('apipie.optional') %>
+        <%= param[:allow_nil] ? ', '+t('apipie.nil_allowed') : '' %>
       </small>
     </td>
     <td>

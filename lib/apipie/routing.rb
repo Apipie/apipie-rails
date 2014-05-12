@@ -4,7 +4,7 @@ module Apipie
       def apipie
         namespace "apipie", :path => Apipie.configuration.doc_base_url do
           get 'apipie_checksum', :to => "apipies#apipie_checksum", :format => "json"
-          constraints(:version => /[^\/]+/) do
+          constraints(:version => /[^\/]+/, :resource => /[^\/]+/, :method => /[^\/]+/) do
             get("(:version)/(:resource)/(:method)" => "apipies#index", :as => :apipie)
           end
         end
