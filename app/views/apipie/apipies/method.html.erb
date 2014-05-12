@@ -32,6 +32,6 @@
   <%= render(:partial => "method_detail", :locals => {:method => @method, :h_level => 2}) %>
 </div>
 
-<% content_for :apipie_footer do %>
-  <%= raw @doc[:copyright] %>
+<% unless content_for(:apipie_footer) == @doc[:copyright] %>
+  <%= content_for :apipie_footer, raw(@doc[:copyright]) %>
 <% end %>
