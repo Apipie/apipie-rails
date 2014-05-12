@@ -2,6 +2,30 @@
  Changelog
 ===========
 
+v0.2.0
+------
+
+This is not full backward compatible release, as the format of storing
+examples changed from YAML to JSON: the default location is at
+`doc/apipie_examples.json`. The migration should be as easy as
+running:
+
+```
+rake apipie:convert_examples
+```
+
+Also please not Rails 3.0 support was deprecated and the compatibility
+wont be tracked anymore in next releases.
+
+* dump examples as json
+  [#125](https://github.com/Apipie/apipie-rails/pull/125) [@johanneswuerbach][]
+* support for localized API documentation
+  [#232](https://github.com/Apipie/apipie-rails/pull/232) [@mbacovsky][]
+* configuration option to always record examples
+  [#239](https://github.com/Apipie/apipie-rails/pull/239) [@arathunku][]
+* deprecate Rails 3.0
+  [#241](https://github.com/Apipie/apipie-rails/pull/241) [@iNecas][]
+
 v0.1.3
 ------
 
@@ -119,3 +143,5 @@ v0.0.15
 [@mkrajewski]: https://github.com/mkrajewski
 [@iNecas]: https://github.com/iNecas
 [@clamoris]: https://github.com/clamoris
+[@arathunku]: https://github.com/arathunku
+[@johanneswuerbach]: https://github.com/johanneswuerbach
