@@ -5,13 +5,13 @@
     <%= t('apipie.resource_not_found_html', :resource => "<code>#{params[:resource]}</code>") %>
   <% else %>
     <%= t('apipie.method_not_found_html', :resource => "<code>#{params[:resource]}</code>",
-        :method => "<code>#{params[:resource]}</code>" %>
+        :method => "<code>#{params[:resource]}</code>") %>
   <% end %>
   </small>
 </h1>
 
 <% if @doc %>
-  <%= t('apipie.goto_homepage_html', :href = link_to(
+  <%= t('apipie.goto_homepage_html', :href => link_to(
     t('apipie.goto_homepage_href', :app_name => @doc[:name]),
     File.join(@doc[:doc_url], @doc[:link_extension]))) %>
 <% end %>
