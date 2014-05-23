@@ -2,6 +2,15 @@
  Changelog
 ===========
 
+v0.2.1
+------
+
+* fix typo in the localization string
+  [#244](https://github.com/Apipie/apipie-rails/pull/244) [@alem0lars][]
+* fix syntax errors in 404 page
+  [#246](https://github.com/Apipie/apipie-rails/pull/246) [@richardsondx][]
+
+
 v0.2.0
 ------
 
@@ -145,3 +154,5 @@ v0.0.15
 [@clamoris]: https://github.com/clamoris
 [@arathunku]: https://github.com/arathunku
 [@johanneswuerbach]: https://github.com/johanneswuerbach
+[@richardsondx]: https://github.com/richardsondx
+[@alem0lars]: https://github.com/alem0lars
