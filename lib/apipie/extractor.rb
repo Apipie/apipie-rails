@@ -157,7 +157,7 @@ module Apipie
           method_key = "#{Apipie.get_resource_name(controller.constantize)}##{action}"
           old_apis = apis_from_docs[method_key] || []
           new_apis.each do |new_api|
-            new_api[:path].sub!(/\(\.:format\)$/,"")
+            new_api[:path].sub!(/\(\.:format\)$/,"") if new_api[:path]
             old_api = old_apis.find do |api|
               api[:path] == "#{@api_prefix}#{new_api[:path]}"
             end
