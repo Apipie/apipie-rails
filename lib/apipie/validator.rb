@@ -134,8 +134,7 @@ module Apipie
     end
 
     # arguments value must be one of given in array
-    class ArrayValidator < BaseValidator
-
+    class EnumValidator < BaseValidator
       def initialize(param_description, argument)
         super(param_description)
         @array = argument
