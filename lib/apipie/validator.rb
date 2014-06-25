@@ -153,6 +153,73 @@ module Apipie
       end
     end
 
+    # arguments value must be an array
+    class ArrayValidator < Apipie::Validator::BaseValidator
+      def initialize(param_description, argument, options={})
+        super(param_description)
+        @type = argument
+        @items_type = options[:of]
+        @items_enum = options[:in]
+      end
+
+      def validate(values)
+        return false unless process_value(values).respond_to?(:each)
+        process_value(values).all? { |v| validate_item(v)}
+      end
+
+      def process_value(values)
+        values || []
+      end
+
+      def description
+        "Must be an array of #{items}"
+      end
+
+      def self.build(param_description, argument, options={}, block)
+        if argument == Array && !block.is_a?(Proc)
+          self.new(param_description, argument, options)
+        end
+      end
+
+      private
+
+      def enum
+        if @items_enum.kind_of?(Proc)
+          @items_enum = Array(@items_enum.call)
+        end
+        @items_enum
+      end
+
+      def validate_item(value)
+        has_valid_type?(value) &&
+          is_valid_value?(value)
+      end
+
+      def has_valid_type?(value)
+        if @items_type
+          value.kind_of?(@items_type)
+        else
+          true
+        end
+      end
+
+      def is_valid_value?(value)
+        if enum
+          enum.include?(value)
+        else
+          true
+        end
+      end
+
+      def items
+        unless enum
+          @items_type || "any type"
+        else
+          enum.inspect
+        end
+      end
+    end
+
     class ArrayClassValidator < BaseValidator
 
       def initialize(param_description, argument)
