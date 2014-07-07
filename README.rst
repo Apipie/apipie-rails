@@ -849,7 +849,7 @@ keyword. It specifies the versions the example is used for. When not
 specified, it's shown in all versions with given method.
 
 When referencing or quering the resource/method descripion, this
-format should be used: "verson#resource#method". When not specified,
+format should be used: "version#resource#method". When not specified,
 the default version is used instead.
 
 
