@@ -669,14 +669,14 @@ Check parameter value against given regular expression.
    param :regexp_param, /^[0-9]* years/, :desc => "regexp param"
 
 
-ArrayValidator
+EnumValidator
 --------------
 
 Check if parameter value is included given array.
 
 .. code:: ruby
 
-   param :array_param, [100, "one", "two", 1, 2], :desc => "array validator"
+   param :enum_param, [100, "one", "two", 1, 2], :desc => "enum validator"
 
 
 ProcValidator
@@ -723,6 +723,49 @@ override parameters described on resource level.
    def destroy
      #...
    end
+
+ArrayValidator
+--------------
+
+Check if the parameter is an array
+
+Additional options
+~~~~~~~~~~~~~~~~~
+
+of
+  Specify the type of items. if not given it accepts an array of any item type
+
+in
+  Specifiy an array of valid items value.
+
+Examples
+~~~~~~~~
+
+Assert `things` is an array of any items
+
+.. code:: ruby
+
+  param :things, Array
+
+Assert `hits` must be an array of integer values
+
+.. code:: ruby
+
+  param :hits, Array, of: Integer
+
+Assert `colors` must be an array of valid string values
+
+.. code:: ruby
+
+  param :colors, Array, in: ["red", "green", "blue"]
+
+
+The retrieving of valid items can be deferred until needed using a lambda. It is evaluated only once
+
+.. code:: ruby
+
+  param :colors, Array, in: ->  { Color.all.pluck(:name) }
+
 
 NestedValidator
 -------------
