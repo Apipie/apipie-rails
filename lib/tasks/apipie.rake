@@ -51,32 +51,44 @@ namespace :apipie do
     end
   end
 
+  # By default the full cache is built.
+  # It is possible to generate index resp. resources only with
+  # rake apipie:cache cache_part=index (resources resp.)
+  # Default output dir ('public/apipie_cache') can be changed with OUT=/some/dir
   desc "Generate cache to avoid production dependencies on markup languages"
   task :cache => :environment do
     puts "#{Time.now} | Started"
+    cache_part = ENV['cache_part']
+    generate_index = (cache_part == 'resources' ? false : true)
+    generate_resources = (cache_part == 'index' ? false : true)
     with_loaded_documentation do
       puts "#{Time.now} | Documents loaded..."
       ([nil] + Apipie.configuration.languages).each do |lang|
         I18n.locale = lang || Apipie.configuration.default_locale
         puts "#{Time.now} | Processing docs for #{lang}"
-        cache_dir = Apipie.configuration.cache_dir
+        cache_dir = ENV["OUT"] || Apipie.configuration.cache_dir
         subdir = Apipie.configuration.doc_base_url.sub(/\A\//,"")
-
         file_base = File.join(cache_dir, Apipie.configuration.doc_base_url)
-        Apipie.url_prefix = "./#{subdir}"
-        doc = Apipie.to_json(Apipie.configuration.default_version, nil, nil, lang)
-        doc[:docs][:link_extension] = (lang ? ".#{lang}.html" : ".html")
-        generate_index_page(file_base, doc, true, false, lang)
+
+        if generate_index
+          Apipie.url_prefix = "./#{subdir}"
+          doc = Apipie.to_json(Apipie.configuration.default_version, nil, nil, lang)
+          doc[:docs][:link_extension] = (lang ? ".#{lang}.html" : ".html")
+          generate_index_page(file_base, doc, true, false, lang)
+        end
         Apipie.available_versions.each do |version|
           file_base_version = File.join(file_base, version)
           Apipie.url_prefix = "../#{subdir}"
           doc = Apipie.to_json(version, nil, nil, lang)
           doc[:docs][:link_extension] = (lang ? ".#{lang}.html" : ".html")
-          generate_index_page(file_base_version, doc, true, true, lang)
-          Apipie.url_prefix = "../../#{subdir}"
-          generate_resource_pages(version, file_base_version, doc, true, lang)
-          Apipie.url_prefix = "../../../#{subdir}"
-          generate_method_pages(version, file_base_version, doc, true, lang)
+
+          generate_index_page(file_base_version, doc, true, true, lang) if generate_index
+          if generate_resources
+            Apipie.url_prefix = "../../#{subdir}"
+            generate_resource_pages(version, file_base_version, doc, true, lang)
+            Apipie.url_prefix = "../../../#{subdir}"
+            generate_method_pages(version, file_base_version, doc, true, lang)
+          end
         end
       end
     end

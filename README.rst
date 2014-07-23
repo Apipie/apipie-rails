@@ -979,6 +979,10 @@ When you want to avoid any unnecessary computation in production mode,
 you can generate a cache with ``rake apipie:cache`` and configure the
 app to use it in production with ``config.use_cache = Rails.env.production?``
 
+If, for some complex casese, you need to generate/re-generate just part of the cache
+use ``rake apipie:cache cache_part=index`` resp. ``rake apipie:cache cache_part=resources``
+To generate it to different location for further processing use ``rake apipie:cache OUT=/tmp/apipie_cache``.
+
 ===================
  JSON checksums
 ===================
