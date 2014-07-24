@@ -30,7 +30,12 @@
       <% api[:methods].each do |m| %>
         <% m[:apis].each do |a| %>
           <tr>
-            <td><a href='<%= m[:doc_url] %><%= @doc[:link_extension] %>'><%= a[:http_method] %> <%= a[:api_url] %></a></td>
+            <td>
+              <a href='<%= m[:doc_url] %><%= @doc[:link_extension] %>'><%= a[:http_method] %> <%= a[:api_url] %></a>
+              <% if a[:deprecated] %>
+                <code>DEPRECATED</code>
+              <% end %>
+            </td>
             <td width='60%'><%= a[:short_description] %></td>
           </tr>
         <% end %>

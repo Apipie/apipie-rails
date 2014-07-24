@@ -18,7 +18,11 @@
 <% @method[:apis].each do |api| %>
   <div class='page-header'>
     <h1>
-      <%= api[:http_method] %> <%= api[:api_url] %><br>
+      <%= api[:http_method] %> <%= api[:api_url] %>
+      <% if api[:deprecated] %>
+        <code>DEPRECATED</code>
+      <% end %>
+      <br>
       <small><%= raw api[:short_description] %></small>
     </h1>
   </div>

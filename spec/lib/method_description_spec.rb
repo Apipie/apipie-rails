@@ -26,6 +26,18 @@ describe Apipie::MethodDescription do
 
   end
 
+  describe "deprecated flag" do
+    before(:each) do
+      @resource = Apipie::ResourceDescription.new(ApplicationController, "dummy")
+    end
+
+    it "should return the deprecated flag when provided" do
+      dsl_data[:api_args] = [[:GET, "/foo/bar", "description", :deprecated => true]]
+      method = Apipie::MethodDescription.new(:a, @resource, dsl_data)
+      method.method_apis_to_json.first[:deprecated].should == true
+    end
+  end
+
   describe "params descriptions" do
 
     before(:each) do

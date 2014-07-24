@@ -5,12 +5,13 @@ module Apipie
 
     class Api
 
-      attr_accessor :short_description, :path, :http_method
+      attr_accessor :short_description, :path, :http_method, :options
 
-      def initialize(method, path, desc)
+      def initialize(method, path, desc, options)
         @http_method = method.to_s
         @path = path
         @short_description = desc
+        @options = options
       end
 
     end
@@ -22,8 +23,8 @@ module Apipie
       @resource = resource
       @from_concern = dsl_data[:from_concern]
 
-      @apis = dsl_data[:api_args].map do |method, path, desc|
-        MethodDescription::Api.new(method, concern_subst(path), concern_subst(desc))
+      @apis = dsl_data[:api_args].map do |mthd, path, desc, opts|
+        MethodDescription::Api.new(mthd, concern_subst(path), concern_subst(desc), opts)
       end
 
       desc = dsl_data[:description] || ''
@@ -113,7 +114,8 @@ module Apipie
         {
           :api_url => create_api_url(api),
           :http_method => api.http_method.to_s,
-          :short_description => Apipie.app.translate(api.short_description, lang)
+          :short_description => Apipie.app.translate(api.short_description, lang),
+          :deprecated => api.options[:deprecated]
         }
       end
     end

@@ -79,7 +79,7 @@ module Apipie
       #
       def api(method, path, desc = nil, options={}) #:doc:
         return unless Apipie.active_dsl?
-        _apipie_dsl_data[:api_args] << [method, path, desc]
+        _apipie_dsl_data[:api_args] << [method, path, desc, options]
       end
 
       # Reference other similar method
