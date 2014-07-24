@@ -2,6 +2,21 @@
  Changelog
 ===========
 
+v0.2.2
+------
+
+* prevent rspec 3 from being used. It is not compatible.
+  [#255](https://github.com/Apipie/apipie-rails/pull/255) [@lsylvester][]
+* fixed extractor root route (handle nil path)
+  [#257](https://github.com/Apipie/apipie-rails/pull/257) [@ctria][]
+* reduced rails dependency to development only
+  [#266](https://github.com/Apipie/apipie-rails/pull/266) [@klobuczek][]
+* reduced rails dependency to development only
+  [#266](https://github.com/Apipie/apipie-rails/pull/266) [@klobuczek][]
+* add more options to apipie:cache to generate only parts of the
+  static pages
+  [#262](https://github.com/Apipie/apipie-rails/pull/262) [@mbacovsky][]
+
 v0.2.1
 ------
 
@@ -156,3 +171,6 @@ v0.0.15
 [@johanneswuerbach]: https://github.com/johanneswuerbach
 [@richardsondx]: https://github.com/richardsondx
 [@alem0lars]: https://github.com/alem0lars
+[@lsylvester]: https://github.com/lsylverster
+[@ctria]: https://github.com/ctria
+[@klobuczek]: https://github.com/klobuczek
