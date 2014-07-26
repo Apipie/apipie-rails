@@ -6,6 +6,7 @@ require 'json'
 module Apipie
 
   class Application
+    API_METHODS = %w{GET POST PUT PATCH OPTIONS DELETE}
 
     # we need engine just for serving static assets
     class Engine < Rails::Engine
@@ -27,6 +28,68 @@ module Apipie
 
     def set_resource_id(controller, resource_id)
       @controller_to_resource_id[controller] = resource_id
+    end
+
+    def apipie_routes
+      unless @apipie_api_routes
+        # ensure routes are loaded
+        Rails.application.reload_routes! unless Rails.application.routes.routes.any?
+
+        regex = Regexp.new("\\A#{Apipie.configuration.api_base_url.values.join('|')}")
+        @apipie_api_routes = Rails.application.routes.routes.select do |x|
+          if Rails::VERSION::STRING < '3.2.0'
+            regex =~ x.path.to_s
+          else
+            regex =~ x.path.spec.to_s
+          end
+        end
+      end
+      @apipie_api_routes
+    end
+
+    # the app might be nested when using contraints, namespaces etc.
+    # this method does in depth search for the route controller
+    def route_app_controller(app, route)
+      if app.respond_to?(:controller)
+        return app.controller(route.defaults)
+      elsif app.respond_to?(:app)
+        return route_app_controller(app.app, route)
+      end
+    end
+
+    def routes_for_action(controller, method)
+      routes = apipie_routes.select do |route|
+        controller == route_app_controller(route.app, route) &&
+            method.to_s == route.defaults[:action]
+      end
+
+      routes.map do |route|
+        path = if Rails::VERSION::STRING < '3.2.0'
+                 route.path.to_s
+               else
+                 route.path.spec.to_s
+               end
+
+        path.gsub!('(.:format)', '')
+        path.gsub!(/[()]/, '')
+
+        Apipie.configuration.api_base_url.values.each do |values|
+          path.gsub!("#{values}/", '/')
+        end
+
+        { path: path, verb: human_verb(route) }
+      end
+    end
+
+    def human_verb(route)
+      verb = API_METHODS.select{|defined_verb| defined_verb =~ /\A#{route.verb}\z/}
+      if verb.count != 1
+        verb = API_METHODS.select{|defined_verb| defined_verb == route.constraints[:method]}
+        if verb.blank?
+          raise "Unknow verb #{route.path.spec.to_s}"
+        end
+      end
+      verb.first
     end
 
     # create new method api description
