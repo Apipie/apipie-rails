@@ -517,7 +517,7 @@ EOS2
 
       param = a.params[:array_param]
       param.desc.should eq("\n<p>array validator</p>\n")
-      param.validator.class.should be(Apipie::Validator::ArrayValidator)
+      param.validator.class.should be(Apipie::Validator::EnumValidator)
       param.validator.instance_variable_get("@array").should
         eq([100, "one", "two", 1, 2])
 
