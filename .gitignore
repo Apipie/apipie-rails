@@ -8,5 +8,7 @@ spec/dummy/tmp/
 Gemfile*.lock
 Gemfile.local
 .rvmrc
+.ruby-version
+.ruby-gemset
 
 .DS_Store
