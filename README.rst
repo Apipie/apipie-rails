@@ -860,17 +860,21 @@ the resource belong to `config.default_version` ("1.0" by default)
      api_versions "1", "2"
    end
 
-   api :GET, "/api/users/"
+   api :GET, "/api/users/", "List: users"
    api_version "1"
    def index
      # ...
    end
 
+   api :GET, "/api/users/", "List: users", :deprecated => true
+
 In the example above we say the whole controller/resource is defined
 for versions "1" and "2", but we override this with explicitly saying
 `index` belongs only to version "1". Also inheritance works (therefore
 we can specify the api_version for the parent controller and all
-children will know about that).
+children will know about that). Routes can be flagged as deprecated
+and an annotation will be added to them when viewing in the API
+documentation.
 
 From the Apipie API perspective, the resources belong to version.
 With versioning, there are paths like this provided by apipie:

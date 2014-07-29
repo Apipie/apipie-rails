@@ -47,7 +47,11 @@
            data-toggle='collapse'
            data-parent='#accordion'>
             <%= api[:http_method] %> <%= api[:api_url] %>
-          </a><br>
+          </a>
+          <% if api[:deprecated] %>
+            <code>DEPRECATED</code>
+          <% end %>
+          <br>
           <small><%= raw api[:short_description] %></small>
         </h2>
       <% end %>
