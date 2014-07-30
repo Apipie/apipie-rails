@@ -6,6 +6,9 @@ spec/dummy/log/*.log
 spec/dummy/tmp/
 .idea
 Gemfile*.lock
+Gemfile.local
 .rvmrc
+.ruby-version
+.ruby-gemset
 
 .DS_Store
