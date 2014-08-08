@@ -2,6 +2,17 @@
  Changelog
 ===========
 
+v0.2.3
+------
+
+* add an option to flag an api route as deprecated
+  [#268](https://github.com/Apipie/apipie-rails/pull/268) [@komidore64][]
+* add ability to pass additional options to apipie route
+  [#269](https://github.com/Apipie/apipie-rails/pull/269) [@exAspArk][]
+* enhanced array validator
+  [#259](https://github.com/Apipie/apipie-rails/pull/259) [@mourad-ifeelgoods][]
+
+
 v0.2.2
 ------
 
@@ -9,8 +20,6 @@ v0.2.2
   [#255](https://github.com/Apipie/apipie-rails/pull/255) [@lsylvester][]
 * fixed extractor root route (handle nil path)
   [#257](https://github.com/Apipie/apipie-rails/pull/257) [@ctria][]
-* reduced rails dependency to development only
-  [#266](https://github.com/Apipie/apipie-rails/pull/266) [@klobuczek][]
 * reduced rails dependency to development only
   [#266](https://github.com/Apipie/apipie-rails/pull/266) [@klobuczek][]
 * add more options to apipie:cache to generate only parts of the
@@ -174,3 +183,6 @@ v0.0.15
 [@lsylvester]: https://github.com/lsylverster
 [@ctria]: https://github.com/ctria
 [@klobuczek]: https://github.com/klobuczek
+[@komidore64]: https://github.com/komidore64
+[@exAspArk]: https://github.com/exAspArk
+[@mourad-ifeelgoods]: https://github.com/mourad-ifeelgoods
