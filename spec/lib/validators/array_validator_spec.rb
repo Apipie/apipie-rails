@@ -24,7 +24,7 @@ module Apipie::Validator
     end
 
     context "with a constraint on items type" do
-      let(:validator) { ArrayValidator.new(param_desc, Array, of: String) }
+      let(:validator) { ArrayValidator.new(param_desc, Array, :of => String) }
 
       it "accepts array of specified type" do
         expect(validator.validate(['string1', 'string2'])).to eq(true)
@@ -40,7 +40,7 @@ module Apipie::Validator
     end
 
     context "with a constraint on items value" do
-      let(:validator) { ArrayValidator.new(param_desc, Array, in: [42, 'string', true]) }
+      let(:validator) { ArrayValidator.new(param_desc, Array, :in => [42, 'string', true]) }
 
       it "accepts array of valid values" do
         expect(validator.validate([42, 'string'])).to eq(true)
@@ -55,7 +55,7 @@ module Apipie::Validator
       end
 
       it "accepts a proc as list of valid values" do
-        validator = ArrayValidator.new(param_desc, Array, in: -> { [42, 'string', true] })
+        validator = ArrayValidator.new(param_desc, Array, :in => lambda { [42, 'string', true] })
         expect(validator.validate([42, 'string'])).to eq(true)
         expect(validator.validate([42, 'string', 'foo'])).to eq(false)
       end

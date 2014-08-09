@@ -163,7 +163,7 @@ module Apipie
       end
 
       def validate(values)
-        return false unless process_value(values).respond_to?(:each)
+        return false unless process_value(values).respond_to?(:each) && !process_value(values).is_a?(String)
         process_value(values).all? { |v| validate_item(v)}
       end
 
@@ -175,7 +175,7 @@ module Apipie
         "Must be an array of #{items}"
       end
 
-      def self.build(param_description, argument, options={}, block)
+      def self.build(param_description, argument, options, block)
         if argument == Array && !block.is_a?(Proc)
           self.new(param_description, argument, options)
         end

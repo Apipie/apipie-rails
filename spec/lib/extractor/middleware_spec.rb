@@ -1,7 +1,7 @@
 require "spec_helper"
 
 describe Apipie::Extractor::Recorder::Middleware do
-  let(:app) { ->(env) { [200, env, "app"] } }
+  let(:app) { lambda { |env| [200, env, "app"] } }
   let(:stack) { Apipie::Extractor::Recorder::Middleware.new(app) }
   let(:request) { Rack::MockRequest.new(stack) }
   let(:response) { request.get('/') }
