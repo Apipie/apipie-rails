@@ -1,6 +1,5 @@
 language: ruby
 rvm:
-  - 1.8.7
   - 1.9.3
   - 2.0.0
   - 2.1.1
@@ -8,9 +7,3 @@ gemfile:
   - Gemfile.rails32
   - Gemfile.rails40
   - Gemfile.rails41
-matrix:
-  exclude:
-    - rvm: 1.8.7
-      gemfile: Gemfile.rails40
-    - rvm: 1.8.7
-      gemfile: Gemfile.rails41
