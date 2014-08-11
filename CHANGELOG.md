@@ -2,6 +2,21 @@
  Changelog
 ===========
 
+
+THE FURTHER SUPPORT FOR RUBY 1.8.7 WILL NOT BE ENSURED IN THE MASTER
+AND THE `>= 0.3.0` RELAEASES. We discourage anyone to keep using ruby
+1.8.7 for anything. If you're aware of the issues and still willing to
+take the risk, we are willing to keep the v0.2.x releases based on the
+v0.2.x branch. However, we will not actively develop or backport any
+new features to this branch neither will we accept there features that
+are not in the master branch.
+
+v0.2.4
+------
+
+* fix ruby 1.8.7 compatibility
+  [#272](https://github.com/Apipie/apipie-rails/pull/272) [@domcleal][]
+
 v0.2.3
 ------
 
@@ -186,3 +201,4 @@ v0.0.15
 [@komidore64]: https://github.com/komidore64
 [@exAspArk]: https://github.com/exAspArk
 [@mourad-ifeelgoods]: https://github.com/mourad-ifeelgoods
+[@domcleal]: https://github.com/domcleal
