@@ -175,6 +175,10 @@ module Apipie
         "Must be an array of #{items}"
       end
 
+      def expected_type
+        "array"
+      end
+
       def self.build(param_description, argument, options, block)
         if argument == Array && !block.is_a?(Proc)
           self.new(param_description, argument, options)
