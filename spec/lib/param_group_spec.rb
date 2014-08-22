@@ -41,5 +41,20 @@ describe "param groups" do
 
     arch_v1_params.sort_by(&:to_s).should == arch_v2_params.sort_by(&:to_s)
   end
+
+  it "should replace parameter name in a group when it comes from concern" do
+    Apipie["overridden_concern_resources#update"].params.has_key?(:user).should == true
+  end
+
+  it "shouldn't replace parameter name in a group redefined in the controller" do
+    Apipie["overridden_concern_resources#create"].params.has_key?(:concern).should == true
+    Apipie["overridden_concern_resources#create"].params.has_key?(:user).should == false
+  end
+
+it "shouldn't replace name of a parameter defined in the controller" do
+    Apipie["overridden_concern_resources#custom"].params.has_key?(:concern).should == true
+    Apipie["overridden_concern_resources#custom"].params.has_key?(:user).should == false
+  end
+
 end
 

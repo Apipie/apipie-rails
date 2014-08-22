@@ -264,7 +264,13 @@ module Apipie
           scope = scope_or_options
         end
         scope ||= _default_param_group_scope
-        @_current_param_group = {:scope => scope, :name => name, :options => options}
+
+        @_current_param_group = {
+          :scope => scope,
+          :name => name,
+          :options => options,
+          :from_concern => scope.apipie_concern?
+        }
         self.instance_exec(&Apipie.get_param_group(scope, name))
       ensure
         @_current_param_group = nil
@@ -322,6 +328,10 @@ module Apipie
         end
       end
 
+      def apipie_concern?
+        false
+      end
+
       # create method api and redefine newly added method
       def method_added(method_name) #:doc:
         super
@@ -361,6 +371,10 @@ module Apipie
 
       def _apipie_concern_data
         @_apipie_concern_data ||= []
+      end
+
+      def apipie_concern?
+        true
       end
 
       # create method api and redefine newly added method
