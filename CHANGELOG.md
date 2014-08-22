@@ -2,6 +2,13 @@
  Changelog
 ===========
 
+v0.2.5
+------
+
+* Name substitution for referenced param_group defined in a concern
+  [#280](https://github.com/Apipie/apipie-rails/pull/280) [@tstrachota][]
+* expected_type 'array' for ArrayValidator
+  [#276](https://github.com/Apipie/apipie-rails/pull/276) [@dustint-rh][]
 
 THE FURTHER SUPPORT FOR RUBY 1.8.7 WILL NOT BE ENSURED IN THE MASTER
 AND THE `>= 0.3.0` RELAEASES. We discourage anyone to keep using ruby
@@ -202,3 +209,4 @@ v0.0.15
 [@exAspArk]: https://github.com/exAspArk
 [@mourad-ifeelgoods]: https://github.com/mourad-ifeelgoods
 [@domcleal]: https://github.com/domcleal
+[@dustint-rh]: https://github.com/dustint-rh
