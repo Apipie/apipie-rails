@@ -35,6 +35,9 @@ module Apipie
 
       # we save options to know what was passed in DSL
       @options = options
+      if @options[:param_group]
+        @from_concern = @options[:param_group][:from_concern]
+      end
 
       @method_description = method_description
       @name = concern_subst(name)
@@ -64,6 +67,10 @@ module Apipie
         @validator = Validator::BaseValidator.find(self, validator, @options, block)
         raise "Validator for #{validator} not found." unless @validator
       end
+    end
+
+    def from_concern?
+      method_description.from_concern? || @from_concern
     end
 
     def validate(value)
@@ -187,7 +194,7 @@ module Apipie
     end
 
     def concern_subst(string)
-      return string if string.nil? or !method_description.from_concern?
+      return string if string.nil? or !from_concern?
 
       original = string
       string = ":#{original}" if original.is_a? Symbol
