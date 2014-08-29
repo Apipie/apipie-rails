@@ -216,7 +216,7 @@ module Apipie
 
     def to_json(version, resource_name, method_name, lang)
 
-      return unless resource_descriptions.has_key?(version)
+      return unless valid_search_args?(version, resource_name, method_name)
 
       _resources = if resource_name.blank?
         # take just resources which have some methods because
@@ -323,6 +323,20 @@ module Apipie
     end
 
     private
+
+    # Make sure that the version/resource_name/method_name are valid combination
+    # resource_name and method_name can be nil
+    def valid_search_args?(version, resource_name, method_name)
+      return false unless self.resource_descriptions.has_key?(version)
+      if resource_name
+        return false unless self.resource_descriptions[version].has_key?(resource_name)
+        if method_name
+          resource_description = self.resource_descriptions[version][resource_name]
+          return false unless resource_description.valid_method_name?(method_name)
+        end
+      end
+      return true
+    end
 
     def version_prefix(klass)
       version = controller_versions(klass).first
