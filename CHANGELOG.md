@@ -2,6 +2,14 @@
  Changelog
 ===========
 
+v0.2.6
+------
+
+* better handling on cases where resource/method is not found when cache is turned off
+  [#284](https://github.com/Apipie/apipie-rails/pull/284) [@iNecas][]
+* fix disqus integration
+  [#281](https://github.com/Apipie/apipie-rails/pull/281) [@RajRoR][]
+
 v0.2.5
 ------
 
@@ -210,3 +218,4 @@ v0.0.15
 [@mourad-ifeelgoods]: https://github.com/mourad-ifeelgoods
 [@domcleal]: https://github.com/domcleal
 [@dustint-rh]: https://github.com/dustint-rh
+[@RajRoR]: https://github.com/RajRoR
