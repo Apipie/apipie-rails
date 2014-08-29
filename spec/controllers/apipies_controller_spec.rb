@@ -5,12 +5,47 @@ describe Apipie::ApipiesController do
 
   describe "GET index" do
 
-    it "test if route exists" do
+    it "succeeds on index" do
       get :index
 
       assert_response :success
     end
 
+    it "succeeds on version details" do
+      get :index, :version => "2.0"
+
+      assert_response :success
+    end
+
+    it "returns not_found on wrong version" do
+      get :index, :version => "wrong_version"
+
+      assert_response :not_found
+    end
+
+    it "succeeds on resource details" do
+      get :index, :version => "2.0", :resource => "architectures"
+
+      assert_response :success
+    end
+
+    it "returns not_found on wrong resource" do
+      get :index, :version => "2.0", :resource => "wrong_resource"
+
+      assert_response :not_found
+    end
+
+    it "succeeds on method details" do
+      get :index, :version => "2.0", :resource => "architectures", :method => "index"
+
+      assert_response :success
+    end
+
+    it "returns not_found on wrong method" do
+      get :index, :version => "2.0", :resource => "architectures", :method => "wrong_method"
+
+      assert_response :not_found
+    end
   end
 
   describe "reload_controllers" do
