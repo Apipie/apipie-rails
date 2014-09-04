@@ -27,7 +27,8 @@ module Apipie
       end
 
       def to_html(text)
-        markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML, autolink: true, no_intra_emphasis: true)
+        markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML,
+          fenced_code_blocks: true, autolink: true, no_intra_emphasis: true)
         markdown.render(text)
       end
 
