@@ -23,11 +23,12 @@ module Apipie
     class Markdown
 
       def initialize
-        require 'maruku'
+        require 'redcarpet'
       end
 
       def to_html(text)
-        Maruku.new(text).to_html
+        markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML, autolink: true, no_intra_emphasis: true)
+        markdown.render(text)
       end
 
     end
