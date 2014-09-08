@@ -17,7 +17,7 @@
       <%= param[:description].html_safe %>
       <% unless param[:validator].blank? %>
         <br>
-        Value: <%= param[:validator] %>
+        Value: <%= Apipie.markup_to_html(param[:validator]).html_safe %>
       <% end %>
 
       <% unless param[:metadata].blank? %>
