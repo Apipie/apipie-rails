@@ -31,10 +31,8 @@ module Apipie
         raise ArgumentError.new("param description: expected description or options as 3rd parameter")
       end
 
-      options.symbolize_keys!
-
       # we save options to know what was passed in DSL
-      @options = options
+      @options = options.symbolize_keys
       if @options[:param_group]
         @from_concern = @options[:param_group][:from_concern]
       end

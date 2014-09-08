@@ -13,7 +13,7 @@ module Apipie
 
     def initialize(code_or_options, desc=nil, options={})
       if code_or_options.is_a? Hash
-        code_or_options.symbolize_keys!
+        code_or_options = code_or_options.symbolize_keys
         @code = code_or_options[:code]
         @metadata = code_or_options[:meta]
         @description = code_or_options[:desc] || code_or_options[:description]
