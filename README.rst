@@ -616,10 +616,9 @@ you want perhaps to transform it again to an empty array. Or you
 want to support an enumeration type (comma separated values) and
 you want automatically transform this string to an array.
 
-To use it, set processing_value configuration variable to true.
-In your action, use api_params variable instead of params.
+To use it, set the ``process_params`` configuration variable to true.
 
-Also by using `as` you can separate your API parameters
+Also by using ``as`` you can separate your API parameters
 names from the names you are using inside your code.
 
 To implement it, you just have to write a process_value
