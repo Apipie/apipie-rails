@@ -89,7 +89,7 @@ module Apipie
           _apipie_dsl_data[:api_from_routes] = { :desc => desc }
         when 2..3
           method, path, desc, options = *args
-          _apipie_dsl_data[:api_args] << [method, path, desc, options]
+          _apipie_dsl_data[:api_args] << [method, path, desc, (options || {})]
         else
           raise ArgumentError, 'Wrong number of arguments'
         end
