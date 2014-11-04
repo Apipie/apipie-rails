@@ -87,7 +87,7 @@ module Apipie
         when 0..1
           desc = args.first
           _apipie_dsl_data[:api_from_routes] = { :desc => desc, :options => {} }
-        when 2..3
+        when 2..4
           method, path, desc, options = *args
           _apipie_dsl_data[:api_args] << [method, path, desc, (options || {})]
         else
