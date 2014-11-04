@@ -6,13 +6,7 @@ class RoutesFormater
   end
 
   def self.format_path(rails_path)
-    path = if Rails::VERSION::STRING < '3.2.0'
-             rails_path.path.to_s
-           else
-             rails_path.path.spec.to_s
-           end
-
-    path = Apipie.configuration.routes_path_formatter.call(path)
+    path = Apipie.configuration.routes_path_formatter.call(rails_path.path.spec.to_s)
 
     { path: path, verb: human_verb(rails_path) }
   end

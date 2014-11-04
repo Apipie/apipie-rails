@@ -36,11 +36,7 @@ module Apipie
 
         regex = Regexp.new("\\A#{Apipie.configuration.api_base_url.values.join('|')}")
         @apipie_api_routes = Rails.application.routes.routes.select do |x|
-          if Rails::VERSION::STRING < '3.2.0'
-            regex =~ x.path.to_s
-          else
-            regex =~ x.path.spec.to_s
-          end
+          regex =~ x.path.spec.to_s
         end
       end
       @apipie_api_routes
