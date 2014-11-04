@@ -86,7 +86,7 @@ module Apipie
         case args.size
         when 0..1
           desc = args.first
-          _apipie_dsl_data[:api_from_routes] = { :desc => desc }
+          _apipie_dsl_data[:api_from_routes] = { :desc => desc, :options => {} }
         when 2..3
           method, path, desc, options = *args
           _apipie_dsl_data[:api_args] << [method, path, desc, (options || {})]
@@ -380,8 +380,10 @@ module Apipie
 
         if _apipie_dsl_data[:api_from_routes]
           desc = _apipie_dsl_data[:api_from_routes][:desc]
+          options = _apipie_dsl_data[:api_from_routes][:options]
+
           api_from_routes = Apipie.routes_for_action(self, method_name).map do |route_info|
-            [route_info[:verb], route_info[:path], desc]
+            [route_info[:verb], route_info[:path], desc, options]
           end
           _apipie_dsl_data[:api_args].concat(api_from_routes)
         end
