@@ -1,4 +1,5 @@
 require 'apipie/static_dispatcher'
+require 'apipie/routes_formatter'
 require 'yaml'
 require 'digest/md5'
 require 'json'
@@ -6,8 +7,6 @@ require 'json'
 module Apipie
 
   class Application
-    API_METHODS = %w{GET POST PUT PATCH OPTIONS DELETE}
-
     # we need engine just for serving static assets
     class Engine < Rails::Engine
       initializer "static assets" do |app|
@@ -63,28 +62,7 @@ module Apipie
             method.to_s == route.defaults[:action]
       end
 
-      routes.map do |route|
-        path = if Rails::VERSION::STRING < '3.2.0'
-                 route.path.to_s
-               else
-                 route.path.spec.to_s
-               end
-
-        path = Apipie.configuration.routes_path_formatter.call(path)
-
-        { path: path, verb: human_verb(route) }
-      end
-    end
-
-    def human_verb(route)
-      verb = API_METHODS.select{|defined_verb| defined_verb =~ /\A#{route.verb}\z/}
-      if verb.count != 1
-        verb = API_METHODS.select{|defined_verb| defined_verb == route.constraints[:method]}
-        if verb.blank?
-          raise "Unknow verb #{route.path.spec.to_s}"
-        end
-      end
-      verb.first
+      RoutesFormater.format_paths(routes)
     end
 
     # create new method api description
