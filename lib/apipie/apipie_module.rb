@@ -1,5 +1,5 @@
-require "apipie/helpers"
-require "apipie/application"
+require 'apipie/helpers'
+require 'apipie/application'
 
 module Apipie
   extend Apipie::Helpers
