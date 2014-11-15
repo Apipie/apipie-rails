@@ -312,7 +312,6 @@ describe UsersController do
       context "using configuration.validate = true" do
         before :all do
           Apipie.configuration.validate = true
-          ENV['VALIDATE'] = 'true'
           reload_controllers
         end
 
@@ -322,7 +321,6 @@ describe UsersController do
       context "using configuration.validate = :explicitly" do
         before :all do
           Apipie.configuration.validate = :explicitly
-          ENV['VALIDATE'] = 'explicitly'
           reload_controllers
         end
 
