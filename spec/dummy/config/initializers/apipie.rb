@@ -41,7 +41,7 @@ Apipie.configure do |config|
   # to disable markup, use
   # config.markup = nil
 
-  # config.validate = false
+  config.validate = false
 
   # set all parameters as required by default
   # if enabled, use param :name, val, :required => false for optional params

@@ -76,7 +76,7 @@ describe UsersController do
 
     context "validations are enabled" do
       def reload_controllers
-        controllers_dirname = File.expand_path('../../dummy/app/controllers', File.dirname(__FILE__))
+        controllers_dirname = File.expand_path('../dummy/app/controllers', File.dirname(__FILE__))
         Dir.glob("#{controllers_dirname}/**/*") { |file| load(file) if File.file?(file) }
       end
 
@@ -105,7 +105,7 @@ describe UsersController do
         end
 
 
-        context "validations are enabled" do
+        context "all validations are enabled" do
           before do
             Apipie.configuration.validate_value = true
             Apipie.configuration.validate_presence = true
@@ -310,7 +310,7 @@ describe UsersController do
       end
 
       context "using configuration.validate = true" do
-        before do
+        before :all do
           Apipie.configuration.validate = true
           ENV['VALIDATE'] = 'true'
           reload_controllers
@@ -320,7 +320,7 @@ describe UsersController do
       end
 
       context "using configuration.validate = :explicitly" do
-        before do
+        before :all do
           Apipie.configuration.validate = :explicitly
           ENV['VALIDATE'] = 'explicitly'
           reload_controllers
