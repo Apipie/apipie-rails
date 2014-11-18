@@ -217,7 +217,7 @@ module Apipie
             if Apipie.configuration.validate_key?
               params.reject{|k,_| [:format, :controller, :action].include?(k.to_sym) }.each_key do |param|
                 # params allowed
-                raise UnknownParam.new(param) unless description.params.select {|_,p| p.name == param.to_sym}.size > 0
+                raise UnknownParam.new(param) if description.params.select {|_,p| p.name.to_s == param.to_s}.empty?
               end
             end
 
