@@ -94,9 +94,25 @@ describe UsersController do
         lambda { get :show, :id => 5, :session => "secret_hash" }.should_not raise_error
         lambda { get :show, :id => "ten", :session => "secret_hash" }.should_not raise_error
       end
-
     end
 
+    context "key validations are enabled" do
+       before do
+         Apipie.configuration.validate = true
+         Apipie.configuration.validate_value = false
+         Apipie.configuration.validate_presence = true
+         Apipie.configuration.validate_key = true
+       end
+
+       it "should reply to valid request" do
+         lambda { get :show, :id => 5, :session => "secret_hash" }.should_not raise_error
+         assert_response :success
+       end
+
+       it "should fail if extra parameter is passed in" do
+         lambda { get :show, :id => 5, :session => "secret_hash", :badparam => 'badfoo' }.should raise_error(Apipie::UnknownParam, /\bbadparam\b/)
+       end
+     end
 
     context "validations are enabled" do
       before do
