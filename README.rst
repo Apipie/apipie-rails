@@ -497,7 +497,9 @@ default_version
   Default API version to be used (1.0 by default)
 
 validate
-  Parameters validation is turned off when set to false.
+  Parameters validation is turned off when set to false (true by default). When set
+  to ``:explicitly``, you must invoke parameter validation yourself by calling controller
+  method ``apipie_validations`` (typically in a before_filter)
 
 validate_value
   Check the value of params against specified validators (true by
@@ -644,11 +646,22 @@ basic validators. You can always provide your own to reach complex
 results.
 
 If validations are enabled (default state) the parameters of every
-request are validated. If the value is wrong a +ArgumentError+ exception
+request are validated. If the value is wrong an +ArgumentError+ exception
 is raised and can be rescued and processed. It contains some description
 of parameter value expectations. Validations can be turned off
 in configuration file.
 
+Parameter validation normally happens after before_filters, just before
+your controller method is invoked. If you prefer to control when parameter
+validation occurs, set the configuration parameter ``validate`` to ``:explicitly``.
+You must then call the ``apipie_validations`` method yourself, e.g.:
+
+.. code:: ruby
+
+   before_filter: :apipie_validations
+
+This is useful if you have before_filters which use parameter values: just add them
+after the ``apipie_validations`` before_filter.
 
 TypeValidator
 -------------

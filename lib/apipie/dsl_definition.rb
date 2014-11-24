@@ -189,24 +189,20 @@ module Apipie
       end
 
       def _apipie_define_validators(description)
-        # redefine method only if validation is turned on
-        if description && Apipie.configuration.validate == true
 
-          old_method = instance_method(description.method)
+        # [re]define method only if validation is turned on
+        if description && Apipie.configuration.validate
 
-
-          # @todo we should use before_filter
-          define_method(description.method) do |*args|
-
+          validations_proc = Proc.new do |method_params, params, api_params|
             if Apipie.configuration.validate_presence?
-              description.params.each do |_, param|
+              method_params.each do |_, param|
                 # check if required parameters are present
                 raise ParamMissing.new(param.name) if param.required && !params.has_key?(param.name)
               end
             end
 
             if Apipie.configuration.validate_value?
-              description.params.each do |_, param|
+              method_params.each do |_, param|
                 # params validations
                 param.validate(params[:"#{param.name}"]) if params.has_key?(param.name)
               end
@@ -222,20 +218,49 @@ module Apipie
             end
 
             if Apipie.configuration.process_value?
-              @api_params = {}
-
-              description.params.each do |_, param|
+              method_params.each do |_, param|
                 # params processing
-                @api_params[param.as] = param.process_value(params[:"#{param.name}"]) if params.has_key?(param.name)
+                api_params[param.as] = param.process_value(params[:"#{param.name}"]) if params.has_key?(param.name)
               end
             end
-
-            # run the original method code
-            old_method.bind(self).call(*args)
           end
 
-        end
+          case Apipie.configuration.validate
+          when true
+            # Add validations by metaprogramming: wrap original method with validating method
+            old_method = instance_method(description.method)
 
+            define_method(description.method) do |*args|
+
+              api_params = Apipie.configuration.process_value? ? (@api_params = {}) : {}
+              validations_proc.call(description.params, params, api_params)
+
+              # run the original method code
+              old_method.bind(self).call(*args)
+            end
+
+          when :explicitly
+            # Add validations by before_filter: create a method apipie_validations which
+            # can be called as a before_filter
+            _apipie_save_method_params(description.method, description.params)
+
+            unless instance_methods.include?(:apipie_validations)
+              define_method(:apipie_validations) do
+                api_params = Apipie.configuration.process_value? ? (@api_params = {}) : {}
+                validations_proc.call(self.class._apipie_get_method_params(action_name), params, api_params)
+              end
+            end
+          end
+        end
+      end
+
+      def _apipie_save_method_params(method, params)
+        @method_params ||= {}
+        @method_params[method] = params
+      end
+
+      def _apipie_get_method_params(method)
+        @method_params[method]
       end
 
     end
