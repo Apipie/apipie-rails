@@ -508,6 +508,9 @@ validate_value
 validate_presence
   Check the params presence against the documentation.
 
+validate_keys
+  Check the sent in params to ensure they are defined in the api. (false by default)
+
 process_params
   Process and extract parameter defined from the params of the request
   to the api_params variable

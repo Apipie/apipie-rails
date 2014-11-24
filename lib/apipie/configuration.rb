@@ -4,7 +4,7 @@ module Apipie
     attr_accessor :app_name, :app_info, :copyright, :markup, :disqus_shortname,
       :api_base_url, :doc_base_url, :required_by_default, :layout,
       :default_version, :debug, :version_in_url, :namespaced_resources,
-      :validate, :validate_value, :validate_presence, :authenticate, :doc_path,
+      :validate, :validate_value, :validate_presence, :validate_key, :authenticate, :doc_path,
       :show_all_examples, :process_params, :update_checksum, :checksum_path,
       :link_extension, :record, :languages, :translate, :locale, :default_locale
 
@@ -41,6 +41,11 @@ module Apipie
       return (validate? && @validate_presence)
     end
     alias_method :validate_presence?, :validate_presence
+
+    def validate_key
+      return (validate? && @validate_key)
+    end
+    alias_method :validate_key?, :validate_key
 
     def process_value?
       @process_params
@@ -127,6 +132,7 @@ module Apipie
       @validate = true
       @validate_value = true
       @validate_presence = true
+      @validate_key = false
       @required_by_default = false
       @api_base_url = HashWithIndifferentAccess.new
       @doc_base_url = "/apipie"

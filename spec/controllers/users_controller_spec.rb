@@ -86,6 +86,7 @@ describe UsersController do
           before do
             Apipie.configuration.validate_value = false
             Apipie.configuration.validate_presence = true
+            Apipie.configuration.validate_key = false
           end
 
           it "should reply to valid request" do
@@ -104,11 +105,28 @@ describe UsersController do
 
         end
 
+        context "key validations are enabled" do
+          before do
+            Apipie.configuration.validate_value = false
+            Apipie.configuration.validate_presence = true
+            Apipie.configuration.validate_key = true
+          end
 
-        context "all validations are enabled" do
+          it "should reply to valid request" do
+            lambda { get :show, :id => 5, :session => "secret_hash" }.should_not raise_error
+            assert_response :success
+          end
+
+          it "should fail if extra parameter is passed in" do
+            lambda { get :show, :id => 5, :session => "secret_hash", :badparam => 'badfoo' }.should raise_error(Apipie::UnknownParam, /\bbadparam\b/)
+          end
+        end
+
+        context "presence and value validations are enabled" do
           before do
             Apipie.configuration.validate_value = true
             Apipie.configuration.validate_presence = true
+            Apipie.configuration.validate_key = false
           end
 
           it "should reply to valid request" do
