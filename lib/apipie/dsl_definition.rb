@@ -191,66 +191,58 @@ module Apipie
       def _apipie_define_validators(description)
 
         # [re]define method only if validation is turned on
-        if description && Apipie.configuration.validate
+        if description && (Apipie.configuration.validate == true || Apipie.configuration.validate == :explicitly)
 
-          validations_proc = Proc.new do |method_params, params, api_params|
-            if Apipie.configuration.validate_presence?
-              method_params.each do |_, param|
-                # check if required parameters are present
-                raise ParamMissing.new(param.name) if param.required && !params.has_key?(param.name)
+          _apipie_save_method_params(description.method, description.params)
+
+          unless instance_methods.include?(:apipie_validations)
+            define_method(:apipie_validations) do
+              method_params = self.class._apipie_get_method_params(action_name)
+
+              if Apipie.configuration.validate_presence?
+                method_params.each do |_, param|
+                  # check if required parameters are present
+                  raise ParamMissing.new(param.name) if param.required && !params.has_key?(param.name)
+                end
               end
-            end
 
-            if Apipie.configuration.validate_value?
-              method_params.each do |_, param|
-                # params validations
-                param.validate(params[:"#{param.name}"]) if params.has_key?(param.name)
+              if Apipie.configuration.validate_value?
+                method_params.each do |_, param|
+                  # params validations
+                  param.validate(params[:"#{param.name}"]) if params.has_key?(param.name)
+                end
               end
-            end
 
-            # Only allow params passed in that are defined keys in the api
-            # Auto skip the default params (format, controller, action)
-            if Apipie.configuration.validate_key?
-              params.reject{|k,_| [:format, :controller, :action].include?(k.to_sym) }.each_key do |param|
-                # params allowed
-                raise UnknownParam.new(param) if description.params.select {|_,p| p.name.to_s == param.to_s}.empty?
+              # Only allow params passed in that are defined keys in the api
+              # Auto skip the default params (format, controller, action)
+              if Apipie.configuration.validate_key?
+                params.reject{|k,_| [:format, :controller, :action].include?(k.to_sym) }.each_key do |param|
+                  # params allowed
+                  raise UnknownParam.new(param) if description.params.select {|_,p| p.name.to_s == param.to_s}.empty?
+                end
               end
-            end
 
-            if Apipie.configuration.process_value?
-              method_params.each do |_, param|
-                # params processing
-                api_params[param.as] = param.process_value(params[:"#{param.name}"]) if params.has_key?(param.name)
+              if Apipie.configuration.process_value?
+                @api_params ||= {}
+                method_params.each do |_, param|
+                  # params processing
+                  @api_params[param.as] = param.process_value(params[:"#{param.name}"]) if params.has_key?(param.name)
+                end
               end
             end
           end
 
-          case Apipie.configuration.validate
-          when true
-            # Add validations by metaprogramming: wrap original method with validating method
+          if Apipie.configuration.validate == true
             old_method = instance_method(description.method)
 
             define_method(description.method) do |*args|
-
-              api_params = Apipie.configuration.process_value? ? (@api_params = {}) : {}
-              validations_proc.call(description.params, params, api_params)
+              apipie_validations
 
               # run the original method code
               old_method.bind(self).call(*args)
             end
-
-          when :explicitly
-            # Add validations by before_filter: create a method apipie_validations which
-            # can be called as a before_filter
-            _apipie_save_method_params(description.method, description.params)
-
-            unless instance_methods.include?(:apipie_validations)
-              define_method(:apipie_validations) do
-                api_params = Apipie.configuration.process_value? ? (@api_params = {}) : {}
-                validations_proc.call(self.class._apipie_get_method_params(action_name), params, api_params)
-              end
-            end
           end
+
         end
       end
 
