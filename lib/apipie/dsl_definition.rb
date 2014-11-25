@@ -191,7 +191,9 @@ module Apipie
       def _apipie_define_validators(description)
 
         # [re]define method only if validation is turned on
-        if description && (Apipie.configuration.validate == true || Apipie.configuration.validate == :explicitly)
+        if description && (Apipie.configuration.validate == true ||
+                           Apipie.configuration.validate == :implicitly ||
+                           Apipie.configuration.validate == :explicitly)
 
           _apipie_save_method_params(description.method, description.params)
 
@@ -232,7 +234,7 @@ module Apipie
             end
           end
 
-          if Apipie.configuration.validate == true
+          if (Apipie.configuration.validate == :implicitly || Apipie.configuration.validate == true)
             old_method = instance_method(description.method)
 
             define_method(description.method) do |*args|

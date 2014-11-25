@@ -497,9 +497,12 @@ default_version
   Default API version to be used (1.0 by default)
 
 validate
-  Parameters validation is turned off when set to false (true by default). When set
-  to ``:explicitly``, you must invoke parameter validation yourself by calling controller
-  method ``apipie_validations`` (typically in a before_filter)
+  Parameters validation is turned off when set to false. When set to
+  ``:explicitly``, you must invoke parameter validation yourself by calling
+  controller method ``apipie_validations`` (typically in a before_filter).
+  When set to ``:implicitly`` (or just true), your controller's action
+  methods are wrapped with generated methods which call ``apipie_validations``
+  then call the action method. (``:implicitly`` by default)
 
 validate_value
   Check the value of params against specified validators (true by

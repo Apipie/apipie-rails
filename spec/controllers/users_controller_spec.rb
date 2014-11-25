@@ -336,6 +336,15 @@ describe UsersController do
         it_behaves_like "validates correctly"
       end
 
+      context "using configuration.validate = :implicitly" do
+        before :all do
+          Apipie.configuration.validate = :implicitly
+          reload_controllers
+        end
+
+        it_behaves_like "validates correctly"
+      end
+
       context "using configuration.validate = :explicitly" do
         before :all do
           Apipie.configuration.validate = :explicitly
