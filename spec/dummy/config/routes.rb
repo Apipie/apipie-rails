@@ -5,6 +5,9 @@ Dummy::Application.routes.draw do
     scope '/api' do
       resources :users
       resources :concerns, :only => [:index, :show]
+      namespace :files do
+        get '/*file_path', to: :download, format: false
+      end
       resources :twitter_example do
         collection do
           get :lookup
