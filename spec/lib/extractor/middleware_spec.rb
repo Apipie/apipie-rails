@@ -18,4 +18,24 @@ describe Apipie::Extractor::Recorder::Middleware do
     expect(Apipie::Extractor).to receive(:clean_call_recorder)
     response
   end
+
+  describe 'with a multipart post' do
+    let(:form_hash) do
+      {
+       'stringbody' => 'this is a string body',
+       'filebody' => {:head => 'X-Fake-Header: fake\r\n'}
+      }
+    end
+
+    let(:response) do
+      request.post('/', 'rack.request.form_hash' => form_hash)
+    end
+
+    it 'reformats form parts' do
+      Apipie.configuration.record = true
+      # expect reformat_multipart_data to invoke content_disposition
+      expect(Apipie::Extractor.call_recorder).to receive(:content_disposition)
+      response
+    end
+  end
 end
