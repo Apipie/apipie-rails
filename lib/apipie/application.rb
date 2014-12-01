@@ -58,7 +58,7 @@ module Apipie
             method.to_s == route.defaults[:action]
       end
 
-      RoutesFormater.format_paths(routes)
+      RoutesFormater.new.format_paths(routes)
     end
 
     # create new method api description
