@@ -55,6 +55,7 @@ module Apipie
       end
 
       def reformat_multipart_data(form)
+        form.empty? and return ''
         lines = ["Content-Type: multipart/form-data; boundary=#{MULTIPART_BOUNDARY}",'']
         boundary = "--#{MULTIPART_BOUNDARY}"
         form.each do |key, attrs|
