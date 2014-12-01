@@ -190,6 +190,11 @@ api
   When providing just one argument (description) or not argument at all,
   the paths will be loaded from routes.rb file.
 
+api!
+  Provide short description and additional option.
+  The last parameter is methods short description.
+  The paths will be loaded from routes.rb file.
+  
 api_versions (also api_version)
   What version(s) does the action belong to. (See `Versioning`_ for details.)
 
