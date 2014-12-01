@@ -14,6 +14,8 @@ module Apipie
         if data = parse_data(env["rack.input"].read)
           @request_data = data
           env["rack.input"].rewind
+        elsif form_hash = env["rack.request.form_hash"]
+          @request_data = reformat_multipart_data(form_hash)
         end
       end
 
@@ -48,6 +50,32 @@ module Apipie
         JSON.parse(data)
       rescue StandardError => e
         data
+      end
+
+      def reformat_multipart_data(form)
+        boundary = 'APIPIE_RECORDER_EXAMPLE_BOUNDARY'
+        lines = ["Content-Type: multipart/form-data; boundary=#{boundary}",'']
+        boundary = "--#{boundary}"
+        form.each do |key, attrs|
+          lines << boundary
+          if attrs.is_a?(String)
+            lines << content_disposition(key) << "Content-Length: #{attrs.size}" << '' << attrs
+          else
+            if head = attrs[:head]
+              lines.concat(head.split("\r\n"))
+            else
+              lines << content_disposition(key)
+            end
+            # To avoid large and/or binary file bodies, simply indicate the contents in the output.
+            lines << '' << "... contents of #{key} ..."
+          end
+        end
+        lines << "#{boundary}--"
+        lines.join("\n")
+      end
+
+      def content_disposition(name)
+        %{Content-Disposition: form-data; name="#{name}"}
       end
 
       def reformat_data(data)
