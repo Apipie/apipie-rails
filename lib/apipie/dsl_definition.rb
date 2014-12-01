@@ -74,25 +74,23 @@ module Apipie
         Apipie.add_param_group(self, name, &block)
       end
 
-      #   # load paths from routes
-      #   api "short description",
       #
       #   # load paths from routes and don't provide description
       #   api
       #
-      def api(*args) #:doc:
+      def api(method, path, desc = nil, options={}) #:doc:
         return unless Apipie.active_dsl?
         _apipie_dsl_data[:api] = true
-        case args.size
-        when 0..1
-          desc = args.first
-          _apipie_dsl_data[:api_from_routes] = { :desc => desc, :options => {} }
-        when 2..4
-          method, path, desc, options = *args
-          _apipie_dsl_data[:api_args] << [method, path, desc, (options || {})]
-        else
-          raise ArgumentError, 'Wrong number of arguments'
-        end
+        _apipie_dsl_data[:api_args] << [method, path, desc, options]
+      end
+
+      #   # load paths from routes
+      #   api! "short description",
+      #
+      def api!(desc = nil, options={}) #:doc:
+        return unless Apipie.active_dsl?
+        _apipie_dsl_data[:api] = true
+        _apipie_dsl_data[:api_from_routes] = { :desc => desc, :options =>options }
       end
 
       # Reference other similar method
