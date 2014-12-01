@@ -1,6 +1,8 @@
 module Apipie
   module Extractor
     class Recorder
+      MULTIPART_BOUNDARY = 'APIPIE_RECORDER_EXAMPLE_BOUNDARY'
+
       def initialize
         @ignored_params = [:controller, :action]
       end
@@ -53,25 +55,29 @@ module Apipie
       end
 
       def reformat_multipart_data(form)
-        boundary = 'APIPIE_RECORDER_EXAMPLE_BOUNDARY'
-        lines = ["Content-Type: multipart/form-data; boundary=#{boundary}",'']
-        boundary = "--#{boundary}"
+        lines = ["Content-Type: multipart/form-data; boundary=#{MULTIPART_BOUNDARY}",'']
+        boundary = "--#{MULTIPART_BOUNDARY}"
         form.each do |key, attrs|
-          lines << boundary
           if attrs.is_a?(String)
-            lines << content_disposition(key) << "Content-Length: #{attrs.size}" << '' << attrs
+            lines << boundary << content_disposition(key) << "Content-Length: #{attrs.size}" << '' << attrs
           else
-            if head = attrs[:head]
-              lines.concat(head.split("\r\n"))
-            else
-              lines << content_disposition(key)
-            end
-            # To avoid large and/or binary file bodies, simply indicate the contents in the output.
-            lines << '' << "... contents of #{key} ..."
+            reformat_hash(boundary, attrs, lines)
           end
         end
         lines << "#{boundary}--"
         lines.join("\n")
+      end
+
+      def reformat_hash(boundary, attrs, lines)
+        if head = attrs[:head]
+          lines << boundary
+          lines.concat(head.split("\r\n"))
+          # To avoid large and/or binary file bodies, simply indicate the contents in the output.
+          lines << '' << %{... contents of "#{attrs[:name]}" ...}
+        else
+          # Look for subelements that contain a part.
+          attrs.each { |k,v| v.is_a?(Hash) and reformat_hash(boundary, v, lines) }
+        end
       end
 
       def content_disposition(name)

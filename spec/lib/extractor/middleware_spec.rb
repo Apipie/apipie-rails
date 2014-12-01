@@ -22,8 +22,11 @@ describe Apipie::Extractor::Recorder::Middleware do
   describe 'with a multipart post' do
     let(:form_hash) do
       {
-       'stringbody' => 'this is a string body',
-       'filebody' => {:head => 'X-Fake-Header: fake\r\n'}
+        'stringbody' => 'this is a string body',
+        'filebody' => {:head => 'X-Fake-Header: fake1\r\n'},
+        'files' => {
+          '0' => {:head => 'X-Fake-Header: fake2\r\n'}
+        }
       }
     end
 
