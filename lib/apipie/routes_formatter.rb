@@ -3,6 +3,11 @@ class RoutesFormater
 
   class Path
     def format(rails_path_spec)
+      rails_path_spec.gsub!('(.:format)', '')
+      rails_path_spec.gsub!(/[()]/, '')
+      Apipie.configuration.api_base_url.values.each do |values|
+        rails_path_spec.gsub!("#{values}/", '/')
+      end
       rails_path_spec
     end
   end
