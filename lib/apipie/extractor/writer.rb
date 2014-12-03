@@ -75,7 +75,7 @@ module Apipie
       def ordered_call(call)
         call = call.stringify_keys
         ordered_call = OrderedHash.new
-        %w[verb path versions query request_data response_data code show_in_doc recorded].each do |k|
+        %w[title verb path versions query request_data response_data code show_in_doc recorded].each do |k|
           next unless call.has_key?(k)
           ordered_call[k] = case call[k]
                        when ActiveSupport::HashWithIndifferentAccess
@@ -97,13 +97,35 @@ module Apipie
         merged_examples = []
         (new_examples.keys + old_examples.keys).uniq.each do |key|
           if new_examples.has_key?(key)
-            records = new_examples[key]
+            if old_examples.has_key?(key)
+              records = deep_merge_examples(new_examples[key], old_examples[key])
+            else
+              records = new_examples[key]
+            end
           else
             records = old_examples[key]
           end
-          merged_examples << [key, records.map { |r|  ordered_call(r) } ]
+          merged_examples << [key, records.map { |r| ordered_call(r) } ]
         end
         return merged_examples
+      end
+
+      def deep_merge_examples(new_examples, old_examples)
+        new_examples.map do |new_example|
+          # Use ordered to get compareble output (mainly for the :query)
+          new_example_ordered = ordered_call(new_example.dup)
+
+          # Comparing verb, versions and query
+          if old_example = old_examples.find{ |old_example| old_example["verb"] == new_example_ordered["verb"] && old_example["versions"] == new_example_ordered["versions"] && old_example["query"] == new_example_ordered["query"]}
+
+            # Take the 'show in doc' attribute from the old example if it is present and the configuration requests the value to be persisted.
+            new_example[:show_in_doc] = old_example["show_in_doc"] if Apipie.configuration.persist_show_in_doc && old_example["show_in_doc"].to_i > 0
+
+            # Always take the title from the old example if it exists.
+            new_example[:title] ||= old_example["title"] if old_example["title"].present?
+          end
+          new_example
+        end 
       end
 
       def load_new_examples
