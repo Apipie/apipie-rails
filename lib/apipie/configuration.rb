@@ -134,7 +134,7 @@ module Apipie
       @app_name = "Another API"
       @app_info = HashWithIndifferentAccess.new
       @copyright = nil
-      @validate = true
+      @validate = :implicitly
       @validate_value = true
       @validate_presence = true
       @validate_key = false

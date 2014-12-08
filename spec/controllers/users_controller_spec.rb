@@ -74,249 +74,287 @@ describe UsersController do
 
     end
 
-    context "only presence validations are enabled" do
-      before do
-        Apipie.configuration.validate = true
-        Apipie.configuration.validate_value = false
-        Apipie.configuration.validate_presence = true
-      end
-
-      it "should reply to valid request" do
-        lambda { get :show, :id => 5, :session => "secret_hash" }.should_not raise_error
-        assert_response :success
-      end
-
-      it "should fail if required parameter is missing" do
-        lambda { get :show, :id => 5 }.should raise_error(Apipie::ParamMissing, /\bsession\b/)
-      end
-
-      it "should pass if required parameter has wrong type" do
-        lambda { get :show, :id => 5, :session => "secret_hash" }.should_not raise_error
-        lambda { get :show, :id => "ten", :session => "secret_hash" }.should_not raise_error
-      end
-    end
-
-    context "key validations are enabled" do
-       before do
-         Apipie.configuration.validate = true
-         Apipie.configuration.validate_value = false
-         Apipie.configuration.validate_presence = true
-         Apipie.configuration.validate_key = true
-       end
-
-       it "should reply to valid request" do
-         lambda { get :show, :id => 5, :session => "secret_hash" }.should_not raise_error
-         assert_response :success
-       end
-
-       it "should fail if extra parameter is passed in" do
-         lambda { get :show, :id => 5, :session => "secret_hash", :badparam => 'badfoo' }.should raise_error(Apipie::UnknownParam, /\bbadparam\b/)
-       end
-     end
-
     context "validations are enabled" do
-      before do
-        Apipie.configuration.validate = true
-        Apipie.configuration.validate_value = true
-        Apipie.configuration.validate_presence = true
+      def reload_controllers
+        controllers_dirname = File.expand_path('../dummy/app/controllers', File.dirname(__FILE__))
+        Dir.glob("#{controllers_dirname}/**/*") { |file| load(file) if File.file?(file) }
       end
 
-      it "should reply to valid request" do
-        get :show, :id => '5', :session => "secret_hash"
-        assert_response :success
-      end
+      shared_examples "validates correctly" do
 
-      it "should work with nil value for a required hash param" do
-        expect {
-          get :show, :id => '5', :session => "secret_hash", :hash_param => {:dummy_hash => nil}
-        }.to raise_error(Apipie::ParamInvalid, /dummy_hash/)
-        assert_response :success
-      end
+        context "only presence validations are enabled" do
+          before do
+            Apipie.configuration.validate_value = false
+            Apipie.configuration.validate_presence = true
+            Apipie.configuration.validate_key = false
+          end
 
-      it "should fail if required parameter is missing" do
-        lambda { get :show, :id => 5 }.should raise_error(Apipie::ParamMissing, /\bsession\b/)
-      end
-
-      it "should work with custom Type validator" do
-        lambda {
-          get :show,
-              :id => "not a number",
-              :session => "secret_hash"
-        }.should raise_error(Apipie::ParamError, /id/) # old-style error rather than ParamInvalid
-      end
-
-      it "should work with Regexp validator" do
-        get :show,
-            :id => 5,
-            :session => "secret_hash",
-            :regexp_param => "24 years"
-        assert_response :success
-
-        lambda {
-          get :show,
-              :id => 5,
-              :session => "secret_hash",
-              :regexp_param => "ten years"
-        }.should raise_error(Apipie::ParamInvalid, /regexp_param/)
-      end
-
-      it "should work with Array validator" do
-        get :show, :id => 5, :session => "secret_hash", :array_param => "one"
-        assert_response :success
-        get :show, :id => 5, :session => "secret_hash", :array_param => "two"
-        assert_response :success
-        get :show, :id => 5, :session => "secret_hash", :array_param => '1'
-        assert_response :success
-        get :show, :id => 5, :session => "secret_hash", :boolean_param => false
-        assert_response :success
-
-        lambda {
-          get :show,
-              :id => 5,
-              :session => "secret_hash",
-              :array_param => "blabla"
-        }.should raise_error(Apipie::ParamInvalid, /array_param/)
-
-        lambda {
-          get :show,
-              :id => 5,
-              :session => "secret_hash",
-              :array_param => 3
-        }.should raise_error(Apipie::ParamInvalid, /array_param/)
-      end
-
-      it "should work with Proc validator" do
-        lambda {
-          get :show,
-              :id => 5,
-              :session => "secret_hash",
-              :proc_param => "asdgsag"
-        }.should raise_error(Apipie::ParamInvalid, /proc_param/)
-
-        get :show,
-            :id => 5,
-            :session => "secret_hash",
-            :proc_param => "param value"
-        assert_response :success
-      end
-
-      it "should work with Hash validator" do
-        post :create, :user => { :name => "root", :pass => "12345", :membership => "standard" }
-        assert_response :success
-
-        a = Apipie[UsersController, :create]
-        param = a.params_ordered.select {|p| p.name == :user }
-        param.count.should == 1
-        param.first.validator.class.should eq(Apipie::Validator::HashValidator)
-        hash_params = param.first.validator.params_ordered
-        hash_params.count.should == 4
-        hash_params[0].name == :name
-        hash_params[1].name == :pass
-        hash_params[2].name == :membership
-
-        lambda {
-          post :create, :user => { :name => "root", :pass => "12345", :membership => "____" }
-        }.should raise_error(Apipie::ParamInvalid, /membership/)
-
-        lambda {
-          post :create, :user => { :name => "root" }
-        }.should raise_error(Apipie::ParamMissing, /pass/)
-
-        lambda {
-          post :create, :user => "a string is not a hash"
-        }.should raise_error(Apipie::ParamInvalid, /user/)
-
-        post :create, :user => { :name => "root", :pass => "pwd" }
-        assert_response :success
-      end
-
-      it "should support Hash validator without specifying keys" do
-        params = Apipie[UsersController, :create].to_json[:params]
-        params.should include(:name => "facts",
-                              :full_name => "facts",
-                              :validator => "Must be Hash",
-                              :description => "\n<p>Additional optional facts about the user</p>\n",
-                              :required => false,
-                              :allow_nil => true,
-                              :metadata => nil,
-                              :show => true,
-                              :expected_type => "hash")
-      end
-
-      it "should allow nil when allow_nil is set to true" do
-        post :create,
-             :user => {
-               :name => "root",
-               :pass => "12345",
-               :membership => "standard",
-             },
-             :facts => nil
-        assert_response :success
-      end
-
-      describe "nested elements"  do
-
-        context "with valid input" do
-          it "should succeed" do
-            put :update,
-                {
-                  :id => 5,
-                  :user => {
-                    :name => "root",
-                    :pass => "12345"
-                  },
-                  :comments => [
-                    {
-                      :comment => 'comment1'
-                    },
-                    {
-                      :comment => 'comment2'
-                    }
-                  ]
-                }
-
+          it "should reply to valid request" do
+            lambda { get :show, :id => 5, :session => "secret_hash" }.should_not raise_error
             assert_response :success
           end
+
+          it "should fail if required parameter is missing" do
+            lambda { get :show, :id => 5 }.should raise_error(Apipie::ParamMissing, /\bsession\b/)
+          end
+
+          it "should pass if required parameter has wrong type" do
+            lambda { get :show, :id => 5, :session => "secret_hash" }.should_not raise_error
+            lambda { get :show, :id => "ten", :session => "secret_hash" }.should_not raise_error
+          end
+
         end
-        context "with bad input" do
-          it "should raise an error" do
-            expect{
-              put :update,
-                {
-                  :id => 5,
-                  :user => {
-                    :name => "root",
-                    :pass => "12345"
-                  },
-                  :comments => [
-                    {
-                      :comment => 'comment1'
-                    },
-                    {
-                      :comment => {:bad_input => 5}
-                    }
-                  ]
-                }
-            }.to raise_error(Apipie::ParamInvalid)
+
+        context "key validations are enabled" do
+          before do
+            Apipie.configuration.validate_value = false
+            Apipie.configuration.validate_presence = true
+            Apipie.configuration.validate_key = true
+          end
+
+          it "should reply to valid request" do
+            lambda { get :show, :id => 5, :session => "secret_hash" }.should_not raise_error
+            assert_response :success
+          end
+
+          it "should fail if extra parameter is passed in" do
+            lambda { get :show, :id => 5, :session => "secret_hash", :badparam => 'badfoo' }.should raise_error(Apipie::UnknownParam, /\bbadparam\b/)
           end
         end
-        it "should work with empty array" do
-          put :update,
-              {
-                :id => 5,
-                :user => {
-                  :name => "root",
-                  :pass => "12345"
-                },
-                :comments => [
-                ]
-              }
 
-          assert_response :success
+        context "presence and value validations are enabled" do
+          before do
+            Apipie.configuration.validate_value = true
+            Apipie.configuration.validate_presence = true
+            Apipie.configuration.validate_key = false
+          end
+
+          it "should reply to valid request" do
+            get :show, :id => '5', :session => "secret_hash"
+            assert_response :success
+          end
+
+          it "should work with nil value for a required hash param" do
+            expect {
+              get :show, :id => '5', :session => "secret_hash", :hash_param => {:dummy_hash => nil}
+            }.to raise_error(Apipie::ParamInvalid, /dummy_hash/)
+            assert_response :success
+          end
+
+          it "should fail if required parameter is missing" do
+            lambda { get :show, :id => 5 }.should raise_error(Apipie::ParamMissing, /\bsession\b/)
+          end
+
+          it "should work with custom Type validator" do
+            lambda {
+              get :show,
+                  :id => "not a number",
+                  :session => "secret_hash"
+            }.should raise_error(Apipie::ParamError, /id/) # old-style error rather than ParamInvalid
+          end
+
+          it "should work with Regexp validator" do
+            get :show,
+                :id => 5,
+                :session => "secret_hash",
+                :regexp_param => "24 years"
+            assert_response :success
+
+            lambda {
+              get :show,
+                  :id => 5,
+                  :session => "secret_hash",
+                  :regexp_param => "ten years"
+            }.should raise_error(Apipie::ParamInvalid, /regexp_param/)
+          end
+
+          it "should work with Array validator" do
+            get :show, :id => 5, :session => "secret_hash", :array_param => "one"
+            assert_response :success
+            get :show, :id => 5, :session => "secret_hash", :array_param => "two"
+            assert_response :success
+            get :show, :id => 5, :session => "secret_hash", :array_param => '1'
+            assert_response :success
+            get :show, :id => 5, :session => "secret_hash", :boolean_param => false
+            assert_response :success
+
+            lambda {
+              get :show,
+                  :id => 5,
+                  :session => "secret_hash",
+                  :array_param => "blabla"
+            }.should raise_error(Apipie::ParamInvalid, /array_param/)
+
+            lambda {
+              get :show,
+                  :id => 5,
+                  :session => "secret_hash",
+                  :array_param => 3
+            }.should raise_error(Apipie::ParamInvalid, /array_param/)
+          end
+
+          it "should work with Proc validator" do
+            lambda {
+              get :show,
+                  :id => 5,
+                  :session => "secret_hash",
+                  :proc_param => "asdgsag"
+            }.should raise_error(Apipie::ParamInvalid, /proc_param/)
+
+            get :show,
+                :id => 5,
+                :session => "secret_hash",
+                :proc_param => "param value"
+            assert_response :success
+          end
+
+          it "should work with Hash validator" do
+            post :create, :user => { :name => "root", :pass => "12345", :membership => "standard" }
+            assert_response :success
+
+            a = Apipie[UsersController, :create]
+            param = a.params_ordered.select {|p| p.name == :user }
+            param.count.should == 1
+            param.first.validator.class.should eq(Apipie::Validator::HashValidator)
+            hash_params = param.first.validator.params_ordered
+            hash_params.count.should == 4
+            hash_params[0].name == :name
+            hash_params[1].name == :pass
+            hash_params[2].name == :membership
+
+            lambda {
+              post :create, :user => { :name => "root", :pass => "12345", :membership => "____" }
+            }.should raise_error(Apipie::ParamInvalid, /membership/)
+
+            lambda {
+              post :create, :user => { :name => "root" }
+            }.should raise_error(Apipie::ParamMissing, /pass/)
+
+            lambda {
+              post :create, :user => "a string is not a hash"
+            }.should raise_error(Apipie::ParamInvalid, /user/)
+
+            post :create, :user => { :name => "root", :pass => "pwd" }
+            assert_response :success
+          end
+
+          it "should support Hash validator without specifying keys" do
+            params = Apipie[UsersController, :create].to_json[:params]
+            params.should include(:name => "facts",
+                                  :full_name => "facts",
+                                  :validator => "Must be Hash",
+                                  :description => "\n<p>Additional optional facts about the user</p>\n",
+                                  :required => false,
+                                  :allow_nil => true,
+                                  :metadata => nil,
+                                  :show => true,
+                                  :expected_type => "hash")
+          end
+
+          it "should allow nil when allow_nil is set to true" do
+            post :create,
+                 :user => {
+                   :name => "root",
+                   :pass => "12345",
+                   :membership => "standard",
+                 },
+                 :facts => nil
+            assert_response :success
+          end
+
+          describe "nested elements"  do
+
+            context "with valid input" do
+              it "should succeed" do
+                put :update,
+                    {
+                      :id => 5,
+                      :user => {
+                        :name => "root",
+                        :pass => "12345"
+                      },
+                      :comments => [
+                        {
+                          :comment => 'comment1'
+                        },
+                        {
+                          :comment => 'comment2'
+                        }
+                      ]
+                    }
+
+                assert_response :success
+              end
+            end
+            context "with bad input" do
+              it "should raise an error" do
+                expect{
+                  put :update,
+                    {
+                      :id => 5,
+                      :user => {
+                        :name => "root",
+                        :pass => "12345"
+                      },
+                      :comments => [
+                        {
+                          :comment => 'comment1'
+                        },
+                        {
+                          :comment => {:bad_input => 5}
+                        }
+                      ]
+                    }
+                }.to raise_error(Apipie::ParamInvalid)
+              end
+            end
+            it "should work with empty array" do
+              put :update,
+                  {
+                    :id => 5,
+                    :user => {
+                      :name => "root",
+                      :pass => "12345"
+                    },
+                    :comments => [
+                    ]
+                  }
+
+              assert_response :success
+            end
+          end
+
         end
       end
 
+      context "using configuration.validate = true" do
+        before :all do
+          Apipie.configuration.validate = true
+          reload_controllers
+        end
+
+        it_behaves_like "validates correctly"
+      end
+
+      context "using configuration.validate = :implicitly" do
+        before :all do
+          Apipie.configuration.validate = :implicitly
+          reload_controllers
+        end
+
+        it_behaves_like "validates correctly"
+      end
+
+      context "using configuration.validate = :explicitly" do
+        before :all do
+          Apipie.configuration.validate = :explicitly
+          reload_controllers
+        end
+
+        it_behaves_like "validates correctly"
+      end
     end
+
   end
 
   describe "method description" do
