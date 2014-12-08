@@ -6,7 +6,8 @@ module Apipie
       :default_version, :debug, :version_in_url, :namespaced_resources,
       :validate, :validate_value, :validate_presence, :validate_key, :authenticate, :doc_path,
       :show_all_examples, :process_params, :update_checksum, :checksum_path,
-      :link_extension, :record, :languages, :translate, :locale, :default_locale
+      :link_extension, :record, :languages, :translate, :locale, :default_locale,
+      :persist_show_in_doc
 
     alias_method :validate?, :validate
     alias_method :required_by_default?, :required_by_default
@@ -91,6 +92,10 @@ module Apipie
       @ignored.map(&:to_s)
     end
 
+    # Persist the show_in_doc value in the examples if true. Use this if you
+    # cannot set the flag in the tests themselves (no rspec for example).
+    attr_writer :persist_show_in_doc
+
     # comment to put before docs that was generated automatically. It's used to
     # determine if the description should be overwritten next recording.
     # If you want to keep the documentation (prevent from overriding), remove
@@ -152,6 +157,7 @@ module Apipie
       @default_locale = 'en'
       @locale = lambda { |locale| @default_locale }
       @translate = lambda { |str, locale| str }
+      @persist_show_in_doc = false
     end
   end
 end
