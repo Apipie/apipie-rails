@@ -9,7 +9,10 @@ module Apipie
     end
 
     def format_route(rails_route, args)
-      {:path => format_path(rails_route), :verb => format_verb(rails_route), :desc => args[:desc], :options => args[:options]}
+      { :path => format_path(rails_route),
+        :verb => format_verb(rails_route),
+        :desc => args[:desc],
+        :options => args[:options] }
     end
 
     def format_path(rails_route)

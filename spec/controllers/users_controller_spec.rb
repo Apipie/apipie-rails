@@ -390,7 +390,8 @@ describe UsersController do
         a.formats.should eq(['json'])
         api = a.apis.first
         api.short_description.should eq("Create user")
-        api.path.should eq("/users/create_route")
+        api.path.should eq("/api/users/create_route")
+        api.from_routes.should be_true
         api.http_method.should eq("POST")
       end
     end

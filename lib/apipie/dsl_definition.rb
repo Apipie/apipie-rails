@@ -381,7 +381,10 @@ module Apipie
           options = _apipie_dsl_data[:api_from_routes][:options]
 
           api_from_routes = Apipie.routes_for_action(self, method_name, {:desc => desc, :options => options}).map do |route_info|
-            [route_info[:verb], route_info[:path], route_info[:desc], route_info[:options]]
+            [route_info[:verb],
+             route_info[:path],
+             route_info[:desc],
+             (route_info[:options] || {}).merge(:from_routes => true)]
           end
           _apipie_dsl_data[:api_args].concat(api_from_routes)
         end
