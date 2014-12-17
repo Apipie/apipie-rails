@@ -193,8 +193,9 @@ api
 api!
   Provide short description and additional option.
   The last parameter is methods short description.
-  The paths will be loaded from routes.rb file.
-  
+  The paths will be loaded from routes.rb file. See
+  `Rails Routes Integration`_ for more details.
+
 api_versions (also api_version)
   What version(s) does the action belong to. (See `Versioning`_ for details.)
 
@@ -228,6 +229,12 @@ Example:
 
 .. code:: ruby
 
+   # The simplest case: just load the paths from routes.rb
+   api!
+   def index
+   end
+
+   # More complex example
    api :GET, "/users/:id", "Show user profile"
    error :code => 401, :desc => "Unauthorized"
    error :code => 404, :desc => "Not Found", :meta => {:anything => "you can think of"}
@@ -536,7 +543,13 @@ api_controllers_matcher
   For reloading to work properly you need to specify where your API controllers are. Can be an array if multiple paths are needed
 
 api_routes
-  Set if your application uses custom API router, different from Rails default
+  Set if your application uses custom API router, different from Rails
+  default
+
+routes_formatter
+  An object providing the translation from the Rails routes to the
+  format usable in the documentation when using the `api!` keyword. By
+  default, the ``Apipie::RoutesFormatter`` is used.
 
 markup
   You can choose markup language for descriptions of your application,
@@ -620,6 +633,37 @@ checksum_path
 
 update_checksum
   If set to true, the checksum is recalculated with every documentation_reload call
+
+========================
+Rails Routes Integration
+========================
+
+Apipie is able to load the information about the paths based on the
+routes defined in the Rails application, by using the `api!` keyword
+in the DSL.
+
+It should be usable out of box, however, one might want
+to do some customization (such as omitting some implicit parameters in
+the path etc.). For this kind of customizations one can create a new
+formatter and pass as the ``Apipie.configuration.routes_formatter``
+option, like this:
+
+.. code:: ruby
+
+   class MyFormatter < Apipie::RailsFormatter
+     def format_path(route)
+       super.gsub(/\(.*?\)/, '').gsub('//','') # hide all implicit parameters
+     end
+   end
+
+   Apipie.configure do |config|
+    ...
+    config.routes_formatter = MyFormatter.new
+    ...
+   end
+
+The similar way can be influenced things like order or a description
+of the loaded APIs, even omitting some paths if needed. 
 
 ============
  Processing

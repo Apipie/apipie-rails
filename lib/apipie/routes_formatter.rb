@@ -1,39 +1,33 @@
-class RoutesFormater
-  API_METHODS = %w{GET POST PUT PATCH OPTIONS DELETE}
+module Apipie
+  class RoutesFormatter
+    API_METHODS = %w{GET POST PUT PATCH OPTIONS DELETE}
 
-  class Path
-    def format(rails_path_spec)
-      rails_path_spec.gsub!('(.:format)', '')
-      rails_path_spec.gsub!(/[()]/, '')
-      Apipie.configuration.api_base_url.values.each do |values|
-        rails_path_spec.gsub!("#{values}/", '/')
-      end
-      rails_path_spec
+    # The entry method called by Apipie to extract the array
+    # representing the api dsl from the routes definition.
+    def format_routes(rails_routes, args)
+      rails_routes.map { |rails_route| format_route(rails_route, args) }
     end
-  end
 
-  def initialize
-    @path_formatter = Path.new
-  end
-
-  def format_paths(rails_paths)
-    rails_paths.map { |rails_path| format_path(rails_path) }
-  end
-
-  def format_path(rails_path)
-    path = @path_formatter.format(rails_path.path.spec.to_s)
-
-    { path: path, verb: human_verb(rails_path) }
-  end
-
-  def human_verb(route)
-    verb = API_METHODS.select{|defined_verb| defined_verb =~ /\A#{route.verb}\z/}
-    if verb.count != 1
-      verb = API_METHODS.select{|defined_verb| defined_verb == route.constraints[:method]}
-      if verb.blank?
-        raise "Unknow verb #{route.path.spec.to_s}"
-      end
+    def format_route(rails_route, args)
+      { :path => format_path(rails_route),
+        :verb => format_verb(rails_route),
+        :desc => args[:desc],
+        :options => args[:options] }
     end
-    verb.first
+
+    def format_path(rails_route)
+      rails_route.path.spec.to_s.gsub('(.:format)', '')
+    end
+
+    def format_verb(rails_route)
+      verb = API_METHODS.select{|defined_verb| defined_verb =~ /\A#{rails_route.verb}\z/}
+      if verb.count != 1
+        verb = API_METHODS.select{|defined_verb| defined_verb == rails_route.constraints[:method]}
+        if verb.blank?
+          raise "Unknow verb #{rails_route.path.spec.to_s}"
+        end
+      end
+      verb.first
+    end
   end
 end

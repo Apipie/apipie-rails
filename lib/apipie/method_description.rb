@@ -5,12 +5,13 @@ module Apipie
 
     class Api
 
-      attr_accessor :short_description, :path, :http_method, :options
+      attr_accessor :short_description, :path, :http_method, :from_routes, :options
 
       def initialize(method, path, desc, options)
         @http_method = method.to_s
         @path = path
         @short_description = desc
+        @from_routes = options[:from_routes]
         @options = options
       end
 
@@ -104,7 +105,10 @@ module Apipie
     end
 
     def create_api_url(api)
-      path = "#{@resource._api_base_url}#{api.path}"
+      path = api.path
+      unless api.from_routes
+        path = "#{@resource._api_base_url}#{path}"
+      end
       path = path[0..-2] if path[-1..-1] == '/'
       return path
     end
