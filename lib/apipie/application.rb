@@ -52,13 +52,13 @@ module Apipie
       end
     end
 
-    def routes_for_action(controller, method)
+    def routes_for_action(controller, method, args)
       routes = apipie_routes.select do |route|
         controller == route_app_controller(route.app, route) &&
             method.to_s == route.defaults[:action]
       end
 
-      RoutesFormater.new.format_paths(routes)
+      Apipie.configuration.routes_formatter.format_routes(routes, args)
     end
 
     # create new method api description
