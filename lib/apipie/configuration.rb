@@ -28,6 +28,12 @@ module Apipie
     # Api::Engine.routes
     attr_accessor :api_routes
 
+    # a object responsible for transforming the routes loaded from Rails to a form
+    # to be used in the documentation, when using the `api!` keyword. By default,
+    # it's Apipie::RoutesFormatter. To customize the behaviour, one can inherit from
+    # from this class and override the methods as needed.
+    attr_accessor :routes_formatter
+
     def reload_controllers?
       @reload_controllers = Rails.env.development? unless defined? @reload_controllers
       return @reload_controllers && @api_controllers_matcher
@@ -158,6 +164,7 @@ module Apipie
       @locale = lambda { |locale| @default_locale }
       @translate = lambda { |str, locale| str }
       @persist_show_in_doc = false
+      @routes_formatter = RoutesFormatter.new
     end
   end
 end

@@ -1,4 +1,5 @@
 require 'apipie/static_dispatcher'
+require 'apipie/routes_formatter'
 require 'yaml'
 require 'digest/md5'
 require 'json'
@@ -6,7 +7,6 @@ require 'json'
 module Apipie
 
   class Application
-
     # we need engine just for serving static assets
     class Engine < Rails::Engine
       initializer "static assets" do |app|
@@ -27,6 +27,49 @@ module Apipie
 
     def set_resource_id(controller, resource_id)
       @controller_to_resource_id[controller] = resource_id
+    end
+
+    def rails_routes(route_set = nil)
+      if route_set.nil? && @rails_routes
+        return @rails_routes
+      end
+      route_set ||= Rails.application.routes
+      # ensure routes are loaded
+      Rails.application.reload_routes! unless Rails.application.routes.routes.any?
+
+      flatten_routes = []
+
+      route_set.routes.each do |route|
+        if route.app.respond_to?(:routes) && route.app.routes.is_a?(ActionDispatch::Routing::RouteSet)
+          # recursively go though the moutned engines
+          flatten_routes.concat(rails_routes(route.app.routes))
+        else
+          flatten_routes << route
+        end
+      end
+
+      @rails_routes = flatten_routes
+    end
+
+    # the app might be nested when using contraints, namespaces etc.
+    # this method does in depth search for the route controller
+    def route_app_controller(app, route)
+      if app.respond_to?(:controller)
+        return app.controller(route.defaults)
+      elsif app.respond_to?(:app)
+        return route_app_controller(app.app, route)
+      end
+    rescue ActionController::RoutingError
+      # some errors in the routes will not stop us here: just ignoring
+    end
+
+    def routes_for_action(controller, method, args)
+      routes = rails_routes.select do |route|
+        controller == route_app_controller(route.app, route) &&
+            method.to_s == route.defaults[:action]
+      end
+
+      Apipie.configuration.routes_formatter.format_routes(routes, args)
     end
 
     # create new method api description

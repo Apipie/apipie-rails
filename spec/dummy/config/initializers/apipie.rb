@@ -73,7 +73,6 @@ Apipie.configure do |config|
   # config.link_extension = ""
 end
 
-
 # integer validator
 class Apipie::Validator::IntegerValidator < Apipie::Validator::BaseValidator
 

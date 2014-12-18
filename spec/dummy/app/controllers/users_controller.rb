@@ -268,4 +268,14 @@ class UsersController < ApplicationController
   def desc_from_file
     render :text => 'document from file action'
   end
+
+  api! 'Create user'
+  param_group :user
+  param :user, Hash do
+    param :permalink, String
+  end
+  param :facts, Hash, :desc => "Additional optional facts about the user", :allow_nil => true
+  def create_route
+  end
+
 end

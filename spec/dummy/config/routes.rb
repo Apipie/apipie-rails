@@ -3,7 +3,11 @@ Dummy::Application.routes.draw do
   scope ENV['RAILS_RELATIVE_URL_ROOT'] || '/' do
 
     scope '/api' do
-      resources :users
+      resources :users do
+        collection do
+          post :create_route
+        end
+      end
       resources :concerns, :only => [:index, :show]
       namespace :files do
         get '/*file_path', to: :download, format: false
