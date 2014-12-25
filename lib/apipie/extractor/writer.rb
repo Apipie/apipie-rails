@@ -294,8 +294,8 @@ module Apipie
                      "List #{name}"
                    end
 
-          code << "api :#{api[:method]}, \"#{api[:path]}\""
-          code << ", \"#{desc}\"" if desc
+          code << "api :#{api[:method]}, '#{api[:path]}'"
+          code << ", '#{desc}'" if desc
           code << "\n"
         end
         return code
@@ -307,7 +307,7 @@ module Apipie
           desc[:type] = (desc[:type] && desc[:type].first) || Object
           code << "#{indent}param"
           if name =~ /\W/
-            code << " :\"#{name}\""
+            code << " :'#{name}'"
           else
             code << " :#{name}"
           end
