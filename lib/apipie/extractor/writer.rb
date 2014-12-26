@@ -313,10 +313,10 @@ module Apipie
           end
           code << ", #{desc[:type].inspect}"
           if desc[:allow_nil]
-            code << ", :allow_nil => true"
+            code << ", allow_nil: true"
           end
           if desc[:required]
-            code << ", :required => true"
+            code << ", required: true"
           end
           if desc[:nested]
             code << " do\n"
@@ -332,7 +332,7 @@ module Apipie
       def generate_errors_code(errors)
         code = ""
         errors.sort_by {|e| e[:code] }.each do |error|
-          code << "error :code => #{error[:code]}\n"
+          code << "error code: #{error[:code]}\n"
         end
         code
       end
