@@ -294,8 +294,8 @@ module Apipie
                      "List #{name}"
                    end
 
-          code << "api :#{api[:method]}, \"#{api[:path]}\""
-          code << ", \"#{desc}\"" if desc
+          code << "api :#{api[:method]}, '#{api[:path]}'"
+          code << ", '#{desc}'" if desc
           code << "\n"
         end
         return code
@@ -307,16 +307,16 @@ module Apipie
           desc[:type] = (desc[:type] && desc[:type].first) || Object
           code << "#{indent}param"
           if name =~ /\W/
-            code << " :\"#{name}\""
+            code << " :'#{name}'"
           else
             code << " :#{name}"
           end
           code << ", #{desc[:type].inspect}"
           if desc[:allow_nil]
-            code << ", :allow_nil => true"
+            code << ", allow_nil: true"
           end
           if desc[:required]
-            code << ", :required => true"
+            code << ", required: true"
           end
           if desc[:nested]
             code << " do\n"
@@ -332,7 +332,7 @@ module Apipie
       def generate_errors_code(errors)
         code = ""
         errors.sort_by {|e| e[:code] }.each do |error|
-          code << "error :code => #{error[:code]}\n"
+          code << "error code: #{error[:code]}\n"
         end
         code
       end
