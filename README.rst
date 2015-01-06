@@ -7,20 +7,20 @@
 .. image:: https://codeclimate.com/github/Apipie/apipie-rails.png
     :target: https://codeclimate.com/github/Apipie/apipie-rails
 
-Apipie-rails is a DSL and Rails engine for documenting you RESTful
+Apipie-rails is a DSL and Rails engine for documenting your RESTful
 API. Instead of traditional use of ``#comments``, Apipie lets you
-describe the code by code. This brings advantages like:
+describe the code, through the code. This brings advantages like:
 
-* no need to learn yet another syntax, you already know Ruby, right?
-* possibility reuse the doc for other purposes (such as validation)
-* easier to extend and maintain (no string parsing involved)
-* possibility to use other sources for documentation purposes (such as
+* No need to learn yet another syntax, you already know Ruby, right?
+* Possibility of reusing the docs for other purposes (such as validation)
+* Easier to extend and maintain (no string parsing involved)
+* Possibility of reusing other sources for documentation purposes (such as
   routes etc.)
 
-The documentation is available right in your app (by default under
-``/apipie`` path. In development mode, you can see the changes as you
-go. It's markup language agnostic and even provides an API for reusing
-the documentation data in form of JSON.
+The documentation is available from within your app (by default under the
+``/apipie`` path.) In development mode, you can see the changes as you
+go. It's markup language agnostic, and even provides an API for reusing
+the documentation data in JSON.
 
 Getting started
 ---------------
@@ -46,12 +46,12 @@ Now you can start documenting your resources and actions (see
 
 
 Run your application and see the result at
-``http://localhost:3000/apipie``. For it's further processing, you can
+``http://localhost:3000/apipie``. For further processing, you can
 use ``http://localhost:3000/apipie.json``.
 
-For more comprehensive getting started guide, see
-`this demo <https://github.com/iNecas/apipie-demo>`_, that includes
-features such as generating documenation from tests, recording examples etc.
+For a more comprehensive getting started guide, see
+`this demo <https://github.com/iNecas/apipie-demo>`_, which includes
+features such as generating documentation from tests, recording examples etc.
 
 Screenshots
 -----------
@@ -88,7 +88,7 @@ Apipie-rails is released under the `MIT License <http://opensource.org/licenses/
 Resource Description
 --------------------
 
-You can describe a resource on controller level. The description is introduced by calling
+You can describe a resource on the controller level. The description is introduced by calling
 ``resource_description do ... end``.
 
 Inheritance is supported, so you can specify common params for group of controllers in their parent
@@ -97,13 +97,13 @@ class.
 The following keywords are available (all are optional):
 
 resource_id
-  How will the resource be referenced in Apipie (paths, ``see`` command etc.), by default `controller_name.downcase` is used.
+  How the resource will be referenced in Apipie (paths, ``see`` command etc.); by default `controller_name.downcase` is used.
 
 name
   Human readable name of resource. By default ``class.name.humanize`` is used.
 
 short (also short_description)
-  Short description of the resource (it's shown on both list of resources and resource details)
+  Short description of the resource (it's shown on both the list of resources, and resource details)
 
 desc (also description and full_description)
   Full description of the resource (shown only in resource details)
@@ -112,20 +112,20 @@ param
   Common params for all methods defined in controller/child controllers.
 
 api_base_url
-  What url is the resource available under.
+  What URL is the resource available under.
 
 api_versions (also api_version)
   What versions does the controller define the resource. (See `Versioning`_ for details.)
 
 formats
-  request / response formats.
+  Request / response formats.
 
 error
-  Describe every possible error that can happen what calling all
+  Describe every possible error that can happen when calling all
   methods defined in controller. HTTP response code and description can be provided.
 
 app_info
-  In case of versioning, this sets app info description on per_version basis.
+  In case of versioning, this sets app info description on a per_version basis.
 
 meta
   Hash or array with custom metadata.
@@ -180,19 +180,19 @@ Method Description
 Then describe methods available to your API.
 
 api
-  Say how is this method exposed and provide short description.
+  Describe how this method is exposed, and provide a short description.
   The first parameter is HTTP method (one of :GET/:POST/:PUT/:DELETE).
-  The second parameter is relative URL path which is mapped to this
-  method. The last parameter is methods short description.
-  You can use this +api+ method more than once for one method. It could
+  The second parameter is the relative URL path which is mapped to this
+  method. The last parameter is the methods short description.
+  You can use this +api+ method more than once per method. It could
   be useful when there are more routes mapped to it.
 
-  When providing just one argument (description) or not argument at all,
-  the paths will be loaded from routes.rb file.
+  When providing just one argument (description), or no argument at all,
+  the paths will be loaded from the routes.rb file.
 
 api!
-  Provide short description and additional option.
-  The last parameter is methods short description.
+  Provide a short description and additional option.
+  The last parameter is the methods short description.
   The paths will be loaded from routes.rb file. See
   `Rails Routes Integration`_ for more details.
 
@@ -206,19 +206,19 @@ formats
   Method level request / response formats.
 
 error
-  Describe each possible error that can happen what calling this
+  Describe each possible error that can happen while calling this
   method. HTTP response code and description can be provided.
 
 description
-  Full method description which will be converted to HTML by
+  Full method description, which will be converted into HTML by the
   chosen markup language processor.
 
 example
-  Provide example of server response, whole communication or response type.
+  Provide an example of the server response; whole communication or response type.
   It will be formatted as code.
 
 see
-  Provide reference to another method, this has to be string with
+  Provide reference to another method, this has to be a string with
   controller_name#method_name.
 
 meta
@@ -260,14 +260,14 @@ Example:
 Parameter Description
 ---------------------
 
-Use ``param`` to describe every possible parameter. You can use Hash validator
-in cooperation with block given to param method to describe nested parameters.
+Use ``param`` to describe every possible parameter. You can use the Hash validator
+in conjunction with a block given to the param method to describe nested parameters.
 
 name
-  The first argument is parameter name as a symbol.
+  The first argument is the parameter name as a symbol.
 
 validator
-  Second parameter is parameter validator, choose one from section `Validators`_
+  Second parameter is the parameter validator, choose one from section `Validators`_
 
 desc
   Parameter description.
@@ -276,10 +276,10 @@ required
   Set this true/false to make it required/optional. Default is optional
 
 allow_nil
-  Set true is ``nil`` can be passed for this param.
+  Setting this to true means that ``nil`` can be passed.
 
 as
-  Use by the processing functionality to change the name of a key params.
+  Used by the processing functionality to change the name of a key params.
 
 meta
   Hash or array with custom metadata.
@@ -306,10 +306,9 @@ DRY with param_group
 --------------------
 
 Often, params occur together in more actions. Typically, most of the
-params for ``create`` and ``update`` actions are common for both of
-them.
+params for ``create`` and ``update`` actions are shared between them.
 
-This params can be extracted with ``def_param_group`` and
+These params can be extracted with ``def_param_group`` and
 ``param_group`` keywords.
 
 The definition is looked up in the scope of the controller. If the
@@ -357,7 +356,7 @@ Example:
 Action Aware params
 -------------------
 
-In CRUD operations, this pattern occurs quite often: params that need
+In CRUD operations, this pattern occurs quite often - params that need
 to be set are:
 
 * for create action: ``required => true`` and ``allow_nil => false``
@@ -404,7 +403,7 @@ In this case, ``user[name]`` will be not be allowed nil for all
 actions and required only for ``create`` and ``create_admin``. Params
 with ``allow_nil`` set explicitly don't have this value changed.
 
-Action awareness is being inherited from ancestors (in terms of
+Action awareness is inherited from ancestors (in terms of
 nested params).
 
 Concerns
@@ -414,12 +413,12 @@ Sometimes, the actions are not defined in the controller class
 directly but included from a module instead. You can load the Apipie
 DSL into the module by extending it with ``Apipie::DSL::Concern``.
 
-The module can be used in more controllers. Therefore there is a way
-how to substitute parts of the documentation in the module with controller
-specific values. The substitutions can be stated explicitly with
+The module can be used in more controllers. Therefore there is a way to
+substitute parts of the documentation in the module with controller
+specific values. These substitutions can be stated explicitly with
 ``apipie_concern_subst(:key => "value")`` (needs to be called before
 the module is included to take effect). The substitutions are
-performed in paths and descriptions of APIs and names and descriptions
+performed in the paths and descriptions of APIs and names and descriptions
 of params.
 
 There are some default substitutions available:
@@ -491,13 +490,13 @@ Example
  Configuration Reference
 =========================
 
-Create configuration file in e.g. ``/config/initializers/apipie.rb``.
-You can set  application name, footer text, API and documentation base URL
+Create a configuration file in e.g. ``/config/initializers/apipie.rb``.
+You can set the application name, footer text, API and documentation base URL
 and turn off validations. You can also choose your favorite markup language
-of full descriptions.
+for full descriptions.
 
 app_name
-  Name of your application used in breadcrumbs navigation.
+  Name of your application; used in breadcrumbs navigation.
 
 copyright
   Copyright information (shown in page footer).
@@ -516,8 +515,8 @@ validate
   ``:explicitly``, you must invoke parameter validation yourself by calling
   controller method ``apipie_validations`` (typically in a before_filter).
   When set to ``:implicitly`` (or just true), your controller's action
-  methods are wrapped with generated methods which call ``apipie_validations``
-  then call the action method. (``:implicitly`` by default)
+  methods are wrapped with generated methods which call ``apipie_validations``,
+  and then call the action method. (``:implicitly`` by default)
 
 validate_value
   Check the value of params against specified validators (true by
@@ -527,23 +526,23 @@ validate_presence
   Check the params presence against the documentation.
 
 validate_keys
-  Check the sent in params to ensure they are defined in the api. (false by default)
+  Check the received params to ensure they are defined in the API. (false by default)
 
 process_params
-  Process and extract parameter defined from the params of the request
+  Process and extract the parameter defined from the params of the request
   to the api_params variable
 
 app_info
   Application long description.
 
 reload_controllers
-  Set to enable/disable reloading controllers (and the documentation with it), by default enabled in development.
+  Set to enable/disable reloading controllers (and the documentation with it). Enabled by default in development.
 
 api_controllers_matcher
   For reloading to work properly you need to specify where your API controllers are. Can be an array if multiple paths are needed
 
 api_routes
-  Set if your application uses custom API router, different from Rails
+  Set if your application uses a custom API router, different from the Rails
   default
 
 routes_formatter
@@ -582,11 +581,11 @@ show_all_examples
   Set this to true to set show_in_doc=1 in all recorded examples
 
 link_extension
-  The extension to use for API pages ('.html' by default).  Link extensions
+  The extension to use for API pages ('.html' by default). Link extensions
   in static API docs cannot be changed from '.html'.
 
 languages
-  List of languages API documentation should be translated into. Empty list by default.
+  List of languages the API documentation should be translated into. Empty by default.
 
 default_locale
   Locale used for generating documentation when no specific locale is set.
@@ -600,7 +599,7 @@ locale
     config.locale = lambda { |loc| loc ? FastGettext.set_locale(loc) : FastGettext.locale }
 
 translate
-  Pass proc to translate strings using localization library your project uses.
+  Pass proc to translate strings using the localization library your project uses.
   For example see `Localization`_
 
 Example:
@@ -662,23 +661,23 @@ option, like this:
     ...
    end
 
-The similar way can be influenced things like order or a description
-of the loaded APIs, even omitting some paths if needed. 
+A similar way can be used to influence things like order, or a description
+of the loaded APIs, even omitting some paths if needed.
 
 ============
  Processing
 ============
 
-The goal is to extract and pre process parameters of the request.
+The goal is to extract and pre-process parameters of the request.
 
-For example Rails, by default, transforms empty array to nil value,
-you want perhaps to transform it again to an empty array. Or you
+For example Rails, by default, transforms an empty array to nil value. Perhaps
+you want to transform it again into an empty array. Or you
 want to support an enumeration type (comma separated values) and
-you want automatically transform this string to an array.
+you want to automatically transform this string into an array.
 
 To use it, set the ``process_params`` configuration variable to true.
 
-Also by using ``as`` you can separate your API parameters
+Also by using ``as`` you can separate your API parameter
 names from the names you are using inside your code.
 
 To implement it, you just have to write a process_value
@@ -696,15 +695,15 @@ For an enumeration type:
  Validators
 ============
 
-Every parameter needs to have associated validator. For now there are some
-basic validators. You can always provide your own to reach complex
+Every parameter needs to have an associated validator. For now there are some
+basic validators. You can always provide your own to achieve complex
 results.
 
 If validations are enabled (default state) the parameters of every
 request are validated. If the value is wrong an +ArgumentError+ exception
-is raised and can be rescued and processed. It contains some description
-of parameter value expectations. Validations can be turned off
-in configuration file.
+is raised and can be rescued and processed. It contains a description
+of the parameter value expectations. Validations can be turned off
+in the configuration file.
 
 Parameter validation normally happens after before_filters, just before
 your controller method is invoked. If you prefer to control when parameter
@@ -721,7 +720,7 @@ after the ``apipie_validations`` before_filter.
 TypeValidator
 -------------
 Check the parameter type. Only String, Hash and Array are supported
-for the sake of simplicity. Read more to to find out how to add
+for the sake of simplicity. Read more to find out how to add
 your own validator.
 
 .. code:: ruby
@@ -742,7 +741,7 @@ Check parameter value against given regular expression.
 EnumValidator
 --------------
 
-Check if parameter value is included given array.
+Check if parameter value is included in the given array.
 
 .. code:: ruby
 
@@ -752,11 +751,11 @@ Check if parameter value is included given array.
 ProcValidator
 -------------
 
-If you need more complex validation and you know you won't reuse it you
-can use Proc/lambda validator. Provide your own Proc taking value
-of parameter as the only argument. Return true if value pass validation
-or return some text about what is wrong. _Don't use the keyword *return*
-if you provide instance of Proc (with lambda it is ok), just use the last
+If you need more complex validation and you know you won't reuse it, you
+can use the Proc/lambda validator. Provide your own Proc, taking the value
+of the parameter as the only argument. Return true if value passes validation
+or return some text about what is wrong otherwise. _Don't use the keyword *return*
+if you provide an instance of Proc (with lambda it is ok), just use the last
 statement return property of ruby.
 
 .. code:: ruby
@@ -769,7 +768,7 @@ statement return property of ruby.
 HashValidator
 -------------
 
-You can describe hash parameters in depth if you provide a block with
+You can describe hash parameters in depth if you provide a block with a
 description of nested values.
 
 .. code:: ruby
@@ -784,8 +783,8 @@ description of nested values.
 NilValidator
 ------------
 
-In fact there is any NilValidator but setting it to nil can be used to
-override parameters described on resource level.
+In fact there isn't any NilValidator, but setting it to nil can be used to
+override parameters described on the resource level.
 
 .. code:: ruby
 
@@ -803,10 +802,10 @@ Additional options
 ~~~~~~~~~~~~~~~~~
 
 of
-  Specify the type of items. if not given it accepts an array of any item type
+  Specify the type of items. If not given it accepts an array of any item type
 
 in
-  Specifiy an array of valid items value.
+  Specify an array of valid item values.
 
 Examples
 ~~~~~~~~
@@ -840,7 +839,7 @@ The retrieving of valid items can be deferred until needed using a lambda. It is
 NestedValidator
 -------------
 
-You can describe nested parameters in depth if you provide a block with
+You can describe nested parameters in depth if you provide a block with a
 description of nested values.
 
 .. code:: ruby
@@ -856,18 +855,18 @@ Adding custom validator
 -----------------------
 
 Only basic validators are included but it is really easy to add your own.
-Create new initializer with subclass of Apipie::Validator::BaseValidator.
-Two methods are required to implement - instance method
+Create a new initializer with a subclass of Apipie::Validator::BaseValidator.
+Two methods are required to implement this - instance method
 <tt>validate(value)</tt> and class method
 <tt>build(param_description, argument, options, block)</tt>.
 
-When searching for validator +build+ method of every subclass of
-Apipie::Validator::BaseValidator is called. The first one whitch return
+When searching for the validator +build+ method, every subclass of
+Apipie::Validator::BaseValidator is called. The first one that returns the
 constructed validator object is used.
 
 Example: Adding IntegerValidator
 
-We want to check if parameter value is an integer like this:
+We want to check if the parameter value is an integer like this:
 
 .. code:: ruby
 
@@ -904,10 +903,10 @@ Parameters of the build method:
 
 param_description
   Instance of Apipie::ParamDescription contains all
-  given informations about validated parameter.
+  given information about the validated parameter.
 
 argument
-  Specified validator, in our example it is +Integer+
+  Specified validator; in our example it is +Integer+
 
 options
   Hash with specified options, for us just ``{:desc => "Company ID"}``
@@ -922,7 +921,7 @@ block
 
 Every resource/method can belong to one or more versions. The version is
 specified with the `api_version` DSL keyword. When not specified,
-the resource belong to `config.default_version` ("1.0" by default)
+the resource belongs to `config.default_version` ("1.0" by default)
 
 .. code:: ruby
 
@@ -939,14 +938,14 @@ the resource belong to `config.default_version` ("1.0" by default)
    api :GET, "/api/users/", "List: users", :deprecated => true
 
 In the example above we say the whole controller/resource is defined
-for versions "1" and "2", but we override this with explicitly saying
-`index` belongs only to version "1". Also inheritance works (therefore
-we can specify the api_version for the parent controller and all
-children will know about that). Routes can be flagged as deprecated
+for versions "1" and "2", but we override this by explicitly saying
+`index` belongs only to version "1". Also, inheritance works (therefore
+we can specify the api_version for the parent controller, and all
+children will know about that). Routes can be flagged as deprecated,
 and an annotation will be added to them when viewing in the API
 documentation.
 
-From the Apipie API perspective, the resources belong to version.
+From the Apipie API perspective, the resources belong to the version.
 With versioning, there are paths like this provided by apipie:
 
 .. code::
@@ -954,16 +953,16 @@ With versioning, there are paths like this provided by apipie:
    /apipie/1/users/index
    /apipie/2/users/index
 
-When not specifying the version explicitly in the path (or in dsl),
+When not specifying the version explicitly in the path (or in DSL),
 default version (`Apipie.configuration.default_version`) is used
-instead ("1.0" by default). Therefore, the application that doesn't
+instead ("1.0" by default). Therefore, an application that doesn't
 need versioning should work as before.
 
-The static page generator takes version parameter (or uses default).
+The static page generator takes a version parameter (or uses default).
 
-You can specify the versions for the examples, with `versions`
+You can specify the versions for the examples, with the `versions`
 keyword. It specifies the versions the example is used for. When not
-specified, it's shown in all versions with given method.
+specified, it's shown in all versions with the given method.
 
 When referencing or quering the resource/method descripion, this
 format should be used: "version#resource#method". When not specified,
@@ -976,7 +975,7 @@ the default version is used instead.
 
 The default markup language is `RDoc
 <http://rdoc.rubyforge.org/RDoc/Markup.html>`_. It can be changed in
-config file (``config.markup=``) to one of these:
+the config file (``config.markup=``) to one of these:
 
 Markdown
   Use Apipie::Markup::Markdown.new. You need Maruku gem.
@@ -984,8 +983,8 @@ Markdown
 Textile
   Use Apipie::Markup::Textile.new. You need RedCloth gem.
 
-Or provide you own object with ``to_html(text)`` method.
-For inspiration this is how Textile markup usage looks like:
+Or provide you own object with a ``to_html(text)`` method.
+For inspiration, this is how Textile markup usage is implemented:
 
 .. code:: ruby
 
@@ -1004,13 +1003,13 @@ Localization
 
 Apipie has support for localized API documentation in both formats (JSON and HTML).
 Apipie uses the library I18n for localization of itself.
-Check ``config/locales`` directory for available translation.
+Check ``config/locales`` directory for available translations.
 
-Major part of strings in the documentation comes from the API.
-As prefferences about localization libraries differs among project, Apipie needs to know how to set locale for your project
-and how to translate a string using library your project use. That can be done using lambdas in configuration.
+A major part of strings in the documentation comes from the API.
+As preferences regarding localization libraries differ amongst project, Apipie needs to know how to set the locale for your project,
+and how to translate a string using the library your project uses. That can be done using lambdas in configuration.
 
-Sample configuration when your project use FastGettext
+Sample configuration when your project uses FastGettext
 
 
 .. code:: ruby
@@ -1029,7 +1028,7 @@ Sample configuration when your project use FastGettext
     end
    end
 
-And the strings in API documentation needs to be marked with the ``N_()`` function
+And the strings in the API documentation need to be marked with the ``N_()`` function
 
 .. code:: ruby
 
@@ -1038,7 +1037,7 @@ And the strings in API documentation needs to be marked with the ``N_()`` functi
 
 
 
-When your project use I18n, localization related configuration could look like as follows
+When your project use I18n, localization related configuration could appear as follows
 
 .. code:: ruby
 
@@ -1056,7 +1055,7 @@ When your project use I18n, localization related configuration could look like a
     end
    end
 
-And the strings in API documentation needs to be in the form of translation keys
+And the strings in the API documentation needs to be in the form of translation keys
 
 .. code:: ruby
 
@@ -1064,12 +1063,12 @@ And the strings in API documentation needs to be in the form of translation keys
   param :session, String, :desc => "user_is_logged_in", :required => true
 
 
-The localized versions of the documentation are distinguished by languge in the filename.
+The localized versions of the documentation are distinguished by language in the filename.
 E.g. ``doc/apidoc/apidoc.cs.html`` is static documentation in the Czech language.
 If the language is missing, e.g. ``doc/apidoc/apidoc.html``,
 the documentation is localized with the ``default_locale``.
 
-The dynamic documentation follows the same schema. The ``http://localhost:3000/apidoc/v1.cs.html`` is documentation for version '1' of the API in the Czech language. For JSON description of the API applies the same: ``http://localhost:3000/apidoc/v1.cs.json``
+The dynamic documentation follows the same schema. The ``http://localhost:3000/apidoc/v1.cs.html`` is documentation for version '1' of the API in the Czech language. For JSON descriptions, the API applies the same format: ``http://localhost:3000/apidoc/v1.cs.json``
 
 
 ================
@@ -1086,19 +1085,19 @@ This will copy the Apipie views to ``app/views/apipie/apipies`` and
 ==============
 
 To generate a static version of documentation (perhaps to put it on
-project site or something) run ``rake apipie:static`` task. It will
-create set of html files (multi-pages, single-page, plain) in your doc
-directory. If you prefer a json version run ``rake apipie:static_json``.
-By default the documentation for default API version is
-used, you can specify the version with ``rake apipie:static[2.0]``
+your project site or something), run the ``rake apipie:static`` task. It will
+create a set of HTML files (multi-pages, single-page, plain) in your doc
+directory. If you prefer a JSON version run ``rake apipie:static_json``.
+By default the documentation for the default API version is
+used. You can specify the version with ``rake apipie:static[2.0]``
 
 When you want to avoid any unnecessary computation in production mode,
 you can generate a cache with ``rake apipie:cache`` and configure the
 app to use it in production with ``config.use_cache = Rails.env.production?``
 
-If, for some complex casese, you need to generate/re-generate just part of the cache
+If, for some complex cases, you need to generate/re-generate just part of the cache
 use ``rake apipie:cache cache_part=index`` resp. ``rake apipie:cache cache_part=resources``
-To generate it to different location for further processing use ``rake apipie:cache OUT=/tmp/apipie_cache``.
+To generate it for different locations for further processing use ``rake apipie:cache OUT=/tmp/apipie_cache``.
 
 ===================
  JSON checksums
@@ -1106,7 +1105,7 @@ To generate it to different location for further processing use ``rake apipie:ca
 
 If the API client needs to be sure that the JSON didn't changed, add
 the ``ApipieChecksumInHeaders`` middleware in your rails app.
-It can add checksum of entiere JSON document in the response headers.
+It can add a checksum of the entire JSON document in the response headers.
 
 .. code::
 
@@ -1132,7 +1131,7 @@ And in your apipie initializer allow checksum calculation
 By default the header is added to responses for ``config.doc_base_url`` and ``/api``.
 It can be changed in configuration (see `Configuration Reference`_ for details).
 
-The checksum calculation is lazy, done with first request. If you run with ``use_cache = true``,
+The checksum calculation is lazy, and done with the first request. If you run with ``use_cache = true``,
 do not forget to run the rake task ``apipie:cache``.
 
 
@@ -1148,18 +1147,18 @@ Documentation Bootstrapping
 
 Let's say you have an application without REST API documentation.
 However you have a set of tests that are run against this API. A lot
-of information is already included in this tests, it just needs to be
+of information is already included in these tests, it just needs to be
 extracted somehow. Luckily, Apipie provides such a feature.
 
 When running the tests, set the ``APIPIE_RECORD=params`` environment
-variable or call ``Apipie.record('params')`` from specs starter. You can either use it with functional tests
+variable or call ``Apipie.record('params')`` from specs starter. You can either use it with functional tests:
 
 .. code::
 
    APIPIE_RECORD=params rake test:functionals
 
 or you can run your server with this param, in case you run the tests
-against running server
+against running server:
 
 .. code::
 
@@ -1173,8 +1172,8 @@ Examples Recording
 ------------------
 
 You can also use the tests to generate up-to-date examples for your
-code. Similarly to the bootstrapping, you can use it with functional
-tests or a running server, setting ``APIPIE_RECORD=examples`` or by calling ``Apipie.record('examples')`` in your specs starter.
+code. Similar to the bootstrapping process, you can use it with functional
+tests or a running server, setting ``APIPIE_RECORD=examples`` or calling ``Apipie.record('examples')`` in your specs starter.
 
 .. code::
 
@@ -1183,7 +1182,7 @@ tests or a running server, setting ``APIPIE_RECORD=examples`` or by calling ``Ap
 
 The data is written into ``doc/apipie_examples.yml``. By default,
 only the first example is shown for each action. You can customize
-this by setting ``show_in_doc`` attribute at each example.
+this by setting the ``show_in_doc`` attribute at each example.
 
 You can add a title to the examples (useful when showing more than
 one example per method) by adding a 'title' attribute.
@@ -1239,8 +1238,8 @@ And then configure RSpec in this way:
      config.filter_run :show_in_doc => true if ENV['APIPIE_RECORD']
    end
 
-This way, when running in recording mode, only the tests that has been marked with the
-``:show_in_doc`` metadata will be ran, and hence only those will be used as examples.
+This way, when running in recording mode, only the tests that have been marked with the
+``:show_in_doc`` metadata will be run, and hence only those will be used as examples.
 
 ====================
  Bindings Generator
@@ -1248,18 +1247,18 @@ This way, when running in recording mode, only the tests that has been marked wi
 
 In earlier versions (<= 0.0.13), there was a simple client generator
 as a part of Apipie gem. As more features and users came to Apipie,
-more and more there was a need for changes on per project basis. It's
+there was a greater need for changes on a per project basis. It's
 hard (or even impossible) to provide a generic solution for the client
-code. We also don't want to tell you what's the rigth way to do it
+code. We also don't want to tell you what's the right way to do it
 (what gems to use, how the API should look like etc.).
 
-Therefore you can't generate a client code directly by a rake task in
+Therefore you can't generate client code directly by a rake task in
 further versions.
 
-There is, however, even better and more flexible way to reuse your API
+There is, however, an even better and more flexible way to reuse your API
 documentation for this purpose: using the API the Apipie
-provides in the generator code. You can inspire by
-`Foreman API bindings <https://github.com/mbacovsky/foreman_api>`_ that
+provides in the generator code. Check out
+`Foreman API bindings <https://github.com/mbacovsky/foreman_api>`_, as they
 use exactly this approach. You also don't need to run the service,
 provided it uses Apipie as a backend.
 
@@ -1270,8 +1269,8 @@ And if you write one on your own, don't hesitate to share it with us!
  Disqus Integration
 ====================
 
-You can get a `Disqus <http://www.disqus.com>`_ discussion for the
-right into your documentation. Just set the credentials in Apipie
+You can setup `Disqus <http://www.disqus.com>`_ discussion within
+your documentation. Just set the credentials in the Apipie
 configuration:
 
 .. code:: ruby
