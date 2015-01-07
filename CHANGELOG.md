@@ -2,6 +2,32 @@
  Changelog
 ===========
 
+v0.3.0
+------
+This should be a backward compatible release. However, the number of new
+significant features deserves new minor version bump.
+
+* Rubocop-blessed Ruby 1.9 syntax for generated DSL documentation
+  [#318](https://github.com/Apipie/apipie-rails/pull/318) [@burnettk][]
+* load API paths from routes.rb
+  [#187](https://github.com/Apipie/apipie-rails/pull/187) [@mtparet][] [@iNecas][]
+* ability to use before_filter instead of overriding the action method
+  for validation
+  [#306](https://github.com/Apipie/apipie-rails/pull/306) [@dprice-fiksu][]
+* support multi-part data when recording from tests
+  [#310](https://github.com/Apipie/apipie-rails/pull/310) [@bradrf][]
+* validate_keys option to raise exception when passing undocumented option
+  [#122](https://github.com/Apipie/apipie-rails/pull/122) [@dfharmon][]
+* handle static page generation when the doc_base_url has multiple folders
+  [#300](https://github.com/Apipie/apipie-rails/pull/300) [@ryanische][]
+* add ability to markup validator description
+  [#282](https://github.com/Apipie/apipie-rails/pull/282) [@exAspArk][]
+* don't specify protocol in Disqus script tag src
+  [#285](https://github.com/Apipie/apipie-rails/pull/285) [@chrise86][]
+* fix BooleanValidator to set expected_type as boolean
+  [#286](https://github.com/Apipie/apipie-rails/pull/286) [@dustin-rh][]
+
+
 v0.2.6
 ------
 
@@ -217,5 +243,11 @@ v0.0.15
 [@exAspArk]: https://github.com/exAspArk
 [@mourad-ifeelgoods]: https://github.com/mourad-ifeelgoods
 [@domcleal]: https://github.com/domcleal
-[@dustint-rh]: https://github.com/dustint-rh
+[@dustin-rh]: https://github.com/dustin-rh
 [@RajRoR]: https://github.com/RajRoR
+[@chrise86]: https://github.com/chrise86
+[@ryanische]: https://github.com/ryanische
+[@dfharmon]: https://github.com/dfharmon
+[@bradrf]: https://github.com/bradrf
+[@dprice-fiksu]: https://github.com/dprice-fiksu
+[@burnettk]: https://github.com/burnettk
