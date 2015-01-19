@@ -425,7 +425,7 @@ There are some default substitutions available:
 
 :controller_path
   value of ``controller.controller_path``, e.g. ``api/users`` for
-  ``Api::UsersController``
+  ``Api::UsersController``. Only if not using the ``api!`` keyword.
 
 :resource_id
   Apipie identifier of the resource, e.g. ``users`` for
@@ -445,7 +445,7 @@ Example
        # ...
      end
 
-     api :GET, '/:resource_id/:id', 'Show a :resource'
+     api! 'Show a :resource'
      def show
        # ...
      end
