@@ -45,13 +45,13 @@ module Apipie
   class StaticDispatcher
     # Dispatches the static files. Similar to ActionDispatch::Static, but
     # it supports different baseurl configurations
-    def initialize(app, path, baseurl)
+    def initialize(app, path)
       @app = app
-      @baseurl = baseurl
       @file_handler = Apipie::FileHandler.new(path)
     end
 
     def call(env)
+      @baseurl ||= Apipie.configuration.doc_base_url
       case env['REQUEST_METHOD']
       when 'GET', 'HEAD'
         path = env['PATH_INFO'].sub("#{@baseurl}/","/apipie/").chomp('/')
