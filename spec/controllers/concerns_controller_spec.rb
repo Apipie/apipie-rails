@@ -23,7 +23,7 @@ describe ConcernsController do
 
   it "replaces a placeholder doc specified in concern with a real path" do
     path = Apipie["concern_resources#index"].apis.first.path
-    path.should == '/concerns'
+    path.should == '/api/concerns'
 
     path = Apipie["concern_resources#show"].apis.first.path
     path.should == '/concern_resources/:id'

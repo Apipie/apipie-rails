@@ -2,7 +2,7 @@ module Concerns
   module SampleController
     extend Apipie::DSL::Concern
 
-    api :GET, '/:controller_path'
+    api!
     def index
       render :text => "OK #{params.inspect}"
     end

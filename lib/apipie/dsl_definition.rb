@@ -376,20 +376,7 @@ module Apipie
         super
         return if !Apipie.active_dsl? || !_apipie_dsl_data[:api]
 
-        if _apipie_dsl_data[:api_from_routes]
-          desc = _apipie_dsl_data[:api_from_routes][:desc]
-          options = _apipie_dsl_data[:api_from_routes][:options]
-
-          api_from_routes = Apipie.routes_for_action(self, method_name, {:desc => desc, :options => options}).map do |route_info|
-            [route_info[:verb],
-             route_info[:path],
-             route_info[:desc],
-             (route_info[:options] || {}).merge(:from_routes => true)]
-          end
-          _apipie_dsl_data[:api_args].concat(api_from_routes)
-        end
-
-        return if _apipie_dsl_data[:api_args].blank?
+        return if _apipie_dsl_data[:api_args].blank? && _apipie_dsl_data[:api_from_routes].blank?
 
         # remove method description if exists and create new one
         Apipie.remove_method_description(self, _apipie_dsl_data[:api_versions], method_name)
