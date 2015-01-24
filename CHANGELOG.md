@@ -2,6 +2,14 @@
  Changelog
 ===========
 
+v0.3.1
+------
+
+* Support for ``api!`` keyword in concerns 
+  [#322](https://github.com/Apipie/apipie-rails/pull/322) [@iNecas][]
+* More explicit ordering of the static dispatcher middleware
+  [#315](https://github.com/Apipie/apipie-rails/pull/315) [@iNecas][]
+
 v0.3.0
 ------
 This should be a backward compatible release. However, the number of new
