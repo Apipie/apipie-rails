@@ -17,7 +17,7 @@ module Apipie
 
     end
 
-    attr_reader :full_description, :method, :resource, :apis, :examples, :see, :formats, :metadata
+    attr_reader :full_description, :method, :resource, :apis, :examples, :examples_data, :see, :formats, :metadata
 
     def initialize(method, resource, dsl_data)
       @method = method.to_s
@@ -41,6 +41,8 @@ module Apipie
       @formats = dsl_data[:formats]
       @examples = dsl_data[:examples]
       @examples += load_recorded_examples
+      @examples_data = []
+      @examples_data = load_recorded_examples_data if Apipie::configuration.render_examples_with_template
 
       @metadata = dsl_data[:meta]
 
@@ -141,6 +143,7 @@ module Apipie
         :errors => errors.map(&:to_json),
         :params => params_ordered.map{ |param| param.to_json(lang) }.flatten,
         :examples => @examples,
+        :examples_data => @examples_data,
         :metadata => @metadata,
         :see => see.map(&:to_json)
       }
@@ -177,11 +180,19 @@ module Apipie
     end
 
     def load_recorded_examples
+      return [] if Apipie::configuration.render_examples_with_template
       (Apipie.recorded_examples[id] || []).
         find_all { |ex| ex["show_in_doc"].to_i > 0 }.
         find_all { |ex| ex["versions"].nil? || ex["versions"].include?(self.version) }.
         sort_by { |ex| ex["show_in_doc"] }.
         map { |ex| format_example(ex.symbolize_keys) }
+    end
+
+    def load_recorded_examples_data
+      (Apipie.recorded_examples[id] || []).
+        find_all { |ex| ex["show_in_doc"].to_i > 0 }.
+        find_all { |ex| ex["versions"].nil? || ex["versions"].include?(self.version) }.
+        sort_by { |ex| ex["show_in_doc"] }
     end
 
     def format_example_data(data)
@@ -194,6 +205,7 @@ module Apipie
     end
 
     def format_example(ex)
+
       example = ""
       example << "// #{ex[:title]}\n" if ex[:title].present?
       example << "#{ex[:verb]} #{ex[:path]}"
@@ -202,6 +214,7 @@ module Apipie
       example << "\n" << ex[:code].to_s
       example << "\n" << format_example_data(ex[:response_data]).to_s if ex[:response_data]
       example
+
     end
 
     def concern_subst(string)

@@ -1,0 +1,12 @@
+<% if example["title"] && example["title"].present? %>
+<%= example["title"] %>
+<% end %>
+<%= example["verb"] -%> <%= example["path"] -%>
+<% if example["request_data"] -%>
+<%= format_example_data(example["request_data"]).to_s %>
+<% end %>
+<%= example["code"] %>
+<% if example["response_data"] -%>
+<%= format_example_data(example["response_data"]).to_s %>
+<% end %>
+
