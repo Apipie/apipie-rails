@@ -215,7 +215,7 @@ description
 
 example
   Provide an example of the server response; whole communication or response type.
-  It will be formatted as code.
+  It will be formatted as code. Can be a block.
 
 see
   Provide reference to another method, this has to be a string with
