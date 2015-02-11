@@ -26,7 +26,7 @@
 <% unless method[:examples].blank? %>
   <%= heading(t('apipie.examples'), h_level) %>
   <% method[:examples].each do |example| %>
-    <pre class="prettyprint"><%= instance_eval(&example).strip_heredoc %></pre>
+    <pre class="prettyprint"><%= instance_eval(&example).to_s.strip_heredoc %></pre>
   <% end %>
 <% end %>
 

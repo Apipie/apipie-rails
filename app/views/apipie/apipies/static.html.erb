@@ -64,7 +64,7 @@
         <% unless method[:examples].blank? %>
           <h2><%= t('apipie.examples') %></h2>
           <% method[:examples].each do |example| %>
-            <pre><%= instance_eval(&example).strip_heredoc %></pre>
+            <pre><%= instance_eval(&example).to_s.strip_heredoc %></pre>
           <% end %>
         <% end %>
 
