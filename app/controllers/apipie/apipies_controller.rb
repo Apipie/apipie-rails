@@ -51,6 +51,7 @@ module Apipie
             render "getting_started" and return
           end
           @resource = @doc[:resources].first if params[:resource].present?
+          @resource[:methods].each { |method| method[:examples].map! { |example| (example.is_a?(Proc) ? instance_eval(&example) : example).to_s.strip_heredoc } } if @resource
           @method = @resource[:methods].first if params[:method].present?
           @languages = Apipie.configuration.languages
 

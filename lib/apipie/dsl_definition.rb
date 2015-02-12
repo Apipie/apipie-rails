@@ -107,7 +107,7 @@ module Apipie
       # method return.
       def example(example = nil, &block) #:doc:
         return unless Apipie.active_dsl?
-        _apipie_dsl_data[:examples] << (block_given? ? block : Proc.new { example })
+        _apipie_dsl_data[:examples] << (block_given? ? block : example)
       end
 
       # Describe whole resource
