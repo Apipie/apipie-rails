@@ -38,7 +38,7 @@ module Apipie
         @verb = request.request_method.to_sym
         @path = request.path
         @params = request.request_parameters
-        if [:POST, :PUT].include?(@verb)
+        if [:POST, :PUT, :PATCH].include?(@verb)
           @request_data = @params
         else
           @query = request.query_string
