@@ -1241,6 +1241,12 @@ And then configure RSpec in this way:
 This way, when running in recording mode, only the tests that have been marked with the
 ``:show_in_doc`` metadata will be run, and hence only those will be used as examples.
 
+Caveats
+-------
+
+Make sure to enable ``config.render_views`` in your ``config/rails_helper.rb`` or
+``config/spec_helper.rb`` if you're using jbuilder, or you will get back empty results
+
 ====================
  Bindings Generator
 ====================
