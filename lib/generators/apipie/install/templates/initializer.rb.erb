@@ -3,5 +3,5 @@ Apipie.configure do |config|
   config.api_base_url            = "<%= options.api_path %>"
   config.doc_base_url            = "<%= options.route %>"
   # where is your API defined?
-  config.api_controllers_matcher = "#{Rails.root}/app/controllers/*.rb"
+  config.api_controllers_matcher = "#{Rails.root}/app/controllers/**/*.rb"
 end
