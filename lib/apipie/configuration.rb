@@ -7,7 +7,7 @@ module Apipie
       :validate, :validate_value, :validate_presence, :validate_key, :authenticate, :doc_path,
       :show_all_examples, :process_params, :update_checksum, :checksum_path,
       :link_extension, :record, :languages, :translate, :locale, :default_locale,
-      :persist_show_in_doc, :render_examples_with_template
+      :persist_show_in_doc, :render_examples_with_template, :prerender_processor
 
 
     alias_method :validate?, :validate
@@ -136,6 +136,10 @@ module Apipie
       @api_routes || Rails.application.routes
     end
 
+    def prerender_processor=(lambda_processor)
+      @prerender_processor = lambda_processor
+    end
+
     def initialize
       @markup = Apipie::Markup::RDoc.new
       @app_name = "Another API"
@@ -167,6 +171,7 @@ module Apipie
       @persist_show_in_doc = false
       @routes_formatter = RoutesFormatter.new
       @render_examples_with_template = false
+      @prerender_processor = nil
     end
   end
 end

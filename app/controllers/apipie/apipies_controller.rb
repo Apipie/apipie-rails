@@ -53,6 +53,11 @@ module Apipie
           @resource = @doc[:resources].first if params[:resource].present?
           @method = @resource[:methods].first if params[:method].present?
           @languages = Apipie.configuration.languages
+          
+          if Apipie.configuration.prerender_processor
+            @doc = Apipie.configuration.prerender_processor.call(@doc, params)
+          end
+
 
           if @resource && @method
             render 'method'

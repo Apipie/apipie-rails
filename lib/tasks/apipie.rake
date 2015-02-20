@@ -28,12 +28,19 @@ namespace :apipie do
         Apipie.url_prefix = "./#{subdir}"
         doc = Apipie.to_json(args[:version], nil, nil, lang)
         doc[:docs][:link_extension] = "#{lang_ext(lang)}.html"
+
+        if Apipie.configuration.prerender_processor
+          doc[:docs] = Apipie.configuration.prerender_processor.call(doc[:docs], ENV)
+        end
+
         generate_one_page(out, doc, lang)
         generate_plain_page(out, doc, lang)
         generate_index_page(out, doc, false, false, lang)
         Apipie.url_prefix = "../#{subdir}"
+
         generate_resource_pages(args[:version], out, doc, false, lang)
         Apipie.url_prefix = "../../#{subdir}"
+
         generate_method_pages(args[:version], out, doc, false, lang)
       end
     end
