@@ -37,7 +37,6 @@ namespace :apipie do
         generate_plain_page(out, doc, lang)
         generate_index_page(out, doc, false, false, lang)
         Apipie.url_prefix = "../#{subdir}"
-
         generate_resource_pages(args[:version], out, doc, false, lang)
         Apipie.url_prefix = "../../#{subdir}"
 
@@ -261,6 +260,9 @@ namespace :apipie do
       FileUtils.mkdir_p(File.dirname(resource_file_base)) unless File.exists?(File.dirname(resource_file_base))
 
       doc = Apipie.to_json(version, resource_name, nil, lang)
+      if Apipie.configuration.prerender_processor
+        doc[:docs] = Apipie.configuration.prerender_processor.call(doc[:docs], ENV)
+      end
       doc[:docs][:link_extension] = (lang ? ".#{lang}.html" : ".html")
       render_page("#{resource_file_base}#{lang_ext(lang)}.html", "resource", {:doc => doc[:docs],
         :resource => doc[:docs][:resources].first, :language => lang, :languages => Apipie.configuration.languages})
@@ -275,6 +277,9 @@ namespace :apipie do
         FileUtils.mkdir_p(File.dirname(method_file_base)) unless File.exists?(File.dirname(method_file_base))
 
         doc = Apipie.to_json(version, resource_name, method[:name], lang)
+        if Apipie.configuration.prerender_processor
+          doc[:docs] = Apipie.configuration.prerender_processor.call(doc[:docs], ENV)
+        end
         doc[:docs][:link_extension] = (lang ? ".#{lang}.html" : ".html")
         render_page("#{method_file_base}#{lang_ext(lang)}.html", "method", {:doc => doc[:docs],
                                                            :resource => doc[:docs][:resources].first,
