@@ -26,4 +26,5 @@ Dummy::Application.routes.draw do
     apipie
   end
   root :to => 'apipie/apipies#index'
+  match '(/)*path' => redirect('http://www.example.com'), :via => :all
 end
