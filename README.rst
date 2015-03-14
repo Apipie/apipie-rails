@@ -649,7 +649,7 @@ option, like this:
 
 .. code:: ruby
 
-   class MyFormatter < Apipie::RailsFormatter
+   class MyFormatter < Apipie::RoutesFormatter
      def format_path(route)
        super.gsub(/\(.*?\)/, '').gsub('//','') # hide all implicit parameters
      end
