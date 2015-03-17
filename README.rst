@@ -616,10 +616,10 @@ Example:
      config.reload_controllers = Rails.env.development?
      config.api_controllers_matcher = File.join(Rails.root, "app", "controllers", "**","*.rb")
      config.api_routes = Rails.application.routes
-     config.app_info = "
+     config.app_info["1.0"] = "
        This is where you can inform user about your application and API
        in general.
-     ", '1.0'
+     "
      config.authenticate = Proc.new do
         authenticate_or_request_with_http_basic do |username, password|
           username == "test" && password == "supersecretpassword"
@@ -649,7 +649,7 @@ option, like this:
 
 .. code:: ruby
 
-   class MyFormatter < Apipie::RailsFormatter
+   class MyFormatter < Apipie::RoutesFormatter
      def format_path(route)
        super.gsub(/\(.*?\)/, '').gsub('//','') # hide all implicit parameters
      end
