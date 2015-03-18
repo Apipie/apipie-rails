@@ -2,6 +2,18 @@
  Changelog
 ===========
 
+v0.3.2
+------
+
+* PATCH support for examples recording
+  [#332](https://github.com/Apipie/apipie-rails/pull/332) [@akenger][]
+* Recursively search for API controllers by default for new projects
+  [#333](https://github.com/Apipie/apipie-rails/pull/333) [@baweaver][]
+* Handling recursive route definitions with `api!` keyword
+  [#338](https://github.com/Apipie/apipie-rails/pull/338) [@stormsilver][]
+* Support for eager-loaded controllers
+  [#329](https://github.com/Apipie/apipie-rails/pull/329) [@mtparet][]
+
 v0.3.1
 ------
 
@@ -259,3 +271,6 @@ v0.0.15
 [@bradrf]: https://github.com/bradrf
 [@dprice-fiksu]: https://github.com/dprice-fiksu
 [@burnettk]: https://github.com/burnettk
+[@akenger]: https://github.com/akenger
+[@baweaver]: https://github.com/baweaver
+[@stormsilver]: https://github.com/stormsilver
