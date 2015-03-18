@@ -1,0 +1,26 @@
+<% unless headers.blank? %>
+  <%= heading(t('apipie.headers'), h_level) %>
+  <table class='table'>
+    <thead>
+      <tr>
+        <th><%= t('apipie.header_name') %></th>
+        <th><%= t('apipie.description') %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% headers.each do |header| %>
+        <tr>
+          <td>
+            <strong><%= header[:name] %> </strong><br>
+            <small>
+              <%= header[:options][:required] ? t('apipie.required') : t('apipie.optional') %>
+            </small>
+          </td>
+          <td>
+            <%= header[:description].html_safe %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

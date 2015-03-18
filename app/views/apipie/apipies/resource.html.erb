@@ -32,6 +32,8 @@
   <%= @resource[:formats].join(', ') %>
 <% end %>
 
+<%= render(:partial => 'headers', :locals => { headers: @resource[:headers], h_level: 2 }) %>
+
 <div class='accordion' id='accordion'>
 
   <% @resource[:methods].each do |m| %>

@@ -39,6 +39,7 @@ class UsersController < ApplicationController
       By default, Rails will compile each template to a method in order to render it. When you alter a template,
       Rails will check the file's modification time and recompile it in development mode.
     EOS
+    header :CommonHeader, 'Common header description', required: true
   end
 
   description <<-eos
@@ -278,4 +279,9 @@ class UsersController < ApplicationController
   def create_route
   end
 
+  api :GET, '/users/action_with_headers'
+  header :RequredHeaderName, 'Required header description', required: true
+  header :OptionalHeaderName, 'Optional header description', required: false
+  def action_with_headers
+  end
 end
