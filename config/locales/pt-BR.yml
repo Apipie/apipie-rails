@@ -24,3 +24,5 @@
     enable_javascript_html: Por favor, habilite JavaScript para ver %{comments_href}.
     comments_powered_by_disqus: comentário feito por %{disqus}
     api_documentation: Documentação da API
+    headers: Cabeçalhos
+    header_name: Nome cabeçalho
