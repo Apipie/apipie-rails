@@ -2,6 +2,12 @@
  Changelog
 ===========
 
+v0.3.3
+------
+
+* Support for describing headers
+  [#341](https://github.com/Apipie/apipie-rails/pull/341) [@iliabylich][]
+
 v0.3.2
 ------
 
@@ -274,3 +280,4 @@ v0.0.15
 [@akenger]: https://github.com/akenger
 [@baweaver]: https://github.com/baweaver
 [@stormsilver]: https://github.com/stormsilver
+[@iliabylich]: https://github.com/iliabylich
