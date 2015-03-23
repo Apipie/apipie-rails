@@ -35,6 +35,7 @@ describe UsersController do
       methods.keys.should include(:create)
       methods.keys.should include(:update)
       methods.keys.should include(:two_urls)
+      methods.keys.should include(:action_with_headers)
     end
 
     it "should contain info about resource" do
@@ -442,6 +443,57 @@ describe UsersController do
       a = Apipie.get_method_description(UsersController, :show)
       a.params.count.should == 11
       a.instance_variable_get('@params_ordered').count.should == 9
+    end
+
+    context 'headers' do
+      context 'for methods' do
+        let(:expected_required_header) do
+          {
+            name: :RequredHeaderName,
+            description: 'Required header description',
+            options: {
+              required: true
+            }
+          }
+        end
+
+        let(:expected_optional_header) do
+          {
+            name: :OptionalHeaderName,
+            description: 'Optional header description',
+            options: {
+              required: false
+            }
+          }
+        end
+
+        it 'contains all headers description in method doc' do
+          headers = Apipie.get_method_description(UsersController, :action_with_headers).headers
+          headers.should be_an(Array)
+
+          compare_hashes headers[0], expected_required_header
+          compare_hashes headers[1], expected_optional_header
+        end
+      end
+
+      context 'for resource' do
+        let(:expected_resource_header) do
+          {
+            name: :CommonHeader,
+            description: 'Common header description',
+            options: {
+              required: true
+            }
+          }
+        end
+
+        it 'contains all headers description in resource doc' do
+          headers = Apipie.get_resource_description(UsersController)._headers
+          headers.should be_an(Array)
+
+          compare_hashes headers[0], expected_resource_header
+        end
+      end
     end
 
     it "should contain all api method description" do

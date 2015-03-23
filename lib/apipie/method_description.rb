@@ -17,7 +17,7 @@ module Apipie
 
     end
 
-    attr_reader :full_description, :method, :resource, :apis, :examples, :see, :formats, :metadata
+    attr_reader :full_description, :method, :resource, :apis, :examples, :see, :formats, :metadata, :headers
 
     def initialize(method, resource, dsl_data)
       @method = method.to_s
@@ -48,6 +48,7 @@ module Apipie
         Apipie::ParamDescription.from_dsl_data(self, args)
       end
       @params_ordered = ParamDescription.unify(@params_ordered)
+      @headers = dsl_data[:headers]
     end
 
     def id
@@ -142,7 +143,8 @@ module Apipie
         :params => params_ordered.map{ |param| param.to_json(lang) }.flatten,
         :examples => @examples,
         :metadata => @metadata,
-        :see => see.map(&:to_json)
+        :see => see.map(&:to_json),
+        :headers => headers
       }
     end
 

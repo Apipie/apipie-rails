@@ -24,4 +24,6 @@ en:
         enable_javascript_html: Please enable JavaScript to view the %{comments_href}.
         comments_powered_by_disqus: comments powered by %{disqus}
         api_documentation: API documentation
+        headers: Headers
+        header_name: Header name
 

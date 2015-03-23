@@ -25,6 +25,7 @@ module Apipie
          :api_from_routes   => nil,
          :errors            => [],
          :params            => [],
+         :headers           => [],
          :resouce_id        => nil,
          :short_description => nil,
          :description       => nil,
@@ -129,7 +130,6 @@ module Apipie
         end
         Apipie.set_controller_versions(self, versions)
       end
-
     end
 
     module Common
@@ -268,6 +268,23 @@ module Apipie
         @method_params[method]
       end
 
+      # Describe request header.
+      #  Headers can't be validated with config.validate_presence = true
+      #
+      # Example:
+      #   header 'ClientId', "client-id"
+      #   def show
+      #     render :text => headers['HTTP_CLIENT_ID']
+      #   end
+      #
+      def header(header_name, description, options = {}) #:doc
+        return unless Apipie.active_dsl?
+        _apipie_dsl_data[:headers] << {
+          name: header_name,
+          description: description,
+          options: options
+        }
+      end
     end
 
     # this describes the params, it's in separate module because it's
