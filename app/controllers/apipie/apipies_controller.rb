@@ -1,5 +1,8 @@
 module Apipie
   class ApipiesController < ActionController::Base
+    include ActionView::Context
+    include ApipieHelper
+
     layout Apipie.configuration.layout
 
     around_filter :set_script_name
@@ -72,6 +75,7 @@ module Apipie
     end
 
     private
+    helper_method :heading
 
     def get_language
       lang = nil
