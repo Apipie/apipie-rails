@@ -2,6 +2,14 @@
  Changelog
 ===========
 
+v0.3.4
+------
+
+* Fixing occasional NoMethodError with ActionDispatch::Reloader
+  [#348](https://github.com/Apipie/apipie-rails/pull/348) [@saneshark][]
+* Portuguese translation
+  [#344](https://github.com/Apipie/apipie-rails/pull/344) [@dadario][]
+
 v0.3.3
 ------
 
@@ -281,3 +289,5 @@ v0.0.15
 [@baweaver]: https://github.com/baweaver
 [@stormsilver]: https://github.com/stormsilver
 [@iliabylich]: https://github.com/iliabylich
+[@dadario]: https://github.com/dadario
+[@saneshark]: https://github.com/saneshark
