@@ -56,8 +56,8 @@ features such as generating documentation from tests, recording examples etc.
 Screenshots
 -----------
 
-.. image:: https://img.skitch.com/20120428-nruk3e87xs2cu4ydsjujdh11fq.png
-.. image:: https://img.skitch.com/20120428-bni2cmq5cyhjuw1jkd78e3qjxn.png
+.. image:: https://dl.dropboxusercontent.com/u/71605080/Screen%20Shot%202015-04-06%20at%2011.31.12%20PM.png
+.. image:: https://dl.dropboxusercontent.com/u/71605080/Screen%20Shot%202015-04-06%20at%2011.29.20%20PM.png
 
 Authors
 -------
