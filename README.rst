@@ -224,6 +224,9 @@ see
 meta
   Hash or array with custom metadata.
 
+show
+  Resource is hidden from documentation when set to false (true by default)
+
 Example:
 ~~~~~~~~
 
@@ -236,6 +239,7 @@ Example:
 
    # More complex example
    api :GET, "/users/:id", "Show user profile"
+   show false
    error :code => 401, :desc => "Unauthorized"
    error :code => 404, :desc => "Not Found", :meta => {:anything => "you can think of"}
    param :session, String, :desc => "user is logged in", :required => true

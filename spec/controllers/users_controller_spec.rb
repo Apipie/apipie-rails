@@ -402,6 +402,7 @@ describe UsersController do
       context "the key is valid" do
         it "should contain reference to another method" do
           api = Apipie[UsersController, :see_another]
+          api.show.should == false
           see = api.see.first
           see.see_url.should == Apipie[UsersController, :create].doc_url
           see.link.should == 'development#users#create'
@@ -571,6 +572,7 @@ describe UsersController do
                      :expected_type=>"numeric"},
        ],
         :name => 'two_urls',
+        :show => true,
         :apis => [
           {
             :http_method => 'GET',

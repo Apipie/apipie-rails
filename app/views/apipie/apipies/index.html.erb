@@ -28,6 +28,9 @@
     </thead>
     <tbody>
       <% api[:methods].each do |m| %>
+        <% if !m[:show] %>
+          <% next %>
+        <% end %>
         <% m[:apis].each do |a| %>
           <tr>
             <td>
