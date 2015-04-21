@@ -56,8 +56,8 @@ features such as generating documentation from tests, recording examples etc.
 Screenshots
 -----------
 
-.. image:: https://img.skitch.com/20120428-nruk3e87xs2cu4ydsjujdh11fq.png
-.. image:: https://img.skitch.com/20120428-bni2cmq5cyhjuw1jkd78e3qjxn.png
+.. image:: https://github.com/Apipie/apipie-rails/blob/master/images/screenshot-1.png
+.. image:: https://github.com/Apipie/apipie-rails/blob/master/images/screenshot-2.png
 
 Authors
 -------
