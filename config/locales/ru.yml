@@ -1,0 +1,29 @@
+ru:
+    apipie:
+        resources: Ресурсы
+        resource: Ресурс
+        description: Описание
+        no_docs_found: Документация не найдена
+        no_docs_found_descr: Мы не нашли никакой документации для вашего API.
+        follow_instructions_html: Перейдите по ссылке %{href}, чтобы узнать как описать ваш API.
+        follow_instructions_href: дополнительные инструкции
+        oops: Ой!!
+        resource_not_found_html: Ресурс %{res} не найден.
+        method_not_found_html: Метод %{method} для ресурса %{resource} не найден.
+        goto_homepage_html: Перейдите %{href}
+        goto_homepage_href: "%{app_name} домашняя страница API документации"
+        required: обязательно
+        optional: необязательно
+        nil_allowed: nil разрешен
+        param_name: Имя параметра
+        params: Параметры
+        examples: Примеры
+        metadata: Метаданные
+        errors: Ошибки
+        supported_formats: Поддерживаемые форматы
+        enable_javascript_html: Пожалуйста включите JavaScript, чтобы просматривать %{comments_href}.
+        comments_powered_by_disqus: комментарии представлены %{disqus}
+        api_documentation: API документация
+        headers: Заголовки
+        header_name: Название заголовка
+
