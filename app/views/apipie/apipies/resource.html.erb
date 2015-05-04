@@ -37,6 +37,9 @@
 <div class='accordion' id='accordion'>
 
   <% @resource[:methods].each do |m| %>
+    <% if !m[:show] %>
+      <% next %>
+    <% end %>
     <hr>
     <div class='pull-right small'>
       <a href='<%= m[:doc_url] %><%= @doc[:link_extension] %>'> >>> </a>

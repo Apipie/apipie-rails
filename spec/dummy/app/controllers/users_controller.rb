@@ -169,6 +169,7 @@ class UsersController < ApplicationController
     More builder documentation can be found at http://builder.rubyforge.org.
   eos
   api :GET, "/users/:id", "Show user profile"
+  show false
   formats ['json', 'jsonp']
   error 401, "Unauthorized"
   error :code => 404, :description => "Not Found"
@@ -256,9 +257,10 @@ class UsersController < ApplicationController
   end
 
   api :GET, '/users/see_another', 'Boring method'
+  show false
   see 'development#users#create'
   see 'development#users#index', "very interesting method reference"
-  desc 'This method is boring, look at users#create'
+  desc 'This method is boring, look at users#create.  It is hidden from documentation.'
   def see_another
     render :text => 'This is very similar to create action'
   end

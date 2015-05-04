@@ -33,7 +33,8 @@ module Apipie
          :see               => [],
          :formats           => nil,
          :api_versions      => [],
-         :meta              => nil
+         :meta              => nil,
+         :show              => true
        }
       end
     end
@@ -109,6 +110,13 @@ module Apipie
       def example(example) #:doc:
         return unless Apipie.active_dsl?
         _apipie_dsl_data[:examples] << example.strip_heredoc
+      end
+
+      # Determine if the method should be included
+      # in the documentation
+      def show(show)
+        return unless Apipie.active_dsl?
+        _apipie_dsl_data[:show] = show
       end
 
       # Describe whole resource

@@ -2,6 +2,9 @@
   <h4><a href='#<%= key %>'><%= resource[:name] %></a></h4>
   <ul>
     <% resource[:methods].each do |method| %>
+      <% if !method[:show] %>
+        <% next %>
+      <% end %>
       <li><a href='#<%= key %>-<%= method[:name] %>'><%= method[:name] %></a></li>
     <% end %>
   </ul>
@@ -34,6 +37,9 @@
   <div class='accordion' id='accordion'>
 
     <% resource[:methods].each do |method| %>
+      <% if !method[:show] %>
+        <% next %>
+      <% end %>
       <hr>
 
       <ul class='breadcrumb' id='<%= key %>-<%= method[:name] %>'>

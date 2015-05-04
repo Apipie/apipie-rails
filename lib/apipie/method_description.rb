@@ -17,7 +17,7 @@ module Apipie
 
     end
 
-    attr_reader :full_description, :method, :resource, :apis, :examples, :see, :formats, :metadata, :headers
+    attr_reader :full_description, :method, :resource, :apis, :examples, :see, :formats, :metadata, :headers, :show
 
     def initialize(method, resource, dsl_data)
       @method = method.to_s
@@ -49,6 +49,12 @@ module Apipie
       end
       @params_ordered = ParamDescription.unify(@params_ordered)
       @headers = dsl_data[:headers]
+
+      @show = if dsl_data.has_key? :show
+        dsl_data[:show]
+      else
+        true
+      end
     end
 
     def id
@@ -144,7 +150,8 @@ module Apipie
         :examples => @examples,
         :metadata => @metadata,
         :see => see.map(&:to_json),
-        :headers => headers
+        :headers => headers,
+        :show => @show
       }
     end
 
