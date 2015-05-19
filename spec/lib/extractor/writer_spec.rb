@@ -57,6 +57,12 @@ describe Apipie::Extractor::Writer do
     }
   }
 
+  describe "with doc_path overriden in configuration" do
+    it "should use the doc_path specified in configuration" do
+      Apipie.configuration.doc_path = "user_specified_doc_path"
+      writer_class.examples_file.should eq(File.join(Rails.root, "user_specified_doc_path", "apipie_examples.json"))
+    end
+  end
 
   describe "storing of examples" do
     before do

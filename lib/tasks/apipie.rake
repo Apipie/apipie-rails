@@ -19,7 +19,7 @@ namespace :apipie do
   task :static, [:version] => :environment do |t, args|
     with_loaded_documentation do
       args.with_defaults(:version => Apipie.configuration.default_version)
-      out = ENV["OUT"] || File.join(::Rails.root, 'doc', 'apidoc')
+      out = ENV["OUT"] || File.join(::Rails.root, Apipie.configuration.doc_path, 'apidoc')
       subdir = File.basename(out)
       copy_jscss(out)
       Apipie.configuration.version_in_url = false
@@ -43,7 +43,7 @@ namespace :apipie do
   task :static_json, [:version] => :environment do |t, args|
     with_loaded_documentation do
       args.with_defaults(:version => Apipie.configuration.default_version)
-      out = ENV["OUT"] || File.join(::Rails.root, 'doc', 'apidoc')
+      out = ENV["OUT"] || File.join(::Rails.root, Apipie.configuration.doc_path, 'apidoc')
       ([nil] + Apipie.configuration.languages).each do |lang|
         doc = Apipie.to_json(args[:version], nil, nil, lang)
         generate_json_page(out, doc, lang)
@@ -232,7 +232,7 @@ MESSAGE
 
   desc "Convert your examples from the old yaml into the new json format"
   task :convert_examples => :environment do
-    yaml_examples_file = File.join(Rails.root, "doc", "apipie_examples.yml")
+    yaml_examples_file = File.join(Rails.root, Apipie.configuration.doc_path, "apipie_examples.yml")
     if File.exists?(yaml_examples_file)
       #if SafeYAML gem is enabled, it will load examples as an array of Hash, instead of hash
       if defined? SafeYAML
