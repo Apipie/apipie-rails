@@ -159,8 +159,8 @@ module Apipie
       @update_checksum = false
       @link_extension = ".html"
       @record = false
-      @languages = ['en']
       @default_locale = 'en'
+      @languages = [ @default_locale ]
       @locale = lambda { |locale| @default_locale }
       @translate = lambda { |str, locale| str }
       @persist_show_in_doc = false

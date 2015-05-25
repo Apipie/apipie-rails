@@ -23,8 +23,8 @@ namespace :apipie do
       subdir = File.basename(out)
       copy_jscss(out)
       Apipie.configuration.version_in_url = false
-      ([nil] + Apipie.configuration.languages).each do |lang|
-        I18n.locale = lang || Apipie.configuration.default_locale
+      (Apipie.configuration.languages).each do |lang|
+        I18n.locale = lang
         Apipie.url_prefix = "./#{subdir}"
         doc = Apipie.to_json(args[:version], nil, nil, lang)
         doc[:docs][:link_extension] = "#{lang_ext(lang)}.html"
@@ -44,7 +44,7 @@ namespace :apipie do
     with_loaded_documentation do
       args.with_defaults(:version => Apipie.configuration.default_version)
       out = ENV["OUT"] || File.join(::Rails.root, 'doc', 'apidoc')
-      ([nil] + Apipie.configuration.languages).each do |lang|
+      (Apipie.configuration.languages).each do |lang|
         doc = Apipie.to_json(args[:version], nil, nil, lang)
         generate_json_page(out, doc, lang)
       end
