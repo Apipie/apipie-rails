@@ -1099,6 +1099,9 @@ When you want to avoid any unnecessary computation in production mode,
 you can generate a cache with ``rake apipie:cache`` and configure the
 app to use it in production with ``config.use_cache = Rails.env.production?``
 
+Default cache dir is ``File.join(Rails.root, "public", "apipie-cache")``, 
+you can change it to where you want, example: ``config.cache_dir = File.join(Rails.root, "doc", "apidoc")``.
+
 If, for some complex cases, you need to generate/re-generate just part of the cache
 use ``rake apipie:cache cache_part=index`` resp. ``rake apipie:cache cache_part=resources``
 To generate it for different locations for further processing use ``rake apipie:cache OUT=/tmp/apipie_cache``.
