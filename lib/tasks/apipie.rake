@@ -63,8 +63,8 @@ namespace :apipie do
     generate_resources = (cache_part == 'index' ? false : true)
     with_loaded_documentation do
       puts "#{Time.now} | Documents loaded..."
-      ([nil] + Apipie.configuration.languages).each do |lang|
-        I18n.locale = lang || Apipie.configuration.default_locale
+      (Apipie.configuration.languages).each do |lang|
+        I18n.locale = lang
         puts "#{Time.now} | Processing docs for #{lang}"
         cache_dir = ENV["OUT"] || Apipie.configuration.cache_dir
         subdir = Apipie.configuration.doc_base_url.sub(/\A\//,"")
