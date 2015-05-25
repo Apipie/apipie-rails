@@ -1,0 +1,28 @@
+'zh-TW':
+  apipie:
+    resources: 資源
+    resource: 資源
+    description: 描述
+    no_docs_found: 沒有找到文檔
+    no_docs_found_descr: 沒有找到文檔。
+    follow_instructions_html: 點擊 %{href} 查看描述。
+    follow_instructions_href: 高級指導
+    oops: Oops!!
+    resource_not_found_html: 沒有找到資源 %{res} 。
+    method_not_found_html: 沒有找到資源 %{res} 的方法 %{method} 。
+    goto_homepage_html: 試圖訪問 %{href}
+    goto_homepage_href: "%{app_name} API 文檔主頁"
+    required: 必填
+    optional: 選填
+    nil_allowed: 允許空值
+    param_name: 參數名字
+    params: 參數
+    examples: 示例
+    metadata: 元數據
+    errors: 錯誤
+    supported_formats: 支持格式
+    enable_javascript_html: 瀏覽 %{comments_href}前請允許執行 JavaScript 。
+    comments_powered_by_disqus: 評論技術支持 %{disqus}
+    api_documentation: API 文檔
+    headers: 頭部
+    header_name: 頭部名字
