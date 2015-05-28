@@ -1,0 +1,28 @@
+'zh-CN':
+  apipie:
+    resources: 资源
+    resource: 资源
+    description: 描述
+    no_docs_found: 没有找到文档
+    no_docs_found_descr: 没有找到文档。
+    follow_instructions_html: 点击 %{href} 查看描述。
+    follow_instructions_href: 高级指导
+    oops: Oops!!
+    resource_not_found_html: 没有找到资源 %{res} 。
+    method_not_found_html: 没有找到资源 %{res} 的方法 %{method} 。
+    goto_homepage_html: 试图访问 %{href}
+    goto_homepage_href: "%{app_name} API 文档主页"
+    required: 必填
+    optional: 选填
+    nil_allowed: 允许空值
+    param_name: 参数名字
+    params: 参数
+    examples: 示例
+    metadata: 元数据
+    errors: 错误
+    supported_formats: 支持格式
+    enable_javascript_html: 浏览 %{comments_href}前请允许执行 JavaScript 。
+    comments_powered_by_disqus: 评论技术支持 %{disqus}
+    api_documentation: API 文档
+    headers: 头部
+    header_name: 头部名字
