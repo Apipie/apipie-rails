@@ -3,7 +3,10 @@ require 'spec_helper'
 describe 'rake tasks' do
   include_context "rake"
 
+  let(:doc_path)  { "user_specified_doc_path" }
+
   before do
+    Apipie.configuration.doc_path = doc_path
     Apipie.stub(:reload_documentation)
     subject.invoke(*task_args)
   end
@@ -15,7 +18,7 @@ describe 'rake tasks' do
     end
 
     let(:doc_output) do
-      File.join(::Rails.root, 'doc', 'apidoc')
+      File.join(::Rails.root, doc_path, 'apidoc')
     end
 
     after do

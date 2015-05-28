@@ -53,7 +53,7 @@ module Apipie
       end
 
       def self.examples_file
-        File.join(Rails.root,"doc","apipie_examples.json")
+        File.join(Rails.root,Apipie.configuration.doc_path,"apipie_examples.json")
       end
 
       protected
