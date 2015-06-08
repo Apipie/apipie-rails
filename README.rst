@@ -861,8 +861,8 @@ Adding custom validator
 Only basic validators are included but it is really easy to add your own.
 Create a new initializer with a subclass of Apipie::Validator::BaseValidator.
 Two methods are required to implement this - instance method
-<tt>validate(value)</tt> and class method
-<tt>build(param_description, argument, options, block)</tt>.
+:code:`validate(value)` and class method
+:code:`build(param_description, argument, options, block)`.
 
 When searching for the validator +build+ method, every subclass of
 Apipie::Validator::BaseValidator is called. The first one that returns the
