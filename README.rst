@@ -1270,8 +1270,8 @@ further versions.
 
 There is, however, an even better and more flexible way to reuse your API
 documentation for this purpose: using the API the Apipie
-provides in the generator code. Check out
-`Foreman API bindings <https://github.com/mbacovsky/foreman_api>`_, as they
+provides in the generator code. Check out our sister project
+`apipie-bindings <https://github.com/Apipie/apipie-bindings>`_, as they
 use exactly this approach. You also don't need to run the service,
 provided it uses Apipie as a backend.
 
@@ -1301,4 +1301,4 @@ configuration:
 
 * `Read-world application usage with versioning <https://github.com/theforeman/foreman>`_
 
-* `Using Apipie API to generate bindings <https://github.com/mbacovsky/foreman_api>`_
+* `Using Apipie API to generate bindings <https://github.com/Apipie/apipie-bindings>`_
