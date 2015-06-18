@@ -4,3 +4,4 @@ gemspec
 
 gem 'rails', '~> 4.1.0'
 gem 'mime-types', '~> 2.99.3'
+gem 'test_engine', path: 'spec/dummy/components/test_engine', group: :test

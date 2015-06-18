@@ -10,3 +10,5 @@ if Gem::Version.new(RUBY_VERSION) < Gem::Version.new('2.1.0')
   gem 'nokogiri', '~> 1.6.8'
   gem 'rdoc', '~> 4.2.2'
 end
+
+gem 'test_engine', path: 'spec/dummy/components/test_engine', group: :test

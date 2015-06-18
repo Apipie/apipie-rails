@@ -16,7 +16,7 @@ module Apipie
     end
 
     def format_path(rails_route)
-      rails_route.path.spec.to_s.gsub('(.:format)', '')
+      File.join(rails_route.base_url, rails_route.path.spec.to_s.gsub('(.:format)', ''))
     end
 
     def format_verb(rails_route)
