@@ -1,6 +1,8 @@
 require 'i18n'
 require 'active_support/hash_with_indifferent_access'
 
+require 'apipie/core_ext/route.rb'
+
 require "apipie/routing"
 require "apipie/markup"
 require "apipie/apipie_module"

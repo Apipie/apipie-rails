@@ -29,7 +29,7 @@ module Apipie
       @controller_to_resource_id[controller] = resource_id
     end
 
-    def rails_routes(route_set = nil)
+    def rails_routes(route_set = nil, base_url = "")
       if route_set.nil? && @rails_routes
         return @rails_routes
       end
@@ -41,9 +41,10 @@ module Apipie
 
       route_set.routes.each do |route|
         if route.app.respond_to?(:routes) && route.app.routes.is_a?(ActionDispatch::Routing::RouteSet)
-          # recursively go though the moutned engines
-          flatten_routes.concat(rails_routes(route.app.routes))
+          # recursively go though the mounted engines
+          flatten_routes.concat(rails_routes(route.app.routes, File.join(base_url, route.path.spec.to_s)))
         else
+          route.base_url = base_url
           flatten_routes << route
         end
       end
