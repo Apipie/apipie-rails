@@ -47,11 +47,7 @@ module Apipie
       @parent = @options[:parent]
       @metadata = @options[:meta]
 
-      @required = if @options.has_key? :required
-        @options[:required]
-      else
-        Apipie.configuration.required_by_default?
-      end
+      @required = is_required?
 
       @show = if @options.has_key? :show
         @options[:show]
@@ -208,6 +204,18 @@ module Apipie
 
     def preformat_text(text)
       concern_subst(Apipie.markup_to_html(text || ''))
+    end
+
+    def is_required?
+      if @options.has_key?(:required)
+        if (@options[:required] == true) || (@options[:required] == false)
+          @options[:required]
+        else
+          Array(@options[:required]).include?(@method_description.method.to_sym)
+        end
+      else
+        Apipie.configuration.required_by_default?
+      end
     end
 
   end
