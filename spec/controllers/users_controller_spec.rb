@@ -2,7 +2,7 @@ require 'spec_helper'
 
 def compare_hashes(h1, h2)
   if h1.is_a? String
-    h1.should eq(h2)
+    expect(h1).to eq(h2)
   else
     h1.each do |key, val|
       if val.is_a? Hash
@@ -12,7 +12,7 @@ def compare_hashes(h1, h2)
           compare_hashes val[i], h2[key][i]
         end
       else
-        val.should eq(h2[key])
+        expect(val).to eq(h2[key])
       end
     end
   end
@@ -29,30 +29,30 @@ describe UsersController do
 
     it "should contain all resource methods" do
       methods = subject._methods
-      methods.keys.should include(:show)
-      methods.keys.should include(:create_route)
-      methods.keys.should include(:index)
-      methods.keys.should include(:create)
-      methods.keys.should include(:update)
-      methods.keys.should include(:two_urls)
-      methods.keys.should include(:action_with_headers)
+      expect(methods.keys).to include(:show)
+      expect(methods.keys).to include(:create_route)
+      expect(methods.keys).to include(:index)
+      expect(methods.keys).to include(:create)
+      expect(methods.keys).to include(:update)
+      expect(methods.keys).to include(:two_urls)
+      expect(methods.keys).to include(:action_with_headers)
     end
 
     it "should contain info about resource" do
-      subject._short_description.should eq('Site members')
-      subject._id.should eq('users')
-      subject._path.should eq('/users')
-      subject._version.should eq('development')
-      subject._name.should eq('Users')
-      subject._formats.should eq(['json'])
+      expect(subject._short_description).to eq('Site members')
+      expect(subject._id).to eq('users')
+      expect(subject._path).to eq('/users')
+      expect(subject._version).to eq('development')
+      expect(subject._name).to eq('Users')
+      expect(subject._formats).to eq(['json'])
     end
 
     it "should contain params defined on resource level" do
-      subject._params_args.count.should == 2
+      expect(subject._params_args.count).to eq(2)
       name, type, options = subject._params_args.first
-      name.should == :id
-      type.should == Fixnum
-      options.should == {:required=>false, :desc=>"User ID"}
+      expect(name).to eq(:id)
+      expect(type).to eq(Fixnum)
+      expect(options).to eq({:required=>false, :desc=>"User ID"})
     end
   end
 
@@ -71,7 +71,7 @@ describe UsersController do
       end
 
       it "should pass if required parameter is missing" do
-        lambda { get :show, :id => 5 }.should_not raise_error
+        expect { get :show, :id => 5 }.not_to raise_error
       end
 
     end
@@ -92,17 +92,17 @@ describe UsersController do
           end
 
           it "should reply to valid request" do
-            lambda { get :show, :id => 5, :session => "secret_hash" }.should_not raise_error
+            expect { get :show, :id => 5, :session => "secret_hash" }.not_to raise_error
             assert_response :success
           end
 
           it "should fail if required parameter is missing" do
-            lambda { get :show, :id => 5 }.should raise_error(Apipie::ParamMissing, /\bsession\b/)
+            expect { get :show, :id => 5 }.to raise_error(Apipie::ParamMissing, /\bsession\b/)
           end
 
           it "should pass if required parameter has wrong type" do
-            lambda { get :show, :id => 5, :session => "secret_hash" }.should_not raise_error
-            lambda { get :show, :id => "ten", :session => "secret_hash" }.should_not raise_error
+            expect { get :show, :id => 5, :session => "secret_hash" }.not_to raise_error
+            expect { get :show, :id => "ten", :session => "secret_hash" }.not_to raise_error
           end
 
         end
@@ -115,12 +115,12 @@ describe UsersController do
           end
 
           it "should reply to valid request" do
-            lambda { get :show, :id => 5, :session => "secret_hash" }.should_not raise_error
+            expect { get :show, :id => 5, :session => "secret_hash" }.not_to raise_error
             assert_response :success
           end
 
           it "should fail if extra parameter is passed in" do
-            lambda { get :show, :id => 5, :session => "secret_hash", :badparam => 'badfoo' }.should raise_error(Apipie::UnknownParam, /\bbadparam\b/)
+            expect { get :show, :id => 5, :session => "secret_hash", :badparam => 'badfoo' }.to raise_error(Apipie::UnknownParam, /\bbadparam\b/)
           end
         end
 
@@ -144,15 +144,15 @@ describe UsersController do
           end
 
           it "should fail if required parameter is missing" do
-            lambda { get :show, :id => 5 }.should raise_error(Apipie::ParamMissing, /\bsession\b/)
+            expect { get :show, :id => 5 }.to raise_error(Apipie::ParamMissing, /\bsession\b/)
           end
 
           it "should work with custom Type validator" do
-            lambda {
+            expect {
               get :show,
                   :id => "not a number",
                   :session => "secret_hash"
-            }.should raise_error(Apipie::ParamError, /id/) # old-style error rather than ParamInvalid
+            }.to raise_error(Apipie::ParamError, /id/) # old-style error rather than ParamInvalid
           end
 
           it "should work with Regexp validator" do
@@ -162,12 +162,12 @@ describe UsersController do
                 :regexp_param => "24 years"
             assert_response :success
 
-            lambda {
+            expect {
               get :show,
                   :id => 5,
                   :session => "secret_hash",
                   :regexp_param => "ten years"
-            }.should raise_error(Apipie::ParamInvalid, /regexp_param/)
+            }.to raise_error(Apipie::ParamInvalid, /regexp_param/)
           end
 
           it "should work with Array validator" do
@@ -180,28 +180,28 @@ describe UsersController do
             get :show, :id => 5, :session => "secret_hash", :boolean_param => false
             assert_response :success
 
-            lambda {
+            expect {
               get :show,
                   :id => 5,
                   :session => "secret_hash",
                   :array_param => "blabla"
-            }.should raise_error(Apipie::ParamInvalid, /array_param/)
+            }.to raise_error(Apipie::ParamInvalid, /array_param/)
 
-            lambda {
+            expect {
               get :show,
                   :id => 5,
                   :session => "secret_hash",
                   :array_param => 3
-            }.should raise_error(Apipie::ParamInvalid, /array_param/)
+            }.to raise_error(Apipie::ParamInvalid, /array_param/)
           end
 
           it "should work with Proc validator" do
-            lambda {
+            expect {
               get :show,
                   :id => 5,
                   :session => "secret_hash",
                   :proc_param => "asdgsag"
-            }.should raise_error(Apipie::ParamInvalid, /proc_param/)
+            }.to raise_error(Apipie::ParamInvalid, /proc_param/)
 
             get :show,
                 :id => 5,
@@ -216,25 +216,25 @@ describe UsersController do
 
             a = Apipie[UsersController, :create]
             param = a.params_ordered.select {|p| p.name == :user }
-            param.count.should == 1
-            param.first.validator.class.should eq(Apipie::Validator::HashValidator)
+            expect(param.count).to eq(1)
+            expect(param.first.validator.class).to eq(Apipie::Validator::HashValidator)
             hash_params = param.first.validator.params_ordered
-            hash_params.count.should == 4
+            expect(hash_params.count).to eq(4)
             hash_params[0].name == :name
             hash_params[1].name == :pass
             hash_params[2].name == :membership
 
-            lambda {
+            expect {
               post :create, :user => { :name => "root", :pass => "12345", :membership => "____" }
-            }.should raise_error(Apipie::ParamInvalid, /membership/)
+            }.to raise_error(Apipie::ParamInvalid, /membership/)
 
-            lambda {
+            expect {
               post :create, :user => { :name => "root" }
-            }.should raise_error(Apipie::ParamMissing, /pass/)
+            }.to raise_error(Apipie::ParamMissing, /pass/)
 
-            lambda {
+            expect {
               post :create, :user => "a string is not a hash"
-            }.should raise_error(Apipie::ParamInvalid, /user/)
+            }.to raise_error(Apipie::ParamInvalid, /user/)
 
             post :create, :user => { :name => "root", :pass => "pwd" }
             assert_response :success
@@ -242,7 +242,7 @@ describe UsersController do
 
           it "should support Hash validator without specifying keys" do
             params = Apipie[UsersController, :create].to_json[:params]
-            params.should include(:name => "facts",
+            expect(params).to include(:name => "facts",
                                   :full_name => "facts",
                                   :validator => "Must be Hash",
                                   :description => "\n<p>Additional optional facts about the user</p>\n",
@@ -363,37 +363,37 @@ describe UsersController do
 
     it "should contain basic info about method" do
       a = Apipie[UsersController, :create]
-      a.apis.count.should == 1
-      a.formats.should eq(['json'])
+      expect(a.apis.count).to eq(1)
+      expect(a.formats).to eq(['json'])
       api = a.apis.first
-      api.short_description.should eq("Create user")
-      api.path.should eq("/users")
-      api.http_method.should eq("POST")
+      expect(api.short_description).to eq("Create user")
+      expect(api.path).to eq("/users")
+      expect(api.http_method).to eq("POST")
 
       b = Apipie.get_method_description(UsersController, :show)
-      b.should eq(Apipie[UsersController, :show])
-      b.method.should eq('show')
-      b.resource._id.should eq('users')
+      expect(b).to eq(Apipie[UsersController, :show])
+      expect(b.method).to eq('show')
+      expect(b.resource._id).to eq('users')
 
-      b.apis.count.should == 1
-      b.formats.should eq(['json', 'jsonp'])
+      expect(b.apis.count).to eq(1)
+      expect(b.formats).to eq(['json', 'jsonp'])
       api = b.apis.first
-      api.short_description.should eq("Show user profile")
-      api.path.should eq("/users/:id")
-      api.http_method.should eq("GET")
-      b.full_description.length.should be > 400
+      expect(api.short_description).to eq("Show user profile")
+      expect(api.path).to eq("/users/:id")
+      expect(api.http_method).to eq("GET")
+      expect(b.full_description.length).to be > 400
     end
 
     context "Usign routes.rb" do
       it "should contain basic info about method" do
         a = Apipie[UsersController, :create_route]
-        a.apis.count.should == 1
-        a.formats.should eq(['json'])
+        expect(a.apis.count).to eq(1)
+        expect(a.formats).to eq(['json'])
         api = a.apis.first
-        api.short_description.should eq("Create user")
-        api.path.should eq("/api/users/create_route")
-        api.from_routes.should be_true
-        api.http_method.should eq("POST")
+        expect(api.short_description).to eq("Create user")
+        expect(api.path).to eq("/api/users/create_route")
+        expect(api.from_routes).to be_truthy
+        expect(api.http_method).to eq("POST")
       end
     end
 
@@ -421,9 +421,9 @@ describe UsersController do
         it "should raise exception" do
           api = Apipie[UsersController, :see_another]
           api.instance_variable_set :@see, [Apipie::SeeDescription.new(['doesnot#exist'])]
-          lambda {
+          expect {
             api.see.first.see_url
-          }.should raise_error(ArgumentError, /does not exist/)
+          }.to raise_error(ArgumentError, /does not exist/)
           api.instance_variable_set :@see, []
         end
       end
@@ -432,18 +432,18 @@ describe UsersController do
     it "should contain possible errors description" do
       a = Apipie.get_method_description(UsersController, :show)
 
-      a.errors[0].code.should eq(500)
-      a.errors[0].description.should include("crashed")
-      a.errors[1].code.should eq(401)
-      a.errors[1].description.should eq("Unauthorized")
-      a.errors[2].code.should eq(404)
-      a.errors[2].description.should eq("Not Found")
+      expect(a.errors[0].code).to eq(500)
+      expect(a.errors[0].description).to include("crashed")
+      expect(a.errors[1].code).to eq(401)
+      expect(a.errors[1].description).to eq("Unauthorized")
+      expect(a.errors[2].code).to eq(404)
+      expect(a.errors[2].description).to eq("Not Found")
     end
 
     it "should contain all params description" do
       a = Apipie.get_method_description(UsersController, :show)
-      a.params.count.should == 11
-      a.instance_variable_get('@params_ordered').count.should == 9
+      expect(a.params.count).to eq(11)
+      expect(a.instance_variable_get('@params_ordered').count).to eq(9)
     end
 
     context 'headers' do
@@ -470,7 +470,7 @@ describe UsersController do
 
         it 'contains all headers description in method doc' do
           headers = Apipie.get_method_description(UsersController, :action_with_headers).headers
-          headers.should be_an(Array)
+          expect(headers).to be_an(Array)
 
           compare_hashes headers[0], expected_required_header
           compare_hashes headers[1], expected_optional_header
@@ -490,7 +490,7 @@ describe UsersController do
 
         it 'contains all headers description in resource doc' do
           headers = Apipie.get_resource_description(UsersController)._headers
-          headers.should be_an(Array)
+          expect(headers).to be_an(Array)
 
           compare_hashes headers[0], expected_resource_header
         end
@@ -499,17 +499,17 @@ describe UsersController do
 
     it "should contain all api method description" do
       method_description = Apipie[UsersController, :two_urls]
-      method_description.class.should be(Apipie::MethodDescription)
-      method_description.apis.count.should == 2
+      expect(method_description.class).to be(Apipie::MethodDescription)
+      expect(method_description.apis.count).to eq(2)
       a1, a2 = method_description.apis
 
-      a1.short_description.should eq('Get company users')
-      a1.path.should eq('/company_users')
-      a1.http_method.should eq('GET')
+      expect(a1.short_description).to eq('Get company users')
+      expect(a1.path).to eq('/company_users')
+      expect(a1.http_method).to eq('GET')
 
-      a2.short_description.should eq('Get users working in given company')
-      a2.path.should eq('/company/:id/users')
-      a2.http_method.should eq('GET')
+      expect(a2.short_description).to eq('Get users working in given company')
+      expect(a2.path).to eq('/company/:id/users')
+      expect(a2.http_method).to eq('GET')
     end
 
     it "should be described by valid json" do
@@ -594,7 +594,7 @@ describe UsersController do
   describe "examples" do
 
     it "should be able to load examples from yml file" do
-      Apipie.get_method_description(UsersController, :show).examples.should == [<<EOS1, <<EOS2].map(&:chomp)
+      expect(Apipie.get_method_description(UsersController, :show).examples).to eq [<<EOS1, <<EOS2].map(&:chomp)
 GET /users/14?verbose=true
 200
 {
@@ -608,7 +608,7 @@ EOS2
 
     describe "document" do
       it "should be able to load document from markup file" do
-        Apipie.get_method_description(UsersController, :desc_from_file).full_description.should include("description from document")
+        expect(Apipie.get_method_description(UsersController, :desc_from_file).full_description).to include("description from document")
       end
     end
   end
@@ -619,37 +619,35 @@ EOS2
       a = Apipie.get_method_description(UsersController, :show)
 
       param = a.params[:session]
-      param.required.should eq(true)
-      param.desc.should eq("\n<p>user is logged in</p>\n")
-      param.validator.class.should be(Apipie::Validator::TypeValidator)
-      param.validator.instance_variable_get("@type").should eq(String)
+      expect(param.required).to eq(true)
+      expect(param.desc).to eq("\n<p>user is logged in</p>\n")
+      expect(param.validator.class).to be(Apipie::Validator::TypeValidator)
+      expect(param.validator.instance_variable_get("@type")).to eq(String)
 
       param = a.params[:id]
-      param.required.should eq(true)
-      param.desc.should eq("\n<p>user id</p>\n")
-      param.validator.class.should be(Apipie::Validator::IntegerValidator)
-      param.validator.instance_variable_get("@type").should eq(Integer)
+      expect(param.required).to eq(true)
+      expect(param.desc).to eq("\n<p>user id</p>\n")
+      expect(param.validator.class).to be(Apipie::Validator::IntegerValidator)
+      expect(param.validator.instance_variable_get("@type")).to eq(Integer)
 
       param = a.params[:regexp_param]
-      param.desc.should eq("\n<p>regexp param</p>\n")
-      param.required.should eq(false)
-      param.validator.class.should be(Apipie::Validator::RegexpValidator)
-      param.validator.instance_variable_get("@regexp").should
-        eq(/^[0-9]* years/)
+      expect(param.desc).to eq("\n<p>regexp param</p>\n")
+      expect(param.required).to eq(false)
+      expect(param.validator.class).to be(Apipie::Validator::RegexpValidator)
+      expect(param.validator.instance_variable_get("@regexp")).to eq(/^[0-9]* years/)
 
       param = a.params[:array_param]
-      param.desc.should eq("\n<p>array validator</p>\n")
-      param.validator.class.should be(Apipie::Validator::EnumValidator)
-      param.validator.instance_variable_get("@array").should
-        eq([100, "one", "two", 1, 2])
+      expect(param.desc).to eq("\n<p>array validator</p>\n")
+      expect(param.validator.class).to be(Apipie::Validator::EnumValidator)
+      expect(param.validator.instance_variable_get("@array")).to eq(["100", "one", "two", "1", "2"])
 
       param = a.params[:proc_param]
-      param.desc.should eq("\n<p>proc validator</p>\n")
-      param.validator.class.should be(Apipie::Validator::ProcValidator)
+      expect(param.desc).to eq("\n<p>proc validator</p>\n")
+      expect(param.validator.class).to be(Apipie::Validator::ProcValidator)
 
       param = a.params[:briefer_dsl]
-      param.desc.should eq("\n<p>You dont need :desc =&gt; from now</p>\n")
-      param.validator.class.should be(Apipie::Validator::TypeValidator)
+      expect(param.desc).to eq("\n<p>You dont need :desc =&gt; from now</p>\n")
+      expect(param.validator.class).to be(Apipie::Validator::TypeValidator)
     end
 
   end
@@ -668,10 +666,10 @@ EOS2
 
       it "skips the listed  actions from the documentation" do
         Apipie.define_method_description(UsersController, :ignore, dsl_data)
-        Apipie.get_method_description(UsersController, :ignore).should be_nil
+        expect(Apipie.get_method_description(UsersController, :ignore)).to be_nil
 
         Apipie.define_method_description(UsersController, :dont_ignore, dsl_data)
-        Apipie.get_method_description(UsersController, :dont_ignore).should_not be_nil
+        expect(Apipie.get_method_description(UsersController, :dont_ignore)).not_to be_nil
       end
     end
 
@@ -682,9 +680,9 @@ EOS2
 
       it "skips the listed controller from the documentation" do
         Apipie.define_method_description(IgnoredController, :ignore, dsl_data)
-        Apipie.get_method_description(IgnoredController, :ignore).should be_nil
+        expect(Apipie.get_method_description(IgnoredController, :ignore)).to be_nil
         Apipie.define_method_description(IgnoredController, :ignore, dsl_data)
-        Apipie.get_method_description(IgnoredController, :ignore).should be_nil
+        expect(Apipie.get_method_description(IgnoredController, :ignore)).to be_nil
       end
     end
   end

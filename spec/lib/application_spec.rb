@@ -21,13 +21,13 @@ describe Apipie::Application do
       context "with a defined base url" do
         
         it "should not overwrite the parent resource" do
-          should_not eq(Apipie.get_resource_name(Api::V2::ArchitecturesController))
+          is_expected.not_to eq(Apipie.get_resource_name(Api::V2::ArchitecturesController))
         end
         
       end
 
       context "with an undefined base url" do
-        before {Apipie.app.stub(:get_base_url) { nil }}
+        before {allow(Apipie.app).to receive(:get_base_url) { nil }}
 
         it "should not raise an error" do
           expect { Apipie.get_resource_name(Api::V2::ArchitecturesController) }.
@@ -42,7 +42,7 @@ describe Apipie::Application do
       before { Apipie.configuration.namespaced_resources = false }
 
       it "should overwrite the the parent" do
-        should eq(Apipie.get_resource_name(Api::V2::ArchitecturesController))
+        is_expected.to eq(Apipie.get_resource_name(Api::V2::ArchitecturesController))
       end
     end
   end

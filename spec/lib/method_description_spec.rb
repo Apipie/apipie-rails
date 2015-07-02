@@ -12,7 +12,7 @@ describe Apipie::MethodDescription do
 
     it "should return nil when no metadata is provided" do
       method = Apipie::MethodDescription.new(:a, @resource, dsl_data)
-      method.to_json[:metadata].should == nil
+      expect(method.to_json[:metadata]).to eq(nil)
     end
 
     it "should return the metadata" do
@@ -21,7 +21,7 @@ describe Apipie::MethodDescription do
         :weight => '830g'
       }
       method = Apipie::MethodDescription.new(:a, @resource, dsl_data.update(:meta => meta))
-      method.to_json[:metadata].should == meta
+      expect(method.to_json[:metadata]).to eq(meta)
     end
 
   end
@@ -34,7 +34,7 @@ describe Apipie::MethodDescription do
     it "should return the deprecated flag when provided" do
       dsl_data[:api_args] = [[:GET, "/foo/bar", "description", {:deprecated => true}]]
       method = Apipie::MethodDescription.new(:a, @resource, dsl_data)
-      method.method_apis_to_json.first[:deprecated].should == true
+      expect(method.method_apis_to_json.first[:deprecated]).to eq(true)
     end
   end
 
@@ -50,13 +50,13 @@ describe Apipie::MethodDescription do
     end
 
     it "should be ordered" do
-      @method.params.keys.should == [:a, :b, :c]
-      @method.to_json[:params].map{|h| h[:name]}.should == ['a', 'b', 'c']
+      expect(@method.params.keys).to eq([:a, :b, :c])
+      expect(@method.to_json[:params].map{|h| h[:name]}).to eq(['a', 'b', 'c'])
     end
 
     it "should be still ordered" do
-      @method.params.keys.should == [:a, :b, :c]
-      @method.to_json[:params].map{|h| h[:name]}.should == ['a', 'b', 'c']
+      expect(@method.params.keys).to eq([:a, :b, :c])
+      expect(@method.to_json[:params].map{|h| h[:name]}).to eq(['a', 'b', 'c'])
     end
 
   end
