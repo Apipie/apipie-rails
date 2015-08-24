@@ -172,6 +172,33 @@ describe Apipie::ParamDescription do
 
   end
 
+  describe "required params on given actions" do
+    let(:method_desc) do
+      Apipie::MethodDescription.new(:create, resource_desc, dsl_data)
+    end
+
+    context "when the param is required for current action" do
+      it "should set param as required" do
+        param = Apipie::ParamDescription.new(method_desc, :required, String, 'description','required' => :create)
+        param.required.should be_true
+      end
+    end
+
+    context "when the param is required for multiple actions" do
+      it "should set param as required if it match current action" do
+        param = Apipie::ParamDescription.new(method_desc, :required, String, 'description','required' => [:update, :create])
+        param.required.should be_true
+      end
+    end
+
+    context "when the param is not required for current action" do
+      it "should set param as not required" do
+        param = Apipie::ParamDescription.new(method_desc, :required, String, 'description','required' => :update)
+        param.required.should be_false
+      end
+    end
+  end
+
   describe "required params in action aware validator" do
 
     subject { method_description.params[:user].validator.params_ordered }
