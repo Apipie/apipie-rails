@@ -1,0 +1,29 @@
+pl:
+    apipie:
+        resources: Zasoby
+        resource: Zasób 
+        description: Opis
+        no_docs_found: Nie znalezionio dokumentacji
+        no_docs_found_descr: Nie znaleziono dokumentacji dla twojego API.
+        follow_instructions_html: Przejdź do %{href} aby opisać swoje kontrolery.
+        follow_instructions_href: dalsze instrukcje
+        oops: Ups!!
+        resource_not_found_html: Zasób %{res} nie został znaleziony.
+        method_not_found_html: Metoda %{method} dla zasobu %{resource} nie została znaleziona.
+        goto_homepage_html: Spróbuj przejść do %{href}
+        goto_homepage_href: "%{app_name} Strona główna dokumentacji API"
+        required: wymagany 
+        optional: opcjonalny
+        nil_allowed: nil dopuszczalny
+        param_name: Nazwa parametru
+        params: Parametry
+        examples: Przykłady
+        metadata: Metadane
+        errors: Błędy
+        supported_formats: Dostępne formaty
+        enable_javascript_html: Proszę włączyć obsługę javascript w celu zobaczenia %{comments_href}.
+        comments_powered_by_disqus: komentarze obsługiwane przez %{disqus}
+        api_documentation: Dokumentacja API
+        headers: Nagłówki
+        header_name: Nazwa nagłówka
+
