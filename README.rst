@@ -27,11 +27,11 @@ Getting started
 
 The easiest way to get Apipie up and running with your app is:
 
-.. code::
+.. code:: sh
 
-   $ echo "gem 'apipie-rails'" >> Gemfile
-   $ bundle install
-   $ rails g apipie:install
+   echo "gem 'apipie-rails'" >> Gemfile
+   bundle install
+   rails g apipie:install
 
 Now you can start documenting your resources and actions (see
 `DSL Reference`_ for more info):
