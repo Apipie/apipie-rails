@@ -174,7 +174,7 @@ class UsersController < ApplicationController
   error 401, "Unauthorized"
   error :code => 404, :description => "Not Found"
   param :id, Integer, :desc => "user id", :required => true
-  param :session, String, :desc => "user is logged in", :required => true
+  param :session, String, :desc => "user is logged in", :required => true, :missing_message => lambda { "session_parameter_is_required" }
   param :regexp_param, /^[0-9]* years/, :desc => "regexp param"
   param :regexp2, /\b[A-Z0-9._%+-=]+@[A-Z0-9.-]+.[A-Z]{2,}\b/i, :desc => "email regexp"
   param :array_param, ["100", "one", "two", "1", "2"], :desc => "array validator"
