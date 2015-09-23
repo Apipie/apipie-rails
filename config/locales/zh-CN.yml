@@ -8,8 +8,8 @@
     follow_instructions_html: 点击 %{href} 查看描述。
     follow_instructions_href: 高级指导
     oops: Oops!!
-    resource_not_found_html: 没有找到资源 %{res} 。
-    method_not_found_html: 没有找到资源 %{res} 的方法 %{method} 。
+    resource_not_found_html: 没有找到资源 %{resource} 。
+    method_not_found_html: 没有找到资源 %{resource} 的方法 %{method} 。
     goto_homepage_html: 试图访问 %{href}
     goto_homepage_href: "%{app_name} API 文档主页"
     required: 必填
