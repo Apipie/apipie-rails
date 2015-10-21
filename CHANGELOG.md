@@ -2,6 +2,26 @@
  Changelog
 ===========
 
+v0.3.5
+------
+
+* Cleaning up unreachable code
+  [#385](https://github.com/Apipie/apipie-rails/pull/385) [@voxik][]
+* Russian translation
+  [#352](https://github.com/Apipie/apipie-rails/pull/352) [@Le6ow5k1][]
+* Ability to hide controller methods from documentation
+  [#356](https://github.com/Apipie/apipie-rails/pull/356) [@davidcollie][]
+* Use doc_path configuration in rake tasks
+  [#358](https://github.com/Apipie/apipie-rails/pull/358)  [@saneshark][]
+* Chinese translation
+  [#363](https://github.com/Apipie/apipie-rails/pull/363)  [@debbbbie][]
+* Polish translation
+  [#375](https://github.com/Apipie/apipie-rails/pull/375)  [@dbackowski][]
+* Spanish translation
+  [#376](https://github.com/Apipie/apipie-rails/pull/376)  [@isseu][]
+* Add an alternative to action aware required param
+  [#377](https://github.com/Apipie/apipie-rails/pull/377)  [@mourad-ifeelgoods][]
+
 v0.3.4
 ------
 
@@ -291,3 +311,10 @@ v0.0.15
 [@iliabylich]: https://github.com/iliabylich
 [@dadario]: https://github.com/dadario
 [@saneshark]: https://github.com/saneshark
+[@voxik]: https://github.com/voxik
+[@Le6ow5k1]: https://github.com/Le6ow5k1
+[@davidcollie]: https://github.com/davidcollie
+[@saneshark]: https://github.com/saneshark
+[@debbbbie]: https://github.com/debbbbie
+[@dbackowski]: https://github.com/dbackowski
+[@isseu]: https://github.com/isseu
