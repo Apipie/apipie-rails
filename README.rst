@@ -529,7 +529,7 @@ validate_value
 validate_presence
   Check the params presence against the documentation.
 
-validate_keys
+validate_key
   Check the received params to ensure they are defined in the API. (false by default)
 
 process_params
