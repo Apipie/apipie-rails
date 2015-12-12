@@ -20,6 +20,9 @@ en:
         examples: Examples
         metadata: Metadata
         errors: Errors
+        error_code: Code
+        error_description: Description
+        error_metadata: Metadata
         supported_formats: Supported Formats
         enable_javascript_html: Please enable JavaScript to view the %{comments_href}.
         comments_powered_by_disqus: comments powered by %{disqus}
