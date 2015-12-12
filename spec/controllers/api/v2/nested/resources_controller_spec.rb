@@ -5,7 +5,7 @@ describe Api::V2::Nested::ResourcesController do
     subject { Apipie.get_resource_name(Api::V2::Nested::ResourcesController) }
 
     it "should have resource_id set" do
-      subject.should eq("resource")
+      expect(subject).to eq("resource")
     end
   end
 end

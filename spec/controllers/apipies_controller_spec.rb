@@ -51,18 +51,18 @@ describe Apipie::ApipiesController do
   describe "reload_controllers" do
 
     RSpec::Matchers.define :reload_documentation do
-      match do
-        Apipie.should_receive(:reload_documentation)
+      match do |actual|
+        expect(Apipie).to receive(:reload_documentation)
         get :index
-        begin
-          RSpec::Mocks.verify
-        rescue RSpec::Mocks::MockExpectationError
-          false
-        end
       end
 
-      failure_message_for_should { "the documentation expected to be reloaded but it was not" }
-      failure_message_for_should_not { "the documentation expected not to be reloaded but it was" }
+      match_when_negated do |actual|
+        expect(Apipie).not_to receive(:reload_documentation)
+        get :index
+      end
+
+      failure_message { "the documentation expected to be reloaded but it was not" }
+      failure_message_when_negated { "the documentation expected not to be reloaded but it was" }
     end
 
     before do
@@ -75,13 +75,13 @@ describe Apipie::ApipiesController do
     context "it's not specified explicitly" do
       context "and it's in development environment" do
         before do
-          Rails.stub(:env => mock(:development? => true))
+          allow(Rails).to receive_messages(:env => double(:development? => true))
         end
-        it { should reload_documentation }
+        it { is_expected.to reload_documentation }
       end
 
       context "and it's not development environment" do
-        it { should_not reload_documentation }
+        it { is_expected.not_to reload_documentation }
       end
     end
 
@@ -93,13 +93,13 @@ describe Apipie::ApipiesController do
 
       context "and it's in development environment" do
         before do
-          Rails.stub(:env => mock(:development? => true))
+          allow(Rails).to receive_messages(:env => double(:development? => true))
         end
-        it { should reload_documentation }
+        it { is_expected.to reload_documentation }
       end
 
       context "and it's not development environment" do
-        it { should reload_documentation }
+        it { is_expected.to reload_documentation }
       end
     end
 
@@ -110,13 +110,13 @@ describe Apipie::ApipiesController do
 
       context "and it's in development environment" do
         before do
-          Rails.stub(:env => mock(:development? => true))
+          allow(Rails).to receive_messages(:env => double(:development? => true))
         end
-        it { should_not reload_documentation }
+        it { is_expected.not_to reload_documentation }
       end
 
       context "and it's not development environment" do
-        it { should_not reload_documentation }
+        it { is_expected.not_to reload_documentation }
       end
     end
 
@@ -126,7 +126,7 @@ describe Apipie::ApipiesController do
         Apipie.configuration.api_controllers_matcher = nil
       end
 
-      it { should_not reload_documentation }
+      it { is_expected.not_to reload_documentation }
     end
   end
 
@@ -137,7 +137,7 @@ describe Apipie::ApipiesController do
         test = true
       end
       get :index
-      test.should == true
+      expect(test).to eq(true)
     end
   end
 
@@ -170,19 +170,19 @@ describe Apipie::ApipiesController do
 
     it "uses the file in cache dir instead of generating the content on runtime" do
       get :index
-      response.body.should == "apidoc.html cache v1"
+      expect(response.body).to eq("apidoc.html cache v1")
       get :index, :version => 'v1'
-      response.body.should == "apidoc.html cache v1"
+      expect(response.body).to eq("apidoc.html cache v1")
       get :index, :version => 'v2'
-      response.body.should == "apidoc.html cache v2"
+      expect(response.body).to eq("apidoc.html cache v2")
       get :index, :version => 'v1', :format => "html"
-      response.body.should == "apidoc.html cache v1"
+      expect(response.body).to eq("apidoc.html cache v1")
       get :index, :version => 'v1', :format => "json"
-      response.body.should == "apidoc.json cache"
+      expect(response.body).to eq("apidoc.json cache")
       get :index, :version => 'v1', :format => "html", :resource => "resource"
-      response.body.should == "resource.html cache"
+      expect(response.body).to eq("resource.html cache")
       get :index, :version => 'v1', :format => "html", :resource => "resource", :method => "method"
-      response.body.should == "method.html cache"
+      expect(response.body).to eq("method.html cache")
     end
 
   end

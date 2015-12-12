@@ -22,22 +22,22 @@ describe Apipie::Validator do
 
       it "should return hash for type Hash" do
         validator = Apipie::Validator::TypeValidator.new(params_desc, Hash)
-        validator.expected_type.should == 'hash'
+        expect(validator.expected_type).to eq('hash')
       end
 
       it "should return array for type Array" do
         validator = Apipie::Validator::TypeValidator.new(params_desc, Array)
-        validator.expected_type.should == 'array'
+        expect(validator.expected_type).to eq('array')
       end
 
       it "should return numeric for type Numeric" do
         validator = Apipie::Validator::TypeValidator.new(params_desc, Numeric)
-        validator.expected_type.should == 'numeric'
+        expect(validator.expected_type).to eq('numeric')
       end
 
       it "should return string by default" do
         validator = Apipie::Validator::TypeValidator.new(params_desc, Symbol)
-        validator.expected_type.should == 'string'
+        expect(validator.expected_type).to eq('string')
       end
 
     end
@@ -47,9 +47,9 @@ describe Apipie::Validator do
   describe 'ArrayClassValidator' do
     it "should validate by object class" do
       validator = Apipie::Validator::ArrayClassValidator.new(params_desc, [Fixnum, String])
-      validator.validate("1").should be_true
-      validator.validate(1).should be_true
-      validator.validate({ 1 => 1 }).should be_false
+      expect(validator.validate("1")).to be_truthy
+      expect(validator.validate(1)).to be_truthy
+      expect(validator.validate({ 1 => 1 })).to be_falsey
     end
   end
 end

@@ -8,7 +8,7 @@ describe Apipie::ResourceDescription do
 
     it "should return nil when no metadata is provided" do
       resource = Apipie::ResourceDescription.new(ApplicationController, "dummy", dsl_data)
-      resource.to_json[:metadata].should == nil
+      expect(resource.to_json[:metadata]).to eq(nil)
     end
 
     it "should return the metadata" do
@@ -17,7 +17,7 @@ describe Apipie::ResourceDescription do
         :weight => '830g'
       }
       resource = Apipie::ResourceDescription.new(ApplicationController, "dummy", dsl_data.update(:meta => meta))
-      resource.to_json[:metadata].should == meta
+      expect(resource.to_json[:metadata]).to eq(meta)
     end
 
   end
@@ -35,13 +35,13 @@ describe Apipie::ResourceDescription do
     end
 
     it "should be ordered" do
-      @resource._methods.keys.should == [:a, :b, :c]
-      @resource.to_json[:methods].map{|h| h[:name]}.should == ['a', 'b', 'c']
+      expect(@resource._methods.keys).to eq([:a, :b, :c])
+      expect(@resource.to_json[:methods].map{|h| h[:name]}).to eq(['a', 'b', 'c'])
     end
 
     it "should be still ordered" do
-      @resource._methods.keys.should == [:a, :b, :c]
-      @resource.to_json[:methods].map{|h| h[:name]}.should == ['a', 'b', 'c']
+      expect(@resource._methods.keys).to eq([:a, :b, :c])
+      expect(@resource.to_json[:methods].map{|h| h[:name]}).to eq(['a', 'b', 'c'])
     end
 
   end
