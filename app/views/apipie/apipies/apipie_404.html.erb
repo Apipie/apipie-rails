@@ -1,7 +1,7 @@
 <h1 class='page-header'>
   <%= t('apipie.oops') %>
   <small>
-  <% if @resource.blank? %>
+  <% if params[:method].blank? %>
     <%= t('apipie.resource_not_found_html', :resource => "<code>#{h(params[:resource])}</code>".html_safe) %>
   <% else %>
     <%= t('apipie.method_not_found_html', :resource => "<code>#{h(params[:resource])}</code>".html_safe,
