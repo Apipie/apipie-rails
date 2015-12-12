@@ -8,7 +8,7 @@ en:
         follow_instructions_html: Follow %{href} on how to describe your controllers.
         follow_instructions_href: further instructions
         oops: Oops!!
-        resource_not_found_html: Resource %{res} not found.
+        resource_not_found_html: Resource %{resource} not found.
         method_not_found_html: Method %{method} not found for resource %{resource}.
         goto_homepage_html: Try going to %{href}
         goto_homepage_href: "%{app_name} API documentation homepage"
