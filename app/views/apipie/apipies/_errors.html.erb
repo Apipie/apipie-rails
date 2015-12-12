@@ -1,0 +1,23 @@
+<% show_metadata = errors.reject { |err| err[:metadata].blank? }.size > 0 %>
+
+<table class="table table-bordered">
+	<thead>
+		<tr>
+			<th><%= t('apipie.error_code', default: 'Code') %></th>
+			<th><%= t('apipie.error_description', default: [:description, 'Description']) %></th>
+			<% if show_metadata %><th><%= t('apipie.error_metadata', default: [:metadata, 'Metadata']) %></th><% end %>
+		</tr>
+	</thead>
+
+	<tbody>
+		<% errors.each do |err| %>
+			<tr>
+				<td><span class="<%= err[:label] %>"> <%= err[:code] %> </span></td>
+				<td><%= err[:description] %></td>
+				<% if show_metadata %>
+				<td><%= render(:partial => "metadata", :locals => {:meta => err[:metadata]}) unless err[:metadata].blank? %></td>
+				<% end %>
+			</tr>
+		<% end %>
+	</tbody>
+</table>

@@ -76,12 +76,7 @@
 
         <% unless method[:errors].blank? %>
           <h2><%= t('apipie.errors') %></h2>
-          <% method[:errors].each do |err| %>
-            <%= err[:code] %>
-            <%= err[:description] %>
-            <%= render(:partial => "metadata", :locals => {:meta => err[:metadata]}) %>
-            <br>
-          <% end %>
+          <%= render(:partial => "errors", :locals => {:errors => method[:errors]}) %>
         <% end %>
 
         <% unless method[:params].blank? %>
