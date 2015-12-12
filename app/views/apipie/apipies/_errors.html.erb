@@ -12,7 +12,7 @@
 	<tbody>
 		<% errors.each do |err| %>
 			<tr>
-				<td><span class="<%= err[:label] %>"> <%= err[:code] %> </span></td>
+				<td><span class="<%= Apipie.label_class_for_error(err) %>"> <%= err[:code] %> </span></td>
 				<td><%= err[:description] %></td>
 				<% if show_metadata %>
 				<td><%= render(:partial => "metadata", :locals => {:meta => err[:metadata]}) unless err[:metadata].blank? %></td>
