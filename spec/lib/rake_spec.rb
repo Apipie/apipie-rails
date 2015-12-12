@@ -27,23 +27,23 @@ describe 'rake tasks' do
 
     describe 'apipie:static' do
       it "generates static files for the default version of apipie docs" do
-        apidoc_html.should =~ /Test app #{Apipie.configuration.default_version}/
+        expect(apidoc_html).to match(/Test app #{Apipie.configuration.default_version}/)
       end
 
       it "includes the stylesheets" do
-        apidoc_html.should include('./apidoc/stylesheets/bundled/bootstrap.min.css')
-        File.should exist(File.join(doc_output, 'stylesheets/bundled/bootstrap.min.css'))
+        expect(apidoc_html).to include('./apidoc/stylesheets/bundled/bootstrap.min.css')
+        expect(File).to exist(File.join(doc_output, 'stylesheets/bundled/bootstrap.min.css'))
       end
     end
 
     describe 'apipie:static[2.0]' do
       it "generates static files for the default version of apipie docs" do
-        apidoc_html.should =~ /Test app 2.0/
+        expect(apidoc_html).to match(/Test app 2.0/)
       end
 
       it "includes the stylesheets" do
-        apidoc_html.should include('./apidoc/stylesheets/bundled/bootstrap.min.css')
-        File.should exist(File.join(doc_output, 'stylesheets/bundled/bootstrap.min.css'))
+        expect(apidoc_html).to include('./apidoc/stylesheets/bundled/bootstrap.min.css')
+        expect(File).to exist(File.join(doc_output, 'stylesheets/bundled/bootstrap.min.css'))
       end
     end
   end
@@ -62,9 +62,9 @@ describe 'rake tasks' do
     end
 
     it "generates cache files" do
-      File.should exist(File.join(cache_output, 'apidoc.html'))
-      File.should exist(File.join(cache_output, 'apidoc/development.html'))
-      File.should exist(File.join(cache_output, 'apidoc/development/users.html'))
+      expect(File).to exist(File.join(cache_output, 'apidoc.html'))
+      expect(File).to exist(File.join(cache_output, 'apidoc/development.html'))
+      expect(File).to exist(File.join(cache_output, 'apidoc/development/users.html'))
 
     end
   end
