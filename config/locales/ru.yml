@@ -8,7 +8,7 @@ ru:
         follow_instructions_html: Перейдите по ссылке %{href}, чтобы узнать как описать ваш API.
         follow_instructions_href: дополнительные инструкции
         oops: Ой!!
-        resource_not_found_html: Ресурс %{res} не найден.
+        resource_not_found_html: Ресурс %{resource} не найден.
         method_not_found_html: Метод %{method} для ресурса %{resource} не найден.
         goto_homepage_html: Перейдите %{href}
         goto_homepage_href: "%{app_name} домашняя страница API документации"

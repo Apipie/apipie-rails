@@ -8,7 +8,7 @@ es:
         follow_instructions_html: Siga %{href} sobre cómo describir sus controladores.
         follow_instructions_href: más instrucciones
         oops: Huy!!
-        resource_not_found_html: Recurso %{res} no encontrado.
+        resource_not_found_html: Recurso %{resource} no encontrado.
         method_not_found_html: Método  %{method} no encontrado para el recurso %{resource}.
         goto_homepage_html: Trate de ir a %{href}
         goto_homepage_href: "%{app_name} página de documentación API  "

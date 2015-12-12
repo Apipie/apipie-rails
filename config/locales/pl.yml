@@ -8,7 +8,7 @@ pl:
         follow_instructions_html: Przejdź do %{href} aby opisać swoje kontrolery.
         follow_instructions_href: dalsze instrukcje
         oops: Ups!!
-        resource_not_found_html: Zasób %{res} nie został znaleziony.
+        resource_not_found_html: Zasób %{resource} nie został znaleziony.
         method_not_found_html: Metoda %{method} dla zasobu %{resource} nie została znaleziona.
         goto_homepage_html: Spróbuj przejść do %{href}
         goto_homepage_href: "%{app_name} Strona główna dokumentacji API"
