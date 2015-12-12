@@ -323,7 +323,7 @@ describe Apipie::ParamDescription do
     it "should be valid for objects included in class array" do
       param = Apipie::ParamDescription.new(method_desc, :param, [Fixnum, String])
       expect { param.validate("1") }.not_to raise_error
-      expect { param.validate(Fixnum) }.to raise_error
+      expect { param.validate(Fixnum) }.to raise_error(Apipie::ParamInvalid)
     end
   end
 
