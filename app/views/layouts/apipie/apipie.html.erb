@@ -11,8 +11,8 @@
   <![endif]-->
 </head>
 <body>
-  <div class="container">
-    <div class="row">
+  <div class="container-fluid">
+    <div class="row-fluid">
       <div id='container'>
         <%= yield %>
         <%= render 'disqus' if Apipie.configuration.use_disqus? %>
