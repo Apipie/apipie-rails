@@ -144,12 +144,12 @@ describe Apipie::ParamDescription do
 
       it "should set param as required by default" do
         param = Apipie::ParamDescription.new(method_desc, :required_by_default, String)
-        expect(param.required).to be_truthy
+        expect(param.required).to be true
       end
 
       it "should be possible to set param as optional" do
         param = Apipie::ParamDescription.new(method_desc, :optional, String, :required => false)
-        expect(param.required).to be_falsey
+        expect(param.required).to be false
       end
 
     end
@@ -160,12 +160,12 @@ describe Apipie::ParamDescription do
 
       it "should set param as optional by default" do
         param = Apipie::ParamDescription.new(method_desc, :optional_by_default, String)
-        expect(param.required).to be_falsey
+        expect(param.required).to be false
       end
 
       it "should be possible to set param as required" do
         param = Apipie::ParamDescription.new(method_desc, :required, String, 'description','required' => true)
-        expect(param.required).to be_truthy
+        expect(param.required).to be true
       end
 
     end
@@ -180,21 +180,21 @@ describe Apipie::ParamDescription do
     context "when the param is required for current action" do
       it "should set param as required" do
         param = Apipie::ParamDescription.new(method_desc, :required, String, 'description','required' => :create)
-        param.required.should be_true
+        expect(param.required).to be true
       end
     end
 
     context "when the param is required for multiple actions" do
       it "should set param as required if it match current action" do
         param = Apipie::ParamDescription.new(method_desc, :required, String, 'description','required' => [:update, :create])
-        param.required.should be_true
+        expect(param.required).to be true
       end
     end
 
     context "when the param is not required for current action" do
       it "should set param as not required" do
         param = Apipie::ParamDescription.new(method_desc, :required, String, 'description','required' => :update)
-        param.required.should be_false
+        expect(param.required).to be false
       end
     end
   end

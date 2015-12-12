@@ -402,18 +402,18 @@ describe UsersController do
       context "the key is valid" do
         it "should contain reference to another method" do
           api = Apipie[UsersController, :see_another]
-          api.show.should == false
+          expect(api.show).to be false
           see = api.see.first
-          see.see_url.should == Apipie[UsersController, :create].doc_url
-          see.link.should == 'development#users#create'
-          see.description.should == 'development#users#create'
+          expect(see.see_url).to eql Apipie[UsersController, :create].doc_url
+          expect(see.link).to eql 'development#users#create'
+          expect(see.description).to eql 'development#users#create'
 
           see_with_desc = api.see.last
-          see_with_desc.see_url.should == Apipie[UsersController, :index].doc_url
-          see_with_desc.link.should == 'development#users#index'
-          see_with_desc.description.should == 'very interesting method reference'
+          expect(see_with_desc.see_url).to eql Apipie[UsersController, :index].doc_url
+          expect(see_with_desc.link).to eql 'development#users#index'
+          expect(see_with_desc.description).to eql 'very interesting method reference'
 
-          Apipie['development#users#see_another'].should eq(Apipie[UsersController, :see_another])
+          expect(Apipie['development#users#see_another']).to eql Apipie[UsersController, :see_another]
         end
       end
 

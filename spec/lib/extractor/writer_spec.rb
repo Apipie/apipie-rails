@@ -60,19 +60,19 @@ describe Apipie::Extractor::Writer do
   describe "with doc_path overriden in configuration" do
     it "should use the doc_path specified in configuration" do
       Apipie.configuration.doc_path = "user_specified_doc_path"
-      writer_class.examples_file.should eq(File.join(Rails.root, "user_specified_doc_path", "apipie_examples.json"))
+      expect(writer_class.examples_file).to eql(File.join(Rails.root, "user_specified_doc_path", "apipie_examples.json"))
     end
   end
 
   describe "storing of examples" do
     before do
-      writer_class.stub(:examples_file) { test_examples_file }
-      collector.should_receive(:records).and_return(records)
+      allow(writer_class).to receive(:examples_file) { test_examples_file }
+      expect(collector).to receive(:records).and_return(records)
     end
 
     it "should read and write examples" do
       writer.write_examples
-      writer.send(:load_recorded_examples).should eq(loaded_records)
+      expect(writer.send(:load_recorded_examples)).to eql(loaded_records)
     end
 
     after do

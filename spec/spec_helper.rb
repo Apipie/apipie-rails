@@ -6,7 +6,6 @@ APIPIE_ROOT = File.expand_path('../..', __FILE__)
 require File.expand_path("../dummy/config/environment", __FILE__)
 
 require 'rspec/rails'
-require 'rspec/autorun'
 
 require 'apipie-rails'
 

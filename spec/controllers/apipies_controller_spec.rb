@@ -51,12 +51,12 @@ describe Apipie::ApipiesController do
   describe "reload_controllers" do
 
     RSpec::Matchers.define :reload_documentation do
-      match_for_should do |actual|
+      match do |actual|
         expect(Apipie).to receive(:reload_documentation)
         get :index
       end
 
-      match_for_should_not do |actual|
+      match_when_negated do |actual|
         expect(Apipie).not_to receive(:reload_documentation)
         get :index
       end

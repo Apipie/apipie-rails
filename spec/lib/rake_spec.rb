@@ -7,7 +7,7 @@ describe 'rake tasks' do
 
   before do
     Apipie.configuration.doc_path = doc_path
-    Apipie.stub(:reload_documentation)
+    allow(Apipie).to receive(:reload_documentation)
     subject.invoke(*task_args)
   end
 
