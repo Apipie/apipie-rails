@@ -8,7 +8,7 @@ tr:
         follow_instructions_html: Controller açıklaması belgeleri için %{href} yolunu izleyin.
         follow_instructions_href: daha fazla talimatlar
         oops: Üzgünüz!!
-        resource_not_found_html: Kaynak %{res} bulunamadı.
+        resource_not_found_html: Kaynak %{resource} bulunamadı.
         method_not_found_html: "%{resource} kaynağının %{method} yöntemi bulunamadı."
         goto_homepage_html: "%{href} adresini deneyin"
         goto_homepage_href: "%{app_name} API belgeleri ana sayfası"
