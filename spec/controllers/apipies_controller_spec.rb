@@ -141,6 +141,50 @@ describe Apipie::ApipiesController do
     end
   end
 
+  describe "authorize document" do
+    it "if an authroize method is set" do
+      test = false
+      Apipie.configuration.authorize = Proc.new do |controller, method, doc|
+        test = true
+        true
+      end
+      get :index
+      expect(test).to eq(true)
+    end
+    it "remove all resources" do
+      Apipie.configuration.authorize = Proc.new do |&args|
+        false
+      end
+      get :index
+      expect(assigns(:doc)[:resources]).to eq({})
+    end
+    it "remove all methods" do
+      Apipie.configuration.authorize = Proc.new do |controller, method, doc|
+        !method
+      end
+      get :index
+      expect(assigns(:doc)[:resources]["concern_resources"][:methods]).to eq([])
+      expect(assigns(:doc)[:resources]["twitter_example"][:methods]).to eq([])
+      expect(assigns(:doc)[:resources]["users"][:methods]).to eq([])
+    end
+    it "remove specific method" do
+      Apipie.configuration.authorize = nil
+      get :index
+
+      users_methods = assigns(:doc)[:resources]["users"][:methods].size
+      twitter_example_methods = assigns(:doc)[:resources]["twitter_example"][:methods].size
+
+      Apipie.configuration.authorize = Proc.new do |controller, method, doc|
+        controller == "users" ? method != "index" : true
+      end
+
+      get :index
+
+      expect(assigns(:doc)[:resources]["users"][:methods].size).to eq(users_methods - 1)
+      expect(assigns(:doc)[:resources]["twitter_example"][:methods].size).to eq(twitter_example_methods)
+    end
+  end
+
   describe "documentation cache" do
 
     let(:cache_dir) { File.join(Rails.root, "tmp", "apipie-cache") }

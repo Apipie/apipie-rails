@@ -7,7 +7,7 @@ module Apipie
       :validate, :validate_value, :validate_presence, :validate_key, :authenticate, :doc_path,
       :show_all_examples, :process_params, :update_checksum, :checksum_path,
       :link_extension, :record, :languages, :translate, :locale, :default_locale,
-      :persist_show_in_doc
+      :persist_show_in_doc, :authorize
 
     alias_method :validate?, :validate
     alias_method :required_by_default?, :required_by_default
