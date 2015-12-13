@@ -129,7 +129,7 @@ module Apipie
       end
 
       def description
-        "Must match regular expression /#{@regexp.source}/."
+        "Must match regular expression <code>/#{@regexp.source}/</code>."
       end
     end
 

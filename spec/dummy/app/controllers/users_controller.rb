@@ -176,6 +176,7 @@ class UsersController < ApplicationController
   param :id, Integer, :desc => "user id", :required => true
   param :session, String, :desc => "user is logged in", :required => true
   param :regexp_param, /^[0-9]* years/, :desc => "regexp param"
+  param :regexp2, /\b[A-Z0-9._%+-=]+@[A-Z0-9.-]+.[A-Z]{2,}\b/i, :desc => "email regexp"
   param :array_param, ["100", "one", "two", "1", "2"], :desc => "array validator"
   param :boolean_param, [true, false], :desc => "array validator with boolean"
   param :proc_param, lambda { |val|

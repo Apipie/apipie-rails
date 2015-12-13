@@ -442,8 +442,8 @@ describe UsersController do
 
     it "should contain all params description" do
       a = Apipie.get_method_description(UsersController, :show)
-      expect(a.params.count).to eq(11)
-      expect(a.instance_variable_get('@params_ordered').count).to eq(9)
+      expect(a.params.count).to eq(12)
+      expect(a.instance_variable_get('@params_ordered').count).to eq(10)
     end
 
     context 'headers' do
