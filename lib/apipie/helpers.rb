@@ -33,7 +33,7 @@ module Apipie
     end
 
     def include_javascripts
-      %w[ bundled/jquery-1.11.3.min.js
+      %w[ bundled/jquery.js
           bundled/bootstrap-collapse.js
           bundled/prettify.js
           apipie.js ].map do |file|
