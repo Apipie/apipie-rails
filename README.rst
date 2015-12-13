@@ -581,10 +581,8 @@ authenticate
   Pass a proc in order to authenticate user. Pass nil for
   no authentication (by default).
 
-is_authorized
-  Pass a proc in order to authorize controllers and methods. Don't set
-  to use the default authorize all. The Proc is evaluated in the controller
-  context.
+authorize
+  Pass a proc in order to authorize controllers and methods. The Proc is evaluated in the controller context.
 
 show_all_examples
   Set this to true to set show_in_doc=1 in all recorded examples
@@ -634,7 +632,7 @@ Example:
           username == "test" && password == "supersecretpassword"
        end
      end
-     config.is_authorized = Proc.new do |controller, method, doc|
+     config.authorize = Proc.new do |controller, method, doc|
        !method   # show all controller doc, but no method docs.
      end
    end
@@ -1107,7 +1105,7 @@ When you want to avoid any unnecessary computation in production mode,
 you can generate a cache with ``rake apipie:cache`` and configure the
 app to use it in production with ``config.use_cache = Rails.env.production?``
 
-Default cache dir is ``File.join(Rails.root, "public", "apipie-cache")``, 
+Default cache dir is ``File.join(Rails.root, "public", "apipie-cache")``,
 you can change it to where you want, example: ``config.cache_dir = File.join(Rails.root, "doc", "apidoc")``.
 
 If, for some complex cases, you need to generate/re-generate just part of the cache

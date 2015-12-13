@@ -33,7 +33,7 @@ module Apipie
         I18n.locale = @language
         @doc = Apipie.to_json(params[:version], params[:resource], params[:method], @language)
 
-        @doc = authorize(@doc)
+        @doc = authorized_doc
 
         format.json do
           if @doc
@@ -92,16 +92,24 @@ module Apipie
       lang
     end
 
-    def authorize document
-      document[:docs][:resources].select! do |k, v|
-        instance_exec(k, nil, v, &Apipie.configuration.authorized?)
-      end
-      document[:docs][:resources].each do |k, v|
-        v[:methods].select! do |h|
-          instance_exec(k, h[:name], h, &Apipie.configuration.authorized?)
+    def authorized_doc
+
+      return @doc unless Apipie.configuration.authorize
+
+      new_doc = { :docs => @doc[:docs].clone }
+
+      new_doc[:docs][:resources] = @doc[:docs][:resources].select do |k, v|
+        if instance_exec(k, nil, v, &Apipie.configuration.authorize)
+          v[:methods] = v[:methods].select do |h|
+            instance_exec(k, h[:name], h, &Apipie.configuration.authorize)
+          end
+          true
+        else
+          false
         end
       end
-      document
+
+      new_doc
     end
 
     def get_format

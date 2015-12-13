@@ -144,29 +144,44 @@ describe Apipie::ApipiesController do
   describe "authorize document" do
     it "if an authroize method is set" do
       test = false
-      Apipie.configuration.is_authorized = Proc.new do |controller, method, doc|
+      Apipie.configuration.authorize = Proc.new do |controller, method, doc|
         test = true
         true
       end
       get :index
-      test.should == true
+      expect(test).to eq(true)
     end
     it "remove all resources" do
-      Apipie.configuration.is_authorized = Proc.new do |&args|
+      Apipie.configuration.authorize = Proc.new do |&args|
         false
       end
       get :index
-      assigns(:doc)[:resources].should == {}
+      expect(assigns(:doc)[:resources]).to eq({})
     end
     it "remove all methods" do
-      Apipie.configuration.is_authorized = Proc.new do |controller, method, doc|
+      Apipie.configuration.authorize = Proc.new do |controller, method, doc|
         !method
       end
       get :index
-      pp assigns(:doc)
-      assigns(:doc)[:resources]["concern_resources"][:methods].should == []
-      assigns(:doc)[:resources]["twitter_example"][:methods].should == []
-      assigns(:doc)[:resources]["users"][:methods].should == []
+      expect(assigns(:doc)[:resources]["concern_resources"][:methods]).to eq([])
+      expect(assigns(:doc)[:resources]["twitter_example"][:methods]).to eq([])
+      expect(assigns(:doc)[:resources]["users"][:methods]).to eq([])
+    end
+    it "remove specific method" do
+      Apipie.configuration.authorize = nil
+      get :index
+
+      users_methods = assigns(:doc)[:resources]["users"][:methods].size
+      twitter_example_methods = assigns(:doc)[:resources]["twitter_example"][:methods].size
+
+      Apipie.configuration.authorize = Proc.new do |controller, method, doc|
+        controller == "users" ? method != "index" : true
+      end
+
+      get :index
+
+      expect(assigns(:doc)[:resources]["users"][:methods].size).to eq(users_methods - 1)
+      expect(assigns(:doc)[:resources]["twitter_example"][:methods].size).to eq(twitter_example_methods)
     end
   end
 
