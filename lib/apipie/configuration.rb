@@ -7,11 +7,12 @@ module Apipie
       :validate, :validate_value, :validate_presence, :validate_key, :authenticate, :doc_path,
       :show_all_examples, :process_params, :update_checksum, :checksum_path,
       :link_extension, :record, :languages, :translate, :locale, :default_locale,
-      :persist_show_in_doc
+      :persist_show_in_doc, :is_authorized
 
     alias_method :validate?, :validate
     alias_method :required_by_default?, :required_by_default
     alias_method :namespaced_resources?, :namespaced_resources
+    alias_method :authorized?, :is_authorized
 
     # matcher to be used in Dir.glob to find controllers to be reloaded e.g.
     #
@@ -165,6 +166,7 @@ module Apipie
       @translate = lambda { |str, locale| str }
       @persist_show_in_doc = false
       @routes_formatter = RoutesFormatter.new
+      @is_authorized = ->(controller, method, document) { true }
     end
   end
 end

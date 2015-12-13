@@ -581,6 +581,11 @@ authenticate
   Pass a proc in order to authenticate user. Pass nil for
   no authentication (by default).
 
+is_authorized
+  Pass a proc in order to authorize controllers and methods. Don't set
+  to use the default authorize all. The Proc is evaluated in the controller
+  context.
+
 show_all_examples
   Set this to true to set show_in_doc=1 in all recorded examples
 
@@ -628,6 +633,9 @@ Example:
         authenticate_or_request_with_http_basic do |username, password|
           username == "test" && password == "supersecretpassword"
        end
+     end
+     config.is_authorized = Proc.new do |controller, method, doc|
+       !method   # show all controller doc, but no method docs.
      end
    end
 

@@ -15,7 +15,6 @@ module Apipie
     end
 
     def index
-
       params[:version] ||= Apipie.configuration.default_version
 
       get_format
@@ -33,6 +32,8 @@ module Apipie
 
         I18n.locale = @language
         @doc = Apipie.to_json(params[:version], params[:resource], params[:method], @language)
+
+        @doc = authorize(@doc)
 
         format.json do
           if @doc
@@ -89,6 +90,18 @@ module Apipie
         end
       end
       lang
+    end
+
+    def authorize document
+      document[:docs][:resources].select! do |k, v|
+        instance_exec(k, nil, v, &Apipie.configuration.authorized?)
+      end
+      document[:docs][:resources].each do |k, v|
+        v[:methods].select! do |h|
+          instance_exec(k, h[:name], h, &Apipie.configuration.authorized?)
+        end
+      end
+      document
     end
 
     def get_format
