@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.version     = Apipie::VERSION
   s.authors     = ["Pavel Pokorny","Ivan Necas"]
   s.email       = ["pajkycz@gmail.com", "inecas@redhat.com"]
-  s.homepage    = "http://github.com/Pajk/apipie-rails"
+  s.homepage    = "http://github.com/Apipie/apipie-rails"
   s.summary     = %q{Rails REST API documentation tool}
   s.description = %q{Rails REST API documentation tool}
 
