@@ -8,3 +8,4 @@ gemfile:
   - Gemfile.rails32
   - Gemfile.rails40
   - Gemfile.rails41
+  - Gemfile.rails42
