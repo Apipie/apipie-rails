@@ -514,7 +514,7 @@ doc_base_url
   Documentation frontend base url.
 
 api_base_url
-  Base url of your API, most probably /api.
+  Base url for default version of your API. To set it for specific version use ``config.api_base_url[version] = url``.
 
 default_version
   Default API version to be used (1.0 by default)
