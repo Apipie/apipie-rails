@@ -79,6 +79,21 @@ describe Apipie::ParamDescription do
     end
   end
 
+  describe "manual validation text" do
+    it "should allow manual text" do
+      param = Apipie::ParamDescription.new(method_desc, :hidden_param, nil, :validations => "must be foo")
+
+      expect(param.validations).to include("\n<p>must be foo</p>\n")
+    end
+
+    it "should allow multiple items" do
+      param = Apipie::ParamDescription.new(method_desc, :hidden_param, nil, :validations => ["> 0", "< 5"])
+
+      expect(param.validations).to include("\n<p>&gt; 0</p>\n")
+      expect(param.validations).to include("\n<p>&lt; 5</p>\n")
+    end
+  end
+
   describe "validator selection" do
 
     it "should allow nil validator" do
