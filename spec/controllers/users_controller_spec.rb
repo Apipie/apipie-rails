@@ -97,7 +97,7 @@ describe UsersController do
           end
 
           it "should fail if required parameter is missing" do
-            expect { get :show, :id => 5 }.to raise_error(Apipie::ParamMissing, /\bsession\b/)
+            expect { get :show, :id => 5 }.to raise_error(Apipie::ParamMissing, /session_parameter_is_required/)
           end
 
           it "should pass if required parameter has wrong type" do
@@ -144,7 +144,7 @@ describe UsersController do
           end
 
           it "should fail if required parameter is missing" do
-            expect { get :show, :id => 5 }.to raise_error(Apipie::ParamMissing, /\bsession\b/)
+            expect { get :show, :id => 5 }.to raise_error(Apipie::ParamMissing, /session_parameter_is_required/)
           end
 
           it "should work with custom Type validator" do

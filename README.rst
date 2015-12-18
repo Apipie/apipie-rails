@@ -291,6 +291,10 @@ meta
 show
   Parameter is hidden from documentation when set to false (true by default)
 
+missing-message
+  Specify the message to be returned if the parameter is missing as a string or Proc.
+  Defaults to ``Missing parameter #{name}`` if not specified.
+
 Example:
 ~~~~~~~~
 
@@ -301,6 +305,7 @@ Example:
      param :password, String, :desc => "Password for login", :required => true
      param :membership, ["standard","premium"], :desc => "User membership"
      param :admin_override, String, :desc => "Not shown in documentation", :show => false
+     param :ip_address, String, :desc => "IP address", :required => true, :missing_message => lambda { I18n.t("ip_address.required") }
    end
    def create
      #...

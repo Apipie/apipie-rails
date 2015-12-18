@@ -17,7 +17,15 @@ module Apipie
 
   class ParamMissing < DefinedParamError
     def to_s
-      "Missing parameter #{@param}"
+      unless @param.options[:missing_message].nil?
+        if @param.options[:missing_message].kind_of?(Proc)
+          @param.options[:missing_message].call
+        else
+          @param.options[:missing_message].to_s
+        end
+      else
+        "Missing parameter #{@param.name}"
+      end
     end
   end
 
