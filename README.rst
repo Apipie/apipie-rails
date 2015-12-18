@@ -291,7 +291,7 @@ meta
 show
   Parameter is hidden from documentation when set to false (true by default)
 
-missing-message
+missing_message
   Specify the message to be returned if the parameter is missing as a string or Proc.
   Defaults to ``Missing parameter #{name}`` if not specified.
 
