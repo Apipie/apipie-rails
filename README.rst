@@ -9,6 +9,9 @@
 .. image:: https://badges.gitter.im/Apipie/apipie-rails.svg
    :alt: Join the chat at https://gitter.im/Apipie/apipie-rails
    :target: https://gitter.im/Apipie/apipie-rails?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
+.. image:: https://img.shields.io/gem/v/apipie-rails.svg
+   :alt: Latest release
+   :target: https://rubygems.org/gems/apipie-rails
 
 Apipie-rails is a DSL and Rails engine for documenting your RESTful
 API. Instead of traditional use of ``#comments``, Apipie lets you
