@@ -6,6 +6,9 @@
     :target: https://travis-ci.org/Apipie/apipie-rails
 .. image:: https://codeclimate.com/github/Apipie/apipie-rails.png
     :target: https://codeclimate.com/github/Apipie/apipie-rails
+.. image:: https://badges.gitter.im/Apipie/apipie-rails.svg
+   :alt: Join the chat at https://gitter.im/Apipie/apipie-rails
+   :target: https://gitter.im/Apipie/apipie-rails?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
 
 Apipie-rails is a DSL and Rails engine for documenting your RESTful
 API. Instead of traditional use of ``#comments``, Apipie lets you
