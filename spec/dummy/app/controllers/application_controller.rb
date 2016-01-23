@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-  before_filter :run_validations
+  before_action :run_validations
   
   resource_description do
     param :oauth, String, :desc => "Authorization", :required => false

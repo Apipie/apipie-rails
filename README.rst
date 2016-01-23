@@ -528,7 +528,7 @@ default_version
 validate
   Parameters validation is turned off when set to false. When set to
   ``:explicitly``, you must invoke parameter validation yourself by calling
-  controller method ``apipie_validations`` (typically in a before_filter).
+  controller method ``apipie_validations`` (typically in a before_action).
   When set to ``:implicitly`` (or just true), your controller's action
   methods are wrapped with generated methods which call ``apipie_validations``,
   and then call the action method. (``:implicitly`` by default)
@@ -726,17 +726,17 @@ is raised and can be rescued and processed. It contains a description
 of the parameter value expectations. Validations can be turned off
 in the configuration file.
 
-Parameter validation normally happens after before_filters, just before
+Parameter validation normally happens after before_actions, just before
 your controller method is invoked. If you prefer to control when parameter
 validation occurs, set the configuration parameter ``validate`` to ``:explicitly``.
 You must then call the ``apipie_validations`` method yourself, e.g.:
 
 .. code:: ruby
 
-   before_filter: :apipie_validations
+   before_action: :apipie_validations
 
-This is useful if you have before_filters which use parameter values: just add them
-after the ``apipie_validations`` before_filter.
+This is useful if you have before_actions which use parameter values: just add them
+after the ``apipie_validations`` before_action.
 
 TypeValidator
 -------------
