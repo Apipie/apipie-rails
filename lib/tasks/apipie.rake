@@ -105,7 +105,8 @@ namespace :apipie do
                 else
                   File.expand_path("../../../app/views/apipie/apipies", __FILE__)
                 end
-    @apipie_renderer = ActionView::Base.new(base_path)
+    layouts_path = File.expand_path("../../../app/views/layouts", __FILE__)
+    @apipie_renderer = ActionView::Base.new([base_path, layouts_path])
     @apipie_renderer.singleton_class.send(:include, ApipieHelper)
     return @apipie_renderer
   end
@@ -118,7 +119,7 @@ namespace :apipie do
       end
       f.write av.render(
         :template => "#{template}",
-        :layout => (layout && "../../layouts/apipie/#{layout}"))
+        :layout => (layout && "apipie/#{layout}"))
     end
   end
 
