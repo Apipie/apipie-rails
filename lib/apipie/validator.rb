@@ -149,7 +149,8 @@ module Apipie
       end
 
       def description
-        "Must be one of: #{@array.join(', ')}."
+        string = @array.map { |value| "<code>#{value}</code>" }.join(', ')
+        "Must be one of: #{string}."
       end
     end
 
