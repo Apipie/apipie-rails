@@ -79,6 +79,12 @@ module Apipie
           next unless call.has_key?(k)
           ordered_call[k] = case call[k]
                        when ActiveSupport::HashWithIndifferentAccess
+                         # UploadedFiles break the to_json call, turn them into a string so they don't break
+                         call[k].each do |pkey, pval|
+                           if (pval.is_a?(Rack::Test::UploadedFile) || pval.is_a?(ActionDispatch::Http::UploadedFile))
+                             call[k][pkey] = "<FILE CONTENT '#{pval.original_filename}'>"
+                           end
+                         end
                          JSON.parse(call[k].to_json) # to_hash doesn't work recursively and I'm too lazy to write the recursion:)
                        else
                          call[k]
