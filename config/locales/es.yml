@@ -1,28 +1,28 @@
 es:
-    apipie:
-        resources: Recursos
-        resource: Recurso
-        description: Descripción
-        no_docs_found: No se encontró la documentación
-        no_docs_found_descr: No hemos encontrado ninguna documentación para tu API.
-        follow_instructions_html: Siga %{href} sobre cómo describir sus controladores.
-        follow_instructions_href: más instrucciones
-        oops: Huy!!
-        resource_not_found_html: Recurso %{resource} no encontrado.
-        method_not_found_html: Método  %{method} no encontrado para el recurso %{resource}.
-        goto_homepage_html: Trate de ir a %{href}
-        goto_homepage_href: "%{app_name} página de documentación API  "
-        required: requerido
-        optional: opcional
-        nil_allowed: nil permitido
-        param_name: Nombre del parámetro
-        params: Parámetros
-        examples: Ejemplos
-        metadata: Metadatos
-        errors: Errores
-        supported_formats: Formatos soportados
-        enable_javascript_html: Por favor, active JavaScript para ver el %{comments_href}.
-        comments_powered_by_disqus: comentarios gracias a %{disqus}
-        api_documentation: Documentación de la API
-        headers: Cabeceras
-        header_name: Nombre de cabecera
+  apipie:
+    resources: Recursos
+    resource: Recurso
+    description: Descripción
+    no_docs_found: No se encontró la documentación
+    no_docs_found_descr: No hemos encontrado ninguna documentación para tu API.
+    follow_instructions_html: Siga %{href} sobre cómo describir sus controladores.
+    follow_instructions_href: más instrucciones
+    oops: Huy!!
+    resource_not_found_html: Recurso %{resource} no encontrado.
+    method_not_found_html: Método  %{method} no encontrado para el recurso %{resource}.
+    goto_homepage_html: Trate de ir a %{href}
+    goto_homepage_href: "%{app_name} página de documentación API  "
+    required: requerido
+    optional: opcional
+    nil_allowed: nil permitido
+    param_name: Nombre del parámetro
+    params: Parámetros
+    examples: Ejemplos
+    metadata: Metadatos
+    errors: Errores
+    supported_formats: Formatos soportados
+    enable_javascript_html: Por favor, active JavaScript para ver el %{comments_href}.
+    comments_powered_by_disqus: comentarios gracias a %{disqus}
+    api_documentation: Documentación de la API
+    headers: Cabeceras
+    header_name: Nombre de cabecera

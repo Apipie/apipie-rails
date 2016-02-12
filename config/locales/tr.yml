@@ -1,29 +1,28 @@
 tr:
-    apipie:
-        resources: Kaynaklar
-        resource: Kaynak
-        description: Açıklama
-        no_docs_found: Hiçbir belge bulunamadı
-        no_docs_found_descr: API'niz için hiçbir belge bulunamadı.
-        follow_instructions_html: Controller açıklaması belgeleri için %{href} yolunu izleyin.
-        follow_instructions_href: daha fazla talimatlar
-        oops: Üzgünüz!!
-        resource_not_found_html: Kaynak %{resource} bulunamadı.
-        method_not_found_html: "%{resource} kaynağının %{method} yöntemi bulunamadı."
-        goto_homepage_html: "%{href} adresini deneyin"
-        goto_homepage_href: "%{app_name} API belgeleri ana sayfası"
-        required: gerekli
-        optional: isteğe bağlı
-        nil_allowed: nil olabilir
-        param_name: Parametre adı
-        params: Parametreler
-        examples: Örnekler
-        metadata: Üst veriler
-        errors: Hatalar
-        supported_formats: Desteklenen Biçimler
-        enable_javascript_html: "%{comments_href} adresini görebilmek için lütfen JavaScript'i etkinleştirin."
-        comments_powered_by_disqus: yorumlar %{disqus} tarafından desteklenmektedir
-        api_documentation: API belgeleri
-        headers: Üst bilgiler
-        header_name: Üst bilgi adı
-
+  apipie:
+    resources: Kaynaklar
+    resource: Kaynak
+    description: Açıklama
+    no_docs_found: Hiçbir belge bulunamadı
+    no_docs_found_descr: API'niz için hiçbir belge bulunamadı.
+    follow_instructions_html: Controller açıklaması belgeleri için %{href} yolunu izleyin.
+    follow_instructions_href: daha fazla talimatlar
+    oops: Üzgünüz!!
+    resource_not_found_html: Kaynak %{resource} bulunamadı.
+    method_not_found_html: "%{resource} kaynağının %{method} yöntemi bulunamadı."
+    goto_homepage_html: "%{href} adresini deneyin"
+    goto_homepage_href: "%{app_name} API belgeleri ana sayfası"
+    required: gerekli
+    optional: isteğe bağlı
+    nil_allowed: nil olabilir
+    param_name: Parametre adı
+    params: Parametreler
+    examples: Örnekler
+    metadata: Üst veriler
+    errors: Hatalar
+    supported_formats: Desteklenen Biçimler
+    enable_javascript_html: "%{comments_href} adresini görebilmek için lütfen JavaScript'i etkinleştirin."
+    comments_powered_by_disqus: yorumlar %{disqus} tarafından desteklenmektedir
+    api_documentation: API belgeleri
+    headers: Üst bilgiler
+    header_name: Üst bilgi adı

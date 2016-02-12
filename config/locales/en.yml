@@ -1,32 +1,31 @@
 en:
-    apipie:
-        resources: Resources
-        resource: Resource
-        description: Description
-        no_docs_found: No documentation found
-        no_docs_found_descr: We have not found any documentation for your API.
-        follow_instructions_html: Follow %{href} on how to describe your controllers.
-        follow_instructions_href: further instructions
-        oops: Oops!!
-        resource_not_found_html: Resource %{resource} not found.
-        method_not_found_html: Method %{method} not found for resource %{resource}.
-        goto_homepage_html: Try going to %{href}
-        goto_homepage_href: "%{app_name} API documentation homepage"
-        required: required
-        optional: optional
-        nil_allowed: nil allowed
-        param_name: Param name
-        params: Params
-        examples: Examples
-        metadata: Metadata
-        errors: Errors
-        error_code: Code
-        error_description: Description
-        error_metadata: Metadata
-        supported_formats: Supported Formats
-        enable_javascript_html: Please enable JavaScript to view the %{comments_href}.
-        comments_powered_by_disqus: comments powered by %{disqus}
-        api_documentation: API documentation
-        headers: Headers
-        header_name: Header name
-
+  apipie:
+    resources: Resources
+    resource: Resource
+    description: Description
+    no_docs_found: No documentation found
+    no_docs_found_descr: We have not found any documentation for your API.
+    follow_instructions_html: Follow %{href} on how to describe your controllers.
+    follow_instructions_href: further instructions
+    oops: Oops!!
+    resource_not_found_html: Resource %{resource} not found.
+    method_not_found_html: Method %{method} not found for resource %{resource}.
+    goto_homepage_html: Try going to %{href}
+    goto_homepage_href: "%{app_name} API documentation homepage"
+    required: required
+    optional: optional
+    nil_allowed: nil allowed
+    param_name: Param name
+    params: Params
+    examples: Examples
+    metadata: Metadata
+    errors: Errors
+    error_code: Code
+    error_description: Description
+    error_metadata: Metadata
+    supported_formats: Supported Formats
+    enable_javascript_html: Please enable JavaScript to view the %{comments_href}.
+    comments_powered_by_disqus: comments powered by %{disqus}
+    api_documentation: API documentation
+    headers: Headers
+    header_name: Header name
