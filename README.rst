@@ -392,7 +392,7 @@ Example
    def_param_group :user do
      param :user, Hash, :action_aware => true do
        param :name, String, :required => true
-       param :description, :String
+       param :description, String
      end
    end
 
