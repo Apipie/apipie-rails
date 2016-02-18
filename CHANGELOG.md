@@ -2,6 +2,25 @@
  Changelog
 ===========
 
+v0.3.6
+------
+
+- Fixed to\_json encoding error that occurs with uploaded file parameters. [\#429](https://github.com/Apipie/apipie-rails/pull/429) ([hossenlopp](https://github.com/hossenlopp))
+- Render enum param values as CODE [\#426](https://github.com/Apipie/apipie-rails/pull/426) ([febeling](https://github.com/febeling))
+- Fix layout path \(Rails 4.2.5.1 compatibility\) [\#425](https://github.com/Apipie/apipie-rails/pull/425) ([halilim](https://github.com/halilim))
+- Unify indentations across all locale files [\#423](https://github.com/Apipie/apipie-rails/pull/423) ([springerigor](https://github.com/springerigor))
+- Fix typo in Action Aware Params section of readme [\#419](https://github.com/Apipie/apipie-rails/pull/419) ([ryanlabouve](https://github.com/ryanlabouve))
+- Rails4.2 [\#413](https://github.com/Apipie/apipie-rails/pull/413) ([ferdinandrosario](https://github.com/ferdinandrosario))
+- Add viewport meta tag. [\#412](https://github.com/Apipie/apipie-rails/pull/412) ([buren](https://github.com/buren))
+- removed beta version [\#411](https://github.com/Apipie/apipie-rails/pull/411) ([ferdinandrosario](https://github.com/ferdinandrosario))
+- updated patch [\#410](https://github.com/Apipie/apipie-rails/pull/410) ([ferdinandrosario](https://github.com/ferdinandrosario))
+- Nerian layout fix [\#409](https://github.com/Apipie/apipie-rails/pull/409) ([Pajk](https://github.com/Pajk))
+- Add Turkish translations [\#407](https://github.com/Apipie/apipie-rails/pull/407) ([halilim](https://github.com/halilim))
+- Update README.rst [\#405](https://github.com/Apipie/apipie-rails/pull/405) ([type-face](https://github.com/type-face))
+- add german locale [\#394](https://github.com/Apipie/apipie-rails/pull/394) ([mjansing](https://github.com/mjansing))
+- Add custom message support for missing parameters  [\#390](https://github.com/Apipie/apipie-rails/pull/390) ([jcalvert](https://github.com/jcalvert))
+- A boolean parameters can be configured with both :bool and :boolean [\#124](https://github.com/Apipie/apipie-rails/pull/124) ([Nerian](https://github.com/Nerian))
+
 v0.3.5
 ------
 
