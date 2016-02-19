@@ -8,6 +8,7 @@ require File.expand_path("../dummy/config/environment", __FILE__)
 require 'rspec/rails'
 
 require 'apipie-rails'
+require 'test_engine'
 
 module Rails4Compatibility
   module Testing
