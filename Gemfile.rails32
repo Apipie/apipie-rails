@@ -4,3 +4,4 @@ gemspec
 
 gem 'rails', '~> 3.2.0'
 gem 'test-unit', '~> 3.0'
+gem 'test_engine', path: 'spec/dummy/components/test_engine', group: :test
