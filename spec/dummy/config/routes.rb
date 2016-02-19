@@ -1,5 +1,7 @@
 Dummy::Application.routes.draw do
 
+  mount TestEngine::Engine => '/test'
+
   scope ENV['RAILS_RELATIVE_URL_ROOT'] || '/' do
 
     scope '/api' do

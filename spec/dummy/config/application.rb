@@ -8,6 +8,7 @@ require "action_mailer/railtie"
 
 Bundler.require
 require "apipie-rails"
+require "test_engine"
 
 module Dummy
   class Application < Rails::Application
