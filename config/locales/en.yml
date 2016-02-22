@@ -29,3 +29,10 @@ en:
     api_documentation: API documentation
     headers: Headers
     header_name: Header name
+    must_be: "Must be %{string}"
+    must_be_one_of: "Must be one of: %{string}."
+    must_be_an_array_of: "Must be one of: %{string}."
+    must_be_a_number: Must be a number
+    must_be_a_hash: Must be a Hash
+    must_be_true_or_false: Must be 'true' or 'false' or '1' or '0'
+    must_be_an_array_of_nested_elements: Must be an Array of nested elements
