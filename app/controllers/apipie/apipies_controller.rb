@@ -55,6 +55,11 @@ module Apipie
           if @doc[:resources].blank?
             render "getting_started" and return
           end
+          @doc[:resources].each do |k, r|
+            (params[:resource].present? ? k : r)[:methods].each do |m|
+              m[:apis].each { |a| a[:api_url].sub!(/\:version/, params[:version]) }
+            end
+          end
           @resource = @doc[:resources].first if params[:resource].present?
           @method = @resource[:methods].first if params[:method].present?
           @languages = Apipie.configuration.languages
