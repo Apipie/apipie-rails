@@ -105,7 +105,11 @@ namespace :apipie do
                 else
                   File.expand_path("../../../app/views/apipie/apipies", __FILE__)
                 end
-    layouts_path = File.expand_path("../../../app/views/layouts", __FILE__)
+    layouts_path = if File.directory?("#{Rails.root}/app/views/layouts/apipie")
+                     "#{Rails.root}/app/views/layouts"
+                   else
+                     File.expand_path("../../../app/views/layouts", __FILE__)
+                   end
     @apipie_renderer = ActionView::Base.new([base_path, layouts_path])
     @apipie_renderer.singleton_class.send(:include, ApipieHelper)
     return @apipie_renderer
