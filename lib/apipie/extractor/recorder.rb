@@ -48,9 +48,9 @@ module Apipie
       end
 
       def parse_data(data)
-        return nil if data.to_s =~ /^\s*$/
+        return nil if data.strip.blank?
         JSON.parse(data)
-      rescue StandardError => e
+      rescue StandardError
         data
       end
 
