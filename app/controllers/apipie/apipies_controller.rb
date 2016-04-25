@@ -123,6 +123,10 @@ module Apipie
     end
 
     def render_from_cache
+      if request.original_url.ends_with?('/')
+        redirect_to request.path
+        return
+      end
       path = Apipie.configuration.doc_base_url.dup
       # some params can contain dot, but only one in row
       if [:resource, :method, :format, :version].any? { |p| params[p].to_s.gsub(".", "") =~ /\W/ || params[p].to_s =~ /\.\./ }
