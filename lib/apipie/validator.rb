@@ -190,9 +190,10 @@ module Apipie
 
       def enum
         if @items_enum.kind_of?(Proc)
-          @items_enum = Array(@items_enum.call)
+          Array(@items_enum.call)
+        else
+          @items_enum
         end
-        @items_enum
       end
 
       def validate_item(value)
