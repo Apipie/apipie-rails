@@ -54,14 +54,9 @@ module Apipie
     # the app might be nested when using contraints, namespaces etc.
     # this method does in depth search for the route controller
     def route_app_controller(app, route, visited_apps = [])
-      visited_apps << app
-      if app.respond_to?(:controller)
-        return app.controller(route.defaults)
-      elsif app.respond_to?(:app) && !visited_apps.include?(app.app)
-        return route_app_controller(app.app, route, visited_apps)
+      if route.defaults[:controller]
+        (route.defaults[:controller].camelize + "Controller").constantize
       end
-    rescue ActionController::RoutingError
-      # some errors in the routes will not stop us here: just ignoring
     end
 
     def routes_for_action(controller, method, args)
