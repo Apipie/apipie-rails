@@ -24,10 +24,10 @@ module Apipie
       end
 
       def handle_record(record)
-        add_to_records(record)
         if ignore_call?(record)
           Extractor.logger.info("REST_API: skipping #{record_to_s(record)}")
         else
+          add_to_records(record)
           refine_description(record)
         end
       end
@@ -110,4 +110,3 @@ module Apipie
     end
   end
 end
-
