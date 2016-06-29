@@ -447,6 +447,14 @@ describe UsersController do
       expect(a.errors[2].description).to eq("Not Found")
     end
 
+    it 'should recognize Rack symbols as error codes' do
+      a = Apipie.get_method_description(UsersController, :create)
+
+      error = a.errors.find { |e| e.code == 422 }
+      expect(error).to be
+      expect(error.description).to include("Unprocessable Entity")
+    end
+
     it "should contain all params description" do
       a = Apipie.get_method_description(UsersController, :show)
       expect(a.params.count).to eq(12)

@@ -222,6 +222,7 @@ class UsersController < ApplicationController
   end
   param :facts, Hash, :desc => "Additional optional facts about the user", :allow_nil => true
   param :age, :number, :desc => "Age is just a number", :allow_blank => true
+  error :unprocessable_entity, 'Unprocessable Entity'
   def create
     render :text => "OK #{params.inspect}"
   end
