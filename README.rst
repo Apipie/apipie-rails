@@ -152,6 +152,7 @@ Example:
      api_version "development"
      error 404, "Missing"
      error 500, "Server crashed for some <%= reason %>", :meta => {:anything => "you can think of"}
+     error :unprocessable_entity, "Could not save the entity."
      meta :author => {:name => 'John', :surname => 'Doe'}
      description <<-EOS
        == Long description

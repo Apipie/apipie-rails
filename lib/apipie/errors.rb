@@ -6,6 +6,9 @@ module Apipie
   class ParamError < Error
   end
 
+  class UnknownCode < Error
+  end
+
   # abstract
   class DefinedParamError < ParamError
     attr_accessor :param
