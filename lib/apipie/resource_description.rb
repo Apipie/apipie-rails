@@ -108,8 +108,7 @@ module Apipie
         :version => _version,
         :formats => @_formats,
         :metadata => @_metadata,
-        :methods => methods,
-        :headers => _headers
+        :methods => methods
       }
     end
 
