@@ -8,9 +8,10 @@ module Apipie
     end
 
     def match?(path)
-      path = path.dup
+      # Replace all null bytes
+      path = ::Rack::Utils.unescape(path || '').gsub(/\x0/, '')
 
-      full_path = path.empty? ? @root : File.join(@root, ::Rack::Utils.unescape(path))
+      full_path = path.empty? ? @root : File.join(@root, path)
       paths = "#{full_path}#{ext}"
 
       matches = Dir[paths]
