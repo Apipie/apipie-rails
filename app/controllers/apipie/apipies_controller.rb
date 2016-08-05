@@ -144,8 +144,8 @@ module Apipie
         next unless params[par]
         [:html, :json].each do |format|
           extension = ".#{format}"
-          if params[par].include?(extension)
-            params[par] = params[par].sub(extension, '')
+          if params[par].end_with?(extension)
+            params[par] = params[par].gsub(/\#{extension}\z/, '')
             params[:format] = format
           end
         end
