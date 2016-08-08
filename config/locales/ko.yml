@@ -1,0 +1,31 @@
+en:
+  apipie:
+    resources: 리소스
+    resource: 리소스
+    description: 설명
+    no_docs_found: 문서를 찾을 수 없습니다.
+    no_docs_found_descr: 해당 API에 대한 문서를 찾을 수 없습니다.
+    follow_instructions_html: 해당 컨트롤러의 설명을 %{href}를 따르세요.
+    follow_instructions_href: 자세한 설명
+    oops: 이런!!
+    resource_not_found_html: "%{resource} 리소스를 찾을 수 없습니다."
+    method_not_found_html: "%{resource} 리소스에 대한 %{method} 메소드를 찾을 수 없습니다."
+    goto_homepage_html: "%{href}로 시도해보세요."
+    goto_homepage_href: ""%{app_name} API 문서 페이지"
+    required: 필수
+    optional: 옵션
+    nil_allowed: nil 허용
+    param_name: Param 이름
+    params: Params
+    examples: 예시
+    metadata: Metadata
+    errors: 에러
+    error_code: 코드
+    error_description: 설명
+    error_metadata: Metadata
+    supported_formats: 지원 포멧
+    enable_javascript_html: "%{comments_href}를 보기 위해서 JavaScript를 허용해주세요."
+    comments_powered_by_disqus: comments powered by %{disqus}
+    api_documentation: API 문서
+    headers: 헤더
+    header_name: 헤더 이름
