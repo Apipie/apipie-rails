@@ -34,6 +34,11 @@ module Apipie
     # from this class and override the methods as needed.
     attr_accessor :routes_formatter
 
+    # Custom class name allows for substitution when camelizing & constantizing a string from the path
+    # in load_controller_from_file. Example, a path /api would be camelized as ::Api while the actual module
+    # could be ::API. By setting { 'Api' => 'API' }, it would correct this disconnect.
+    attr_accessor :custom_class_name
+
     def reload_controllers?
       @reload_controllers = Rails.env.development? unless defined? @reload_controllers
       return @reload_controllers && @api_controllers_matcher
@@ -165,6 +170,7 @@ module Apipie
       @translate = lambda { |str, locale| str }
       @persist_show_in_doc = false
       @routes_formatter = RoutesFormatter.new
+      @custom_class_name = {}
     end
   end
 end
