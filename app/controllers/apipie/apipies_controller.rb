@@ -94,7 +94,7 @@ module Apipie
 
     def authorized_doc
 
-      return @doc unless Apipie.configuration.authorize
+      return @doc if @doc.nil? or not Apipie.configuration.authorize
 
       new_doc = { :docs => @doc[:docs].clone }
 
