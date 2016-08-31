@@ -348,7 +348,7 @@ module Apipie
       elsif Apipie.configuration.namespaced_resources? && klass.respond_to?(:controller_path)
         return nil if klass == ActionController::Base
         path = klass.controller_path
-        path.gsub(version_prefix(klass), "").gsub("/", "-")
+        path.sub(version_with_prefix(klass), "").gsub("/", "-")
       elsif klass.respond_to?(:controller_name)
         return nil if klass == ActionController::Base
         klass.controller_name
@@ -389,11 +389,13 @@ module Apipie
       return true
     end
 
-    def version_prefix(klass)
+    def version_with_prefix(klass)
       version = controller_versions(klass).first
-      base_url = get_base_url(version)
-      return "/" if base_url.nil?
-      base_url[1..-1] + "/"
+      base_url = get_base_url(version).to_s
+      base_url = base_url[1..-1]  if base_url.start_with?('/')
+      base_url = base_url[1...-1] if base_url.end_with?('/')
+      return "#{version}/" if base_url.empty?
+      "#{base_url}/#{version}/"
     end
 
     def get_base_url(version)
