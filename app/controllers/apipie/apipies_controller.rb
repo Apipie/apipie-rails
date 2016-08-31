@@ -156,7 +156,7 @@ module Apipie
     def render_from_cache
       path = Apipie.configuration.doc_base_url.dup
       # some params can contain dot, but only one in row
-      if [:resource, :method, :format, :version].any? { |p| params[p].to_s.gsub(".", "") =~ /\W/ || params[p].to_s =~ /\.\./ }
+      if [:resource, :method, :format, :version].any? { |p| params[p].to_s =~ /\.\./ }
         head :bad_request and return
       end
 
