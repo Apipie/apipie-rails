@@ -1068,11 +1068,8 @@ When your project use I18n, localization related configuration could appear as f
     config.default_locale = 'en'
     config.locale = lambda { |loc| loc ? I18n.locale = loc : I18n.locale }
     config.translate = lambda do |str, loc|
-      old_loc = I18n.locale
-      I18n.locale = loc
-      trans = I18n.t(str)
-      I18n.locale = old_loc
-      trans
+      return '' if str.blank?
+      I18n.t str, locale: loc, scope: 'doc'
     end
    end
 
