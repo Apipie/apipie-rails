@@ -5,20 +5,20 @@ Dummy::Application.routes.draw do
     scope '/api' do
       resources :users do
         collection do
-          post :create_route
+          post :create_route => 'users#create_route'
         end
       end
       resources :concerns, :only => [:index, :show]
       namespace :files do
-        get '/*file_path', to: :download, format: false
+        get '/*file_path' => 'files#download', format: false
       end
       resources :twitter_example do
         collection do
-          get :lookup
+          get :lookup => 'twitter_example#lookup'
           get 'profile_image/:screen_name' => 'twitter_example#profile_image'
-          get :search
-          get :search
-          get :contributors
+          get :search => 'twitter_example#search'
+          get :search => 'twitter_example#search'
+          get :contributors => 'twitter_example#contributors'
         end
       end
     end
