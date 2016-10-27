@@ -278,7 +278,7 @@ module Apipie
       {
         :docs => {
           :name => Apipie.configuration.app_name,
-          :info => translate(Apipie.app_info(version), lang),
+          :info => Apipie.app_info(version, lang),
           :copyright => Apipie.configuration.copyright,
           :doc_url => Apipie.full_url(url_args),
           :api_url => Apipie.api_base_url(version),

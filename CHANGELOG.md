@@ -2,6 +2,12 @@
  Changelog
 ===========
 
+v0.3.7
+------
+
+- Handle blank data when parsing a example's response [\#453](https://github.com/Apipie/apipie-rails/pull/453) ([stbenjam](https://github.com/stbenjam))
+- Allow layouts to be overridable. Fixes a regression introduced in \#425. [\#447](https://github.com/Apipie/apipie-rails/pull/447) ([nilseriksson](https://github.com/nilseriksson))
+
 v0.3.6
 ------
 

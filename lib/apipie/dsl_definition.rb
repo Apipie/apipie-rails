@@ -26,7 +26,7 @@ module Apipie
          :errors            => [],
          :params            => [],
          :headers           => [],
-         :resouce_id        => nil,
+         :resource_id        => nil,
          :short_description => nil,
          :description       => nil,
          :examples          => [],
