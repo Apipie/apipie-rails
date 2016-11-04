@@ -244,7 +244,7 @@ describe UsersController do
             params = Apipie[UsersController, :create].to_json[:params]
             expect(params).to include(:name => "facts",
                                   :full_name => "facts",
-                                  :validator => "Must be Hash",
+                                  :validator => "Must be a Hash",
                                   :description => "\n<p>Additional optional facts about the user</p>\n",
                                   :required => false,
                                   :allow_nil => true,
