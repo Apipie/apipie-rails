@@ -413,7 +413,8 @@ module Apipie
       end
 
       def description
-        "Must be 'true' or 'false' or '1' or '0'"
+        string = %w(true false 1 0).map { |value| "<code>#{value}</code>" }.join(', ')
+        "Must be one of: #{string}"
       end
     end
 
