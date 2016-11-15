@@ -97,18 +97,13 @@ module Apipie
       return @doc unless Apipie.configuration.authorize
 
       new_doc = { :docs => @doc[:docs].clone }
-
       resources = @doc[:docs][:resources]
 
-      if resources.is_a?(Array)
+      if params[:resource].present? and resources.is_a?(Array)
+        # We assume only one resource in the array when a specific resource was queried
+        resource_name = params[:resource]
         authorized_resources = []
-        resources.each do |resource|
-          authorized = resource.select do |k, v|
-            authorize_resource?(k, v)
-          end
-          authorized_resources << authorized
-        end
-
+        authorized_resources << resources.first if authorize_resource?(resource_name, resources.first)
         new_doc[:docs][:resources] = authorized_resources
       else
         # Assume resource is a hash
@@ -122,10 +117,10 @@ module Apipie
 
     def authorize_resource?(name, value)
       if instance_exec(name, nil, value, &Apipie.configuration.authorize)
-        v[:methods] = v[:methods].select do |h|
-          instance_exec(k, h[:name], h, &Apipie.configuration.authorize)
+        value[:methods] = value[:methods].select do |h|
+          instance_exec(name, h[:name], h, &Apipie.configuration.authorize)
         end
-        true
+        return true
       end
 
       false
