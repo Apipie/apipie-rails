@@ -28,7 +28,11 @@ module Apipie
 
       def analyse_response(response)
         if response.last.respond_to?(:body) && data = parse_data(response.last.body)
-          @response_data = data
+          @response_data = if response[1]['Content-Disposition'].to_s.start_with?('attachment')
+                             '<STREAMED ATTACHMENT FILE>'
+                           else
+                             data
+                           end
         end
         @code = response.first
       end
