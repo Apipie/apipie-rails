@@ -28,6 +28,7 @@ module Apipie
       path = path.sub(/^\//,"")
       ret = "#{@url_prefix}/#{path}"
       ret.insert(0,"/") unless ret =~ /\A[.\/]/
+      ret.insert(0,Rails.application.config.relative_url_root) unless Rails.application.config.relative_url_root.nil?
       ret.sub!(/\/*\Z/,"")
       ret
     end
