@@ -8,7 +8,7 @@ module Apipie
   # validator - Validator::BaseValidator subclass
   class ParamDescription
 
-    attr_reader :method_description, :name, :desc, :allow_nil, :validator, :options, :metadata, :show, :as, :validations
+    attr_reader :method_description, :name, :desc, :allow_nil, :allow_blank, :validator, :options, :metadata, :show, :as, :validations
     attr_accessor :parent, :required
 
     def self.from_dsl_data(method_description, args)
@@ -56,6 +56,7 @@ module Apipie
       end
 
       @allow_nil = @options[:allow_nil] || false
+      @allow_blank = @options[:allow_blank] || false
 
       action_awareness
 
@@ -73,6 +74,7 @@ module Apipie
 
     def validate(value)
       return true if @allow_nil && value.nil?
+      return true if @allow_blank && value.blank?
       if (!@allow_nil && value.nil?) || !@validator.valid?(value)
         error = @validator.error
         error = ParamError.new(error) unless error.is_a? StandardError
@@ -111,6 +113,7 @@ module Apipie
                :description => preformat_text(Apipie.app.translate(@options[:desc], lang)),
                :required => required,
                :allow_nil => allow_nil,
+               :allow_blank => allow_blank,
                :validator => validator.to_s,
                :expected_type => validator.expected_type,
                :metadata => metadata,
