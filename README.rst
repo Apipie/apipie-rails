@@ -288,6 +288,9 @@ required
 allow_nil
   Setting this to true means that ``nil`` can be passed.
 
+allow_blank
+  Like ``allow_nil``, but for blank values. ``false``, ``""``, ``' '``, ``nil``, ``[]``, and ``{}`` are all blank.
+
 as
   Used by the processing functionality to change the name of a key params.
 
