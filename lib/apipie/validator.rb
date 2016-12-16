@@ -96,7 +96,7 @@ module Apipie
       end
 
       def description
-        "Must be #{@type}"
+        I18n.t 'apipie.must_be', :string => @type, default: 'Must be %{string}'
       end
 
       def expected_type
@@ -150,7 +150,7 @@ module Apipie
 
       def description
         string = @array.map { |value| "<code>#{value}</code>" }.join(', ')
-        "Must be one of: #{string}."
+        I18n.t 'apipie.must_be_one_of', :string => string, default: 'Must be one of: %{string}.'
       end
     end
 
@@ -173,7 +173,7 @@ module Apipie
       end
 
       def description
-        "Must be an array of #{items}"
+        I18n.t 'apipie.must_be_an_array_of', :string => items, default: 'Must be an array of %{string}'
       end
 
       def expected_type
@@ -243,7 +243,7 @@ module Apipie
       end
 
       def description
-        "Must be one of: #{@array.join(', ')}."
+        I18n.t 'apipie.must_be_one_of', :string => @array.join(', '), default: 'Must be one of: %{string}.'
       end
     end
 
@@ -327,7 +327,7 @@ module Apipie
       end
 
       def description
-        "Must be a Hash"
+        I18n.t 'apipie.must_be_a_hash', default: 'Must be a Hash'
       end
 
       def expected_type
@@ -388,7 +388,7 @@ module Apipie
       end
 
       def description
-        "Must be a number."
+        I18n.t 'apipie.must_be_a_number', default: 'Must be a number'
       end
 
       def self.validate(value)
@@ -413,7 +413,7 @@ module Apipie
       end
 
       def description
-        "Must be 'true' or 'false' or '1' or '0'"
+        I18n.t 'apipie.must_be_true_or_false', default: "Must be 'true' or 'false' or '1' or '0'"
       end
     end
 
@@ -454,7 +454,7 @@ module Apipie
       end
 
       def description
-        "Must be an Array of nested elements"
+        I18n.t 'apipie.must_be_an_array_of_nested_elements', default: 'Must be an Array of nested elements'
       end
 
       def params_ordered
