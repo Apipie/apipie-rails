@@ -96,7 +96,7 @@ module Apipie
       end
 
       def description
-        "Must be #{@type}"
+        "Must be a #{@type}"
       end
 
       def expected_type
@@ -464,4 +464,3 @@ module Apipie
 
   end
 end
-
