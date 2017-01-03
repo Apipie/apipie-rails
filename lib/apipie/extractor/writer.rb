@@ -41,6 +41,7 @@ module Apipie
         FileUtils.mkdir_p(File.dirname(examples_file))
         File.open(examples_file, "w") do |f|
           f << JSON.pretty_generate(OrderedHash[*examples.sort_by(&:first).flatten(1)])
+          f << "\n"
         end
       end
 
