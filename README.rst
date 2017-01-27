@@ -2,9 +2,9 @@
  API Documentation Tool
 ========================
 
-.. image:: https://travis-ci.org/Apipie/apipie-rails.png?branch=master
+.. image:: https://travis-ci.org/Apipie/apipie-rails.svg?branch=master
     :target: https://travis-ci.org/Apipie/apipie-rails
-.. image:: https://codeclimate.com/github/Apipie/apipie-rails.png
+.. image:: https://codeclimate.com/github/Apipie/apipie-rails.svg
     :target: https://codeclimate.com/github/Apipie/apipie-rails
 .. image:: https://badges.gitter.im/Apipie/apipie-rails.svg
    :alt: Join the chat at https://gitter.im/Apipie/apipie-rails
