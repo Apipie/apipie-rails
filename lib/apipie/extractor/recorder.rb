@@ -41,7 +41,7 @@ module Apipie
         if [:POST, :PUT, :PATCH].include?(@verb)
           @request_data = @params
         else
-          @query = request.query_string
+          @path = request.fullpath
         end
         @response_data = parse_data(response.body)
         @code = response.code
