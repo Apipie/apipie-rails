@@ -9,6 +9,30 @@ require 'rspec/rails'
 
 require 'apipie-rails'
 
+module Rails4Compatibility
+  module Testing
+    def process(*args)
+      compatible_request(*args) { |*new_args| super(*new_args) }
+    end
+
+    def compatible_request(method, action, hash = {})
+      if hash.is_a?(Hash)
+        if Gem::Version.new(Rails.version) < Gem::Version.new('5.0.0')
+          hash = hash.dup
+          hash.merge!(hash.delete(:params) || {})
+        elsif hash.key?(:params)
+          hash = { :params => hash }
+        end
+      end
+      if hash.empty?
+        yield method, action
+      else
+        yield method, action, hash
+      end
+    end
+  end
+end
+
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
 Dir[File.expand_path("../support/**/*.rb", __FILE__)].each {|f| require f}
@@ -41,3 +65,6 @@ RSpec.configure do |config|
   #     end
   config.infer_spec_type_from_file_location!
 end
+
+require 'action_controller/test_case.rb'
+ActionController::TestCase::Behavior.prepend(Rails4Compatibility::Testing)
