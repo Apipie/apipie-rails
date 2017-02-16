@@ -7,7 +7,6 @@ rvm:
   - 2.2.3
   - 2.3.3
 gemfile:
-  - Gemfile.rails32
   - Gemfile.rails40
   - Gemfile.rails41
   - Gemfile.rails42
