@@ -21,5 +21,8 @@ Dummy::Application.configure do
 
   # Only use best-standards-support built into browsers
   config.action_dispatch.best_standards_support = :builtin
+
+  # Do not eager load code on boot. (Rails 5)
+  config.eager_load = false
 end
 
