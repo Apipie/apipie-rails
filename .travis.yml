@@ -11,3 +11,4 @@ gemfile:
   - Gemfile.rails40
   - Gemfile.rails41
   - Gemfile.rails42
+  - Gemfile.rails50
