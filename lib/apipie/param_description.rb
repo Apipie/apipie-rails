@@ -72,9 +72,20 @@ module Apipie
       method_description.from_concern? || @from_concern
     end
 
+    def normalized_value(value)
+      if value.is_a?(ActionController::Parameters) && !value.is_a?(Hash)
+        value.to_unsafe_hash
+      elsif value.is_a? Array
+        value.map { |v| normalized_value (v) }
+      else
+        value
+      end
+    end
+
     def validate(value)
       return true if @allow_nil && value.nil?
       return true if @allow_blank && value.blank?
+      value = normalized_value(value)
       if (!@allow_nil && value.nil?) || !@validator.valid?(value)
         error = @validator.error
         error = ParamError.new(error) unless error.is_a? StandardError
@@ -83,6 +94,7 @@ module Apipie
     end
 
     def process_value(value)
+      value = normalized_value(value)
       if @validator.respond_to?(:process_value)
         @validator.process_value(value)
       else

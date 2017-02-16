@@ -4,3 +4,4 @@ gemspec
 
 gem 'rails', '~> 5.0'
 gem 'mime-types', '~> 2.99.3'
+gem 'rails-controller-testing'
