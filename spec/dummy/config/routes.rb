@@ -9,9 +9,7 @@ Dummy::Application.routes.draw do
         end
       end
       resources :concerns, :only => [:index, :show]
-      namespace :files do
-        get '/*file_path', :to => "files#download", :format => false
-      end
+      get '/*file_path', to: "files#download", format: false
       resources :twitter_example do
         collection do
           get :lookup
