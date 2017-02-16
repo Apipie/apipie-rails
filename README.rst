@@ -2,9 +2,9 @@
  API Documentation Tool
 ========================
 
-.. image:: https://travis-ci.org/Apipie/apipie-rails.png?branch=master
+.. image:: https://travis-ci.org/Apipie/apipie-rails.svg?branch=master
     :target: https://travis-ci.org/Apipie/apipie-rails
-.. image:: https://codeclimate.com/github/Apipie/apipie-rails.png
+.. image:: https://codeclimate.com/github/Apipie/apipie-rails.svg
     :target: https://codeclimate.com/github/Apipie/apipie-rails
 .. image:: https://badges.gitter.im/Apipie/apipie-rails.svg
    :alt: Join the chat at https://gitter.im/Apipie/apipie-rails
@@ -287,6 +287,9 @@ required
 
 allow_nil
   Setting this to true means that ``nil`` can be passed.
+
+allow_blank
+  Like ``allow_nil``, but for blank values. ``false``, ``""``, ``' '``, ``nil``, ``[]``, and ``{}`` are all blank.
 
 as
   Used by the processing functionality to change the name of a key params.
@@ -1068,11 +1071,8 @@ When your project use I18n, localization related configuration could appear as f
     config.default_locale = 'en'
     config.locale = lambda { |loc| loc ? I18n.locale = loc : I18n.locale }
     config.translate = lambda do |str, loc|
-      old_loc = I18n.locale
-      I18n.locale = loc
-      trans = I18n.t(str)
-      I18n.locale = old_loc
-      trans
+      return '' if str.blank?
+      I18n.t str, locale: loc, scope: 'doc'
     end
    end
 

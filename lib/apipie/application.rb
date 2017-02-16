@@ -273,7 +273,7 @@ module Apipie
       {
         :docs => {
           :name => Apipie.configuration.app_name,
-          :info => translate(Apipie.app_info(version), lang),
+          :info => Apipie.app_info(version, lang),
           :copyright => Apipie.configuration.copyright,
           :doc_url => Apipie.full_url(url_args),
           :api_url => Apipie.api_base_url(version),
@@ -387,7 +387,7 @@ module Apipie
     def version_prefix(klass)
       version = controller_versions(klass).first
       base_url = get_base_url(version)
-      return "/" if base_url.nil?
+      return "/" if base_url.blank?
       base_url[1..-1] + "/"
     end
 

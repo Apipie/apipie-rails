@@ -9,7 +9,8 @@ require 'apipie/extractor/collector'
 class Apipie::Railtie
   initializer 'apipie.extractor' do |app|
     ActiveSupport.on_load :action_controller do
-      before_filter do |controller|
+      create_filter_method = respond_to?(:before_action) ? :before_action : :before_filter
+      send(create_filter_method) do |controller|
         if Apipie.configuration.record
           Apipie::Extractor.call_recorder.analyse_controller(controller)
         end

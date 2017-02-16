@@ -38,7 +38,7 @@ module Apipie
         @verb = request.request_method.to_sym
         @path = request.path
         @params = request.request_parameters
-        if [:POST, :PUT, :PATCH].include?(@verb)
+        if [:POST, :PUT, :PATCH, :DELETE].include?(@verb)
           @request_data = @params
         else
           @query = request.query_string
@@ -48,9 +48,9 @@ module Apipie
       end
 
       def parse_data(data)
-        return nil if data.to_s =~ /^\s*$/
+        return nil if data.strip.blank?
         JSON.parse(data)
-      rescue StandardError => e
+      rescue StandardError
         data
       end
 

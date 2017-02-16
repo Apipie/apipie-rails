@@ -244,10 +244,11 @@ describe UsersController do
             params = Apipie[UsersController, :create].to_json[:params]
             expect(params).to include(:name => "facts",
                                   :full_name => "facts",
-                                  :validator => "Must be Hash",
+                                  :validator => "Must be a Hash",
                                   :description => "\n<p>Additional optional facts about the user</p>\n",
                                   :required => false,
                                   :allow_nil => true,
+                                  :allow_blank => false,
                                   :metadata => nil,
                                   :show => true,
                                   :expected_type => "hash",
@@ -262,6 +263,17 @@ describe UsersController do
                    :membership => "standard",
                  },
                  :facts => nil
+            assert_response :success
+          end
+
+          it "should allow blank when allow_blank is set to true" do
+            post :create,
+              :user => {
+                :name => "root",
+                :pass => "12345",
+                :membership => "standard"
+              },
+              :age => ""
             assert_response :success
           end
 
@@ -525,7 +537,8 @@ describe UsersController do
         :params => [{:full_name=>"oauth",
                      :required=>false,
                      :allow_nil => false,
-                     :validator=>"Must be String",
+                     :allow_blank => false,
+                     :validator=>"Must be a String",
                      :description=>"\n<p>Authorization</p>\n",
                      :name=>"oauth",
                      :show=>true,
@@ -534,6 +547,7 @@ describe UsersController do
                      :description=>"\n<p>Deprecated parameter not documented</p>\n",
                      :expected_type=>"hash",
                      :allow_nil=>false,
+                     :allow_blank => false,
                      :name=>"legacy_param",
                      :required=>false,
                      :full_name=>"legacy_param",
@@ -543,6 +557,7 @@ describe UsersController do
                         :description=>"\n<p>Param description for all methods</p>\n",
                         :expected_type=>"hash",
                         :allow_nil=>false,
+                       :allow_blank => false,
                         :name=>"resource_param",
                         :required=>false,
                         :full_name=>"resource_param",
@@ -550,14 +565,16 @@ describe UsersController do
                         :params=>
                         [{:required=>true,
                           :allow_nil => false,
-                          :validator=>"Must be String",
+                          :allow_blank => false,
+                          :validator=>"Must be a String",
                           :description=>"\n<p>Username for login</p>\n",
                           :name=>"ausername", :full_name=>"resource_param[ausername]",
                           :show=>true,
                           :expected_type=>"string"},
                          {:required=>true,
                           :allow_nil => false,
-                          :validator=>"Must be String",
+                          :allow_blank => false,   
+                          :validator=>"Must be a String",
                           :description=>"\n<p>Password for login</p>\n",
                           :name=>"apassword", :full_name=>"resource_param[apassword]",
                           :show=>true,
@@ -567,6 +584,7 @@ describe UsersController do
                     },
                     {:required=>false, :validator=>"Parameter has to be Integer.",
                      :allow_nil => false,
+                     :allow_blank => false,
                      :description=>"\n<p>Company ID</p>\n",
                      :name=>"id", :full_name=>"id",
                      :show=>true,
