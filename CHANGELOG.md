@@ -2,6 +2,12 @@
  Changelog
 ===========
 
+v0.3.8
+------
+- Rails 5.0 compatibility
+- Rails 5.0 testability
+- Booleans interpreted strictly as strings per Rails 5 default content type "application/x-www-form-urlencoded"
+
 v0.3.7
 ------
 

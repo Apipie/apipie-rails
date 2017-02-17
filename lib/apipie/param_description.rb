@@ -73,7 +73,7 @@ module Apipie
     end
 
     def validate(value)
-      return true if @allow_nil && value.nil?
+      return true if @allow_nil && value.blank? # Rails 5 doesn't pass value nil
       return true if @allow_blank && value.blank?
       if (!@allow_nil && value.nil?) || !@validator.valid?(value)
         error = @validator.error
