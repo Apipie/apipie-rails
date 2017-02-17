@@ -302,6 +302,8 @@ module Apipie
       end
 
       def validate(value)
+        # TODO: use value.to_h instead, and use strong parameters in controller(s).
+        value = value.to_unsafe_h if value.is_a? ActionController::Parameters
         return false if !value.is_a? Hash
         if @hash_params
           @hash_params.each do |k, p|

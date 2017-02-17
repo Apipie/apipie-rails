@@ -2,6 +2,15 @@
  Changelog
 ===========
 
+v0.4.0
+------
+Support for Ruby 2.2.2+ and Rails 5.0+.
+Breaking change with Ruby <2.2 and Rails <5.0
+
+- Rails 5.0 compatibility
+- Rails 5.0 testability
+- Booleans interpreted strictly as strings per Rails 5 default content type "application/x-www-form-urlencoded"
+
 v0.3.7
 ------
 

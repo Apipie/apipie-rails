@@ -32,4 +32,7 @@ Dummy::Application.configure do
 
   # Print deprecation notices to the stderr
   config.active_support.deprecation = :stderr
+
+  # Do not eager load code on boot. (Rails 5)
+  config.eager_load = false
 end
