@@ -1,22 +1,8 @@
 language: ruby
 sudo: false
 rvm:
-  - 1.9.3
-  - 2.0.0
-  - 2.1.7
+  - 2.2.2
   - 2.2.3
   - 2.3.3
 gemfile:
-  - Gemfile.rails32
-  - Gemfile.rails40
-  - Gemfile.rails41
-  - Gemfile.rails42
-  - Gemfile.rails50 # Min ruby 2.2.2
-matrix:
-  exclude:
-    - rvm: 1.9.3
-      gemfile: Gemfile.rails50
-    - rvm: 2.0.0
-      gemfile: Gemfile.rails50
-    - rvm: 2.1.7
-      gemfile: Gemfile.rails50
+  - Gemfile.rails50
