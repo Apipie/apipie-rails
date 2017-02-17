@@ -4,7 +4,7 @@
 
 v0.4.0
 ------
-Support for Ruby 2.2.3+ and Rails 5.0+.
+Support for Ruby 2.2.2+ and Rails 5.0+.
 Breaking change with Ruby <2.2 and Rails <5.0
 
 - Rails 5.0 compatibility
