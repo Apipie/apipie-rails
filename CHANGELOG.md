@@ -2,6 +2,23 @@
  Changelog
 ===========
 
+v0.4.0
+------
+
+- Rails 5 compatibility [\#527](https://github.com/Apipie/apipie-rails/pull/527) ([iNecas](https://github.com/iNecas)) [\#420](https://github.com/Apipie/apipie-rails/pull/420) ([buren](https://github.com/buren)) [\#473](https://github.com/Apipie/apipie-rails/pull/473)([domcleal](https://github.com/domcleal))
+  - **This release is no longer compatible with Rails 3.x**
+- Include delete request parmeters in generated documentation [\#524](https://github.com/Apipie/apipie-rails/pull/524) ([johnnaegle](https://github.com/johnnaegle))
+- Allow a blank, not just nil, base\_url. [\#521](https://github.com/Apipie/apipie-rails/pull/521) ([johnnaegle](https://github.com/johnnaegle))
+- Adds allow\_blank option [\#508](https://github.com/Apipie/apipie-rails/pull/508) ([MrLeebo](https://github.com/MrLeebo))
+- Boolean Validator uses \<code\> instead of ' [\#502](https://github.com/Apipie/apipie-rails/pull/502) ([berfarah](https://github.com/berfarah))
+- Fix type validator message [\#501](https://github.com/Apipie/apipie-rails/pull/501) ([cindygu-itglue](https://github.com/cindygu-itglue))
+- Add IT locale [\#496](https://github.com/Apipie/apipie-rails/pull/496) ([alepore](https://github.com/alepore))
+- Fix small typo on dsl\_definition data init [\#494](https://github.com/Apipie/apipie-rails/pull/494) ([begault](https://github.com/begault))
+- Localize app info message [\#491](https://github.com/Apipie/apipie-rails/pull/491) ([belousovAV](https://github.com/belousovAV))
+- Fix travis build [\#489](https://github.com/Apipie/apipie-rails/pull/489) ([mtparet](https://github.com/mtparet))
+- Handle blank data when parsing a example's response [\#453](https://github.com/Apipie/apipie-rails/pull/453) ([stbenjam](https://github.com/stbenjam))
+- Allow layouts to be overridable. Fixes a regression introduced in \#425. [\#447](https://github.com/Apipie/apipie-rails/pull/447) ([nilsojes](https://github.com/nilsojes))
+
 v0.3.7
 ------
 
