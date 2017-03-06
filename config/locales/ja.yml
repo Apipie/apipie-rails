@@ -1,0 +1,31 @@
+ja:
+  apipie:
+    resources: リソース
+    resource: リソース
+    description: 記述
+    no_docs_found: ドキュメントが見つかりませんでした。
+    no_docs_found_descr: あなたのAPIにあう資料が見つかりませんでした。
+    follow_instructions_html: コントローラーをどう説明するのか%{href}を参考にしてください。
+    follow_instructions_href: 具体的な説明
+    oops: おっと！
+    resource_not_found_html: リソース%{resource}が見つかりませんでした。
+    method_not_found_html: リソース%{resource}のためのメソッド%{method}が見つかりませんでした。 .
+    goto_homepage_html: %{href}へ移ります。
+    goto_homepage_href: "%{app_name}APIドキュメントのホームページ"
+    required: 必須
+    optional: 任意
+    nil_allowed: nil可
+    param_name: パラメーター名
+    params: パラメーター
+    examples: 例
+    metadata: メタデータ
+    errors: エラー
+    error_code: エラーコード
+    error_description: エラー説明
+    error_metadata: エラーメタデータ
+    supported_formats: サポートフォーマット
+    enable_javascript_html: %{comments_href}のJavaScriptをオンにしてください。
+    comments_powered_by_disqus: %{disqus}によるコメント
+    api_documentation: APIドキュメント
+    headers: ヘッダー
+    header_name: ヘッダー名
