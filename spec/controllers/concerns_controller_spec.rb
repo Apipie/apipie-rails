@@ -13,7 +13,7 @@ describe ConcernsController do
   end
 
   it "should pass if required parameter is missing" do
-    expect { get :show, :id => '5' }.not_to raise_error
+    expect { get :show, :params => { :id => '5' } }.not_to raise_error
   end
 
   it "peserved the order of methods being defined in file" do

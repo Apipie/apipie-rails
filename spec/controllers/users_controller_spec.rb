@@ -71,7 +71,7 @@ describe UsersController do
       end
 
       it "should pass if required parameter is missing" do
-        expect { get :show, :id => 5 }.not_to raise_error
+        expect { get :show, :params => { :id => 5 } }.not_to raise_error
       end
 
     end
@@ -205,7 +205,7 @@ describe UsersController do
           end
 
           it "should work with Hash validator" do
-            post :create, :user => { :name => "root", :pass => "12345", :membership => "standard" }
+            post :create, params: { :user => { :name => "root", :pass => "12345", :membership => "standard" } }
             assert_response :success
 
             a = Apipie[UsersController, :create]
@@ -219,18 +219,18 @@ describe UsersController do
             hash_params[2].name == :membership
 
             expect {
-              post :create, :user => { :name => "root", :pass => "12345", :membership => "____" }
+              post :create, :params => { :user => { :name => "root", :pass => "12345", :membership => "____" } }
             }.to raise_error(Apipie::ParamInvalid, /membership/)
 
             expect {
-              post :create, :user => { :name => "root" }
+              post :create, :params => { :user => { :name => "root" } }
             }.to raise_error(Apipie::ParamMissing, /pass/)
 
             expect {
-              post :create, :user => "a string is not a hash"
+              post :create, :params => { :user => "a string is not a hash" }
             }.to raise_error(Apipie::ParamInvalid, /user/)
 
-            post :create, :user => { :name => "root", :pass => "pwd" }
+            post :create, :params => { :user => { :name => "root", :pass => "pwd" } }
             assert_response :success
           end
 
@@ -251,23 +251,27 @@ describe UsersController do
 
           it "should allow nil when allow_nil is set to true" do
             post :create,
-                 :user => {
-                   :name => "root",
-                   :pass => "12345",
-                   :membership => "standard",
-                 },
-                 :facts => { :test => 'test' }
+                 :params => {
+                   :user => {
+                     :name => "root",
+                     :pass => "12345",
+                     :membership => "standard",
+                   },
+                   :facts => { :test => 'test' }
+                 }
             assert_response :success
           end
 
           it "should allow blank when allow_blank is set to true" do
             post :create,
-              :user => {
-                :name => "root",
-                :pass => "12345",
-                :membership => "standard"
-              },
-              :age => ""
+              :params => {
+                :user => {
+                  :name => "root",
+                  :pass => "12345",
+                  :membership => "standard"
+                },
+                :age => ""
+              }
             assert_response :success
           end
 
@@ -276,7 +280,7 @@ describe UsersController do
             context "with valid input" do
               it "should succeed" do
                 put :update,
-                    {
+                    :params => {
                       :id => 5,
                       :user => {
                         :name => "root",
@@ -319,7 +323,7 @@ describe UsersController do
             end
             it "should work with empty array" do
               put :update,
-                  {
+                  :params => {
                     :id => 5,
                     :user => {
                       :name => "root",
@@ -567,7 +571,7 @@ describe UsersController do
                           :expected_type=>"string"},
                          {:required=>true,
                           :allow_nil => false,
-                          :allow_blank => false,   
+                          :allow_blank => false,
                           :validator=>"Must be a String",
                           :description=>"\n<p>Password for login</p>\n",
                           :name=>"apassword", :full_name=>"resource_param[apassword]",
@@ -709,13 +713,13 @@ EOS2
     end
 
     it "process correctly the parameters" do
-      post :create, :user => {:name => 'dummy', :pass => 'dummy', :membership => 'standard' }, :facts => {:test => 'test'}
+      post :create, :params => {:user => {:name => 'dummy', :pass => 'dummy', :membership => 'standard' }, :facts => {:test => 'test'}}
 
       expect(assigns(:api_params).with_indifferent_access).to eq({:user => {:name=>"dummy", :pass=>"dummy", :membership=>"standard"}, :facts => {:test => 'test'}}.with_indifferent_access)
     end
 
     it "ignore not described parameters" do
-      post :create, {:user => {:name => 'dummy', :pass => 'dummy', :membership => 'standard', :id => 0}}
+      post :create, :params => {:user => {:name => 'dummy', :pass => 'dummy', :membership => 'standard', :id => 0}}
 
       expect(assigns(:api_params).with_indifferent_access).to eq({:user => {:name=>"dummy", :pass=>"dummy", :membership=>"standard"}}.with_indifferent_access)
     end
