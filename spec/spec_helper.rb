@@ -11,12 +11,8 @@ require 'apipie-rails'
 
 module Rails4Compatibility
   module Testing
-    def process_with_rails4_compat(*args)
-      compatible_request(*args) { |*new_args| process_without_rails4_compat(*new_args) }
-    end
-
-    def self.included(base)
-      base.alias_method_chain :process, :rails4_compat
+    def process(*args)
+      compatible_request(*args) { |*new_args| super(*new_args) }
     end
 
     def compatible_request(method, action, hash = {})
@@ -71,5 +67,4 @@ RSpec.configure do |config|
 end
 
 require 'action_controller/test_case.rb'
-# TODO: replace with prepend once we deprecate ruby 2.0.0
-ActionController::TestCase::Behavior.send(:include, Rails4Compatibility::Testing)
+ActionController::TestCase::Behavior.send(:prepend, Rails4Compatibility::Testing)
