@@ -78,19 +78,24 @@ module Apipie
         %w[title verb path versions query request_data response_data code show_in_doc recorded].each do |k|
           next unless call.has_key?(k)
           ordered_call[k] = case call[k]
-                       when ActiveSupport::HashWithIndifferentAccess
-                         # UploadedFiles break the to_json call, turn them into a string so they don't break
-                         call[k].each do |pkey, pval|
-                           if (pval.is_a?(Rack::Test::UploadedFile) || pval.is_a?(ActionDispatch::Http::UploadedFile))
-                             call[k][pkey] = "<FILE CONTENT '#{pval.original_filename}'>"
-                           end
-                         end
-                         JSON.parse(call[k].to_json) # to_hash doesn't work recursively and I'm too lazy to write the recursion:)
-                       else
-                         call[k]
-                       end
-        end
+                     when ActiveSupport::HashWithIndifferentAccess
+                       convert_file_value(call[k]).to_hash
+                     else
+                       call[k]
+                     end
+      end
         return ordered_call
+      end
+
+      def convert_file_value hash
+        hash.each do |k, v|
+          if (v.is_a?(Rack::Test::UploadedFile) || v.is_a?(ActionDispatch::Http::UploadedFile))
+            hash[k] = "<FILE CONTENT '#{v.original_filename}'>"
+          elsif v.is_a?(Hash)
+            hash[k] = convert_file_value(v)
+          end
+        end
+        hash
       end
 
       def load_recorded_examples
@@ -131,7 +136,7 @@ module Apipie
             new_example[:title] ||= old_example["title"] if old_example["title"].present?
           end
           new_example
-        end 
+        end
       end
 
       def load_new_examples
