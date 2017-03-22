@@ -5,7 +5,7 @@ require 'active_support/hash_with_indifferent_access'
 require "apipie/routing"
 require "apipie/markup"
 require "apipie/apipie_module"
-require "apipie/dsl_definition"
+require "apipie/dsl/definition"
 require "apipie/configuration"
 require "apipie/method_description"
 require "apipie/resource_description"
