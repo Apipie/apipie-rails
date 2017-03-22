@@ -21,3 +21,11 @@ require "apipie/version"
 if Rails.version.start_with?("3.0")
   warn 'Warning: apipie-rails is not going to support Rails 3.0 anymore in future versions'
 end
+
+module Apipie
+
+  def self.root
+    @root ||= Pathname.new(File.dirname(File.expand_path(File.dirname(__FILE__), '/../')))
+  end
+
+end
