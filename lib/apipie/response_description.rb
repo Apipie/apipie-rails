@@ -1,12 +1,12 @@
 module Apipie
 
-  class ErrorDescription
+  class ResponseDescription
 
     attr_reader :code, :description, :metadata
 
     def self.from_dsl_data(args)
       code_or_options, desc, options = args
-      Apipie::ErrorDescription.new(code_or_options,
+      Apipie::ResponseDescription.new(code_or_options,
                                    desc,
                                    options)
     end

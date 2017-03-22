@@ -439,12 +439,12 @@ describe UsersController do
     it "should contain possible errors description" do
       a = Apipie.get_method_description(UsersController, :show)
 
-      expect(a.errors[0].code).to eq(500)
-      expect(a.errors[0].description).to include("crashed")
-      expect(a.errors[1].code).to eq(401)
-      expect(a.errors[1].description).to eq("Unauthorized")
-      expect(a.errors[2].code).to eq(404)
-      expect(a.errors[2].description).to eq("Not Found")
+      expect(a.responses[0].code).to eq(500)
+      expect(a.responses[0].description).to include("crashed")
+      expect(a.responses[1].code).to eq(401)
+      expect(a.responses[1].description).to eq("Unauthorized")
+      expect(a.responses[2].code).to eq(404)
+      expect(a.responses[2].description).to eq("Not Found")
     end
 
     it "should contain all params description" do
@@ -522,7 +522,7 @@ describe UsersController do
     it "should be described by valid json" do
       json = Apipie[UsersController, :two_urls].to_json
       expected_hash = {
-        :errors => [{:code=>404, :description=>"Missing", :metadata => {:some => "metadata"}},
+        :responses => [{:code=>404, :description=>"Missing", :metadata => {:some => "metadata"}},
                     {:code=>500, :description=>"Server crashed for some <%= reason %>"}],
         :examples => [],
         :doc_url => "#{Apipie.configuration.doc_base_url}/development/users/two_urls",
@@ -567,7 +567,7 @@ describe UsersController do
                           :expected_type=>"string"},
                          {:required=>true,
                           :allow_nil => false,
-                          :allow_blank => false,   
+                          :allow_blank => false,
                           :validator=>"Must be a String",
                           :description=>"\n<p>Password for login</p>\n",
                           :name=>"apassword", :full_name=>"resource_param[apassword]",

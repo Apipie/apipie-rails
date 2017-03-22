@@ -23,10 +23,10 @@ module Apipie
          :api               => false,
          :api_args          => [],
          :api_from_routes   => nil,
-         :errors            => [],
+         :responses         => [],
          :params            => [],
          :headers           => [],
-         :resource_id        => nil,
+         :resource_id       => nil,
          :short_description => nil,
          :description       => nil,
          :examples          => [],
@@ -192,19 +192,27 @@ module Apipie
       end
 
 
-      # Describe possible errors
+      # Describe possible responses
       #
       # Example:
-      #   error :desc => "speaker is sleeping", :code => 500, :meta => [:some, :more, :data]
-      #   error 500, "speaker is sleeping"
+      #   response :desc => "speaker is sleeping", :code => 500, :meta => [:some, :more, :data]
+      #   response 500, "speaker is sleeping"
       #   def hello_world
       #     return 500 if self.speaker.sleeping?
       #     puts "hello world"
       #   end
       #
-      def error(code_or_options, desc=nil, options={}) #:doc:
+      def response(code_or_options, desc=nil, options={}) #:doc:
         return unless Apipie.active_dsl?
-        _apipie_dsl_data[:errors] << [code_or_options, desc, options]
+        _apipie_dsl_data[:responses] << [code_or_options, desc, options]
+      end
+
+      def error(code_or_options, desc=nil, options={})
+        response(code_or_options, desc, options)
+      end
+
+      def success(code_or_options, desc=nil, options={})
+        response(code_or_options, desc, options)
       end
 
       def _apipie_define_validators(description)
