@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'rake tasks' do
+describe 'rake render' do
   include_context "rake"
 
   let(:doc_path)  { "user_specified_doc_path" }
@@ -11,7 +11,7 @@ describe 'rake tasks' do
     subject.invoke(*task_args)
   end
 
-  describe 'static pages' do
+  describe 'html pages' do
 
     let(:apidoc_html) do
       File.read("#{doc_output}.html")
@@ -22,11 +22,11 @@ describe 'rake tasks' do
     end
 
     after do
-      Dir["#{doc_output}*"].each { |static_file| FileUtils.rm_rf(static_file) }
+      Dir["#{doc_output}*"].each { |html_file| FileUtils.rm_rf(html_file) }
     end
 
-    describe 'apipie:static' do
-      it "generates static files for the default version of apipie docs" do
+    describe 'apipie:render:html' do
+      it "generates html files for the default version of apipie docs" do
         expect(apidoc_html).to match(/Test app #{Apipie.configuration.default_version}/)
       end
 
@@ -36,8 +36,8 @@ describe 'rake tasks' do
       end
     end
 
-    describe 'apipie:static[2.0]' do
-      it "generates static files for the default version of apipie docs" do
+    describe 'apipie:render:html[2.0]' do
+      it "generates html files for the default version of apipie docs" do
         expect(apidoc_html).to match(/Test app 2.0/)
       end
 
@@ -48,24 +48,4 @@ describe 'rake tasks' do
     end
   end
 
-  describe 'apipie:cache' do
-    let(:cache_output) do
-      File.join(::Rails.root, 'public', 'apipie-cache')
-    end
-
-    let(:apidoc_html) do
-      File.read("#{cache_output}.html")
-    end
-
-    after do
-      Dir["#{cache_output}*"].each { |static_file| FileUtils.rm_rf(static_file) }
-    end
-
-    it "generates cache files" do
-      expect(File).to exist(File.join(cache_output, 'apidoc.html'))
-      expect(File).to exist(File.join(cache_output, 'apidoc/development.html'))
-      expect(File).to exist(File.join(cache_output, 'apidoc/development/users.html'))
-
-    end
-  end
 end
