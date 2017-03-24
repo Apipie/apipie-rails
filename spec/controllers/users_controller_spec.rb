@@ -243,6 +243,7 @@ describe UsersController do
                                   :required => false,
                                   :allow_nil => true,
                                   :allow_blank => false,
+                                  :allowed => [],
                                   :metadata => nil,
                                   :show => true,
                                   :expected_type => "hash",
