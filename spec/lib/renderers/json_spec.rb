@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'pry'
 
 describe 'rake render' do
   include_context "rake"
@@ -32,7 +31,6 @@ describe 'rake render' do
 
     describe 'apipie:render:json' do
       it "generates json files for the default version of apipie docs" do
-        binding.pry
         expect(File).to exist(json_path)
         expect(json_doc['docs']['name']).to match(/Test app/)
         expect(json_doc['docs']['info']).to match(/#{Apipie.configuration.default_version}/)

@@ -65,17 +65,17 @@ module Apipie
       #     puts "hello world"
       #   end
       #
-      def response(code_or_options, desc=nil, options={}) #:doc:
+      def response(code, example=nil, options={}) #:doc:
         return unless Apipie.active_dsl?
-        _apipie_dsl_data[:responses] << [code_or_options, desc, options]
+        _apipie_dsl_data[:responses] << [code, example, options]
       end
 
-      def error(code_or_options, desc=nil, options={})
-        response(code_or_options, desc, options)
+      def error(code, example=nil, options={})
+        response(code, example, options)
       end
 
-      def success(code_or_options, desc=nil, options={})
-        response(code_or_options, desc, options)
+      def success(code, example=nil, options={})
+        response(code, example, options)
       end
 
       def _apipie_define_validators(description)

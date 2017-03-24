@@ -2,7 +2,7 @@ module Apipie
 
   class ResponseDescription
 
-    attr_reader :code, :description, :metadata
+    attr_reader :code, :body, :metadata, :headers
 
     def self.from_dsl_data(args)
       code_or_options, desc, options = args
@@ -11,23 +11,23 @@ module Apipie
                                    options)
     end
 
-    def initialize(code_or_options, desc=nil, options={})
-      if code_or_options.is_a? Hash
-        code_or_options.symbolize_keys!
-        @code = code_or_options[:code]
-        @metadata = code_or_options[:meta]
-        @description = code_or_options[:desc] || code_or_options[:description]
+    def initialize(code, body=nil, options={})
+      if !code.is_a? Numeric
+        warn "First argument must be a response code (Integer)"
       else
-        @code = code_or_options
+        options.symbolize_keys!
+        @headers = options[:headers]
+        @body = body
+        @code = code
         @metadata = options[:meta]
-        @description = desc
       end
     end
 
     def to_json
       {
         :code => code,
-        :description => description,
+        :headers => headers,
+        :body => body,
         :metadata => metadata
       }
     end
