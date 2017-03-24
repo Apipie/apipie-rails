@@ -27,7 +27,8 @@ module Apipie
       end
 
       def to_html(text)
-        Maruku.new(text).to_html
+        # Maruku.new(text).to_html
+        text
       end
 
     end

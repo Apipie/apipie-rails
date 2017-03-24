@@ -1,0 +1,18 @@
+<%-
+  first_api = action[:apis].try(:first) || {}
+-%>
+## <%= action[:name] == "index" ? "List" : action[:name].capitalize %> [<%= [first_api[:http_method], first_api[:api_url]].join(' ') %>]
+<%= first_api[:short_description] %>
+
++ Request (application/json)
+    + Attributes
+      <%-
+        action[:params].each do |p| -%>
+          <%= render(:partial => "param", :locals => {:param => p, :action => action}) %>
+      <%-
+        end
+      -%>
+
+<%- action[:responses].each do |r| -%>
+<%= render(:partial => 'response', :locals => {:response => r, :action => action}) %>
+<%- end -%>

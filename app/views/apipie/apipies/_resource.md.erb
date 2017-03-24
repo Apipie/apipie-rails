@@ -1,0 +1,8 @@
+# Group <%= resource[:name].titlecase %>
+<%= raw resource[:short_description] %>
+<%= raw resource[:full_description] unless resource[:full_description].blank? %>
+<%= render(:partial => 'headers', :locals => { headers: resource[:headers], h_level: 2 }) %>
+<%- resource[:methods].each do |a| -%>
+  <% next if !a[:show] %>
+<%= render(:partial => "action", :locals => {:action => a, :resource => resource.except(:methods)}) -%>
+<%- end -%>

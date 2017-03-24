@@ -1,0 +1,5 @@
+<%-
+	meta = [param[:expected_type], param[:required] ? 'required' : 'optional'].compact.join(', ')
+	allowed_params = param[:allowed] ? ':' + param[:allowed].join(', ') : nil
+-%>
+- <%= ["`#{param[:full_name]}`", allowed_params, "(#{meta})", param[:description]].compact.join(' ') %>
