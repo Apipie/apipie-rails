@@ -103,6 +103,6 @@ class Apipie::Validator::IntegerValidator < Apipie::Validator::BaseValidator
   end
 
   def expected_type
-    'numeric'
+    'number'
   end
 end

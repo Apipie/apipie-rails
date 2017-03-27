@@ -20,9 +20,9 @@ describe Apipie::Validator do
 
     context "expected type" do
 
-      it "should return hash for type Hash" do
+      it "should return object for type Hash" do
         validator = Apipie::Validator::TypeValidator.new(params_desc, Hash)
-        expect(validator.expected_type).to eq('hash')
+        expect(validator.expected_type).to eq('object')
       end
 
       it "should return array for type Array" do
@@ -30,9 +30,9 @@ describe Apipie::Validator do
         expect(validator.expected_type).to eq('array')
       end
 
-      it "should return numeric for type Numeric" do
+      it "should return number for type Numeric" do
         validator = Apipie::Validator::TypeValidator.new(params_desc, Numeric)
-        expect(validator.expected_type).to eq('numeric')
+        expect(validator.expected_type).to eq('number')
       end
 
       it "should return string by default" do

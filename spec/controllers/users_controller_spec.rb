@@ -246,7 +246,7 @@ describe UsersController do
                                   :allowed => [],
                                   :metadata => nil,
                                   :show => true,
-                                  :expected_type => "hash",
+                                  :expected_type => 'object',
                                   :validations => [])
           end
 
@@ -522,80 +522,109 @@ describe UsersController do
 
     it "should be described by valid json" do
       json = Apipie[UsersController, :two_urls].to_json
-      expected_hash = {
-        :responses => [{:code=>404, :body=>"Not Found", :metadata => {:some => "metadata"}},
-                    {:code=>500, :body=>"Server crashed for some <%= reason %>"}],
-        :examples => [],
-        :doc_url => "#{Apipie.configuration.doc_base_url}/development/users/two_urls",
-        :formats=>["json"],
-        :full_description => '',
-        :params => [{:full_name=>"oauth",
-                     :required=>false,
-                     :allow_nil => false,
-                     :allow_blank => false,
-                     :validator=>"Must be a String",
-                     :description=>"\n<p>Authorization</p>\n",
-                     :name=>"oauth",
-                     :show=>true,
-                     :expected_type=>"string"},
-                    {:validator=>"Must be a Hash",
-                     :description=>"\n<p>Deprecated parameter not documented</p>\n",
-                     :expected_type=>"hash",
-                     :allow_nil=>false,
-                     :allow_blank => false,
-                     :name=>"legacy_param",
-                     :required=>false,
-                     :full_name=>"legacy_param",
-                     :show=>false,
-                     :params=>
-                      [{:validator=>"Must be a Hash",
-                        :description=>"\n<p>Param description for all methods</p>\n",
-                        :expected_type=>"hash",
-                        :allow_nil=>false,
-                       :allow_blank => false,
-                        :name=>"resource_param",
-                        :required=>false,
-                        :full_name=>"resource_param",
-                        :show=>true,
-                        :params=>
-                        [{:required=>true,
-                          :allow_nil => false,
-                          :allow_blank => false,
-                          :validator=>"Must be a String",
-                          :description=>"\n<p>Username for login</p>\n",
-                          :name=>"ausername", :full_name=>"resource_param[ausername]",
-                          :show=>true,
-                          :expected_type=>"string"},
-                         {:required=>true,
-                          :allow_nil => false,
-                          :allow_blank => false,
-                          :validator=>"Must be a String",
-                          :description=>"\n<p>Password for login</p>\n",
-                          :name=>"apassword", :full_name=>"resource_param[apassword]",
-                          :show=>true,
-                          :expected_type=>"string"}
-                        ]}
-                      ]
-                    },
-                    {:required=>false, :validator=>"Parameter has to be Integer.",
-                     :allow_nil => false,
-                     :allow_blank => false,
-                     :description=>"\n<p>Company ID</p>\n",
-                     :name=>"id", :full_name=>"id",
-                     :show=>true,
-                     :expected_type=>"numeric"},
-       ],
-        :name => 'two_urls',
-        :show => true,
-        :apis => [
+      expected_hash = expected_hash = {
+        responses: [
           {
-            :http_method => 'GET',
-            :short_description => 'Get company users',
-            :api_url => "#{Apipie.api_base_url}/company_users"
-          },{
-            :http_method => 'GET',
-            :short_description => 'Get users working in given company',
-            :api_url =>"#{Apipie.api_base_url}/company/:id/users"
+            code: 404,
+            body: 'Not Found',
+            metadata:
+            {
+              some: 'metadata'
+            }
+          },
+          {
+            code: 500,
+            body: 'Server crashed for some <%= reason %>'
+          }
+        ],
+        examples: [],
+        doc_url: "#{Apipie.configuration.doc_base_url}/development/users/two_urls",
+        formats: ['json'],
+        full_description: '',
+        params: [
+          {
+            full_name: 'oauth',
+            required: false,
+            allow_nil: false,
+            allow_blank: false,
+            validator: 'Must be a String',
+            description: "\n<p>Authorization</p>\n",
+            name: 'oauth',
+            show: true,
+            expected_type: 'string'
+          },
+          {
+            validator: 'Must be a Hash',
+            description: "\n<p>Deprecated parameter not documented</p>\n",
+            expected_type: 'object',
+            allow_nil: false,
+            allow_blank: false,
+            name: 'legacy_param',
+            required: false,
+            full_name: 'legacy_param',
+            show: false,
+            params: [
+              {
+                validator: 'Must be a Hash',
+                description: "\n<p>Param description for all methods</p>\n",
+                expected_type: 'object',
+                allow_nil: false,
+                allow_blank: false,
+                name: 'resource_param',
+                required: false,
+                full_name: 'resource_param',
+                show: true,
+                params: [
+                  {
+                    required: true,
+                    allow_nil: false,
+                    allow_blank: false,
+                    validator: 'Must be a String',
+                    description: "\n<p>Username for login</p>\n",
+                    name: 'ausername',
+                    full_name: 'resource_param[ausername]',
+                    show: true,
+                    expected_type: 'string'
+                  },
+                  {
+                    required: true,
+                    allow_nil: false,
+                    allow_blank: false,
+                    validator: 'Must be a String',
+                    description: "\n<p>Password for login</p>\n",
+                    name: 'apassword',
+                    full_name: 'resource_param[apassword]',
+                    show: true,
+                    expected_type: 'string'
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            required: false,
+            validator: 'Parameter has to be Integer.',
+            allow_nil: false,
+            allow_blank: false,
+            description: "\n<p>Company ID</p>\n",
+            name: 'id',
+            full_name: 'id',
+            show: true,
+            expected_type: 'number'
+          }
+        ],
+        name: 'two_urls',
+        show: true,
+        apis: [
+          {
+            http_method: 'GET',
+            short_description: 'Get company users',
+            api_url: "#{Apipie.api_base_url}/company_users"
+          },
+          {
+            http_method: 'GET',
+            short_description: 'Get users working in given company',
+            api_url: "#{Apipie.api_base_url}/company/:id/users"
           }
         ]
       }
