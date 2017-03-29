@@ -1,0 +1,11 @@
+FORMAT: 1A
+DOC_HOST: <%= @doc[:doc_url].html_safe %>
+API_HOST: <%= @doc[:api_url].html_safe %>
+
+# <%= @doc[:name].html_safe %>
+<%= @doc[:info].html_safe %>
+<%= @doc[:copyright].html_safe %>
+
+<%- @doc[:resources].sort_by(&:first).each do |key, resource| -%>
+<%= render(partial: "resource", locals: {resource: resource}) -%>
+<%- end -%>

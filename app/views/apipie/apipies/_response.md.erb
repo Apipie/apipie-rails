@@ -1,0 +1,11 @@
++ Response <%= response[:code] %> (application/vnd.api+json)
+
+<%=
+  if response[:body]
+  	begin
+      JSON.pretty_generate(response[:body]).gsub(/^/, '        ')
+    rescue JSON::GeneratorError => e
+      response[:body].html_safe
+    end
+  end
+-%>

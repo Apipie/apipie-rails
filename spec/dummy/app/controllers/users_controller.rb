@@ -12,7 +12,7 @@ class UsersController < ApplicationController
       end
     end
     api_version "development"
-    error 404, "Missing", :meta => {:some => "metadata"}
+    error 404, "Not Found", :meta => {:some => "metadata"}
     error 500, "Server crashed for some <%= reason %>"
     meta :new_style => true, :author => { :name => 'John', :surname => 'Doe' }
     description <<-EOS
@@ -172,7 +172,7 @@ class UsersController < ApplicationController
   show false
   formats ['json', 'jsonp']
   error 401, "Unauthorized"
-  error :code => 404, :description => "Not Found"
+  error 404, "Not Found"
   param :id, Integer, :desc => "user id", :required => true
   param :session, String, :desc => "user is logged in", :required => true, :missing_message => lambda { "session_parameter_is_required" }
   param :regexp_param, /^[0-9]* years/, :desc => "regexp param"
@@ -242,8 +242,8 @@ class UsersController < ApplicationController
   end
 
   api :GET, "/users", "List users"
-  error :code => 401, :desc => "Unauthorized"
-  error :code => 404, :desc => "Not Found"
+  error 401, "Unauthorized"
+  error 404, "Not Found"
   desc "List all users."
   param :oauth, nil,
         :desc => "Hide this global param (eg dont need auth here)"

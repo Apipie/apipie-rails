@@ -30,8 +30,8 @@ module Apipie
       desc = dsl_data[:description] || ''
       @full_description = Apipie.markup_to_html(desc)
 
-      @errors = dsl_data[:errors].map do |args|
-        Apipie::ErrorDescription.from_dsl_data(args)
+      @responses = dsl_data[:responses].map do |args|
+        Apipie::ResponseDescription.from_dsl_data(args)
       end
 
       @see = dsl_data[:see].map do |args|
@@ -81,21 +81,21 @@ module Apipie
       all_params.find_all(&:validator)
     end
 
-    def errors
-      return @merged_errors if @merged_errors
-      @merged_errors = []
+    def responses
+      return @merged_responses if @merged_responses
+      @merged_responses = []
       if @resource
-        resource_errors = @resource._errors_args.map do |args|
-          Apipie::ErrorDescription.from_dsl_data(args)
+        resource_responses = @resource._responses_args.map do |args|
+          Apipie::ResponseDescription.from_dsl_data(args)
         end
 
-        # exclude overwritten parent errors
-        @merged_errors = resource_errors.find_all do |err|
-          !@errors.any? { |e| e.code == err.code }
+        # exclude overwritten parent responses
+        @merged_responses = resource_responses.find_all do |response|
+          !@responses.any? { |r| r.code == response.code }
         end
       end
-      @merged_errors.concat(@errors)
-      return @merged_errors
+      @merged_responses.concat(@responses)
+      return @merged_responses
     end
 
     def version
@@ -145,7 +145,7 @@ module Apipie
         :apis => method_apis_to_json(lang),
         :formats => formats,
         :full_description => Apipie.app.translate(@full_description, lang),
-        :errors => errors.map(&:to_json),
+        :responses => responses.map(&:to_json),
         :params => params_ordered.map{ |param| param.to_json(lang) }.flatten,
         :examples => @examples,
         :metadata => @metadata,

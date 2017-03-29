@@ -13,14 +13,14 @@ module Apipie
   class ResourceDescription
 
     attr_reader :controller, :_short_description, :_full_description, :_methods, :_id,
-      :_path, :_name, :_params_args, :_errors_args, :_formats, :_parent, :_metadata,
+      :_path, :_name, :_params_args, :_responses_args, :_formats, :_parent, :_metadata,
       :_headers
 
     def initialize(controller, resource_name, dsl_data = nil, version = nil, &block)
 
       @_methods = ActiveSupport::OrderedHash.new
       @_params_args = []
-      @_errors_args = []
+      @_responses_args = []
 
       @controller = controller
       @_id = resource_name
@@ -37,7 +37,7 @@ module Apipie
       @_short_description = dsl_data[:short_description]
       @_path = dsl_data[:path] || ""
       @_formats = dsl_data[:formats]
-      @_errors_args = dsl_data[:errors]
+      @_responses_args = dsl_data[:responses]
       @_params_args = dsl_data[:params]
       @_metadata = dsl_data[:meta]
       @_api_base_url = dsl_data[:api_base_url]
@@ -82,7 +82,12 @@ module Apipie
       Apipie.full_url crumbs.join('/')
     end
 
-    def api_url; "#{Apipie.api_base_url(_version)}#{@_path}"; end
+    def api_url
+      crumbs = []
+      crumbs << @_api_base_url
+      crumbs << @_id
+      crumbs.join('/')
+    end
 
     def valid_method_name?(method_name)
       @_methods.keys.map(&:to_s).include?(method_name.to_s)

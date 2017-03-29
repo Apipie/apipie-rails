@@ -8,7 +8,7 @@ module Apipie
   # validator - Validator::BaseValidator subclass
   class ParamDescription
 
-    attr_reader :method_description, :name, :desc, :allow_nil, :allow_blank, :validator, :options, :metadata, :show, :as, :validations
+    attr_reader :method_description, :name, :desc, :allowed, :allow_nil, :allow_blank, :validator, :options, :metadata, :show, :as, :validations
     attr_accessor :parent, :required
 
     def self.from_dsl_data(method_description, args)
@@ -43,6 +43,8 @@ module Apipie
       @name = concern_subst(name)
       @as = options[:as] || @name
       @desc = preformat_text(@options[:desc])
+
+      @allowed = Array === validator ? @options[:allowed] : []
 
       @parent = @options[:parent]
       @metadata = @options[:meta]
@@ -126,6 +128,7 @@ module Apipie
                :required => required,
                :allow_nil => allow_nil,
                :allow_blank => allow_blank,
+               :allowed => allowed,
                :validator => validator.to_s,
                :expected_type => validator.expected_type,
                :metadata => metadata,

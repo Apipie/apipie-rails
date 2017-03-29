@@ -109,7 +109,7 @@ module Apipie
       end
 
       def transformation_hash(method)
-        method[:params].find_all { |p| p[:expected_type] == "hash" && !p[:params].nil? }.reduce({ }) do |h, p|
+        method[:params].find_all { |p| p[:expected_type] == "object" && !p[:params].nil? }.reduce({ }) do |h, p|
           h.update(p[:name] => p[:params].map { |pp| pp[:name] })
         end
       end

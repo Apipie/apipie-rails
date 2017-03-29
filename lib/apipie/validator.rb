@@ -101,11 +101,11 @@ module Apipie
 
       def expected_type
         if @type.ancestors.include? Hash
-          'hash'
+          'object'
         elsif @type.ancestors.include? Array
           'array'
         elsif @type.ancestors.include? Numeric
-          'numeric'
+          'number'
         else
           'string'
         end
@@ -331,7 +331,7 @@ module Apipie
       end
 
       def expected_type
-        'hash'
+        'object'
       end
 
       # where the group definition should be looked up when no scope

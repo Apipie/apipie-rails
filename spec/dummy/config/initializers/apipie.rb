@@ -50,7 +50,7 @@ Apipie.configure do |config|
   # set default version info, to describe specific version use
   # config.app_info[version] = description
   # or put this in your base or application controller
-  config.app_info = "Dummy app for testing"
+  config.app_info = "Dummy app for development"
 
   # show debug informations
   config.debug = false
@@ -103,6 +103,6 @@ class Apipie::Validator::IntegerValidator < Apipie::Validator::BaseValidator
   end
 
   def expected_type
-    'numeric'
+    'number'
   end
 end
