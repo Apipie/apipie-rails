@@ -115,8 +115,8 @@ module Apipie
     def get_format
       [:resource, :method, :version].each do |par|
         if params[par]
-          params[:format] = :html unless params[par].sub!('.html', '').nil?
-          params[:format] = :json unless params[par].sub!('.json', '').nil?
+          params[:format] = :html if params[par].to_s.end_with?('.html')
+          params[:format] = :json if params[par].to_s.end_with?('.json')
         end
       end
       request.format = params[:format] if params[:format]
