@@ -424,7 +424,7 @@ module Apipie
     # as this would break loading of the controllers.
     def rails_mark_classes_for_reload
       unless Rails.application.config.cache_classes
-        Rails.application.reloader.cleanup!
+        Rails.application.reloader.reload!
         init_env
         reload_examples
         Rails.application.reloader.prepare!
