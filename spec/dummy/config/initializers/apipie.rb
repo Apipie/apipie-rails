@@ -6,7 +6,7 @@ Apipie.configure do |config|
   # can be overriden in resource_description
   # by default is it 1.0 if not specified anywhere
   # this must be defined before api_base_url and app_info
-  config.default_version = "development"
+  config.default_version = "development".freeze
 
   config.doc_base_url = "/apidoc"
 
