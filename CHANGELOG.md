@@ -2,6 +2,16 @@
  Changelog
 ===========
 
+v0.5.0
+------
+
+- Fix Rails 5.1 deprecations [\#530](https://github.com/Apipie/apipie-rails/pull/530) ([@Onumis](https://github.com/Onumis) [@sedx](https://github.com/sedx))
+  - **This release is no longer compatible with Ruby 1.9.x**
+- Do not mutate strings passed as config options, fixes \#461 [\#537](https://github.com/Apipie/apipie-rails/pull/537) ([samphilipd](https://github.com/samphilipd))
+- Added recursion for documentation, fixed bug in examples with paperclip [\#531](https://github.com/Apipie/apipie-rails/pull/531) ([blddmnd](https://github.com/blddmnd))
+- Added locales/ja.yml for Japanese [\#529](https://github.com/Apipie/apipie-rails/pull/529) ([kikuchi0808](https://github.com/kikuchi0808))
+
+
 v0.4.0
 ------
 
