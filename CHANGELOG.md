@@ -1,6 +1,12 @@
  Changelog
 ===========
 
+v0.5.1
+------
+
+- Use AD::Reloader on Rails 4, app.reloader only on Rails 5+ [\#541](https://github.com/Apipie/apipie-rails/pull/541) ([domcleal](https://github.com/domcleal))
+- Recognize Rack Symbols as Status Codes [\#468](https://github.com/Apipie/apipie-rails/pull/468)([alex-tan](https://github.com/alex-tan))
+
 v0.5.0
 ------
 
