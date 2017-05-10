@@ -49,6 +49,7 @@ module Apipie
       end
       @params_ordered = ParamDescription.unify(@params_ordered)
       @headers = dsl_data[:headers]
+      @headers = all_headers
 
       @show = if dsl_data.has_key? :show
         dsl_data[:show]
@@ -79,6 +80,24 @@ module Apipie
 
       merge_params(all_params, @params_ordered)
       all_params.find_all(&:validator)
+    end
+
+    def all_headers
+      all_headers = []
+      parent = Apipie.get_resource_description(@resource.controller.superclass)
+      # get params from parent resource description
+      [parent, @resource].compact.each do |resource|
+        resource_headers = resource._headers
+        merge_headers(all_headers, resource_headers)
+      end
+
+      merge_headers(all_headers, @headers)
+    end
+
+    def merge_headers(headers, new_headers)
+      new_header_names = Set.new(new_headers.map{ |h| h[:name] })
+      headers.delete_if { |h| new_header_names.include?(h[:name]) }
+      headers.concat(new_headers)
     end
 
     def errors

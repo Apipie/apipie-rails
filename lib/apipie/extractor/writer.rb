@@ -127,7 +127,18 @@ module Apipie
           new_example_ordered = ordered_call(new_example.dup)
 
           # Comparing verb, versions and query
-          if old_example = old_examples.find{ |old_example| old_example["verb"] == new_example_ordered["verb"] && old_example["versions"] == new_example_ordered["versions"] && old_example["query"] == new_example_ordered["query"]}
+          filtered_old_examples = old_examples.find_all{ |old_example| old_example["verb"] == new_example_ordered["verb"] && old_example["versions"] == new_example_ordered["versions"] && old_example["query"] == new_example_ordered["query"]}
+          if filtered_old_examples.any?
+            most_intersections = 0
+            most_similar = filtered_old_examples[0]
+            filtered_old_examples.each do |old|
+              intersection = (old.deep_symbolize_keys.to_a & new_example.deep_symbolize_keys.to_a).length
+              if intersection > most_intersections
+                most_intersections = intersection
+                most_similar = old
+              end
+            end
+            old_example = most_similar
 
             # Take the 'show in doc' attribute from the old example if it is present and the configuration requests the value to be persisted.
             new_example[:show_in_doc] = old_example["show_in_doc"] if Apipie.configuration.persist_show_in_doc && old_example["show_in_doc"].to_i > 0
