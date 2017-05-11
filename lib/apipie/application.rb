@@ -405,6 +405,9 @@ module Apipie
 
     def load_controller_from_file(controller_file)
       controller_class_name = controller_file.gsub(/\A.*\/app\/controllers\//,"").gsub(/\.\w*\Z/,"").camelize
+      Apipie.configuration.custom_class_name.each do |k, v|
+        controller_class_name.gsub!(k, v)
+      end
       controller_class_name.constantize
     end
 
