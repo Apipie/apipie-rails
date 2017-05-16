@@ -221,7 +221,7 @@ module Apipie
     end
 
     def preformat_text(text)
-      concern_subst(Apipie.markup_to_html(text || ''))
+      concern_subst(text || '')
     end
 
     def is_required?
