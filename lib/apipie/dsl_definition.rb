@@ -107,9 +107,9 @@ module Apipie
 
       # Show some example of what does the described
       # method return.
-      def example(example) #:doc:
+      def example(example = nil, &block) #:doc:
         return unless Apipie.active_dsl?
-        _apipie_dsl_data[:examples] << example.strip_heredoc
+        _apipie_dsl_data[:examples] << (block_given? ? block : example)
       end
 
       # Determine if the method should be included
