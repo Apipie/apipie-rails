@@ -100,17 +100,14 @@ namespace :apipie do
   # Attempt to use the Rails application views, otherwise default to built in views
   def renderer
     return @apipie_renderer if @apipie_renderer
-    base_path = if File.directory?("#{Rails.root}/app/views/apipie/apipies")
-                  "#{Rails.root}/app/views/apipie/apipies"
-                else
-                  File.expand_path("../../../app/views/apipie/apipies", __FILE__)
-                end
-    layouts_path = if File.directory?("#{Rails.root}/app/views/layouts/apipie")
-                     "#{Rails.root}/app/views/layouts"
-                   else
-                     File.expand_path("../../../app/views/layouts", __FILE__)
-                   end
-    @apipie_renderer = ActionView::Base.new([base_path, layouts_path])
+
+    base_paths = [File.expand_path("../../../app/views/apipie/apipies", __FILE__)]
+    base_paths.unshift("#{Rails.root}/app/views/apipie/apipies") if File.directory?("#{Rails.root}/app/views/apipie/apipies")
+
+    layouts_paths = [File.expand_path("../../../app/views/layouts", __FILE__)]
+    layouts_paths.unshift("#{Rails.root}/app/views/layouts") if File.directory?("#{Rails.root}/app/views/layouts/apipie")
+
+    @apipie_renderer = ActionView::Base.new(base_paths + layouts_paths)
     @apipie_renderer.singleton_class.send(:include, ApipieHelper)
     return @apipie_renderer
   end
