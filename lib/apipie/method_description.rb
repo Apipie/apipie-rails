@@ -65,6 +65,10 @@ module Apipie
       params_ordered.reduce(ActiveSupport::OrderedHash.new) { |h,p| h[p.name] = p; h }
     end
 
+    def params_ordered_self
+      @params_ordered
+    end
+
     def params_ordered
       all_params = []
       parent = Apipie.get_resource_description(@resource.controller.superclass)

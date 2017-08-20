@@ -21,6 +21,19 @@ module Apipie
                                    &block)
     end
 
+    def to_s
+      "ParamDescription: #{method_description.id}##{name}"
+    end
+
+    def ==(other)
+      return false unless self.class == other.class
+      if method_description == other.method_description && @options == other.options
+        true
+      else
+        false
+      end
+    end
+
     def initialize(method_description, name, validator, desc_or_options = nil, options = {}, &block)
 
       if desc_or_options.is_a?(Hash)
@@ -146,7 +159,7 @@ module Apipie
       self
     end
 
-    # merge param descripsiont. Allows defining hash params on more places
+    # merge param descriptions. Allows defining hash params on more places
     # (e.g. in param_groups). For example:
     #
     #     def_param_group :user do
