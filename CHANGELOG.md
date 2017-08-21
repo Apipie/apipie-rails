@@ -1,6 +1,13 @@
  Changelog
 ===========
 
+v0.5.2
+------
+
+- A way to extend an exiting API via concern [\#554](https://github.com/Apipie/apipie-rails/pull/554) ([iNecas](https://github.com/iNecas))
+- Fallback to apipie views when application override isn't present [\#552](https://github.com/Apipie/apipie-rails/pull/552) ([tstrachota](https://github.com/tstrachota))
+- Updated setting default locale for api documentation [\#543](https://github.com/Apipie/apipie-rails/pull/543) ([DmitryKK](https://github.com/DmitryKK))
+
 v0.5.1
 ------
 
