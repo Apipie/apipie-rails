@@ -7,6 +7,4 @@ class ExtendedController < ApplicationController
   end
   def create
   end
-
-  include Concerns::ExtendingConcern
 end

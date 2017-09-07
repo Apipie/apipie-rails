@@ -121,7 +121,7 @@ module Apipie
     # resource_description? It's used to derivate the default value of
     # versions for methods.
     def controller_versions(controller)
-      ret = @controller_versions[controller]
+      ret = @controller_versions[controller.to_s]
       return ret unless ret.empty?
       if controller == ActionController::Base || controller.nil?
         return [Apipie.configuration.default_version]
@@ -131,7 +131,7 @@ module Apipie
     end
 
     def set_controller_versions(controller, versions)
-      @controller_versions[controller] = versions
+      @controller_versions[controller.to_s] = versions
     end
 
     def add_param_group(controller, name, &block)
@@ -205,7 +205,7 @@ module Apipie
           return nil
         end
         resource_description = get_resource_description(resource_name)
-        if resource_description && resource_description.controller == resource
+        if resource_description && resource_description.controller.to_s == resource.to_s
           return resource_description
         end
       end
@@ -236,12 +236,12 @@ module Apipie
 
     # initialize variables for gathering dsl data
     def init_env
-      @resource_descriptions = HashWithIndifferentAccess.new { |h, version| h[version] = {} }
-      @controller_to_resource_id = {}
-      @param_groups = {}
+      @resource_descriptions ||= HashWithIndifferentAccess.new { |h, version| h[version] = {} }
+      @controller_to_resource_id ||= {}
+      @param_groups ||= {}
 
       # what versions does the controller belong in (specified by resource_description)?
-      @controller_versions = Hash.new { |h, controller| h[controller] = [] }
+      @controller_versions ||= Hash.new { |h, controller| h[controller.to_s] = [] }
     end
 
     def recorded_examples
@@ -385,7 +385,7 @@ module Apipie
     end
 
     def version_prefix(klass)
-      version = controller_versions(klass).first
+      version = controller_versions(klass.to_s).first
       base_url = get_base_url(version)
       return "/" if base_url.blank?
       base_url[1..-1] + "/"
