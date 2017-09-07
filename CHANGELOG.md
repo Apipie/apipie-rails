@@ -1,6 +1,12 @@
  Changelog
 ===========
 
+v0.5.3
+------
+
+- Fix reloading when extending the apidoc from concern [\#557](https://github.com/Apipie/apipie-rails/pull/557) ([iNecas](https://github.com/iNecas))
+- Fix example recording when using send\_file [\#504](https://github.com/Apipie/apipie-rails/pull/504) ([tdeo](https://github.com/tdeo))
+
 v0.5.2
 ------
 
