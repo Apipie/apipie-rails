@@ -126,7 +126,7 @@ module Apipie
       if controller == ActionController::Base || controller.nil?
         return [Apipie.configuration.default_version]
       else
-        return controller_versions(controller.superclass)
+        return controller_versions(controller.to_s.constantize.superclass)
       end
     end
 
