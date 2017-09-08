@@ -1,6 +1,11 @@
  Changelog
 ===========
 
+v0.5.4
+------
+
+- Constantize controller class before calling superclass [\#558](https://github.com/Apipie/apipie-rails/pull/558) ([ydkn](https://github.com/ydkn))
+
 v0.5.3
 ------
 
