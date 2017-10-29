@@ -504,6 +504,32 @@ Example
    end
 
 
+Sometimes, it's needed to extend an existing controller method with additional
+parameters (usually when extending exiting API from plugins/rails engines).
+The concern can be also used for this purposed, using `update_api` method.
+The params defined in this block are merged with the params of the original method
+in the controller this concern is included to.
+
+Example
+~~~~~~~
+
+.. code:: ruby
+
+   module Concerns
+     module OauthConcern
+       extend Apipie::DSL::Concern
+
+       update_api(:create, :update) do
+         param :user, Hash do
+           param :oauth, String, :desc => 'oauth param'
+         end
+       end
+     end
+   end
+
+The concern needs to be included to the controller after the methods are defined
+(either at the end of the class, or by using
+``Controller.send(:include, Concerns::OauthConcern)``.
 
 =========================
  Configuration Reference
@@ -1231,7 +1257,7 @@ one example per method) by adding a 'title' attribute.
          - recorded: true
 
 In RSpec you can add metadata to examples. We can use that feature
-to mark selected examples – the ones that perform the requests that we want to
+to mark selected examples - the ones that perform the requests that we want to
 show as examples in the documentation.
 
 For example, we can add ``show_in_doc`` to examples, like this:

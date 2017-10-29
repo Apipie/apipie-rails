@@ -1,6 +1,8 @@
 Apipie.configure do |config|
   config.app_name = "Test app"
   config.copyright = "&copy; 2012 Pavel Pokorny"
+  config.languages = ['en']
+  config.default_locale = 'en'
 
   # set default API version
   # can be overriden in resource_description

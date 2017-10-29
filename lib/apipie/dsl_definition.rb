@@ -8,6 +8,14 @@ module Apipie
     module Base
       attr_reader :apipie_resource_descriptions, :api_params
 
+      def _apipie_eval_dsl(*args, &block)
+        raise 'The Apipie DLS data need to be cleared before evaluating new block' if @_apipie_dsl_data
+        instance_exec(*args, &block)
+        return _apipie_dsl_data
+      ensure
+        _apipie_dsl_data_clear
+      end
+
       private
 
       def _apipie_dsl_data
@@ -381,6 +389,37 @@ module Apipie
         _apipie_concern_subst.merge!(subst_hash)
       end
 
+      # Allows to update existing params after definition was made (usually needed
+      # when extending the API form plugins).
+      #
+      #     UsersController.apipie_update_params([:create, :update]) do
+      #       param :user, Hash do
+      #         param :oauth, String
+      #       end
+      #      end
+      #
+      # The block is evaluated in scope of the controller. Ohe can pass some additional
+      # objects via additional arguments like this:
+      #
+      #     UsersController.apipie_update_params([:create, :update], [:name, :secret]) do |param_names|
+      #       param :user, Hash do
+      #         param_names.each { |p| param p, String }
+      #       end
+      #      end
+      def apipie_update_params(methods, *args, &block)
+        methods.each do |method|
+          method_description = Apipie.get_method_description(self, method)
+          unless method_description
+            raise "Could not find method description for #{self}##{method}. Was the method defined?"
+          end
+          dsl_data = _apipie_eval_dsl(*args, &block)
+          params_ordered = dsl_data[:params].map do |args|
+            Apipie::ParamDescription.from_dsl_data(method_description, args)
+          end
+          ParamDescription.unify(method_description.params_ordered_self + params_ordered)
+        end
+      end
+
       def _apipie_concern_subst
         @_apipie_concern_subst ||= {:controller_path => self.controller_path,
                                     :resource_id => Apipie.get_resource_name(self)}
@@ -428,10 +467,17 @@ module Apipie
           description = Apipie.define_method_description(controller, method_name, _apipie_dsl_data)
           controller._apipie_define_validators(description)
         end
+        _apipie_concern_update_api_blocks.each do |(methods, block)|
+          controller.apipie_update_params(methods, &block)
+        end
       end
 
       def _apipie_concern_data
         @_apipie_concern_data ||= []
+      end
+
+      def _apipie_concern_update_api_blocks
+        @_apipie_concern_update_api_blocks ||= []
       end
 
       def apipie_concern?
@@ -449,6 +495,10 @@ module Apipie
         _apipie_dsl_data_clear
       end
 
+      def update_api(*methods, &block)
+        _apipie_concern_update_api_blocks << [methods, block]
+      end
+
     end
 
     class ResourceDescriptionDsl
@@ -461,14 +511,9 @@ module Apipie
         @controller = controller
       end
 
-      def _eval_dsl(&block)
-        instance_eval(&block)
-        return _apipie_dsl_data
-      end
-
       # evaluates resource description DSL and returns results
       def self.eval_dsl(controller, &block)
-        dsl_data  = self.new(controller)._eval_dsl(&block)
+        dsl_data  = self.new(controller)._apipie_eval_dsl(&block)
         if dsl_data[:api_versions].empty?
           dsl_data[:api_versions] = Apipie.controller_versions(controller)
         end
