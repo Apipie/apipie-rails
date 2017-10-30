@@ -136,6 +136,9 @@ app_info
 meta
   Hash or array with custom metadata.
 
+deprecated
+  Boolean value indicating if the resource is marked as deprecated.
+
 Example:
 ~~~~~~~~
 

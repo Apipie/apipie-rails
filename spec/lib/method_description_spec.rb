@@ -36,6 +36,13 @@ describe Apipie::MethodDescription do
       method = Apipie::MethodDescription.new(:a, @resource, dsl_data)
       expect(method.method_apis_to_json.first[:deprecated]).to eq(true)
     end
+
+    it "should return the deprecated flag is parent resource is deprecated" do
+      @resource.instance_variable_set("@_deprecated", true)
+      dsl_data[:api_args] = [[:GET, "/foo/bar", "description", {}]]
+      method = Apipie::MethodDescription.new(:a, @resource, dsl_data)
+      expect(method.method_apis_to_json.first[:deprecated]).to eq(true)
+    end
   end
 
   describe "params descriptions" do
