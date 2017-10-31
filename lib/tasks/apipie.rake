@@ -51,6 +51,21 @@ namespace :apipie do
     end
   end
 
+  desc "Generate static swagger json"
+  task :static_swagger_json, [:version, :swagger_content_type_input] => :environment do |t, args|
+    with_loaded_documentation do
+      args.with_defaults(:version => Apipie.configuration.default_version, :swagger_content_type_input => :form_data)
+      Apipie.configuration.swagger_content_type_input = args[:swagger_content_type_input].to_sym
+      out = ENV["OUT"] || File.join(::Rails.root, Apipie.configuration.doc_path, 'apidoc')
+      count = 0
+      ([nil] + Apipie.configuration.languages).each do |lang|
+        doc = Apipie.to_swagger_json(args[:version], nil, nil, lang, count==0)
+        generate_swagger_json_page(out, doc, lang)
+        count+=1
+      end
+    end
+  end
+
   # By default the full cache is built.
   # It is possible to generate index resp. resources only with
   # rake apipie:cache cache_part=index (resources resp.)
@@ -128,6 +143,13 @@ namespace :apipie do
     FileUtils.mkdir_p(file_base) unless File.exists?(file_base)
 
     filename = "schema_apipie#{lang_ext(lang)}.json"
+    File.open("#{file_base}/#{filename}", 'w') { |file| file.write(JSON.pretty_generate(doc)) }
+  end
+
+  def generate_swagger_json_page(file_base, doc, lang = nil)
+    FileUtils.mkdir_p(file_base) unless File.exists?(file_base)
+
+    filename = "schema_swagger#{lang_ext(lang)}.json"
     File.open("#{file_base}/#{filename}", 'w') { |file| file.write(JSON.pretty_generate(doc)) }
   end
 
