@@ -13,6 +13,9 @@
 <div class='page-header'>
   <h1>
     <%= @resource[:name] %>
+    <% if @resource[:deprecated] %>
+        <code>DEPRECATED</code>
+    <% end %>
     <br>
     <small><%= raw @resource[:short_description] %></small>
   </h1>
