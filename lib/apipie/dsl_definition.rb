@@ -42,7 +42,8 @@ module Apipie
          :formats           => nil,
          :api_versions      => [],
          :meta              => nil,
-         :show              => true
+         :show              => true,
+         :deprecated        => false
        }
       end
     end
@@ -76,6 +77,11 @@ module Apipie
       def app_info(app_info)
         _apipie_dsl_data[:app_info] = app_info
       end
+
+      def deprecated(value)
+        _apipie_dsl_data[:deprecated] = value
+      end
+
     end
 
     module Action

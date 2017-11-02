@@ -136,6 +136,9 @@ app_info
 meta
   Hash or array with custom metadata.
 
+deprecated
+  Boolean value indicating if the resource is marked as deprecated. (Default false)
+
 Example:
 ~~~~~~~~
 
@@ -154,6 +157,7 @@ Example:
      error 500, "Server crashed for some <%= reason %>", :meta => {:anything => "you can think of"}
      error :unprocessable_entity, "Could not save the entity."
      meta :author => {:name => 'John', :surname => 'Doe'}
+     deprecated false
      description <<-EOS
        == Long description
         Example resource for rest api documentation

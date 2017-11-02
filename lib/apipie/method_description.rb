@@ -129,7 +129,7 @@ module Apipie
           :api_url => create_api_url(api),
           :http_method => api.http_method.to_s,
           :short_description => Apipie.app.translate(api.short_description, lang),
-          :deprecated => api.options[:deprecated]
+          :deprecated => resource._deprecated || api.options[:deprecated]
         }
       end
     end

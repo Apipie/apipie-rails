@@ -16,7 +16,11 @@
   <h2>
     <a href='<%= api[:doc_url] %><%= @doc[:link_extension] %>'>
       <%= api[:name] %>
-    </a><br>
+    </a>
+    <% if api[:deprecated] %>
+        <code>DEPRECATED</code>
+    <% end %>
+    <br>
     <small><%= api[:short_description] %></small>
   </h2>
   <table class='table'>
