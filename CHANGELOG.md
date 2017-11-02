@@ -1,6 +1,12 @@
  Changelog
 ===========
 
+v0.5.5
+------
+
+- prevent lang in url when config.translate is false [\##562](https://github.com/Apipie/apipie-rails/pull/562) ([markmoser](https://github.com/markmoser))
+- Allow for resource-level deprecations [\##567](https://github.com/Apipie/apipie-rails/pull/567) ([cross-p6](https://github.com/cross-p6))
+
 v0.5.4
 ------
 
