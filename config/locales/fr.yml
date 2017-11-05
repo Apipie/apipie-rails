@@ -1,0 +1,31 @@
+fr:
+  apipie:
+    resources: Ressources
+    resource: Ressource
+    description: Description
+    no_docs_found: Aucune documentation trouvée
+    no_docs_found_descr: Aucune documentation pour cette API
+    follow_instructions_html: Suivez ces %{href} sur la façon dont décrire vos controlleurs.
+    follow_instructions_href: instructions supplémentaires
+    oops: Oops!!
+    resource_not_found_html: Ressource %{resource} not found.
+    method_not_found_html: Méthode %{method} non trouvée pour la ressource %{resource}.
+    goto_homepage_html: Essayez de regarder %{href}
+    goto_homepage_href: "la page d'accueil %{app_name} API documentation homepage"
+    required: requis
+    optional: optionel
+    nil_allowed: nil autorisé
+    param_name: Nom du paramètre
+    params: Paramètres
+    examples: Exemples
+    metadata: Metadata
+    errors: Erreurs
+    error_code: Code
+    error_description: Description
+    error_metadata: Metadata
+    supported_formats: Formats supportés
+    enable_javascript_html: Activez JavaScript SVP pour afficher la %{comments_href}.
+    comments_powered_by_disqus: section commentaires par %{disqus}
+    api_documentation: documentation API
+    headers: Headers
+    header_name: Nom du header
