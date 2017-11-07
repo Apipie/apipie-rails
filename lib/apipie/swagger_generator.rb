@@ -561,7 +561,7 @@ module Apipie
 
         if swagger_param_type(desc) == "object"
           if desc.validator.params_ordered
-            params_hash = desc.validator.params_ordered.map {|desc| [desc.name, desc]}.to_h
+            params_hash = Hash[desc.validator.params_ordered.map {|desc| [desc.name, desc]}]
             add_params_from_hash(swagger_params_array, params_hash, name)
           else
             warn_param_ignored_in_form_data(desc.name)
