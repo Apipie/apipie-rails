@@ -42,7 +42,7 @@ describe 'rake tasks' do
       params = apidoc_swagger["paths"][path][http_method]["parameters"]
       body = params.select {|p| p if p["name"]=="body"}[0]
       schema_properties = body["schema"]["properties"]
-      print JSON.pretty_generate(schema_properties)
+      # print JSON.pretty_generate(schema_properties)
       param = (schema_properties.select {|k,v| v if k == param_name })[param_name]
       # print JSON.pretty_generate(param)
       param
