@@ -1184,6 +1184,7 @@ it identifies various shortcomings of the DSL documentation. Each warning has a 
 :105: a parameter is optional but does not have a default value specified
 :106: a parameter was ommitted from the swagger output because it is a Hash without fields in a formData specification
 :107: a path parameter is not described
+:108: inferring that a parameter type is boolean because described as an enum with [false,true] values
 
 
 
@@ -1223,6 +1224,13 @@ There are several configuration parameters that determine the structure of the g
     If ``true``: all warnings will be suppressed
 
     If an array of values (e.g., ``[100,102,107]``), only the warnings identified by the numbers in the array will be suppressed.
+
+``config.swagger_api_host``
+    The value to place in the swagger host field.
+
+    Default is ``localhost:3000``
+
+    If ``nil`` then then host field will not be included.
 
 
 

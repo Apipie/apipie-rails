@@ -1,17 +1,4 @@
 module Apipie
-  module Validator
-    class EnumValidator < BaseValidator
-      def values
-        @array
-      end
-    end
-
-    class HashValidator < BaseValidator
-      def get_param_group
-        @param_group
-      end
-    end
-  end
 
   #--------------------------------------------------------------------------
   # Configuration.  Should be moved to Apipie config.
@@ -20,6 +7,9 @@ module Apipie
     require 'json'
     require 'ostruct'
     require 'open3'
+    require 'zlib' if Apipie.configuration.swagger_generate_x_computed_id_field?
+
+    attr_reader :computed_interface_id
 
     def initialize(apipie)
       @apipie = apipie
@@ -45,6 +35,7 @@ module Apipie
       @only_method = method_name
       add_resources(resources)
 
+      @swagger[:info]["x-computed-id"] = @computed_interface_id if Apipie.configuration.swagger_generate_x_computed_id_field?
       return @swagger
     end
 
@@ -64,6 +55,7 @@ module Apipie
       #     :resources => _resources
       # }
 
+
       @swagger = {
           swagger: '2.0',
           info: {
@@ -72,7 +64,6 @@ module Apipie
               version: "#{version}",
               "x-copyright" => Apipie.configuration.copyright,
           },
-          host: Apipie.configuration.swagger_api_host,
           basePath: Apipie.api_base_url(version),
           consumes: [],
           paths: {},
@@ -80,10 +71,16 @@ module Apipie
           tags: [],
       }
 
+      if Apipie.configuration.swagger_api_host
+        @swagger[:host] = Apipie.configuration.swagger_api_host
+      end
+
       if params_in_body?
         @swagger[:consumes] = ['application/json']
+        @swagger[:info][:title] += " (params in:body)"
       else
         @swagger[:consumes] = ['application/x-www-form-urlencoded', 'multipart/form-data']
+        @swagger[:info][:title] += " (params in:formData)"
       end
 
       @paths = @swagger[:paths]
@@ -91,6 +88,7 @@ module Apipie
       @tags = @swagger[:tags]
 
       @issued_warnings = [] if clear_warnings || @issued_warnings.nil?
+      @computed_interface_id = 0
 
       @current_lang = lang
     end
@@ -131,7 +129,7 @@ module Apipie
     def warn_optional_without_default_value(param_name) warn 105,"the parameter :#{param_name} is optional but default value is not specified (use :default_value => ...)"; end
     def warn_param_ignored_in_form_data(param_name) warn 106,"ignoring param :#{param_name} -- cannot include Hash without fields in a formData specification"; end
     def warn_path_parameter_not_described(name,path) warn 107,"the parameter :#{name} appears in the path #{path} but is not described"; end
-
+    def warn_inferring_boolean(name) warn 108,"the parameter [#{param_name}] is Enum with [true,false] values. Inferring 'boolean'"; end
 
     def warn(warning_num, msg)
       suppress = Apipie.configuration.swagger_suppress_warnings
@@ -142,7 +140,7 @@ module Apipie
       warning_id = "#{method_id}#{warning_num}#{msg}"
 
       if @issued_warnings.include?(warning_id)
-        # print "--> Already issued warning: [#{warning_id}]\n"
+        # Already issued this warning for the current method
         return
       end
 
@@ -155,53 +153,16 @@ module Apipie
       print "--- INFO: [#{ruby_name_for_method(@current_method)}] -- #{msg}\n"
     end
 
-    def investigate(msg)
-      # print "??? RESEARCH: [#{ruby_name_for_method(@current_method)}] -- #{msg}\n"
-    end
 
-    def dump_param_desc(param_desc)
-      methods = param_desc.methods - param_desc.class.methods
-      for m in methods
-        print "#{m}\n"
-      end
-    end
-
-
-    # the @master_id is a number that is uniquely derived from the list of operations
+    # the @computed_interface_id is a number that is uniquely derived from the list of operations
     # added to the swagger definition (in an order-dependent way).
-    # it is used for regression testing, allowing some differentiation between changes that
+    # it can be used for regression testing, allowing some differentiation between changes that
     # result from changes to the input and those that result from changes to the generation
     # algorithms.
     # note that at the moment, this only takes operation ids into account, and ignores parameter
     # definitions, so it's only partially useful.
-    def include_op_id_in_master_identifier(op_id)
-      @master_id = Zlib::crc32("#{@master_id} #{op_id}")
-    end
-
-
-    def save_and_compare
-      json = JSON.pretty_generate(@swagger)
-
-      newfile = File.expand_path("../tmp/out_#{@master_id}#{params_in_body? ? '_inbody':''}#{params_in_body_use_reference? ? '_ref':''}_new.json", __FILE__)
-      reffile = File.expand_path("../tmp/out_#{@master_id}#{params_in_body? ? '_inbody':''}#{params_in_body_use_reference? ? '_ref':''}_base.json", __FILE__)
-
-      File.open(newfile, "w") { |f| f.write(json)}
-      print "\n#{newfile}:1\n"
-
-      if !Pathname.new(reffile).exist?
-        print "Reference file does not exist.  Creating (#{reffile})"
-        File.open(reffile, "w") { |f| f.write(json)}
-      else
-        stdout, stderr, status = Open3.capture3("diff '#{newfile}' '#{reffile}'")
-        if status != 0
-          print "*** NEW FILE NOT IDENTICAL TO PREVIOUS VERSION (#{status}) ***\n"
-          print stderr, "\n"
-          print stdout
-        else
-          print("\nDiff result: files are identical\n")
-        end
-      end
-
+    def include_op_id_in_computed_interface_id(op_id)
+      @computed_interface_id = Zlib::crc32("#{@computed_interface_id} #{op_id}") if Apipie.configuration.swagger_generate_x_computed_id_field?
     end
 
     #--------------------------------------------------------------------------
@@ -252,7 +213,7 @@ module Apipie
 
         op_id = swagger_op_id_for_path(api.http_method, api.path)
 
-        include_op_id_in_master_identifier(op_id)
+        include_op_id_in_computed_interface_id(op_id)
 
         method_key = api.http_method.downcase
         @current_http_method = method_key
@@ -311,7 +272,7 @@ module Apipie
 
       if v.class == Apipie::Validator::EnumValidator
         if v.values - [true, false] == [] && [true, false] - v.values == []
-          # info("[#{param_desc.name}] is Enum with [true,false] values. Inferring 'boolean'.")
+          warn_inferring_boolean(param_desc.name)
           return "boolean"
         else
           return "enum"
@@ -326,7 +287,6 @@ module Apipie
           array: "array"
       }
 
-      investigate("validator class for [#{param_desc.name}]: #{v.class}")
       return lookup[v.expected_type.to_sym] || v.expected_type
     end
 

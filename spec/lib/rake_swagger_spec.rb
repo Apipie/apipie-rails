@@ -14,8 +14,13 @@ describe 'rake tasks' do
 
   describe 'static swagger specification files' do
 
+    after do
+      Dir["#{doc_output}*"].each { |static_file| FileUtils.rm_rf(static_file) }
+    end
+
     let(:apidoc_swagger_json) do
-      File.read("#{doc_output}/schema_swagger.json")
+      # note:  the filename ends with '_tmp' because this suffix is passed as a parameter to the rake task
+      File.read("#{doc_output}/schema_swagger_tmp.json")
     end
 
     let(:apidoc_swagger) do
@@ -26,8 +31,8 @@ describe 'rake tasks' do
       File.join(::Rails.root, doc_path, 'apidoc')
     end
 
-    after do
-      # Dir["#{doc_output}*"].each { |static_file| FileUtils.rm_rf(static_file) }
+    let(:ref_output) do
+      File.join(::Rails.root, doc_path, 'apidoc_ref')
     end
 
 
@@ -54,11 +59,11 @@ describe 'rake tasks' do
     end
 
 
-    describe 'apipie:static_swagger_json[development,json]' do
+    describe 'apipie:static_swagger_json[development,json,_tmp]' do
       it "generates static swagger files for the default version of apipie docs" do
         # print apidoc_swagger_json
 
-        expect(apidoc_swagger["info"]["title"]).to eq("Test app")
+        expect(apidoc_swagger["info"]["title"]).to eq("Test app (params in:body)")
         expect(apidoc_swagger["info"]["version"]).to eq("#{Apipie.configuration.default_version}")
 
         expect_param_def("get", "/twitter_example/{id}", "screen_name", "in", "query")
@@ -76,11 +81,11 @@ describe 'rake tasks' do
       end
     end
 
-    describe 'apipie:static_swagger_json[development,form_data]' do
+    describe 'apipie:static_swagger_json[development,form_data,_tmp]' do
       it "generates static swagger files for the default version of apipie docs" do
         # print apidoc_swagger_json
 
-        expect(apidoc_swagger["info"]["title"]).to eq("Test app")
+        expect(apidoc_swagger["info"]["title"]).to eq("Test app (params in:formData)")
         expect(apidoc_swagger["info"]["version"]).to eq("#{Apipie.configuration.default_version}")
 
         expect_param_def("get", "/twitter_example/{id}", "screen_name", "in", "query")
@@ -93,6 +98,11 @@ describe 'rake tasks' do
       end
     end
 
+    describe 'apipie:did_swagger_change[development,form_data,_tmp]' do
+      it "keeps a reference file" do
+        expect(Pathname(ref_output).children.count).to eq(2)  # one file for each language
+      end
+    end
   end
 
 end
