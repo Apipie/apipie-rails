@@ -14,10 +14,42 @@ module Apipie
       end
     end
 
+
+    def render_swagger_json
+      # the 'authorize' configuration is not supported for swagger output
+      head :forbidden and return if Apipie.configuration.authorize
+
+      @language = get_language
+
+      Apipie.load_documentation if Apipie.configuration.reload_controllers? || (Rails.version.to_i >= 4.0 && !Rails.application.config.eager_load)
+
+      I18n.locale = @language
+
+      prev_warning_value = Apipie.configuration.swagger_suppress_warnings
+      Apipie.configuration.swagger_suppress_warnings = true
+
+      doc = Apipie.to_swagger_json(params[:version], params[:resource], params[:method], @language)
+
+      Apipie.configuration.swagger_suppress_warnings = prev_warning_value
+
+      unless doc
+        render 'apipie_404', :status => 404
+        return
+      end
+
+      render :json => doc
+    end
+
+
     def index
       params[:version] ||= Apipie.configuration.default_version
 
       get_format
+
+      if params[:type].to_s == 'swagger' && params[:format].to_s == 'json'
+        render_swagger_json
+        return
+      end
 
       respond_to do |format|
 

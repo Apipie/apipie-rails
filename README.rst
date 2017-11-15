@@ -1243,6 +1243,16 @@ Known limitations of the current implementation
 * It is not possible to leverage all of the parameter type/format capabilities of swagger
 * Only OpenAPI 2.0 is supported
 
+====================================
+ Dynamic Swagger generation
+====================================
+
+To generate swagger dynamically, use ``http://localhost:3000/apipie.json?type=swagger``.
+
+Note that authorization is not supported for dynamic swagger generation, so if ``config.authorize`` is defined,
+dynamic swagger generation will be disabled.
+
+Dynamically generated swagger is not cached, and is always generated on the fly.
 
 
 ===================

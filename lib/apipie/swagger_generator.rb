@@ -190,7 +190,7 @@ module Apipie
     def add_ruby_method(paths, ruby_method)
 
       if @only_method
-        return unless ruby_method.name == @only_method
+        return unless ruby_method.method == @only_method
       else
         return if !ruby_method.show
       end
