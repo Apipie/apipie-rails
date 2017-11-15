@@ -1,4 +1,5 @@
 require 'spec_helper'
+require "json-schema"
 
 describe 'rake tasks' do
   include_context "rake"
@@ -16,6 +17,10 @@ describe 'rake tasks' do
 
     after do
       Dir["#{doc_output}*"].each { |static_file| FileUtils.rm_rf(static_file) }
+    end
+
+    let(:swagger_schema) do
+      File.read(File.join(File.dirname(__FILE__),"openapi_2_0_schema.json"))
     end
 
     let(:apidoc_swagger_json) do
@@ -65,7 +70,9 @@ describe 'rake tasks' do
 
         expect(apidoc_swagger["info"]["title"]).to eq("Test app (params in:body)")
         expect(apidoc_swagger["info"]["version"]).to eq("#{Apipie.configuration.default_version}")
+      end
 
+      it "includes expected values in the generated swagger file" do
         expect_param_def("get", "/twitter_example/{id}", "screen_name", "in", "query")
         expect_param_def("put", "/users/{id}", "id", "in", "path")
         expect_body_param_def("put", "/users/{id}", "oauth", "type", "string")
@@ -77,7 +84,11 @@ describe 'rake tasks' do
         expect_param_def("get", "/users/by_department", "department", "in", "query")
         expect_param_def("get", "/users/by_department", "department", "enum",
                          ["finance", "operations", "sales", "marketing", "HR"])
+      end
 
+      it "generates a valid swagger file" do
+        # print apidoc_swagger_json
+        expect(JSON::Validator.validate(swagger_schema, apidoc_swagger_json)).to be_truthy
       end
     end
 
@@ -88,6 +99,9 @@ describe 'rake tasks' do
         expect(apidoc_swagger["info"]["title"]).to eq("Test app (params in:formData)")
         expect(apidoc_swagger["info"]["version"]).to eq("#{Apipie.configuration.default_version}")
 
+      end
+
+      it "includes expected values in the generated swagger file" do
         expect_param_def("get", "/twitter_example/{id}", "screen_name", "in", "query")
         expect_param_def("put", "/users/{id}", "id", "in", "path")
         expect_param_def("put", "/users/{id}", "oauth", "in", "formData")
@@ -95,6 +109,11 @@ describe 'rake tasks' do
         expect_param_def("get", "/users/by_department", "department", "enum",
                          ["finance", "operations", "sales", "marketing", "HR"])
 
+      end
+
+      it "generates a valid swagger file" do
+        # print apidoc_swagger_json
+        expect(JSON::Validator.validate(swagger_schema, apidoc_swagger_json)).to be_truthy
       end
     end
 
