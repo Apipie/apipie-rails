@@ -129,7 +129,7 @@ module Apipie
     def warn_optional_without_default_value(param_name) warn 105,"the parameter :#{param_name} is optional but default value is not specified (use :default_value => ...)"; end
     def warn_param_ignored_in_form_data(param_name) warn 106,"ignoring param :#{param_name} -- cannot include Hash without fields in a formData specification"; end
     def warn_path_parameter_not_described(name,path) warn 107,"the parameter :#{name} appears in the path #{path} but is not described"; end
-    def warn_inferring_boolean(name) warn 108,"the parameter [#{param_name}] is Enum with [true,false] values. Inferring 'boolean'"; end
+    def warn_inferring_boolean(name) warn 108,"the parameter [#{name}] is Enum with [true,false] values. Inferring 'boolean'"; end
 
     def warn(warning_num, msg)
       suppress = Apipie.configuration.swagger_suppress_warnings
@@ -257,7 +257,9 @@ module Apipie
     end
 
     def swagger_op_id_for_path(http_method, path)
-      http_method.upcase + path.gsub(/\//,'_').gsub(/:(\w+)/, '\1')
+      # using lowercase http method, because the 'swagger-codegen' tool outputs
+      # strange method names if the http method is in uppercase
+      http_method.downcase + path.gsub(/\//,'_').gsub(/:(\w+)/, '\1').gsub(/_$/,'')
     end
 
     def swagger_param_type(param_desc)
