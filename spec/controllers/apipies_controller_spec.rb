@@ -149,7 +149,6 @@ describe Apipie::ApipiesController do
       get :index, :params => { :type => "swagger"}
 
       assert_response :success
-      print response.body
       expect(response.body).not_to match(/"swagger":"2.0"/)
     end
 
@@ -157,7 +156,6 @@ describe Apipie::ApipiesController do
       get :index, :params => { :format => "json"}
 
       assert_response :success
-      print response.body
       expect(response.body).not_to match(/"swagger":"2.0"/)
     end
   end
