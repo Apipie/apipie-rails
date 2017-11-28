@@ -178,7 +178,7 @@ module Apipie
       if resource._full_description
         @tags << {
             name: tag_name_for_resource(resource),
-            description: resource._full_description
+            description: Apipie.app.translate(resource._full_description, @current_lang)
         }
       end
     end
