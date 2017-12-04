@@ -225,8 +225,7 @@ MESSAGE
       apis_from_routes.each do |(controller, action), apis|
         next if ignored.include?(controller)
         next if ignored.include?("#{controller}##{action}")
-        next unless Object.const_defined?(controller.camelize)
-        Apipie::Extractor::Writer.update_action_description(controller.constantize, action) do |u|
+        Apipie::Extractor::Writer.update_action_description((controller.safe_constantize || next), action) do |u|
           u.update_apis(apis)
         end
       end

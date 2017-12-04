@@ -56,8 +56,7 @@ module Apipie
     def route_app_controller(app, route, visited_apps = [])
       if route.defaults[:controller]
         controller_name = (route.defaults[:controller] + 'Controller').camelize
-        return unless Object.const_defined?(controller_name)
-        controller_name.constantize
+        controller_name.safe_constantize
       end
     end
 
