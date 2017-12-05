@@ -1,6 +1,13 @@
  Changelog
 ===========
 
+v0.5.6
+------
+
+- Prevent missing translation span in title [\##571](https://github.com/Apipie/apipie-rails/pull/571) ([mbacovsky](https://github.com/mbacovsky))
+- Clean up old generator code for CLI [\##572](https://github.com/Apipie/apipie-rails/pull/572) ([voxik](https://github.com/voxik))
+- Added french locale [\##568](https://github.com/Apipie/apipie-rails/pull/568) ([giglemad](https://github.com/giglemad))
+
 v0.5.5
 ------
 
