@@ -25,4 +25,3 @@ Dummy::Application.configure do
   # Do not eager load code on boot. (Rails 5)
   config.eager_load = false
 end
-

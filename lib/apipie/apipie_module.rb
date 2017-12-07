@@ -1,5 +1,5 @@
-require "apipie/helpers"
-require "apipie/application"
+require 'apipie/helpers'
+require 'apipie/application'
 
 module Apipie
   extend Apipie::Helpers
@@ -33,11 +33,11 @@ module Apipie
   # get application description for given or default version
   def self.app_info(version = nil, lang = nil)
     info = if app_info_version_valid? version
-      translate(self.configuration.app_info[version], lang)
-    elsif app_info_version_valid? Apipie.configuration.default_version
-      translate(self.configuration.app_info[Apipie.configuration.default_version], lang)
-    else
-      "Another API description"
+             translate(configuration.app_info[version], lang)
+           elsif app_info_version_valid? Apipie.configuration.default_version
+             translate(configuration.app_info[Apipie.configuration.default_version], lang)
+           else
+             'Another API description'
     end
 
     Apipie.markup_to_html info
@@ -45,20 +45,20 @@ module Apipie
 
   def self.api_base_url(version = nil)
     if api_base_url_version_valid? version
-      self.configuration.api_base_url[version]
+      configuration.api_base_url[version]
     elsif api_base_url_version_valid? Apipie.configuration.default_version
-      self.configuration.api_base_url[Apipie.configuration.default_version]
+      configuration.api_base_url[Apipie.configuration.default_version]
     else
-      "/api"
+      '/api'
     end
   end
 
   def self.app_info_version_valid?(version)
-    version && self.configuration.app_info.has_key?(version)
+    version && configuration.app_info.key?(version)
   end
 
   def self.api_base_url_version_valid?(version)
-    version && self.configuration.api_base_url.has_key?(version)
+    version && configuration.api_base_url.key?(version)
   end
 
   def self.record(record)

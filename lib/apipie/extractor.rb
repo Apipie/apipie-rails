@@ -23,30 +23,28 @@ class Apipie::Railtie
 end
 
 module Apipie
-
   module Extractor
-
     class << self
-
       def start(record)
         Apipie.configuration.record = record
         Apipie.configuration.force_dsl = true
       end
 
       def finish
-        record_params, record_examples = false, false
+        record_params = false
+        record_examples = false
         case Apipie.configuration.record
-        when "params"   then record_params = true
-        when "examples" then record_examples = true
-        when "all"      then record_params = true, record_examples = true
+        when 'params'   then record_params = true
+        when 'examples' then record_examples = true
+        when 'all'      then record_params = true, record_examples = true
         end
 
         if record_examples
-          puts "Writing examples to a file"
+          puts 'Writing examples to a file'
           write_examples
         end
         if record_params
-          puts "Updating auto-generated documentation"
+          puts 'Updating auto-generated documentation'
           write_docs
         end
       end
@@ -81,7 +79,7 @@ module Apipie
       def apis_from_routes
         return @apis_from_routes if @apis_from_routes
 
-        @api_prefix = Apipie.api_base_url.sub(/\/$/,"")
+        @api_prefix = Apipie.api_base_url.sub(/\/$/, '')
         populate_api_routes
         update_api_descriptions
 
@@ -97,20 +95,20 @@ module Apipie
       def all_api_routes
         all_routes = Apipie.configuration.api_routes.routes.map do |r|
           {
-              :verb => case r.verb
-                         when Regexp then r.verb.source[/\w+/]
-                         else r.verb.to_s
+            verb: case r.verb
+                  when Regexp then r.verb.source[/\w+/]
+                  else r.verb.to_s
+                     end,
+            path: case
+                  when r.path.respond_to?(:spec) then r.path.spec.to_s
+                  else r.path.to_s
                        end,
-              :path => case
-                         when r.path.respond_to?(:spec) then r.path.spec.to_s
-                         else r.path.to_s
-                       end,
-              :controller => r.requirements[:controller],
-              :action => r.requirements[:action]
+            controller: r.requirements[:controller],
+            action: r.requirements[:action]
           }
         end
 
-        return all_routes.find_all do |r|
+        all_routes.find_all do |r|
           r[:path].starts_with?(Apipie.api_base_url)
         end
       end
@@ -119,20 +117,19 @@ module Apipie
         @apis_from_routes = Hash.new { |h, k| h[k] = [] }
 
         all_api_routes.each do |route|
-          controller_path, action = route[:controller], route[:action]
+          controller_path = route[:controller]
+          action = route[:action]
           next unless controller_path && action
 
           controller_path = controller_path.split('::').map(&:camelize).join('::')
           controller = "#{controller_path}Controller"
 
           path = if /^#{Regexp.escape(@api_prefix)}(.*)$/ =~ route[:path]
-                   $1.sub(/\(\.:format\)$/,'')
-                 else
-                   nil
+                   Regexp.last_match(1).sub(/\(\.:format\)$/, '')
                  end
 
           if route[:verb].present?
-            @apis_from_routes[[controller, action]] << {:method => route[:verb], :path => path}
+            @apis_from_routes[[controller, action]] << { method: route[:verb], path: path }
           end
         end
       end
@@ -141,11 +138,11 @@ module Apipie
         resource_descriptions = Apipie.resource_descriptions.values.map(&:values).flatten
         method_descriptions = resource_descriptions.map(&:method_descriptions).flatten
 
-        return method_descriptions.reduce({}) do |h, desc|
+        method_descriptions.reduce({}) do |h, desc|
           apis = desc.method_apis_to_json.map do |api|
-            { :method => api[:http_method],
-              :path => api[:api_url],
-              :desc => api[:short_description] }
+            { method: api[:http_method],
+              path: api[:api_url],
+              desc: api[:short_description] }
           end
           h.update(desc.id => apis)
         end
@@ -157,13 +154,11 @@ module Apipie
           method_key = "#{Apipie.get_resource_name(controller.constantize)}##{action}"
           old_apis = apis_from_docs[method_key] || []
           new_apis.each do |new_api|
-            new_api[:path].sub!(/\(\.:format\)$/,"") if new_api[:path]
+            new_api[:path].sub!(/\(\.:format\)$/, '') if new_api[:path]
             old_api = old_apis.find do |api|
               api[:path] == "#{@api_prefix}#{new_api[:path]}"
             end
-            if old_api
-              new_api[:desc] = old_api[:desc]
-            end
+            new_api[:desc] = old_api[:desc] if old_api
           end
         end
       end
@@ -171,9 +166,7 @@ module Apipie
   end
 end
 
-if ENV["APIPIE_RECORD"]
-  Apipie::Extractor.start ENV["APIPIE_RECORD"]
-end
+Apipie::Extractor.start ENV['APIPIE_RECORD'] if ENV['APIPIE_RECORD']
 
 at_exit do
   Apipie::Extractor.finish

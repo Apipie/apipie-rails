@@ -3,7 +3,6 @@ require 'set'
 module Apipie
   module Extractor
     class Writer
-
       def initialize(collector)
         @collector = collector
       end
@@ -39,21 +38,19 @@ module Apipie
       def self.write_recorded_examples(examples)
         examples_file = self.examples_file
         FileUtils.mkdir_p(File.dirname(examples_file))
-        File.open(examples_file, "w") do |f|
+        File.open(examples_file, 'w') do |f|
           f << JSON.pretty_generate(OrderedHash[*examples.sort_by(&:first).flatten(1)])
         end
       end
 
       def self.load_recorded_examples
         examples_file = self.examples_file
-        if File.exists?(examples_file)
-          return load_json_examples
-        end
-        return {}
+        return load_json_examples if File.exist?(examples_file)
+        {}
       end
 
       def self.examples_file
-        File.join(Rails.root,Apipie.configuration.doc_path,"apipie_examples.json")
+        File.join(Rails.root, Apipie.configuration.doc_path, 'apipie_examples.json')
       end
 
       protected
@@ -61,9 +58,9 @@ module Apipie
       def self.load_json_examples
         examples = JSON.load(IO.read(examples_file))
         return {} if examples.nil?
-        examples.each do |method, records|
+        examples.each do |_method, records|
           records.each do |record|
-            record["verb"] = record["verb"].to_sym if record["verb"]
+            record['verb'] = record['verb'].to_sym if record['verb']
           end
         end
       end
@@ -75,21 +72,21 @@ module Apipie
       def ordered_call(call)
         call = call.stringify_keys
         ordered_call = OrderedHash.new
-        %w[title verb path versions query request_data response_data code show_in_doc recorded].each do |k|
-          next unless call.has_key?(k)
+        %w(title verb path versions query request_data response_data code show_in_doc recorded).each do |k|
+          next unless call.key?(k)
           ordered_call[k] = case call[k]
-                     when ActiveSupport::HashWithIndifferentAccess
-                       convert_file_value(call[k]).to_hash
-                     else
-                       call[k]
+                            when ActiveSupport::HashWithIndifferentAccess
+                              convert_file_value(call[k]).to_hash
+                            else
+                              call[k]
                      end
-      end
-        return ordered_call
+        end
+        ordered_call
       end
 
-      def convert_file_value hash
+      def convert_file_value(hash)
         hash.each do |k, v|
-          if (v.is_a?(Rack::Test::UploadedFile) || v.is_a?(ActionDispatch::Http::UploadedFile))
+          if v.is_a?(Rack::Test::UploadedFile) || v.is_a?(ActionDispatch::Http::UploadedFile)
             hash[k] = "<FILE CONTENT '#{v.original_filename}'>"
           elsif v.is_a?(Hash)
             hash[k] = convert_file_value(v)
@@ -103,12 +100,12 @@ module Apipie
       end
 
       def merge_old_new_examples
-        new_examples = self.load_new_examples
-        old_examples = self.load_recorded_examples
+        new_examples = load_new_examples
+        old_examples = load_recorded_examples
         merged_examples = []
         (new_examples.keys + old_examples.keys).uniq.each do |key|
-          if new_examples.has_key?(key)
-            if old_examples.has_key?(key)
+          if new_examples.key?(key)
+            if old_examples.key?(key)
               records = deep_merge_examples(new_examples[key], old_examples[key])
             else
               records = new_examples[key]
@@ -116,9 +113,9 @@ module Apipie
           else
             records = old_examples[key]
           end
-          merged_examples << [key, records.map { |r| ordered_call(r) } ]
+          merged_examples << [key, records.map { |r| ordered_call(r) }]
         end
-        return merged_examples
+        merged_examples
       end
 
       def deep_merge_examples(new_examples, old_examples)
@@ -127,13 +124,13 @@ module Apipie
           new_example_ordered = ordered_call(new_example.dup)
 
           # Comparing verb, versions and query
-          if old_example = old_examples.find{ |old_example| old_example["verb"] == new_example_ordered["verb"] && old_example["versions"] == new_example_ordered["versions"] && old_example["query"] == new_example_ordered["query"]}
+          if old_example = old_examples.find { |old_example| old_example['verb'] == new_example_ordered['verb'] && old_example['versions'] == new_example_ordered['versions'] && old_example['query'] == new_example_ordered['query'] }
 
             # Take the 'show in doc' attribute from the old example if it is present and the configuration requests the value to be persisted.
-            new_example[:show_in_doc] = old_example["show_in_doc"] if Apipie.configuration.persist_show_in_doc && old_example["show_in_doc"].to_i > 0
+            new_example[:show_in_doc] = old_example['show_in_doc'] if Apipie.configuration.persist_show_in_doc && old_example['show_in_doc'].to_i > 0
 
             # Always take the title from the old example if it exists.
-            new_example[:title] ||= old_example["title"] if old_example["title"].present?
+            new_example[:title] ||= old_example['title'] if old_example['title'].present?
           end
           new_example
         end
@@ -149,13 +146,13 @@ module Apipie
 
             if Apipie.configuration.show_all_examples
               show_in_doc = 1
-            elsif call[:versions].any? { |v| ! showed_in_versions.include?(v) }
+            elsif call[:versions].any? { |v| !showed_in_versions.include?(v) }
               call[:versions].each { |v| showed_in_versions << v }
               show_in_doc = 1
             else
               show_in_doc = 0
             end
-            example = call.merge(:show_in_doc => show_in_doc.to_i, :recorded => true)
+            example = call.merge(show_in_doc: show_in_doc.to_i, recorded: true)
             example
           end
           h.update(method => recorded_examples)
@@ -163,14 +160,14 @@ module Apipie
       end
 
       def load_old_examples
-        if File.exists?(@examples_file)
+        if File.exist?(@examples_file)
           if defined? SafeYAML
-            return YAML.load_file(@examples_file, :safe=>false)
+            return YAML.load_file(@examples_file, safe: false)
           else
             return YAML.load_file(@examples_file)
           end
         end
-        return {}
+        {}
       end
 
       def logger
@@ -183,7 +180,7 @@ module Apipie
 
       def showable_in_doc?(call)
         # we don't want to mess documentation with too large examples
-        if hash_nodes_count(call["request_data"]) + hash_nodes_count(call["response_data"]) > 100
+        if hash_nodes_count(call['request_data']) + hash_nodes_count(call['response_data']) > 100
           return false
         else
           return 1
@@ -200,11 +197,9 @@ module Apipie
           1
         end
       end
-
     end
 
     class ActionDescriptionUpdater
-
       class ControllerNotFound < StandardError; end
 
       class ActionNotFound < StandardError; end
@@ -219,12 +214,12 @@ module Apipie
       end
 
       def update_apis(apis)
-        new_header = ""
+        new_header = ''
         new_header << Apipie.configuration.generated_doc_disclaimer << "\n" if generated?
         new_header << generate_apis_code(apis)
         new_header << ensure_line_breaks(old_header.lines).reject do |line|
           line.include?(Apipie.configuration.generated_doc_disclaimer) ||
-            line =~ /^api/
+          line =~ /^api/
         end.join
         overwrite_header(new_header)
       end
@@ -244,14 +239,14 @@ module Apipie
         return @old_header if defined? @old_header
         @old_header = lines_above_method[/^\s*?#{Regexp.escape(Apipie.configuration.generated_doc_disclaimer)}.*/m]
         @old_header ||= lines_above_method[/^\s*?\b(api|params|error|example)\b.*/m]
-        @old_header ||= ""
-        @old_header.sub!(/\A\s*\n/,"")
+        @old_header ||= ''
+        @old_header.sub!(/\A\s*\n/, '')
         @old_header = align_indented(@old_header)
       end
 
       def write!
-        File.open(controller_path, "w") { |f| f << @controller_content }
-        @changed=false
+        File.open(controller_path, 'w') { |f| f << @controller_content }
+        @changed = false
       end
 
       protected
@@ -272,15 +267,15 @@ module Apipie
       end
 
       def controller_content
-        raise ControllerNotFound.new unless controller_path && File.exists?(controller_path)
+        raise ControllerNotFound.new unless controller_path && File.exist?(controller_path)
         @controller_content ||= File.read(controller_path)
       end
 
       def controller_content=(new_content)
         return if @controller_name == new_content
-        remove_instance_variable("@action_line")
-        remove_instance_variable("@old_header")
-        @controller_content=new_content
+        remove_instance_variable('@action_line')
+        remove_instance_variable('@old_header')
+        @controller_content = new_content
         @changed = true
       end
 
@@ -289,19 +284,19 @@ module Apipie
         code << generate_apis_code(desc[:api])
         code << generate_params_code(desc[:params])
         code << generate_errors_code(desc[:errors])
-        return code
+        code
       end
 
       def generate_apis_code(apis)
-        code = ""
-        apis.sort_by {|a| a[:path] }.each do |api|
+        code = ''
+        apis.sort_by { |a| a[:path] }.each do |api|
           desc = api[:desc]
-          name = @controller.controller_name.gsub("_", " ")
+          name = @controller.controller_name.tr('_', ' ')
           desc ||= case @action.to_s
-                   when "show", "create", "update", "destroy"
+                   when 'show', 'create', "update", "destroy"
                      name = name.singularize
                      "#{@action.capitalize} #{name =~ /^[aeiou]/ ? "an" : "a"} #{name}"
-                   when "index"
+                   when 'index'
                      "List #{name}"
                    end
 
@@ -309,31 +304,26 @@ module Apipie
           code << ", '#{desc}'" if desc
           code << "\n"
         end
-        return code
+        code
       end
 
-      def generate_params_code(params, indent = "")
-        code = ""
-        params.sort_by {|n,_| n }.each do |(name, desc)|
+      def generate_params_code(params, indent = '')
+        code = ''
+        params.sort_by { |n, _| n }.each do |(name, desc)|
           desc[:type] = (desc[:type] && desc[:type].first) || Object
           code << "#{indent}param"
-          if name =~ /\W/
-            code << " :'#{name}'"
-          else
-            code << " :#{name}"
-          end
+          code << if name =~ /\W/
+                    " :'#{name}'"
+                  else
+                    " :#{name}"
+                  end
           code << ", #{desc[:type].inspect}"
-          if desc[:allow_nil]
-            code << ", allow_nil: true"
-          end
-          if desc[:required]
-            code << ", required: true"
-          end
+          code << ', allow_nil: true' if desc[:allow_nil]
+          code << ', required: true' if desc[:required]
           if desc[:nested]
             code << " do\n"
-            code << generate_params_code(desc[:nested], indent + "  ")
+            code << generate_params_code(desc[:nested], indent + '  ')
             code << "#{indent}end"
-          else
           end
           code << "\n"
         end
@@ -341,8 +331,8 @@ module Apipie
       end
 
       def generate_errors_code(errors)
-        code = ""
-        errors.sort_by {|e| e[:code] }.each do |error|
+        code = ''
+        errors.sort_by { |e| e[:code] }.each do |error|
           code << "error code: #{error[:code]}\n"
         end
         code
@@ -361,8 +351,8 @@ module Apipie
         end
         lines = ensure_line_breaks(controller_content.lines).to_a
         indentation = lines[action_line][/^\s*/]
-        self.controller_content= (lines[0...overwrite_line_from] +
-                              [new_header.gsub(/^/,indentation)] +
+        self.controller_content = (lines[0...overwrite_line_from] +
+                              [new_header.gsub(/^/, indentation)] +
                               lines[overwrite_line_to..-1]).join
       end
 
@@ -373,26 +363,21 @@ module Apipie
         lines_to_add = []
         block_level = 0
         ensure_line_breaks(controller_content.lines).first(action_line).reverse_each do |line|
-          if line =~ /\s*\bend\b\s*/
-            block_level += 1
-          end
+          block_level += 1 if line =~ /\s*\bend\b\s*/
           if block_level > 0
             lines_to_add << line
           else
             added_lines << line
           end
-          if line =~ /\s*\b(module|class|def)\b /
-            break
-          end
-          if line =~ /do\s*(\|.*?\|)?\s*$/
-            block_level -= 1
-            if block_level == 0
-              added_lines.concat(lines_to_add)
-              lines_to_add = []
-            end
+          break if line =~ /\s*\b(module|class|def)\b /
+          next unless line =~ /do\s*(\|.*?\|)?\s*$/
+          block_level -= 1
+          if block_level == 0
+            added_lines.concat(lines_to_add)
+            lines_to_add = []
           end
         end
-        return added_lines.reverse.join
+        added_lines.reverse.join
       end
 
       # this method would be totally useless unless some clever guy
@@ -412,9 +397,8 @@ module Apipie
 
     # Used to keep apipie_examples.yml params in order
     class OrderedHash < ActiveSupport::OrderedHash
-
       def to_yaml_type
-        "!tag:yaml.org,2002:map"
+        '!tag:yaml.org,2002:map'
       end
 
       def to_yaml(opts = {})

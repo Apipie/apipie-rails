@@ -1,5 +1,4 @@
 module Apipie
-
   class FileHandler
     def initialize(root)
       @root          = root.chomp('/')
@@ -38,7 +37,6 @@ module Apipie
       else
         ::ActionController::Base.page_cache_extension
       end
-
     end
   end
 
@@ -54,7 +52,7 @@ module Apipie
       @baseurl ||= Apipie.configuration.doc_base_url
       case env['REQUEST_METHOD']
       when 'GET', 'HEAD'
-        path = env['PATH_INFO'].sub("#{@baseurl}/","/apipie/").chomp('/')
+        path = env['PATH_INFO'].sub("#{@baseurl}/", "/apipie/").chomp('/')
 
         if match = @file_handler.match?(path)
           env["PATH_INFO"] = match

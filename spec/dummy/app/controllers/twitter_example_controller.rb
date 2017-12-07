@@ -1,22 +1,21 @@
 class TwitterExampleController < ApplicationController
-  
   resource_description do
     name 'TwitterUsers'
     short_description 'Users are at the center of everything Twitter: they follow, they favorite, and tweet & retweet.'
     path '/twitter_example/'
-    description "Long description of this resource."
+    description 'Long description of this resource.'
   end
-  
+
   api :GET, '/twitter_example/lookup', 'Return up to 100 users worth of extended information, specified by either ID, screen name, or combination of the two.'
-  param :screen_name, String, :desc => 'A comma separated list of screen names, up to 100 are allowed in a single request. You are strongly encouraged to use a POST for larger (up to 100 screen names) requests.'
-  param :user_id, Integer, :desc => 'A comma separated list of user IDs, up to 100 are allowed in a single request. You are strongly encouraged to use a POST for larger requests.'
-  param :include_entities, String, :desc => 'When set to either <code>true</code>, <code>t</code> or <code>1</code>, each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags. While entities are opt-in on timelines at present, they will be made a default component of output in the future. See Tweet Entities for more detail on entities.'
-  
+  param :screen_name, String, desc: 'A comma separated list of screen names, up to 100 are allowed in a single request. You are strongly encouraged to use a POST for larger (up to 100 screen names) requests.'
+  param :user_id, Integer, desc: 'A comma separated list of user IDs, up to 100 are allowed in a single request. You are strongly encouraged to use a POST for larger requests.'
+  param :include_entities, String, desc: 'When set to either <code>true</code>, <code>t</code> or <code>1</code>, each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags. While entities are opt-in on timelines at present, they will be made a default component of output in the future. See Tweet Entities for more detail on entities.'
+
   description <<-EOS
     Return up to 100 users worth of extended information, specified by either ID, screen name, or combination of the two. The author's most recent status (if the authenticating user has permission) will be returned inline.
 
     This method is crucial for consumers of the {Streaming API}[link:https://dev.twitter.com/pages/streaming_api]. It's also well suited for use in tandem with friends/ids[link:https://dev.twitter.com/doc/get/friends/ids] and followers/ids[link:https://dev.twitter.com/doc/get/followers/ids].
-    
+
     === Extended description
     There are a few things to note when using this method.
 
@@ -26,12 +25,12 @@ class TwitterExampleController < ApplicationController
     * You are strongly encouraged to use a POST for larger requests.
   EOS
   def lookup
-    render :text => "lookup"
+    render text: 'lookup'
   end
-  
+
   api :GET, '/twitter_example/profile_image/:screen_name', 'Access the profile image in various sizes for the user with the indicated screen_name.'
-  param :screen_name, String, :required => true, :desc => 'The screen name of the user for whom to return results for. Helpful for disambiguating when a valid screen name is also a user ID.'
-  param :size, ['bigger','normal','mini','original'], :desc => <<-EOS
+  param :screen_name, String, required: true, desc: 'The screen name of the user for whom to return results for. Helpful for disambiguating when a valid screen name is also a user ID.'
+  param :size, %w(bigger normal mini original), desc: <<-EOS
     Specifies the size of image to fetch. Not specifying a size will give the default, normal size of 48px by 48px. Valid options include:
 
     * bigger - 73px by 73px
@@ -47,19 +46,19 @@ class TwitterExampleController < ApplicationController
     This method should only be used by application developers to lookup or check the profile image URL for a user. This method must not be used as the image source URL presented to users of your application.
   EOS
   def profile_image
-    render :text => "profile_image of '#{params[:screen_name]}'"
+    render text: "profile_image of '#{params[:screen_name]}'"
   end
-  
+
   api :GET, '/twitter_example/search', 'Runs a search for users similar to Find People button on Twitter.com.'
-  param :q, String, :desc => 'The search query to run against people search.', :required => true
-  param :page, Integer, :desc => 'Specifies the page of results to retrieve.'
-  param :per_page, Integer, :desc => 'The number of people to retrieve. Maxiumum of 20 allowed per page.'
-  param :include_entities, String, :desc => 'When set to either true, t or 1, each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags. While entities are opt-in on timelines at present, they will be made a default component of output in the future. See Tweet Entities for more detail on entities.'
+  param :q, String, desc: 'The search query to run against people search.', required: true
+  param :page, Integer, desc: 'Specifies the page of results to retrieve.'
+  param :per_page, Integer, desc: 'The number of people to retrieve. Maxiumum of 20 allowed per page.'
+  param :include_entities, String, desc: 'When set to either true, t or 1, each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags. While entities are opt-in on timelines at present, they will be made a default component of output in the future. See Tweet Entities for more detail on entities.'
   description <<-EOS
     Runs a search for users similar to Find People button on Twitter.com. The results returned by people search on Twitter.com are the same as those returned by this API request. Note that unlike GET search, this method does not support any operators.
 
     Only the first 1000 matches are available.
-    
+
     === Extended description
     This method has a feature-specific rate limit of 60 calls per hour that is applied in conjunction with the main REST API rate limit. Calls to this method will count against the feature-specific rate limit and the main REST API rate limit. If either limit is exhausted, the request will fail. You can monitor the status of the feature-specific rate limit by inspecting the HTTP response headers <tt>X-FeatureRateLimit-Limit</tt>, <tt>X-FeatureRateLimit-Remaining</tt>, and <tt>X-FeatureRateLimit-Reset</tt>. These headers correspond to the <tt>X-RateLimit</tt> headers provided by the main REST API limit.
   EOS
@@ -147,30 +146,30 @@ class TwitterExampleController < ApplicationController
   ]
   EDOC
   def search
-    render :text => 'search'
+    render text: 'search'
   end
-  
+
   api :GET, '/twitter_example/:id', 'Returns extended information of a given user, specified by ID or screen name as per the required id parameter.'
-  param :id, :number, :required => true, :desc => <<-EOS
+  param :id, :number, required: true, desc: <<-EOS
     The ID of the user for whom to return results for. Either an id or screen_name is required for this method.
   EOS
-  param :screen_name, String, :desc => 'The screen name of the user for...'
+  param :screen_name, String, desc: 'The screen name of the user for...'
   description <<-EDOC
     Returns extended information of a given user, specified by ID or screen name as per the required id parameter. The author's most recent status will be returned inline.
   EDOC
   def show
-    render :text => "show #{params}"
+    render text: "show #{params}"
   end
-  
-  api :GET, '/twitter_example/contributors', 'Returns an array of users who can contribute to the specified account.'
-  param :user_id, Integer, :desc => 'The ID of the user for whom to return results for. Helpful for disambiguating when a valid user ID is also a valid screen name.'
-  param :screen_name, String, :desc => 'The screen name of the user for whom to return results for. Helpful for disambiguating when a valid screen name is also a user ID.'
-  param :include_entities, String
-  param :skip_status, ['t','true','1'],
-    :description => 'When set to either true, t or 1 statuses will not be included in the returned user objects.'
 
-  description "Look at examples."
-  
+  api :GET, '/twitter_example/contributors', 'Returns an array of users who can contribute to the specified account.'
+  param :user_id, Integer, desc: 'The ID of the user for whom to return results for. Helpful for disambiguating when a valid user ID is also a valid screen name.'
+  param :screen_name, String, desc: 'The screen name of the user for whom to return results for. Helpful for disambiguating when a valid screen name is also a user ID.'
+  param :include_entities, String
+  param :skip_status, %w(t true 1),
+        description: 'When set to either true, t or 1 statuses will not be included in the returned user objects.'
+
+  description 'Look at examples.'
+
   example <<-EDOC
     GET https://api.twitter.com/1/twitter_example/contributors.json?screen_name=twitterapi&include_entities=true&skip_status=true
     [
@@ -234,7 +233,7 @@ class TwitterExampleController < ApplicationController
         "show_all_inline_media": false,
         "screen_name": "themattharris"
       },
-      ...      
+      ...
     ]
   EDOC
   example <<-EDOC
@@ -292,11 +291,10 @@ class TwitterExampleController < ApplicationController
     }
   EDOC
   def contributors
-    render :text => 'contributors'
+    render text: 'contributors'
   end
-  
+
   def index
-    render :text => 'twitter example'
+    render text: 'twitter example'
   end
-  
 end

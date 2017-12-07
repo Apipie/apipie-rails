@@ -4,7 +4,7 @@ module Concerns
 
     update_api(:create) do
       param :user, Hash do
-        param :from_concern, String, :desc => 'param from concern', :allow_nil => false
+        param :from_concern, String, desc: 'param from concern', allow_nil: false
       end
     end
   end

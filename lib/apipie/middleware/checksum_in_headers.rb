@@ -26,9 +26,9 @@ module Apipie
       def call(env)
         status, headers, body = @app.call(env)
         if !Apipie.configuration.checksum_path || env['PATH_INFO'].start_with?(*Apipie.configuration.checksum_path)
-          headers.merge!( 'Apipie-Checksum' => Apipie.checksum )
+          headers['Apipie-Checksum'] = Apipie.checksum
         end
-        return [status, headers, body]
+        [status, headers, body]
       end
     end
   end

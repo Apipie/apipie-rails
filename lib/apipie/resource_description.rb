@@ -1,5 +1,4 @@
 module Apipie
-
   # Resource description
   #
   # version - api version (1)
@@ -12,13 +11,11 @@ module Apipie
   # headers - array of headers
   # deprecated - boolean indicating if resource is deprecated
   class ResourceDescription
-
     attr_reader :controller, :_short_description, :_full_description, :_methods, :_id,
-      :_path, :_name, :_params_args, :_errors_args, :_formats, :_parent, :_metadata,
-      :_headers, :_deprecated
+                :_path, :_name, :_params_args, :_errors_args, :_formats, :_parent, :_metadata,
+                :_headers, :_deprecated
 
-    def initialize(controller, resource_name, dsl_data = nil, version = nil, &block)
-
+    def initialize(controller, resource_name, dsl_data = nil, version = nil, &_block)
       @_methods = ActiveSupport::OrderedHash.new
       @_params_args = []
       @_errors_args = []
@@ -36,7 +33,7 @@ module Apipie
       @_name = dsl_data[:resource_name] if dsl_data[:resource_name]
       @_full_description = Apipie.markup_to_html(dsl_data[:description])
       @_short_description = dsl_data[:short_description]
-      @_path = dsl_data[:path] || ""
+      @_path = dsl_data[:path] || ''
       @_formats = dsl_data[:formats]
       @_errors_args = dsl_data[:errors]
       @_params_args = dsl_data[:params]
@@ -59,7 +56,7 @@ module Apipie
     end
 
     def add_method_description(method_description)
-      Apipie.debug "@resource_descriptions[#{self._version}][#{self._name}]._methods[#{method_description.method}] = #{method_description}"
+      Apipie.debug "@resource_descriptions[#{_version}][#{_name}]._methods[#{method_description.method}] = #{method_description}"
       @_methods[method_description.method.to_sym] = method_description
     end
 
@@ -68,9 +65,7 @@ module Apipie
     end
 
     def remove_method_description(method_name)
-      if @_methods.has_key?(method_name)
-        @_methods.delete(method_name)
-      end
+      @_methods.delete(method_name) if @_methods.key?(method_name)
     end
 
     def method_descriptions
@@ -84,7 +79,9 @@ module Apipie
       Apipie.full_url crumbs.join('/')
     end
 
-    def api_url; "#{Apipie.api_base_url(_version)}#{@_path}"; end
+    def api_url
+      "#{Apipie.api_base_url(_version)}#{@_path}"
+    end
 
     def valid_method_name?(method_name)
       @_methods.keys.map(&:to_s).include?(method_name.to_s)
@@ -96,25 +93,24 @@ module Apipie
       end
 
       methods = if method_name.blank?
-        @_methods.collect { |key, method_description| method_description.to_json(lang) }
-      else
-        [@_methods[method_name.to_sym].to_json(lang)]
+                  @_methods.collect { |_key, method_description| method_description.to_json(lang) }
+                else
+                  [@_methods[method_name.to_sym].to_json(lang)]
       end
 
       {
-        :doc_url => doc_url,
-        :api_url => api_url,
-        :name => @_name,
-        :short_description => Apipie.app.translate(@_short_description, lang),
-        :full_description => Apipie.app.translate(@_full_description, lang),
-        :version => _version,
-        :formats => @_formats,
-        :metadata => @_metadata,
-        :methods => methods,
-        :headers => _headers,
-        :deprecated => @_deprecated
+        doc_url: doc_url,
+        api_url: api_url,
+        name: @_name,
+        short_description: Apipie.app.translate(@_short_description, lang),
+        full_description: Apipie.app.translate(@_full_description, lang),
+        version: _version,
+        formats: @_formats,
+        metadata: @_metadata,
+        methods: methods,
+        headers: _headers,
+        deprecated: @_deprecated
       }
     end
-
   end
 end

@@ -1,10 +1,8 @@
 # Apipie DSL functions.
 
 module Apipie
-
   # DSL is a module that provides #api, #error, #param, #error.
   module DSL
-
     module Base
       attr_reader :apipie_resource_descriptions, :api_params
 
@@ -27,24 +25,24 @@ module Apipie
       end
 
       def _apipie_dsl_data_init
-        @_apipie_dsl_data =  {
-         :api               => false,
-         :api_args          => [],
-         :api_from_routes   => nil,
-         :errors            => [],
-         :params            => [],
-         :headers           => [],
-         :resource_id        => nil,
-         :short_description => nil,
-         :description       => nil,
-         :examples          => [],
-         :see               => [],
-         :formats           => nil,
-         :api_versions      => [],
-         :meta              => nil,
-         :show              => true,
-         :deprecated        => false
-       }
+        @_apipie_dsl_data = {
+          api: false,
+          api_args: [],
+          api_from_routes: nil,
+          errors: [],
+          params: [],
+          headers: [],
+          resource_id: nil,
+          short_description: nil,
+          description: nil,
+          examples: [],
+          see: [],
+          formats: nil,
+          api_versions: [],
+          meta: nil,
+          show: true,
+          deprecated: false
+        }
       end
     end
 
@@ -68,7 +66,7 @@ module Apipie
       def short(short)
         _apipie_dsl_data[:short_description] = short
       end
-      alias :short_description :short
+      alias short_description short
 
       def path(path)
         _apipie_dsl_data[:path] = path
@@ -81,11 +79,9 @@ module Apipie
       def deprecated(value)
         _apipie_dsl_data[:deprecated] = value
       end
-
     end
 
     module Action
-
       def def_param_group(name, &block)
         Apipie.add_param_group(self, name, &block)
       end
@@ -94,7 +90,7 @@ module Apipie
       #   # load paths from routes and don't provide description
       #   api
       #
-      def api(method, path, desc = nil, options={}) #:doc:
+      def api(method, path, desc = nil, options = {}) #:doc:
         return unless Apipie.active_dsl?
         _apipie_dsl_data[:api] = true
         _apipie_dsl_data[:api_args] << [method, path, desc, options]
@@ -103,10 +99,10 @@ module Apipie
       #   # load paths from routes
       #   api! "short description",
       #
-      def api!(desc = nil, options={}) #:doc:
+      def api!(desc = nil, options = {}) #:doc:
         return unless Apipie.active_dsl?
         _apipie_dsl_data[:api] = true
-        _apipie_dsl_data[:api_from_routes] = { :desc => desc, :options =>options }
+        _apipie_dsl_data[:api_from_routes] = { desc: desc, options: options }
       end
 
       # Reference other similar method
@@ -141,9 +137,9 @@ module Apipie
       # desc <<-EOS
       #   Long description...
       # EOS
-      def resource_description(options = {}, &block) #:doc:
+      def resource_description(_options = {}, &block) #:doc:
         return unless Apipie.active_dsl?
-        raise ArgumentError, "Block expected" unless block_given?
+        raise ArgumentError, 'Block expected' unless block_given?
 
         dsl_data = ResourceDescriptionDsl.eval_dsl(self, &block)
         versions = dsl_data[:api_versions]
@@ -158,7 +154,7 @@ module Apipie
       def api_versions(*versions)
         _apipie_dsl_data[:api_versions].concat(versions)
       end
-      alias :api_version :api_versions
+      alias api_version api_versions
 
       # Describe the next method.
       #
@@ -170,13 +166,11 @@ module Apipie
       #
       def desc(description) #:doc:
         return unless Apipie.active_dsl?
-        if _apipie_dsl_data[:description]
-          raise "Double method description."
-        end
+        raise 'Double method description.' if _apipie_dsl_data[:description]
         _apipie_dsl_data[:description] = description
       end
-      alias :description :desc
-      alias :full_description :desc
+      alias description desc
+      alias full_description desc
 
       # describe next method with document in given path
       # in convension, these doc located under "#{Rails.root}/doc"
@@ -185,8 +179,8 @@ module Apipie
       # def hello_world
       #   puts "hello world"
       # end
-      def document path
-        content = File.open(File.join(Rails.root,  Apipie.configuration.doc_path, path)).read
+      def document(path)
+        content = File.open(File.join(Rails.root, Apipie.configuration.doc_path, path)).read
         desc content
       end
 
@@ -205,7 +199,6 @@ module Apipie
         _apipie_dsl_data[:meta] = meta
       end
 
-
       # Describe possible errors
       #
       # Example:
@@ -216,13 +209,12 @@ module Apipie
       #     puts "hello world"
       #   end
       #
-      def error(code_or_options, desc=nil, options={}) #:doc:
+      def error(code_or_options, desc = nil, options = {}) #:doc:
         return unless Apipie.active_dsl?
         _apipie_dsl_data[:errors] << [code_or_options, desc, options]
       end
 
       def _apipie_define_validators(description)
-
         # [re]define method only if validation is turned on
         if description && (Apipie.configuration.validate == true ||
                            Apipie.configuration.validate == :implicitly ||
@@ -237,23 +229,23 @@ module Apipie
               if Apipie.configuration.validate_presence?
                 method_params.each do |_, param|
                   # check if required parameters are present
-                  raise ParamMissing.new(param) if param.required && !params.has_key?(param.name)
+                  raise ParamMissing.new(param) if param.required && !params.key?(param.name)
                 end
               end
 
               if Apipie.configuration.validate_value?
                 method_params.each do |_, param|
                   # params validations
-                  param.validate(params[:"#{param.name}"]) if params.has_key?(param.name)
+                  param.validate(params[:"#{param.name}"]) if params.key?(param.name)
                 end
               end
 
               # Only allow params passed in that are defined keys in the api
               # Auto skip the default params (format, controller, action)
               if Apipie.configuration.validate_key?
-                params.reject{|k,_| %w[format controller action].include?(k.to_s) }.each_pair do |param, _|
+                params.reject { |k, _| %w(format controller action).include?(k.to_s) }.each_pair do |param, _|
                   # params allowed
-                  raise UnknownParam.new(param) if method_params.select {|_,p| p.name.to_s == param.to_s}.empty?
+                  raise UnknownParam.new(param) if method_params.select { |_, p| p.name.to_s == param.to_s }.empty?
                 end
               end
 
@@ -261,13 +253,13 @@ module Apipie
                 @api_params ||= {}
                 method_params.each do |_, param|
                   # params processing
-                  @api_params[param.as] = param.process_value(params[:"#{param.name}"]) if params.has_key?(param.name)
+                  @api_params[param.as] = param.process_value(params[:"#{param.name}"]) if params.key?(param.name)
                 end
               end
             end
           end
 
-          if (Apipie.configuration.validate == :implicitly || Apipie.configuration.validate == true)
+          if Apipie.configuration.validate == :implicitly || Apipie.configuration.validate == true
             old_method = instance_method(description.method)
 
             define_method(description.method) do |*args|
@@ -325,7 +317,7 @@ module Apipie
         _apipie_dsl_data[:params] << [param_name,
                                       validator,
                                       desc_or_options,
-                                      options.merge(:param_group => @_current_param_group),
+                                      options.merge(param_group: @_current_param_group),
                                       block]
       end
 
@@ -344,12 +336,12 @@ module Apipie
         scope ||= _default_param_group_scope
 
         @_current_param_group = {
-          :scope => scope,
-          :name => name,
-          :options => options,
-          :from_concern => scope.apipie_concern?
+          scope: scope,
+          name: name,
+          options: options,
+          from_concern: scope.apipie_concern?
         }
-        self.instance_exec(&Apipie.get_param_group(scope, name))
+        instance_exec(&Apipie.get_param_group(scope, name))
       ensure
         @_current_param_group = nil
       end
@@ -427,12 +419,12 @@ module Apipie
       end
 
       def _apipie_concern_subst
-        @_apipie_concern_subst ||= {:controller_path => self.controller_path,
-                                    :resource_id => Apipie.get_resource_name(self)}
+        @_apipie_concern_subst ||= { controller_path: controller_path,
+                                     resource_id: Apipie.get_resource_name(self) }
       end
 
       def _apipie_perform_concern_subst(string)
-        return _apipie_concern_subst.reduce(string) do |ret, (key, val)|
+        _apipie_concern_subst.reduce(string) do |ret, (key, val)|
           ret.gsub(":#{key}", val)
         end
       end
@@ -494,9 +486,9 @@ module Apipie
       def method_added(method_name) #:doc:
         super
 
-        return if ! Apipie.active_dsl? || !_apipie_dsl_data[:api]
+        return if !Apipie.active_dsl? || !_apipie_dsl_data[:api]
 
-        _apipie_concern_data << [method_name, _apipie_dsl_data.merge(:from_concern => true)]
+        _apipie_concern_data << [method_name, _apipie_dsl_data.merge(from_concern: true)]
       ensure
         _apipie_dsl_data_clear
       end
@@ -504,7 +496,6 @@ module Apipie
       def update_api(*methods, &block)
         _apipie_concern_update_api_blocks << [methods, block]
       end
-
     end
 
     class ResourceDescriptionDsl
@@ -519,13 +510,12 @@ module Apipie
 
       # evaluates resource description DSL and returns results
       def self.eval_dsl(controller, &block)
-        dsl_data  = self.new(controller)._apipie_eval_dsl(&block)
+        dsl_data = new(controller)._apipie_eval_dsl(&block)
         if dsl_data[:api_versions].empty?
           dsl_data[:api_versions] = Apipie.controller_versions(controller)
         end
         dsl_data
       end
     end
-
   end # module DSL
 end # module Apipie

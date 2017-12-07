@@ -1,17 +1,16 @@
 module Apipie
   class Configuration
-
     attr_accessor :app_name, :app_info, :copyright, :markup, :disqus_shortname,
-      :api_base_url, :doc_base_url, :required_by_default, :layout,
-      :default_version, :debug, :version_in_url, :namespaced_resources,
-      :validate, :validate_value, :validate_presence, :validate_key, :authenticate, :doc_path,
-      :show_all_examples, :process_params, :update_checksum, :checksum_path,
-      :link_extension, :record, :languages, :translate, :locale, :default_locale,
-      :persist_show_in_doc, :authorize
+                  :api_base_url, :doc_base_url, :required_by_default, :layout,
+                  :default_version, :debug, :version_in_url, :namespaced_resources,
+                  :validate, :validate_value, :validate_presence, :validate_key, :authenticate, :doc_path,
+                  :show_all_examples, :process_params, :update_checksum, :checksum_path,
+                  :link_extension, :record, :languages, :translate, :locale, :default_locale,
+                  :persist_show_in_doc, :authorize
 
-    alias_method :validate?, :validate
-    alias_method :required_by_default?, :required_by_default
-    alias_method :namespaced_resources?, :namespaced_resources
+    alias validate? validate
+    alias required_by_default? required_by_default
+    alias namespaced_resources? namespaced_resources
 
     # matcher to be used in Dir.glob to find controllers to be reloaded e.g.
     #
@@ -36,23 +35,23 @@ module Apipie
 
     def reload_controllers?
       @reload_controllers = Rails.env.development? unless defined? @reload_controllers
-      return @reload_controllers && @api_controllers_matcher
+      @reload_controllers && @api_controllers_matcher
     end
 
     def validate_value
-      return (validate? && @validate_value)
+      (validate? && @validate_value)
     end
-    alias_method :validate_value?, :validate_value
+    alias validate_value? validate_value
 
     def validate_presence
-      return (validate? && @validate_presence)
+      (validate? && @validate_presence)
     end
-    alias_method :validate_presence?, :validate_presence
+    alias validate_presence? validate_presence
 
     def validate_key
-      return (validate? && @validate_key)
+      (validate? && @validate_key)
     end
-    alias_method :validate_key?, :validate_key
+    alias validate_key? validate_key
 
     def process_value?
       @process_params
@@ -64,11 +63,11 @@ module Apipie
     #
     #     rake apipie:cache
     attr_accessor :use_cache
-    alias_method :use_cache?, :use_cache
+    alias use_cache? use_cache
 
     attr_writer :cache_dir
     def cache_dir
-      @cache_dir ||= File.join(Rails.root, "public", "apipie-cache")
+      @cache_dir ||= File.join(Rails.root, 'public', 'apipie-cache')
     end
 
     # if there is not obvious reason why the DSL should be turned on (no
@@ -108,7 +107,7 @@ module Apipie
     # the line above the docs.
     attr_writer :generated_doc_disclaimer
     def generated_doc_disclaimer
-      @generated_doc_disclaimer ||= "# DOC GENERATED AUTOMATICALLY: REMOVE THIS LINE TO PREVENT REGENARATING NEXT TIME"
+      @generated_doc_disclaimer ||= '# DOC GENERATED AUTOMATICALLY: REMOVE THIS LINE TO PREVENT REGENARATING NEXT TIME'
     end
 
     def use_disqus?
@@ -137,7 +136,7 @@ module Apipie
 
     def initialize
       @markup = Apipie::Markup::RDoc.new
-      @app_name = "Another API"
+      @app_name = 'Another API'
       @app_info = HashWithIndifferentAccess.new
       @copyright = nil
       @validate = :implicitly
@@ -146,23 +145,23 @@ module Apipie
       @validate_key = false
       @required_by_default = false
       @api_base_url = HashWithIndifferentAccess.new
-      @doc_base_url = "/apipie"
-      @layout = "apipie/apipie"
+      @doc_base_url = '/apipie'
+      @layout = 'apipie/apipie'
       @disqus_shortname = nil
-      @default_version = "1.0"
+      @default_version = '1.0'
       @debug = false
       @version_in_url = true
       @namespaced_resources = false
-      @doc_path = "doc"
+      @doc_path = 'doc'
       @process_params = false
       @checksum_path = [@doc_base_url, '/api/']
       @update_checksum = false
-      @link_extension = ".html"
+      @link_extension = '.html'
       @record = false
       @languages = []
       @default_locale = 'en'
-      @locale = lambda { |locale| @default_locale }
-      @translate = lambda { |str, locale| str }
+      @locale = ->(_locale) { @default_locale }
+      @translate = ->(str, _locale) { str }
       @persist_show_in_doc = false
       @routes_formatter = RoutesFormatter.new
     end

@@ -1,7 +1,7 @@
-require "spec_helper"
+require 'spec_helper'
 
 describe Apipie::Extractor::Recorder::Middleware do
-  let(:app) { lambda { |env| [200, env, "app"] } }
+  let(:app) { ->(env) { [200, env, 'app'] } }
   let(:stack) { Apipie::Extractor::Recorder::Middleware.new(app) }
   let(:request) { Rack::MockRequest.new(stack) }
   let(:response) { request.get('/') }
@@ -11,7 +11,7 @@ describe Apipie::Extractor::Recorder::Middleware do
     response
   end
 
-  it "analyze request if recording is set" do
+  it 'analyze request if recording is set' do
     Apipie.configuration.record = true
     expect(Apipie::Extractor.call_recorder).to receive(:analyse_env)
     expect(Apipie::Extractor.call_recorder).to receive(:analyse_response)
@@ -23,9 +23,9 @@ describe Apipie::Extractor::Recorder::Middleware do
     let(:form_hash) do
       {
         'stringbody' => 'this is a string body',
-        'filebody' => {:head => 'X-Fake-Header: fake1\r\n'},
+        'filebody' => { head: 'X-Fake-Header: fake1\r\n' },
         'files' => {
-          '0' => {:head => 'X-Fake-Header: fake2\r\n'}
+          '0' => { head: 'X-Fake-Header: fake2\r\n' }
         }
       }
     end

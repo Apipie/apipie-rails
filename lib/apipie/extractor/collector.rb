@@ -7,9 +7,9 @@ module Apipie
         @api_controllers_paths = Apipie.api_controllers_paths
         @ignored = Apipie.configuration.ignored_by_recorder
         @descriptions = Hash.new do |h, k|
-          h[k] = {:params => {}, :errors => Set.new}
+          h[k] = { params: {}, errors: Set.new }
         end
-        @records = Hash.new { |h,k| h[k] = [] }
+        @records = Hash.new { |h, k| h[k] = [] }
       end
 
       def controller_full_path(controller)
@@ -48,7 +48,7 @@ module Apipie
 
       def refine_errors_description(description, record)
         if record[:code].to_i >= 300 && !description[:errors].any? { |e| e[:code].to_i == record[:code].to_i }
-          description[:errors] << {:code => record[:code]}
+          description[:errors] << { code: record[:code] }
         end
       end
 
@@ -68,7 +68,7 @@ module Apipie
               param_desc[:type] << :undef
             end
 
-            if [:boolean, :bool].include?(param_desc[:type].first) && (! [true, false, 1, 0].include?(value))
+            if [:boolean, :bool].include?(param_desc[:type].first) && ! [true, false, 1, 0].include?(value)
               param_desc[:type].shift
             end
 
@@ -85,14 +85,14 @@ module Apipie
       end
 
       def finalize_descriptions
-        @descriptions.each do |method, desc|
+        @descriptions.each do |_method, desc|
           add_routes_info(desc)
         end
-        return @descriptions
+        @descriptions
       end
 
       def add_routes_info(desc)
-        api_prefix = Apipie.api_base_url.sub(/\/$/,"")
+        api_prefix = Apipie.api_base_url.sub(/\/$/, '')
         desc[:api] = Apipie::Extractor.apis_from_routes[[desc[:controller].name, desc[:action]]]
         if desc[:api]
           desc[:params].each do |name, param|
@@ -106,8 +106,6 @@ module Apipie
       def record_to_s(record)
         "#{record[:controller]}##{record[:action]}"
       end
-
     end
   end
 end
-

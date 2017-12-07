@@ -1,5 +1,4 @@
 class ExtendedController < ApplicationController
-
   api :POST, '/extended'
   param :user, Hash do
     param :name, String
