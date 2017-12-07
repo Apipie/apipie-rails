@@ -229,7 +229,7 @@ module Apipie
               if Apipie.configuration.validate_presence?
                 method_params.each do |_, param|
                   # check if required parameters are present
-                  raise ParamMissing.new(param) if param.required && !params.key?(param.name)
+                  raise ParamMissing, param if param.required && !params.key?(param.name)
                 end
               end
 
@@ -243,9 +243,9 @@ module Apipie
               # Only allow params passed in that are defined keys in the api
               # Auto skip the default params (format, controller, action)
               if Apipie.configuration.validate_key?
-                params.reject { |k, _| %w(format controller action).include?(k.to_s) }.each_pair do |param, _|
+                params.reject { |k, _| %w[format controller action].include?(k.to_s) }.each_pair do |param, _|
                   # params allowed
-                  raise UnknownParam.new(param) if method_params.select { |_, p| p.name.to_s == param.to_s }.empty?
+                  raise UnknownParam, param if method_params.select { |_, p| p.name.to_s == param.to_s }.empty?
                 end
               end
 

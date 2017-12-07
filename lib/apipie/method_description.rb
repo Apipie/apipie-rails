@@ -58,7 +58,7 @@ module Apipie
     end
 
     def params
-      params_ordered.reduce(ActiveSupport::OrderedHash.new) { |h, p| h[p.name] = p; h }
+      params_ordered.each_with_object(ActiveSupport::OrderedHash.new) { |p, h| h[p.name] = p; }
     end
 
     def params_ordered_self
@@ -91,7 +91,7 @@ module Apipie
 
         # exclude overwritten parent errors
         @merged_errors = resource_errors.find_all do |err|
-          !@errors.any? { |e| e.code == err.code }
+          @errors.none? { |e| e.code == err.code }
         end
       end
       @merged_errors.concat(@errors)
@@ -164,7 +164,7 @@ module Apipie
         desc = dsl_data[:api_from_routes][:desc]
         options = dsl_data[:api_from_routes][:options]
 
-        api_from_routes = Apipie.routes_for_action(resource.controller, method, { desc: desc, options: options }).map do |route_info|
+        api_from_routes = Apipie.routes_for_action(resource.controller, method, desc: desc, options: options).map do |route_info|
           [route_info[:verb],
            route_info[:path],
            route_info[:desc],
@@ -192,7 +192,7 @@ module Apipie
     def format_example_data(data)
       case data
       when Array, Hash
-        JSON.pretty_generate(data).gsub(/: \[\s*\]/, ": []").gsub(/\{\s*\}/, "{}")
+        JSON.pretty_generate(data).gsub(/: \[\s*\]/, ': []').gsub(/\{\s*\}/, '{}')
       else
         data
       end

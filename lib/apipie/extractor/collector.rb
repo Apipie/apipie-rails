@@ -47,7 +47,7 @@ module Apipie
       end
 
       def refine_errors_description(description, record)
-        if record[:code].to_i >= 300 && !description[:errors].any? { |e| e[:code].to_i == record[:code].to_i }
+        if record[:code].to_i >= 300 && description[:errors].none? { |e| e[:code].to_i == record[:code].to_i }
           description[:errors] << { code: record[:code] }
         end
       end
@@ -63,12 +63,12 @@ module Apipie
             # we specify what type it might be. At the end the first type
             # that left is taken as the more general one
             unless param_desc[:type]
-              param_desc[:type] = [:bool, :boolean, :number]
+              param_desc[:type] = %i[bool boolean number]
               param_desc[:type] << Hash if value.is_a? Hash
               param_desc[:type] << :undef
             end
 
-            if [:boolean, :bool].include?(param_desc[:type].first) && ! [true, false, 1, 0].include?(value)
+            if %i[boolean bool].include?(param_desc[:type].first) && ![true, false, 1, 0].include?(value)
               param_desc[:type].shift
             end
 

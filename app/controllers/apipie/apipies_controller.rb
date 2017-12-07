@@ -69,8 +69,7 @@ module Apipie
       end
     end
 
-    def apipie_checksum
-    end
+    def apipie_checksum; end
 
     private
 
@@ -79,7 +78,7 @@ module Apipie
     def get_language
       return nil unless Apipie.configuration.translate
       lang = Apipie.configuration.default_locale
-      [:resource, :method, :version].each do |par|
+      %i[resource method version].each do |par|
         next unless params[par]
         splitted = params[par].split('.')
         if splitted.length > 1 && Apipie.configuration.languages.include?(splitted.last)
@@ -111,9 +110,9 @@ module Apipie
     end
 
     def get_format
-      [:resource, :method, :version].each do |par|
+      %i[resource method version].each do |par|
         next unless params[par]
-        [:html, :json].each do |format|
+        %i[html json].each do |format|
           extension = ".#{format}"
           if params[par].include?(extension)
             params[par] = params[par].sub(extension, '')
@@ -127,7 +126,7 @@ module Apipie
     def render_from_cache
       path = Apipie.configuration.doc_base_url.dup
       # some params can contain dot, but only one in row
-      if [:resource, :method, :format, :version].any? { |p| params[p].to_s.delete('.') =~ /\W/ || params[p].to_s =~ /\.\./ }
+      if %i[resource method format version].any? { |p| params[p].to_s.delete('.') =~ /\W/ || params[p].to_s =~ /\.\./ }
         head(:bad_request) && return
       end
 

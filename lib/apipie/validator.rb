@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 module Apipie
   module Validator
     # to create new validator, inherit from Apipie::Validator::Base
@@ -84,11 +83,7 @@ module Apipie
 
       def ==(other)
         return false unless self.class == other.class
-        if param_description == other.param_description
-          true
-        else
-          false
-        end
+        param_description == other.param_description
       end
     end
 
@@ -229,10 +224,10 @@ module Apipie
       end
 
       def items
-        unless enum
-          @items_type || 'any type'
-        else
+        if enum
           enum.inspect
+        else
+          @items_type || 'any type'
         end
       end
     end
@@ -316,7 +311,7 @@ module Apipie
         if @hash_params
           @hash_params.each do |k, p|
             if Apipie.configuration.validate_presence?
-              raise ParamMissing.new(p) if p.required && !value.key?(k)
+              raise ParamMissing, p if p.required && !value.key?(k)
             end
             if Apipie.configuration.validate_value?
               p.validate(value[k]) if value.key?(k)
@@ -328,7 +323,7 @@ module Apipie
 
       def process_value(value)
         if @hash_params && value
-          return @hash_params.each_with_object({}) do |(key, param), api_params|
+          @hash_params.each_with_object({}) do |(key, param), api_params|
             if value.key?(key)
               api_params[param.as] = param.process_value(value[key])
             end
@@ -401,7 +396,7 @@ module Apipie
 
     class BooleanValidator < BaseValidator
       def validate(value)
-        %w(true false 1 0).include?(value.to_s)
+        %w[true false 1 0].include?(value.to_s)
       end
 
       def self.build(param_description, argument, _options, _block)
@@ -413,7 +408,7 @@ module Apipie
       end
 
       def description
-        string = %w(true false 1 0).map { |value| "<code>#{value}</code>" }.join(', ')
+        string = %w[true false 1 0].map { |value| "<code>#{value}</code>" }.join(', ')
         "Must be one of: #{string}"
       end
     end

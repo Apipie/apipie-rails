@@ -27,7 +27,7 @@ module Apipie
     def see_url
       method_description = Apipie[@link]
       if method_description.nil?
-        raise ArgumentError.new("Method #{@link} referenced in 'see' does not exist.")
+        raise ArgumentError, "Method #{@link} referenced in 'see' does not exist."
       end
       method_description.doc_url
     end

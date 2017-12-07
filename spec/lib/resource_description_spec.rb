@@ -31,13 +31,13 @@ describe Apipie::ResourceDescription do
     end
 
     it 'should be ordered' do
-      expect(@resource._methods.keys).to eq([:a, :b, :c])
-      expect(@resource.to_json[:methods].map { |h| h[:name] }).to eq(%w(a b c))
+      expect(@resource._methods.keys).to eq(%i[a b c])
+      expect(@resource.to_json[:methods].map { |h| h[:name] }).to eq(%w[a b c])
     end
 
     it 'should be still ordered' do
-      expect(@resource._methods.keys).to eq([:a, :b, :c])
-      expect(@resource.to_json[:methods].map { |h| h[:name] }).to eq(%w(a b c))
+      expect(@resource._methods.keys).to eq(%i[a b c])
+      expect(@resource.to_json[:methods].map { |h| h[:name] }).to eq(%w[a b c])
     end
   end
 end

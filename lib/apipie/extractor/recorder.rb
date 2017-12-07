@@ -4,7 +4,7 @@ module Apipie
       MULTIPART_BOUNDARY = 'APIPIE_RECORDER_EXAMPLE_BOUNDARY'.freeze
 
       def initialize
-        @ignored_params = [:controller, :action]
+        @ignored_params = %i[controller action]
       end
 
       def analyse_env(env)
@@ -43,7 +43,7 @@ module Apipie
         @verb = request.request_method.to_sym
         @path = request.path
         @params = request.request_parameters
-        if [:POST, :PUT, :PATCH, :DELETE].include?(@verb)
+        if %i[POST PUT PATCH DELETE].include?(@verb)
           @request_data = @params
         else
           @query = request.query_string
@@ -118,8 +118,7 @@ module Apipie
 
       protected
 
-      def api_description
-      end
+      def api_description; end
 
       class Middleware
         def initialize(app)

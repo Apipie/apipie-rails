@@ -72,7 +72,7 @@ module Apipie
       def ordered_call(call)
         call = call.stringify_keys
         ordered_call = OrderedHash.new
-        %w(title verb path versions query request_data response_data code show_in_doc recorded).each do |k|
+        %w[title verb path versions query request_data response_data code show_in_doc recorded].each do |k|
           next unless call.key?(k)
           ordered_call[k] = case call[k]
                             when ActiveSupport::HashWithIndifferentAccess
@@ -104,15 +104,15 @@ module Apipie
         old_examples = load_recorded_examples
         merged_examples = []
         (new_examples.keys + old_examples.keys).uniq.each do |key|
-          if new_examples.key?(key)
-            if old_examples.key?(key)
-              records = deep_merge_examples(new_examples[key], old_examples[key])
-            else
-              records = new_examples[key]
-            end
-          else
-            records = old_examples[key]
-          end
+          records = if new_examples.key?(key)
+                      if old_examples.key?(key)
+                        deep_merge_examples(new_examples[key], old_examples[key])
+                      else
+                        new_examples[key]
+                                end
+                    else
+                      old_examples[key]
+                    end
           merged_examples << [key, records.map { |r| ordered_call(r) }]
         end
         merged_examples
@@ -181,9 +181,9 @@ module Apipie
       def showable_in_doc?(call)
         # we don't want to mess documentation with too large examples
         if hash_nodes_count(call['request_data']) + hash_nodes_count(call['response_data']) > 100
-          return false
+          false
         else
-          return 1
+          1
         end
       end
 
@@ -219,7 +219,7 @@ module Apipie
         new_header << generate_apis_code(apis)
         new_header << ensure_line_breaks(old_header.lines).reject do |line|
           line.include?(Apipie.configuration.generated_doc_disclaimer) ||
-          line =~ /^api/
+            line =~ /^api/
         end.join
         overwrite_header(new_header)
       end
@@ -267,7 +267,7 @@ module Apipie
       end
 
       def controller_content
-        raise ControllerNotFound.new unless controller_path && File.exist?(controller_path)
+        raise ControllerNotFound unless controller_path && File.exist?(controller_path)
         @controller_content ||= File.read(controller_path)
       end
 
@@ -293,9 +293,9 @@ module Apipie
           desc = api[:desc]
           name = @controller.controller_name.tr('_', ' ')
           desc ||= case @action.to_s
-                   when 'show', 'create', "update", "destroy"
+                   when 'show', 'create', 'update', 'destroy'
                      name = name.singularize
-                     "#{@action.capitalize} #{name =~ /^[aeiou]/ ? "an" : "a"} #{name}"
+                     "#{@action.capitalize} #{name =~ /^[aeiou]/ ? 'an' : 'a'} #{name}"
                    when 'index'
                      "List #{name}"
                    end

@@ -17,7 +17,7 @@ describe ConcernsController do
 
   it 'peserved the order of methods being defined in file' do
     doc_methods = Apipie.get_resource_description('concern_resources')._methods.keys
-    expect(doc_methods).to eq([:index, :show, :create, :update, :custom])
+    expect(doc_methods).to eq(%i[index show create update custom])
   end
 
   it 'replaces a placeholder doc specified in concern with a real path' do

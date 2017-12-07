@@ -26,7 +26,7 @@ module Apipie::Validator
       let(:validator) { ArrayValidator.new(param_desc, Array, of: String) }
 
       it 'accepts array of specified type' do
-        expect(validator.validate(%w(string1 string2))).to eq(true)
+        expect(validator.validate(%w[string1 string2])).to eq(true)
       end
 
       it 'accepts empty array' do

@@ -50,7 +50,7 @@ describe UsersController do
       expect(subject._params_args.count).to eq(2)
       name, type, options = subject._params_args.first
       expect(name).to eq(:id)
-      expect(type).to eq(Fixnum)
+      expect(type).to eq(Integer)
       expect(options).to eq(required: false, desc: 'User ID')
     end
   end
@@ -178,7 +178,8 @@ describe UsersController do
               get :show, params: {
                 id: 5,
                 session: 'secret_hash',
-                array_param: 3 }
+                array_param: 3
+              }
             end.to raise_error(Apipie::ParamInvalid, /array_param/)
           end
 
@@ -188,14 +189,16 @@ describe UsersController do
                   params: {
                     id: 5,
                     session: 'secret_hash',
-                    proc_param: 'asdgsag' }
+                    proc_param: 'asdgsag'
+                  }
             end.to raise_error(Apipie::ParamInvalid, /proc_param/)
 
             get :show,
                 params: {
                   id: 5,
                   session: 'secret_hash',
-                  proc_param: 'param value' }
+                  proc_param: 'param value'
+                }
             assert_response :success
           end
 
@@ -378,7 +381,7 @@ describe UsersController do
       expect(b.resource._id).to eq('users')
 
       expect(b.apis.count).to eq(1)
-      expect(b.formats).to eq(%w(json jsonp))
+      expect(b.formats).to eq(%w[json jsonp])
       api = b.apis.first
       expect(api.short_description).to eq('Show user profile')
       expect(api.path).to eq('/users/:id')
@@ -572,18 +575,14 @@ describe UsersController do
                                                                                        description: "\n<p>Password for login</p>\n",
                                                                                        name: 'apassword', full_name: 'resource_param[apassword]',
                                                                                        show: true,
-                                                                                       expected_type: 'string' }
-                     ] }
-                   ]
-                 },
+                                                                                       expected_type: 'string' }] }] },
                  { required: false, validator: 'Parameter has to be Integer.',
                    allow_nil: false,
                    allow_blank: false,
                    description: "\n<p>Company ID</p>\n",
                    name: 'id', full_name: 'id',
                    show: true,
-                   expected_type: 'numeric' }
-       ],
+                   expected_type: 'numeric' }],
         name: 'two_urls',
         show: true,
         apis: [
@@ -649,7 +648,7 @@ EOS2
       param = a.params[:array_param]
       expect(param.desc).to eq("\n<p>array validator</p>\n")
       expect(param.validator.class).to be(Apipie::Validator::EnumValidator)
-      expect(param.validator.instance_variable_get('@array')).to eq(%w(100 one two 1 2))
+      expect(param.validator.instance_variable_get('@array')).to eq(%w[100 one two 1 2])
 
       param = a.params[:proc_param]
       expect(param.desc).to eq("\n<p>proc validator</p>\n")
@@ -665,12 +664,12 @@ EOS2
     class IgnoredController < ApplicationController; end
 
     after do
-      Apipie.configuration.ignored = %w()
+      Apipie.configuration.ignored = %w[]
     end
 
     describe 'ignored action' do
       before do
-        Apipie.configuration.ignored = %w(UsersController#ignore)
+        Apipie.configuration.ignored = %w[UsersController#ignore]
       end
 
       it 'skips the listed  actions from the documentation' do
@@ -684,7 +683,7 @@ EOS2
 
     describe 'ignored controller' do
       before do
-        Apipie.configuration.ignored = %w(IgnoredController)
+        Apipie.configuration.ignored = %w[IgnoredController]
       end
 
       it 'skips the listed controller from the documentation' do

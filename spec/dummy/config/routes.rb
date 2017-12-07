@@ -6,7 +6,7 @@ Dummy::Application.routes.draw do
           post :create_route
         end
       end
-      resources :concerns, only: [:index, :show]
+      resources :concerns, only: %i[index show]
       namespace :files do
         get '/*file_path', format: false, action: 'download'
       end

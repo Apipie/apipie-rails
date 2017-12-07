@@ -15,13 +15,13 @@ describe 'param groups' do
   it 'allows using groups is nested param descriptions' do
     user_create_desc = Apipie['users#update'].params[:user]
     user_create_params = user_create_desc.validator.params_ordered.map(&:name)
-    expect(user_create_params.map(&:to_s).sort).to eq(%w(membership name pass))
+    expect(user_create_params.map(&:to_s).sort).to eq(%w[membership name pass])
   end
 
   it 'should allow adding additional params to group' do
     user_create_desc = Apipie['users#create'].params[:user]
     user_create_params = user_create_desc.validator.params_ordered.map(&:name)
-    expect(user_create_params.map(&:to_s).sort).to eq(%w(membership name pass permalink))
+    expect(user_create_params.map(&:to_s).sort).to eq(%w[membership name pass permalink])
   end
 
   context 'hash param' do

@@ -3,7 +3,7 @@ class UsersController < ApplicationController
     short 'Site members'
     path '/users'
     formats ['json']
-    param :id, Fixnum, desc: 'User ID', required: false
+    param :id, Integer, desc: 'User ID', required: false
     param :legacy_param, Hash, desc: 'Deprecated parameter not documented', show: false, required: false do
       param :resource_param, Hash, desc: 'Param description for all methods' do
         param :ausername, String, desc: 'Username for login', required: true
@@ -169,20 +169,20 @@ class UsersController < ApplicationController
   eos
   api :GET, '/users/:id', 'Show user profile'
   show false
-  formats %w(json jsonp)
+  formats %w[json jsonp]
   error 401, 'Unauthorized'
   error code: 404, description: 'Not Found'
   param :id, Integer, desc: 'user id', required: true
   param :session, String, desc: 'user is logged in', required: true, missing_message: -> { 'session_parameter_is_required' }
   param :regexp_param, /^[0-9]* years/, desc: 'regexp param'
   param :regexp2, /\b[A-Z0-9._%+-=]+@[A-Z0-9.-]+.[A-Z]{2,}\b/i, desc: 'email regexp'
-  param :array_param, %w(100 one two 1 2), desc: 'array validator'
+  param :array_param, %w[100 one two 1 2], desc: 'array validator'
   param :boolean_param, [true, false], desc: 'array validator with boolean'
   param :proc_param, lambda { |val|
     val == 'param value' ? true : "The only good value is 'param value'."
   }, desc: 'proc validator'
   param :briefer_dsl, String, 'You dont need :desc => from now'
-  param :meta_param, String, desc: 'A parameter with some additional metadata', meta: [:some, :more, :info]
+  param :meta_param, String, desc: 'A parameter with some additional metadata', meta: %i[some more info]
   meta success_message: 'Some message'
   param :hash_param, Hash, desc: 'Hash param' do
     param :dummy_hash, Hash do
@@ -210,7 +210,7 @@ class UsersController < ApplicationController
   def_param_group :user do
     param :user, Hash, desc: 'User info', required: true, action_aware: true do
       param_group :credentials
-      param :membership, %w(standard premium), desc: 'User membership', allow_nil: false
+      param :membership, %w[standard premium], desc: 'User membership', allow_nil: false
     end
   end
 
@@ -279,12 +279,10 @@ class UsersController < ApplicationController
     param :permalink, String
   end
   param :facts, Hash, desc: 'Additional optional facts about the user', allow_nil: true
-  def create_route
-  end
+  def create_route; end
 
   api :GET, '/users/action_with_headers'
   header :RequredHeaderName, 'Required header description', required: true
   header :OptionalHeaderName, 'Optional header description', required: false
-  def action_with_headers
-  end
+  def action_with_headers; end
 end

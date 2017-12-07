@@ -38,7 +38,7 @@ module Apipie
       elsif desc_or_options.is_a?(String)
         options[:desc] = desc_or_options
       elsif !desc_or_options.nil?
-        raise ArgumentError.new('param description: expected description or options as 3rd parameter')
+        raise ArgumentError, 'param description: expected description or options as 3rd parameter'
       end
 
       options.symbolize_keys!
@@ -178,7 +178,7 @@ module Apipie
     # nested params)
     def action_aware?
       if @options.key?(:action_aware)
-        return @options[:action_aware]
+        @options[:action_aware]
       elsif @parent
         @parent.action_aware?
       else

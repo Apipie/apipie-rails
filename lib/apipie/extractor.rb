@@ -99,8 +99,7 @@ module Apipie
                   when Regexp then r.verb.source[/\w+/]
                   else r.verb.to_s
                      end,
-            path: case
-                  when r.path.respond_to?(:spec) then r.path.spec.to_s
+            path: if r.path.respond_to?(:spec) then r.path.spec.to_s
                   else r.path.to_s
                        end,
             controller: r.requirements[:controller],

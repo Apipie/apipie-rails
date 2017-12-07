@@ -88,7 +88,7 @@ class Apipie::Validator::IntegerValidator < Apipie::Validator::BaseValidator
   end
 
   def self.build(param_description, argument, _options, _block)
-    if argument == Integer || argument == Fixnum
+    if argument == Integer || argument == Integer
       new(param_description, argument)
     end
   end

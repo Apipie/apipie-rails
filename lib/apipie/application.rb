@@ -168,7 +168,7 @@ module Apipie
       elsif resource_name.respond_to? :apipie_resource_descriptions
         resource_description = get_resource_description(resource_name)
       else
-        raise ArgumentError.new("Resource #{resource_name} does not exists.")
+        raise ArgumentError, "Resource #{resource_name} does not exists."
       end
       unless resource_description.nil?
         resource_description.method_description(method_name.to_sym)
@@ -248,9 +248,8 @@ module Apipie
       _resources = if resource_name.blank?
                      # take just resources which have some methods because
                      # we dont want to show eg ApplicationController as resource
-                     resource_descriptions[version].inject({}) do |result, (k, v)|
+                     resource_descriptions[version].each_with_object({}) do |(k, v), result|
                        result[k] = v.to_json(nil, lang) unless v._methods.blank?
-                       result
                      end
                    else
                      [@resource_descriptions[version][resource_name].to_json(method_name, lang)]

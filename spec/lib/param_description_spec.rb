@@ -182,7 +182,7 @@ describe Apipie::ParamDescription do
 
     context 'when the param is required for multiple actions' do
       it 'should set param as required if it match current action' do
-        param = Apipie::ParamDescription.new(method_desc, :required, String, 'description', 'required' => [:update, :create])
+        param = Apipie::ParamDescription.new(method_desc, :required, String, 'description', 'required' => %i[update create])
         expect(param.required).to be true
       end
     end
@@ -263,7 +263,7 @@ describe Apipie::ParamDescription do
     context 'with HashValidator' do
       subject do
         Apipie::ParamDescription.new(method_desc, :param, Hash) do
-          param :answer, Fixnum
+          param :answer, Integer
         end
       end
 
@@ -279,7 +279,7 @@ describe Apipie::ParamDescription do
     context 'with NestedValidator' do
       subject do
         Apipie::ParamDescription.new(method_desc, :param, Array) do
-          param :answer, Fixnum
+          param :answer, Integer
         end
       end
 
@@ -305,9 +305,9 @@ describe Apipie::ParamDescription do
 
   describe 'Array with classes' do
     it 'should be valid for objects included in class array' do
-      param = Apipie::ParamDescription.new(method_desc, :param, [Fixnum, String])
+      param = Apipie::ParamDescription.new(method_desc, :param, [Integer, String])
       expect { param.validate('1') }.not_to raise_error
-      expect { param.validate(Fixnum) }.to raise_error(Apipie::ParamInvalid)
+      expect { param.validate(Integer) }.to raise_error(Apipie::ParamInvalid)
     end
   end
 end

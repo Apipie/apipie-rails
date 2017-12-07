@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 require 'fileutils'
 
 namespace :apipie do
@@ -58,8 +57,8 @@ namespace :apipie do
   task cache: :environment do
     puts "#{Time.now} | Started"
     cache_part = ENV['cache_part']
-    generate_index = (cache_part == 'resources' ? false : true)
-    generate_resources = (cache_part == 'index' ? false : true)
+    generate_index = cache_part != 'resources'
+    generate_resources = cache_part != 'index'
     with_loaded_documentation do
       puts "#{Time.now} | Documents loaded..."
       ([nil] + Apipie.configuration.languages).each do |lang|
@@ -118,7 +117,8 @@ namespace :apipie do
       end
       f.write av.render(
         template: template.to_s,
-        layout: (layout && "apipie/#{layout}"))
+        layout: (layout && "apipie/#{layout}")
+      )
     end
   end
 
@@ -232,16 +232,16 @@ MESSAGE
   desc 'Convert your examples from the old yaml into the new json format'
   task convert_examples: :environment do
     yaml_examples_file = File.join(Rails.root, Apipie.configuration.doc_path, 'apipie_examples.yml')
-    if File.exist?(yaml_examples_file)
-      # if SafeYAML gem is enabled, it will load examples as an array of Hash, instead of hash
-      examples = if defined? SafeYAML
+    examples = if File.exist?(yaml_examples_file)
+                 # if SafeYAML gem is enabled, it will load examples as an array of Hash, instead of hash
+                 if defined? SafeYAML
                    YAML.load_file(yaml_examples_file, safe: false)
                  else
                    YAML.load_file(yaml_examples_file)
-                 end
-    else
-      examples = {}
-    end
+                            end
+               else
+                 {}
+               end
     Apipie::Extractor::Writer.write_recorded_examples(examples)
   end
 end
