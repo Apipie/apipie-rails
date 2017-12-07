@@ -334,7 +334,7 @@ params for ``create`` and ``update`` actions are shared between them.
 These params can be extracted with ``def_param_group`` and
 ``param_group`` keywords.
 
-The definition is looked up in the scope of the controller. If the
+The definition is looked up in the scope of the controller and its subclasses. If the
 group is defined in a different controller, it might be referenced by
 specifying the second argument.
 
