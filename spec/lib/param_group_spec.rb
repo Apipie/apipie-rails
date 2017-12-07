@@ -61,5 +61,7 @@ describe "param groups" do
     expect(Apipie['1.0#architectures#index'].params.key?(:items_per_page))
       .to be true
   end
+
+  it 'should be able to override inherited param_groups'
 end
 
