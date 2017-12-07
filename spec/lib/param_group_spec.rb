@@ -51,10 +51,9 @@ describe "param groups" do
     expect(Apipie["overridden_concern_resources#create"].params.has_key?(:user)).to eq(false)
   end
 
-it "shouldn't replace name of a parameter defined in the controller" do
+  it "shouldn't replace name of a parameter defined in the controller" do
     expect(Apipie["overridden_concern_resources#custom"].params.has_key?(:concern)).to eq(true)
     expect(Apipie["overridden_concern_resources#custom"].params.has_key?(:user)).to eq(false)
   end
-
 end
 
