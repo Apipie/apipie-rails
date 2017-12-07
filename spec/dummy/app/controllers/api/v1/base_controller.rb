@@ -11,6 +11,10 @@ module Api
         param :page, Integer, 'The page of the resource.'
         param :items_per_page, Integer, 'The number of items per page.'
       end
+
+      def_param_group :identifier do
+        param :identifier, Integer, 'The identifier of the resource.'
+      end
     end
   end
 end

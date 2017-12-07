@@ -8,7 +8,12 @@ module Api
       end
 
       api :GET, "/architectures/:id/", "Show an architecture."
+      param_group :identifier
       def show
+      end
+
+      def_param_group :identifier do
+        param :identifier, Hash, 'A hex based string to identify the resource.'
       end
 
       def_param_group :timestamps do

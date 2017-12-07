@@ -62,6 +62,8 @@ describe "param groups" do
       .to be true
   end
 
-  it 'should be able to override inherited param_groups'
+  it 'should be able to override inherited param_groups' do
+    expect(Apipie['1.0#architectures#show'].params[:identifier].validator.expected_type).to eq 'hash'
+  end
 end
 
