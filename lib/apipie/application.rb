@@ -143,6 +143,8 @@ module Apipie
       key = "#{controller.name}##{name}"
       if @param_groups.has_key?(key)
         return @param_groups[key]
+      elsif controller.superclass != Object
+        get_param_group(controller.superclass, name)
       else
         raise "param group #{key} not defined"
       end
