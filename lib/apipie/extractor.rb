@@ -150,7 +150,7 @@ module Apipie
       def update_api_descriptions
         apis_from_docs = all_apis_from_docs
         @apis_from_routes.each do |(controller, action), new_apis|
-          method_key = "#{Apipie.get_resource_name(controller.constantize)}##{action}"
+          method_key = "#{Apipie.get_resource_name(controller.safe_constantize || next)}##{action}"
           old_apis = apis_from_docs[method_key] || []
           new_apis.each do |new_api|
             new_api[:path].sub!(/\(\.:format\)$/, '') if new_api[:path]
