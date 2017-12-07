@@ -6,6 +6,11 @@ module Api
         app_info 'Version 1.0 description'
         api_base_url '/api/v1'
       end
+
+      def_param_group :pagination do
+        param :page, Integer, 'The page of the resource.'
+        param :items_per_page, Integer, 'The number of items per page.'
+      end
     end
   end
 end

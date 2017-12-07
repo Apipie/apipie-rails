@@ -55,5 +55,11 @@ describe "param groups" do
     expect(Apipie["overridden_concern_resources#custom"].params.has_key?(:concern)).to eq(true)
     expect(Apipie["overridden_concern_resources#custom"].params.has_key?(:user)).to eq(false)
   end
+
+  it 'should allow controllers to inherit param groups from their parents' do
+    expect(Apipie['1.0#architectures#index'].params.key?(:page)).to be true
+    expect(Apipie['1.0#architectures#index'].params.key?(:items_per_page))
+      .to be true
+  end
 end
 

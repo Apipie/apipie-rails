@@ -3,6 +3,7 @@ module Api
     class ArchitecturesController < V1::BaseController
       resource_description { name 'Architectures' }
       api :GET, "/architectures/", "List all architectures."
+      param_group :pagination
       def index
       end
 
