@@ -40,11 +40,13 @@ describe Apipie::Validator do
   end
 
   describe 'ArrayClassValidator' do
+    # rubocop:disable Lint/UnifiedInteger
     it 'should validate by object class' do
       validator = Apipie::Validator::ArrayClassValidator.new(params_desc, [Fixnum, String])
       expect(validator.validate('1')).to be_truthy
       expect(validator.validate(1)).to be_truthy
       expect(validator.validate(1 => 1)).to be_falsey
     end
+    # rubocop:enable Lint/UnifiedInteger
   end
 end
