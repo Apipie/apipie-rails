@@ -51,6 +51,71 @@ namespace :apipie do
     end
   end
 
+  desc "Generate static swagger json"
+  task :static_swagger_json, [:version, :swagger_content_type_input, :filename_suffix] => :environment do |t, args|
+    with_loaded_documentation do
+      out = ENV["OUT"] || File.join(::Rails.root, Apipie.configuration.doc_path, 'apidoc')
+      generate_swagger_using_args(args, out)
+    end
+  end
+
+  # The following task compares the currently-generated swagger output to a reference copy generated
+  # by the previous execution of this task.
+  # if a difference is detected, the current output will be stored as a reference.
+  # reference files have the
+  # if more than 3 references are detected, the older ones will be purged
+  desc "Did swagger output change since the last execution of this task?"
+  task :did_swagger_change, [:version, :swagger_content_type_input, :filename_suffix] => :environment do |t, args|
+    with_loaded_documentation do
+      out = ENV["OUT_REF"] || File.join(::Rails.root, Apipie.configuration.doc_path, 'apidoc_ref')
+      paths = generate_swagger_using_args(args, out)
+      paths.each {|path|
+        existing_files_in_dir = Pathname(out).children(true)
+
+        make_reference = false
+
+        # reference filenames have the format <basename>.<counter>.swagger_ref
+        reference_files = existing_files_in_dir.select{|f|
+              f.extname == '.swagger_ref' &&
+              f.basename.sub_ext("").extname.delete('.').to_i > 0 &&
+              f.basename.sub_ext("").sub_ext("") == path.basename.sub_ext("")
+        }
+        if reference_files.empty?
+          print "Reference file does not exist for [#{path}]\n"
+          counter = 1
+          make_reference = true
+        else
+          reference_files.sort_by! {|f| f.ctime }
+          last_ref = reference_files[-1]
+          print "Comparing [#{path}] to reference file: [#{last_ref.basename}]: "
+          if !FileUtils.compare_file(path, last_ref)
+            print("\n ---> Differences detected\n")
+            counter = last_ref.sub_ext("").extname.delete('.').to_i + 1
+            make_reference = true
+          else
+            print("identical\n")
+          end
+        end
+
+        if make_reference
+          new_path = path.sub_ext(".#{counter}.swagger_ref")
+          print " ---> Keeping current output as [#{new_path}]\n"
+          path.rename(new_path)
+          reference_files << new_path
+        else
+          path.delete
+        end
+
+        num_refs_to_keep = 3
+        if reference_files.length > num_refs_to_keep
+          (reference_files - reference_files[-num_refs_to_keep..-1]).each{|f| f.delete}
+        end
+      }
+    end
+  end
+
+
+
   # By default the full cache is built.
   # It is possible to generate index resp. resources only with
   # rake apipie:cache cache_part=index (resources resp.)
@@ -124,11 +189,40 @@ namespace :apipie do
     end
   end
 
+  def generate_swagger_using_args(args, out)
+    args.with_defaults(:version => Apipie.configuration.default_version,
+                       :swagger_content_type_input => :form_data,
+                       :filename_suffix => nil)
+    Apipie.configuration.swagger_content_type_input = args[:swagger_content_type_input].to_sym
+    count = 0
+
+    sfx = args[:filename_suffix] || "_#{args[:swagger_content_type_input]}"
+
+    paths = []
+
+    ([nil] + Apipie.configuration.languages).each do |lang|
+      doc = Apipie.to_swagger_json(args[:version], nil, nil, lang, count==0)
+      paths << generate_swagger_json_page(out, doc, sfx, lang)
+      count+=1
+    end
+
+    paths
+  end
+
   def generate_json_page(file_base, doc, lang = nil)
     FileUtils.mkdir_p(file_base) unless File.exists?(file_base)
 
     filename = "schema_apipie#{lang_ext(lang)}.json"
     File.open("#{file_base}/#{filename}", 'w') { |file| file.write(JSON.pretty_generate(doc)) }
+  end
+
+  def generate_swagger_json_page(file_base, doc, sfx="", lang = nil)
+    FileUtils.mkdir_p(file_base) unless File.exists?(file_base)
+
+    path = Pathname.new("#{file_base}/schema_swagger#{sfx}#{lang_ext(lang)}.json")
+    File.open(path, 'w') { |file| file.write(JSON.pretty_generate(doc)) }
+
+    path
   end
 
   def generate_one_page(file_base, doc, lang = nil)

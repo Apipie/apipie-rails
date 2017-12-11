@@ -268,6 +268,11 @@ class UsersController < ApplicationController
     render :plain => 'This is very similar to create action'
   end
 
+  api :GET, '/users/by_department', 'show users from a specific department'
+  param :department, ["finance", "operations", "sales", "marketing", "HR"], required: false, default_value: "sales"
+  def get_by_department
+    render :plain => 'nothing to see here'
+  end
 
   api :GET, '/users/desc_from_file', 'desc from file'
   document 'users/desc_from_file.md'

@@ -1154,6 +1154,111 @@ If, for some complex cases, you need to generate/re-generate just part of the ca
 use ``rake apipie:cache cache_part=index`` resp. ``rake apipie:cache cache_part=resources``
 To generate it for different locations for further processing use ``rake apipie:cache OUT=/tmp/apipie_cache``.
 
+====================================
+ Static Swagger (OpenAPI 2.0) files
+====================================
+
+To generate a static Swagger definition file from the api, run ``rake apipie:static_swagger_json``.
+By default the documentation for the default API version is
+used. You can specify the version with ``rake apipie:static_swagger_json[2.0]``. A swagger file will be
+generated for each locale.  The files will be generated in the same location as the static_json files, but
+instead of being named ``schema_apipie[.locale].json``, they will be called ``schema_swagger[.locale].json``.
+
+Specifying default values for parameters
+-----------------------------------------
+Swagger allows method definitions to include an indication of the the default value for each parameter. To include such
+indications, use ``:default_value => <some value>`` in the parameter definition DSL.  For example:
+
+.. code:: ruby
+
+     param :do_something, Boolean, :desc => "take an action", :required => false, :default_value => false
+
+
+Generated Warnings
+-------------------
+The help identify potential improvements to your documentation, the swagger generation process issues warnings if
+it identifies various shortcomings of the DSL documentation. Each warning has a code to allow selective suppression
+(see swagger-specific configuration below)
+
+:100: missing short description for method
+:101: added missing / at beginning of path
+:102: no return codes specified for method
+:103: a parameter is a generic Hash without an internal type specification
+:104: a parameter is an 'in-path' parameter, but specified as 'not required' in the DSL
+:105: a parameter is optional but does not have a default value specified
+:106: a parameter was ommitted from the swagger output because it is a Hash without fields in a formData specification
+:107: a path parameter is not described
+:108: inferring that a parameter type is boolean because described as an enum with [false,true] values
+
+
+
+Swagger-Specific Configuration Parameters
+-------------------------------------------------
+
+There are several configuration parameters that determine the structure of the generated swagger file:
+
+``config.swagger_content_type_input``
+    If the value is ``:form_data`` - the swagger file will indicate that the server consumes the content types
+    ``application/x-www-form-urlencoded`` and ``multipart/form-data``.  Non-path parameters will have the
+    value ``"in": "formData"``.  Note that parameters of type Hash that do not have any fields in them will *be ommitted*
+    from the resulting files, as there is no way to describe them in swagger.
+
+    If the value is ``:json`` - the swagger file will indicate that the server consumes the content type
+    ``application/json``. All non-path parameters will be included in the schema of a single ``"in": "body"`` parameter
+    of type ``object``.
+
+    You can specify the value of this configuration parameter as an additional input to the rake command (e.g.,
+    ``rake apipie:static_swagger_json[2.0,form_data]``).
+
+``config.swagger_json_input_uses_refs``
+    This parameter is only relevant if ``swagger_content_type_input`` is ``:json``.
+
+    If ``true``: the schema of the ``"in": "body"`` parameter of each method is given its own entry in the ``definitions``
+    section, and is referenced using ``$ref`` from the method definition.
+
+    If ``false``: the body parameter definitions are inlined within the method definitions.
+
+``config.swagger_include_warning_tags``
+    If ``true``: in addition to tagging methods with the name of the resource they belong to, methods for which warnings
+    have been issued will be tagged with.
+
+``config.swagger_suppress_warnings``
+    If ``false``: no warnings will be suppressed
+
+    If ``true``: all warnings will be suppressed
+
+    If an array of values (e.g., ``[100,102,107]``), only the warnings identified by the numbers in the array will be suppressed.
+
+``config.swagger_api_host``
+    The value to place in the swagger host field.
+
+    Default is ``localhost:3000``
+
+    If ``nil`` then then host field will not be included.
+
+
+
+Known limitations of the current implementation
+-------------------------------------------------
+* There is currently no way to document the structure and content-type of the data returned from a method
+* Recorded examples are currently not included in the generated swagger file
+* The apipie ``formats`` value is ignored.
+* It is not possible to specify the "consumed" content type on a per-method basis
+* It is not possible to leverage all of the parameter type/format capabilities of swagger
+* Only OpenAPI 2.0 is supported
+
+====================================
+ Dynamic Swagger generation
+====================================
+
+To generate swagger dynamically, use ``http://localhost:3000/apipie.json?type=swagger``.
+
+Note that authorization is not supported for dynamic swagger generation, so if ``config.authorize`` is defined,
+dynamic swagger generation will be disabled.
+
+Dynamically generated swagger is not cached, and is always generated on the fly.
+
+
 ===================
  JSON checksums
 ===================

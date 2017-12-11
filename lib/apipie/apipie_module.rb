@@ -13,6 +13,11 @@ module Apipie
     app.to_json(version, resource_name, method_name, lang)
   end
 
+  def self.to_swagger_json(version = nil, resource_name = nil, method_name = nil, lang = nil, clear_warnings=true)
+    version ||= Apipie.configuration.default_version
+    app.to_swagger_json(version, resource_name, method_name, lang, clear_warnings)
+  end
+
   # all calls delegated to Apipie::Application instance
   def self.method_missing(method, *args, &block)
     app.respond_to?(method) ? app.send(method, *args, &block) : super
