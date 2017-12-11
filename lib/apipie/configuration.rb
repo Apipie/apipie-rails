@@ -108,7 +108,7 @@ module Apipie
     # the line above the docs.
     attr_writer :generated_doc_disclaimer
     def generated_doc_disclaimer
-      @generated_doc_disclaimer ||= "# DOC GENERATED AUTOMATICALLY: REMOVE THIS LINE TO PREVENT REGENARATING NEXT TIME"
+      @generated_doc_disclaimer ||= "# DOC GENERATED AUTOMATICALLY: REMOVE THIS LINE TO PREVENT REGENERATING NEXT TIME"
     end
 
     def use_disqus?
