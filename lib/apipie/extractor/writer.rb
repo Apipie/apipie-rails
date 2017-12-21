@@ -3,9 +3,11 @@ require 'set'
 module Apipie
   module Extractor
     class Writer
+      attr_reader :compressed
 
       def initialize(collector)
         @collector = collector
+        @compressed = Apipie.configuration.compress_examples
       end
 
       def write_examples
@@ -53,7 +55,12 @@ module Apipie
       end
 
       def self.examples_file
-        File.join(Rails.root,Apipie.configuration.doc_path,"apipie_examples.json")
+        pure_path = Rails.root.join(
+          Apipie.configuration.doc_path, 'apipie_examples.json'
+        )
+        zipped_path = pure_path + '.gz'
+        return zipped_path if compressed && File.exist?(zipped_path)
+        pure_path
       end
 
       protected
