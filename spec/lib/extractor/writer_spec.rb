@@ -64,6 +64,18 @@ describe Apipie::Extractor::Writer do
     end
   end
 
+  context 'when compressing examples' do
+    before(:each) { Apipie.configuration.compress_examples = true }
+
+    it 'should write to a compressed file'
+    it 'should read from a compressed file'
+
+    context 'and the previous configuration did not compress' do
+      it 'writes the next examples into the compressed file'
+      it 'removes the previous file.'
+    end
+  end
+
   describe "storing of examples" do
     before do
       allow(writer_class).to receive(:examples_file) { test_examples_file }
