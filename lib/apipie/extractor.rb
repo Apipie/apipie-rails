@@ -35,7 +35,7 @@ module Apipie
 
       def finish
         record_params, record_examples = false, false
-        case Apipie.configuration.record
+        case ENV['APIPIE_RECORD']
         when "params"   then record_params = true
         when "examples" then record_examples = true
         when "all"      then record_params = true, record_examples = true
