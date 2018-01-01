@@ -57,4 +57,19 @@ module Apipie
       "Invalid parameter '#{@param}' value #{@value.inspect}: #{@error}"
     end
   end
+
+  class ResponseDoesNotMatchSwaggerSchema < Error
+    def initialize(controller_name, method_name, response_code, error_messages, schema, returned_object)
+      @controller_name = controller_name
+      @method_name = method_name
+      @response_code = response_code
+      @error_messages = error_messages
+      @schema = schema
+      @returned_object = returned_object
+    end
+
+    def to_s
+      "Response does not match swagger schema (#{@controller_name}##{@method_name} #{@response_code}): #{@error_messages}\nSchema: #{JSON(@schema)}\nReturned object: #{@returned_object}"
+    end
+  end
 end
