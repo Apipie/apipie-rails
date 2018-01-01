@@ -18,7 +18,8 @@ objects, and including those descriptions in generated swagger files.
 * Full backward compatibility with the existing DSL
 * Minimal implementation effort
 * Enough expressiveness to support common use cases
-* Optional integration of the DSL with advanced JSON generators (such as Grape-Entity)      
+* Optional integration of the DSL with advanced JSON generators (such as Grape-Entity)   
+* Allowing developers to easily verify that actual responses match the response declarations   
 
 ## Approach
 
@@ -75,7 +76,8 @@ path parameter).
 
 To allow reuse of the `param_group`, it would be useful to its definition to describe parameters that are not passed 
 in the request but are returned in the response.  This would be implementing by extending the DSL to 
-support a `:only_in => :response` option on `param` definitions.   
+support a `:only_in => :response` option on `param` definitions.  Similarly, params could be defined to be 
+`:only_in => :request` to indicate that they will not be included in the response.    
 
 For example:
 ```ruby
@@ -83,6 +85,7 @@ For example:
   def_param_group :user do
     param :user, Hash, :desc => "User info", :required => true, :action_aware => true do
       param :id, Integer, :only_in => :response
+      param :requested_id, Integer, :only_in => :request
       param_group :credentials
       param :membership, ["standard","premium"], :desc => "User membership", :allow_nil => false
     end
@@ -92,8 +95,6 @@ For example:
   returns :user, :desc => "the requested record"  # includes the :id field, because this is a response
   error :code => 404, :desc => "no user with the specified id"
 ```
-
-Note: if the need arises, it would be possible to extend this pattern to also support `:only_in => :request` params.
 
 
 #### Support `:array_of => <param_group-name>` in the `returns` keyword 
@@ -131,17 +132,113 @@ similar manner to [`Apipie::HashValidator.params_ordered`](https://github.com/Ap
 Such an adapter would make it possible to pass an externally-defined entity to the `returns` keyword
 as if it were a `param_group`.
 
+Such adapters can be created easily by having a class respond to `#describe_own_properties` 
+with an array of property description objects.  When such a class is specified as the 
+parameter to a `returns` declaration, Apipie would query the class for its properties
+by calling `<Class>#describe_own_properties`. 
+
 For example:
 ```ruby
-# entity defined using Grape::Entity
-class UserView < Grape::Entity
-    expose :id, documentation: {type: Integer, desc: "user id", required: true}
-    expose :name
+# here is a class that can describe itself to Apipie
+class Animal
+  def self.describe_own_properties
+    [
+        Apipie::prop(:id, Integer, {:description => 'Name of pet', :required => false}),
+        Apipie::prop(:animal_type, 'string', {:description => 'Type of pet', :values => ["dog", "cat", "iguana", "kangaroo"]}),
+        Apipie::additional_properties(false)
+    ]
+  end
+  
+  attr_accessor :id
+  attr_accessor :animal_type  
 end
 
-# API defined using Apipie
-# where 'from_grape_entity' is an adapter that exposes the contents of the entity
-# as if it were an Apipie::ParamDescription object 
-api :GET, "/users", "Get all user records"
-returns :array_of => from_grape_entity(UserView), :desc => "the requested user records"
+# Here is an API defined as returning Animal objects.
+# Apipie creates an internal adapter by querying Animal#describe_own_properties
+api :GET, "/animals", "Get all records"
+returns :array_of => Animal, :desc => "the requested records"
 ```
+
+The `#describe_own_properties` mechanism can also be used with reflection so that a
+class would query its own properties and populate the response to `#describe_own_properties`
+automatically.  See [this gist](https://gist.github.com/elasti-ron/ac145b2c85547487ca33e5216a69f527)  
+for an example of how Grape::Entity classes can automatically describe itself to Apipie
+
+#### Response validation
+
+The swagger definitions created by Apipie can be used to auto-generate clients that access the
+described APIs.  Those clients will break if the responses returned from the API do not match
+the declarations.  As such, it is very important to include unit tests that validate the actual
+responses against the swagger definitions.
+
+The ~~proposed~~ implemented mechanism provides two ways to include such validations in RSpec unit tests:
+manual (using an RSpec matcher) and automated (by injecting a test into the http operations 'get', 'post', 
+raising an error if there is no match).
+
+Example of the manual mechanism:
+
+```ruby
+require 'apipie/rspec/response_validation_helper'
+
+RSpec.describe MyController, :type => :controller, :show_in_doc => true do
+
+describe "GET stuff with response validation" do
+  render_views   # this makes sure the 'get' operation will actually
+                 # return the rendered view even though this is a Controller spec
+
+  it "does something" do
+    response = get :index, {format: :json}
+
+    # the following expectation will fail if the returned object
+    # does not match the 'returns' declaration in the Controller,
+    # or if there is no 'returns' declaration for the returned
+    # HTTP status code
+    expect(response).to match_declared_responses
+  end
+end
+```
+
+
+Example of the automated mechanism:
+```ruby
+require 'apipie/rspec/response_validation_helper'
+
+RSpec.describe MyController, :type => :controller, :show_in_doc => true do
+
+describe "GET stuff with response validation" do
+  render_views
+  auto_validate_rendered_views
+
+  it "does something" do
+    get :index, {format: :json}
+  end
+  it "does something else" do
+    get :another_index, {format: :json}
+  end
+end
+
+describe "GET stuff without response validation" do
+  it "does something" do
+    get :index, {format: :json}
+  end
+  it "does something else" do
+    get :another_index, {format: :json}
+  end
+end
+```
+
+Explanation of the implementation approach:
+
+The Apipie Swagger Generator is enhanced to allow extraction of the JSON schema of the response object
+for any controller#action[http-status].  When validation is required, the validator receives the 
+actual response object (along with information about the controller, action and http status code),
+queries the swagger generator to get the schema, and uses the json-schema validator (gem) to validate
+one against the other.
+
+Note that there is a slight complication here:  while supported by JSON-shema, the Swagger 2.0 
+specification does not support a mechanism to declare that fields in the response could be null.  
+As such, for a response that contains `null` fields, if the exact same schema used in the swagger def 
+is passed to the json-schema validator, the validation fails.  To work around this issue, when asked 
+to provide the schema for the purpose of response validation (i.e., not for inclusion in the swagger),
+the Apipie Swagger Generator creates a slightly modified schema which declares null values to be valid.
+ 

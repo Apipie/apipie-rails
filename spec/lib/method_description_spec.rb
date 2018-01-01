@@ -68,4 +68,31 @@ describe Apipie::MethodDescription do
 
   end
 
+  describe "response-only properties" do
+    before(:each) do
+      @resource = Apipie::ResourceDescription.new(ApplicationController, "dummy")
+      dsl_data[:params] = [[:a, String, nil, {:only_in => :request}, nil],
+                           [:b, String, nil, {:only_in => :response}, nil],
+                           [:c, String, nil, {}, nil]]
+      @method = Apipie::MethodDescription.new(:a, @resource, dsl_data)
+      @resource.add_method_description @method
+    end
+
+    it "should ignore response-only parameters" do
+      expect(@method.params.keys).to eq([:a, :c])
+      expect(@method.to_json[:params].map{|h| h[:name]}).to eq(['a', 'c'])
+    end
+  end
+
+
+  describe "'returns' properties" do
+    it "should raise an error if both :param_group and :array_of are specified in 'returns'" do
+      @resource = Apipie::ResourceDescription.new(ApplicationController, "dummy")
+      dsl_data[:returns] = { 200 => [{:param_group => 'pet', :array_of => 'pet'}, nil, nil] }
+
+      expect {Apipie::MethodDescription.new(:a, @resource, dsl_data)}.to raise_error(Apipie::ReturnsMultipleDefinitionError)
+    end
+  end
+
+
 end
