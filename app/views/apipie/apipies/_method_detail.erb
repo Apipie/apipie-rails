@@ -15,13 +15,6 @@
   <%= render(:partial => "metadata", :locals => {:meta => method[:metadata]}) %>
 <% end %>
 
-<% unless method[:examples].blank? %>
-  <%= heading(t('apipie.examples'), h_level) %>
-  <% method[:examples].each do |example| %>
-    <pre class="prettyprint"><%= example %></pre>
-  <% end %>
-<% end %>
-
 <% unless method[:params].blank? %>
   <%= heading(t('apipie.params'), h_level) %>
   <table class='table'>
@@ -38,3 +31,8 @@
 <% end %>
 
 <%= render(:partial => "headers", :locals => {:headers => method[:headers], :h_level => h_level }) %>
+
+<% unless method[:examples].blank? %>
+  <%= render partial: 'method_example', locals: { method: method , h_level: h_level} %>
+<% end %>
+

@@ -1,0 +1,27 @@
+<div class="panel panel-<%= example[:code] >= 400 ? 'danger' : 'success'  %>">
+  <div class="panel-heading">
+    <%= example[:path] %>
+    <span class="caret right"></span>
+  </div>
+  <div class="panel-body container">
+    <div class="row">
+      <div class="col-sm-12">
+        <h4>Path:</h4>
+        <pre class="prettyprint"><%= example[:path] %>
+        </pre>
+        <%- if !example[:request_data].blank? %>
+          <h4>Request Data:</h4>
+          <pre class="prettyprint"><%= example[:request_data] %></pre>
+          <h4>Request Data Json:</h4>
+          <pre class="prettyprint"><%= example[:request_data_json] %></pre>
+        <% end %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <h4>Response Data:</h4>
+        <pre class="prettyprint"><%= example[:response_data] %></pre>
+      </div>
+    </div>
+  </div>
+</div>
