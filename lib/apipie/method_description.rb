@@ -194,7 +194,13 @@ module Apipie
         find_all { |ex| ex["show_in_doc"].to_i > 0 }.
         find_all { |ex| ex["versions"].nil? || ex["versions"].include?(self.version) }.
         sort_by { |ex| ex["show_in_doc"] }.
-        map { |ex| format_example(ex.symbolize_keys) }
+        map do |ex|
+        %w(request_data response_data).each do |key|
+          ex[key] = format_example_data(ex[key]) if ex[key]
+        end
+        ex
+      end.
+      map(&:symbolize_keys)
     end
 
     def format_example_data(data)
