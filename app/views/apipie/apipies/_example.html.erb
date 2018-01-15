@@ -1,9 +1,11 @@
 <div class="panel panel-<%= example[:code] >= 400 ? 'danger' : 'success'  %>">
   <div class="panel-heading">
-    <%= example[:path] %>
-    <span class="caret right"></span>
+    <a role href="#example-<%= index %>" data-toggle="collapse">
+      <%= example[:path] %>
+      <span class="caret right"></span>
+    </a>
   </div>
-  <div class="panel-body container">
+  <div id="example-<%= index %>" class="panel-body container collapse">
     <div class="row">
       <div class="col-sm-12">
         <h4>Path:</h4>
