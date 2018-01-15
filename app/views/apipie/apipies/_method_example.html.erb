@@ -1,4 +1,4 @@
 <%= heading(t('apipie.examples'), h_level) %>
-<% method[:examples].each do |example| %>
-  <%= render partial: 'example', locals: { example: example } %>
+<% method[:examples].each.with_index do |example, index| %>
+  <%= render partial: 'example', locals: { example: example, index: index} %>
 <% end %>
