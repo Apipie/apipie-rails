@@ -14,16 +14,16 @@
     class="panel-collapse collapse">
     <div class="panel-body">
       <h4>Path:</h4>
-      <pre class="pre-scrollable"><%= example[:path] %>
+      <pre><%= example[:path] %>
       </pre>
       <%- if !example[:request_data].blank? %>
         <h4>Request Data:</h4>
-        <pre class="pre-scrollable"><%= example[:request_data] %></pre>
+        <pre><%= example[:request_data] %></pre>
         <h4>Request Data Json:</h4>
-        <pre class="pre-scrollable"><%= example[:request_data_json] %></pre>
+        <pre class="prettyprint"><%= example[:request_data_json] %></pre>
       <% end %>
       <h4>Response Data:</h4>
-      <pre class="prettyprint"><%= example[:response_data] %></pre>
+      <pre class="prettyprint pre-scrollable" style="max-height: 600px"><%= example[:response_data] %></pre>
     </div>
   </div>
 </div>
