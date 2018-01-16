@@ -11,9 +11,11 @@ module Apipie
         @verb = env["REQUEST_METHOD"].to_sym
         @path = env["PATH_INFO"].sub(/^\/*/,"/")
         @query = env["QUERY_STRING"] unless env["QUERY_STRING"].blank?
+        input = env['rack.input'].read
         @params = Rack::Utils.parse_nested_query(@query)
-        @params.merge!(env["action_dispatch.request.request_parameters"] || {})
-        if data = parse_data(env["rack.input"].read)
+                             .merge(env['action_dispatch.request.request_parameters'] || {})
+                             .merge(Rack::Utils.parse_nested_query(input) || {})
+        if data = parse_data(input)
           @request_data = data
           env["rack.input"].rewind
         elsif form_hash = env["rack.request.form_hash"]
@@ -109,7 +111,8 @@ module Apipie
            :path => @path,
            :params => @params,
            :query => @query,
-           :request_data => @request_data,
+           :request_data => request_data,
+           :request_data_json => @params,
            :response_data => @response_data,
            :code => @code}
         else
