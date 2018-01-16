@@ -1,8 +1,6 @@
 require 'set'
 module Apipie
-
   class MethodDescription
-
     class Api
 
       attr_accessor :short_description, :path, :http_method, :from_routes, :options
@@ -14,7 +12,6 @@ module Apipie
         @from_routes = options[:from_routes]
         @options = options
       end
-
     end
 
     attr_reader :full_description, :method, :resource, :apis, :examples, :see, :formats, :metadata, :headers, :show
@@ -199,8 +196,7 @@ module Apipie
           ex[key] = format_example_data(ex[key]) if ex[key]
         end
         ex
-      end.
-      map(&:symbolize_keys)
+      end.map(&:symbolize_keys)
     end
 
     def format_example_data(data)
@@ -212,17 +208,6 @@ module Apipie
       end
     end
 
-    def format_example(ex)
-      example = ""
-      example << "// #{ex[:title]}\n" if ex[:title].present?
-      example << "#{ex[:verb]} #{ex[:path]}"
-      example << "?#{ex[:query]}" unless ex[:query].blank?
-      example << "\n" << format_example_data(ex[:request_data]).to_s if ex[:request_data]
-      example << "\n" << ex[:code].to_s
-      example << "\n" << format_example_data(ex[:response_data]).to_s if ex[:response_data]
-      example
-    end
-
     def concern_subst(string)
       return if string.nil?
       if from_concern?
@@ -231,7 +216,5 @@ module Apipie
         string
       end
     end
-
   end
-
 end

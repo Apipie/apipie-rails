@@ -619,16 +619,10 @@ describe UsersController do
   describe "examples" do
 
     it "should be able to load examples from yml file" do
-      expect(Apipie.get_method_description(UsersController, :show).examples).to eq [<<EOS1, <<EOS2].map(&:chomp)
-GET /users/14?verbose=true
-200
-{
-  "name": "Test User"
-}
-EOS1
-GET /users/15
-404
-EOS2
+      examples = Apipie.get_method_description(UsersController, :show).examples
+      expect(examples).to all(be_a(Hash))
+      expect(examples.first[:path]).to eq('/users/14')
+      expect(examples.second[:path]).to eq('/users/15')
     end
 
     describe "document" do
