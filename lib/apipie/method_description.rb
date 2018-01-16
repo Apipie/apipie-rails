@@ -195,7 +195,7 @@ module Apipie
         find_all { |ex| ex["versions"].nil? || ex["versions"].include?(self.version) }.
         sort_by { |ex| ex["show_in_doc"] }.
         map do |ex|
-        %w(request_data response_data).each do |key|
+        %w(request_data response_data request_data_json).each do |key|
           ex[key] = format_example_data(ex[key]) if ex[key]
         end
         ex
