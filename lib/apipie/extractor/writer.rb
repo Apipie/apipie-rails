@@ -75,7 +75,7 @@ module Apipie
       def ordered_call(call)
         call = call.stringify_keys
         ordered_call = OrderedHash.new
-        %w[title verb path versions query request_data response_data code show_in_doc recorded].each do |k|
+        %w[title verb path versions query request_data request_data_json response_data code show_in_doc recorded].each do |k|
           next unless call.has_key?(k)
           ordered_call[k] = case call[k]
                      when ActiveSupport::HashWithIndifferentAccess
