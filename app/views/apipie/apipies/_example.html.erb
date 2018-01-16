@@ -1,11 +1,7 @@
 <div class="panel panel-<%= example[:code].to_i >= 400 ? 'danger' : 'success'  %>">
   <div class="panel-heading">
     <a role href="#example-<%= index %>" data-toggle="collapse">
-      <%= example[:path] %>
-      <%- if !example[:request_data].blank? %>
-        with
-        <%= example[:request_data] %>
-      <% end %>
+      <%= example[:doc_title].presence || "#{example[:path]} with #{example[:request_data]}" %>
       <span class="caret right"></span>
     </a>
   </div>
