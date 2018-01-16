@@ -37,40 +37,42 @@
 
 <%= render(:partial => 'headers', :locals => { headers: @resource[:headers], h_level: 2 }) %>
 
-<div class='accordion' id='accordion'>
+<div class='panel-group accordion' id='accordion'>
 
   <% @resource[:methods].each do |m| %>
     <% if !m[:show] %>
       <% next %>
     <% end %>
-    <hr>
-    <div class='pull-right small'>
-      <a href='<%= m[:doc_url] %><%= @doc[:link_extension] %>'> >>> </a>
-    </div>
-    <div>
-      <% m[:apis].each do |api| %>
-        <h2>
-          <a href='#description-<%= m[:name] %>'
-           class='accordion-toggle'
-           data-toggle='collapse'
-           data-parent='#accordion'>
-            <%= api[:http_method] %> <%= api[:api_url] %>
-          </a>
-          <% if api[:deprecated] %>
-            <code>DEPRECATED</code>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <div class='pull-right small'>
+          <a href='<%= m[:doc_url] %><%= @doc[:link_extension] %>'> >>> </a>
+        </div>
+        <div role="tab">
+          <% m[:apis].each do |api| %>
+            <h2>
+              <a href='#description-<%= m[:name] %>'
+               aria-controls='#description-<%= m[:name] %>'
+               class='accordion-toggle'
+               data-toggle='collapse'
+               data-parent='#accordion'>
+                <%= api[:http_method] %> <%= api[:api_url] %>
+              </a>
+              <% if api[:deprecated] %>
+                <code>DEPRECATED</code>
+              <% end %>
+              <br>
+              <small><%= raw api[:short_description] %></small>
+            </h2>
           <% end %>
-          <br>
-          <small><%= raw api[:short_description] %></small>
-        </h2>
+        </div>
+      </div>
+      <% unless m[:see].empty? %>
+        Also see <%= m[:see].map { |s| link_to(s[:description], "#{s[:link]}#{@doc[:link_extension]}") }.to_sentence.html_safe %>.
       <% end %>
-    </div>
-
-    <% unless m[:see].empty? %>
-      Also see <%= m[:see].map { |s| link_to(s[:description], "#{s[:link]}#{@doc[:link_extension]}") }.to_sentence.html_safe %>.
-    <% end %>
-
-    <div id='description-<%= m[:name] %>' class='collapse accordion-body'>
-      <%= render(:partial => "method_detail", :locals => {:method => m, :h_level => 3}) %>
+      <div id='description-<%= m[:name] %>' class='panel-collapse collapse' aria-labeledby='description-<%= m[:name] %>' role='tabpanel' aria-expanded='false'>
+        <%= render(:partial => "method_detail", :locals => {:method => m, :h_level => 3}) %>
+      </div>
     </div>
   <% end %>
 </div>
