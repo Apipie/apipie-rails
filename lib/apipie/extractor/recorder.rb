@@ -105,6 +105,7 @@ module Apipie
         if @controller
           {:controller => @controller,
            :action => @action,
+           :doc_title => doc_title,
            :verb => @verb,
            :path => @path,
            :params => @params,
@@ -120,6 +121,10 @@ module Apipie
       protected
 
       def api_description
+      end
+
+      def doc_title
+        @doc_title ||= (RSpec.current_example.metadata[:doc_title] if 'RSpec'.safe_constantize)
       end
 
       class Middleware
