@@ -1401,6 +1401,19 @@ And then configure RSpec in this way:
 This way, when running in recording mode, only the tests that have been marked with the
 ``:show_in_doc`` metadata will be run, and hence only those will be used as examples.
 
+If you want to distinguish your recorded examples from one another, you can provide a ``doc_title``
+that will be displayed in the documentation later, like this:
+
+.. code:: ruby
+
+  it 'works', :show_in_doc, doc_title: 'A working example' do
+    expect_it.to work
+  end
+
+  it 'wont work', :show_in_doc, doc_title: 'A failing example' do
+    expect_it.not_to work
+  end
+
 Caveats
 -------
 
