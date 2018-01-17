@@ -34,7 +34,13 @@
   <%= render(:partial => "headers", :locals => {:headers => method[:headers], :h_level => h_level }) %>
 
   <% unless method[:examples].blank? %>
-    <%= render partial: 'method_example', locals: { method: method , h_level: h_level} %>
+    <%= heading(t('apipie.examples'), h_level) %>
+    <% method[:examples].each.with_index do |example, index| %>
+      <%- if example.is_a?(String) %>
+        <%= render partial: 'example_string', locals: { example: example, index: index} %>
+      <% else %>
+        <%= render partial: 'example', locals: { example: example, index: index} %>
+      <% end %>
+    <% end %>
   <% end %>
-
 </div>
