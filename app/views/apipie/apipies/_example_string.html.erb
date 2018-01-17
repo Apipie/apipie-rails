@@ -1,0 +1,20 @@
+<div class='panel panel-default'>
+  <div class='panel-heading'>
+    <a role='button'
+       href='#example-<%= "#{index}#{example.lines.first.underscore}" %>'
+       data-toggle="collapse"
+       aria-controls='example-<%= "#{index}#{example.lines.first.underscore}" %>'>
+       <%= example.lines.first %>
+       <span class='caret right'></span>
+    </a>
+  </div>
+  <div id='example-<%= "#{index}#{example.lines.first.underscore}" %>'
+             aria-controls='example-<%= "#{index}#{example.lines.first.underscore}" %>'
+       aria-expanded='false'
+       class='panel-collapse collapse'>
+       <div class='panel-body'>
+         <h4>Response Data:</h4>
+         <pre class="prettyprint pre-scrollable" style='max-height: 600px'><%= example %></pre>
+       </div>
+  </div>
+</div>
