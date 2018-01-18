@@ -550,6 +550,9 @@ app_name
 copyright
   Copyright information (shown in page footer).
 
+compress_examples
+  If ``true`` recorded examples are compressed using ``Zlib``. Useful for big test-suits.
+
 doc_base_url
   Documentation frontend base url.
 
