@@ -33,8 +33,8 @@ module Apipie
     end
 
     def include_javascripts
-      %w[ bundled/jquery.js
-          bundled/bootstrap-collapse.js
+      %w[ bundled/jquery.min.js
+          bundled/bootstrap.js
           bundled/prettify.js
           apipie.js ].map do |file|
         "<script type='text/javascript' src='#{Apipie.full_url("javascripts/#{file}")}'></script>"
@@ -43,8 +43,7 @@ module Apipie
 
     def include_stylesheets
       %w[ bundled/bootstrap.min.css
-          bundled/prettify.css
-          bundled/bootstrap-responsive.min.css ].map do |file|
+          bundled/prettify.css ].map do |file|
         "<link type='text/css' rel='stylesheet' href='#{Apipie.full_url("stylesheets/#{file}")}'/>"
       end.join("\n").html_safe
     end
