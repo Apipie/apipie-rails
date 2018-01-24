@@ -58,8 +58,10 @@ module Apipie
         'label label-info'
       when 201, 204
         'label label-success'
-      when 401, 403, 422, 404
+      when 401, 403, 422
         'label label-danger'
+      when 404
+        'label label-warning'
       else
         ''
       end
