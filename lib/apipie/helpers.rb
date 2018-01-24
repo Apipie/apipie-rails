@@ -48,24 +48,22 @@ module Apipie
       end.join("\n").html_safe
     end
 
+    #
+    # Returns a label for a given error code. If the code is not recognized,
+    # an empty string is returned.
+    #
     def label_class_for_error(err)
       case err[:code]
-        when 200
-          'label label-info'
-        when 201
-          'label label-success'
-        when 204
-          'label label-info2'
-        when 401
-          'label label-warning'
-        when 403
-          'label label-warning2'
-        when 422
-          'label label-important'
-        when 404
-          'label label-inverse'
-        else
-          'label'
+      when 200
+        'label label-info'
+      when 201, 204
+        'label label-success'
+      when 401, 403, 422
+        'label label-danger'
+      when 404
+        'label label-warning'
+      else
+        ''
       end
     end
   end
