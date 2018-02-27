@@ -80,6 +80,12 @@ module Apipie
           ordered_call[k] = case call[k]
                      when ActiveSupport::HashWithIndifferentAccess
                        convert_file_value(call[k]).to_hash
+                     when String
+                       if k == "request_data"
+                         remove_binary_data(call[k])
+                       else
+                         call[k]
+                       end
                      else
                        call[k]
                      end
@@ -96,6 +102,14 @@ module Apipie
           end
         end
         hash
+      end
+
+      def remove_binary_data(value)
+        new_value = ""
+        value.each_byte do |c|
+          new_value << c.chr if c==9 || c==10 || c==13 || (c > 31 && c < 127)
+        end
+        new_value
       end
 
       def load_recorded_examples

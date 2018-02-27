@@ -75,6 +75,44 @@ describe Apipie::Extractor::Writer do
       expect(writer.send(:load_recorded_examples)).to eql(loaded_records)
     end
 
+    context "when binary data exists in request_data" do
+      let(:records) { {
+        "concern_resources#show" =>
+          [{
+            :controller=>ConcernsController,
+            :action=>"show",
+            :verb=>:GET,
+            :path=>"/api/concerns/5",
+            :params=>{},
+            :query=>"session=secret_hash",
+            :request_data=> "\xE2",
+            :response_data=>"OK {\"session\"=>\"secret_hash\", \"id\"=>\"5\", \"controller\"=>\"concerns\", \"action\"=>\"show\"}",
+            :code=>"200"
+          }]
+        }
+      }
+      let(:loaded_records) { {
+        "concern_resources#show" =>
+          [{
+            "verb"=>:GET,
+            "path"=>"/api/concerns/5",
+            "versions"=>["development"],
+            "query"=>"session=secret_hash",
+            "request_data"=>"",
+            "response_data"=>"OK {\"session\"=>\"secret_hash\", \"id\"=>\"5\", \"controller\"=>\"concerns\", \"action\"=>\"show\"}",
+            "code"=>"200",
+            "show_in_doc"=>1,
+            "recorded"=>true
+          }]
+        }
+      }
+
+      it "should read and write examples without encoding errors" do
+        writer.write_examples
+        expect(writer.send(:load_recorded_examples)).to eql(loaded_records)
+      end
+    end
+
     after do
       File.unlink(test_examples_file) if File.exists?(test_examples_file)
     end
