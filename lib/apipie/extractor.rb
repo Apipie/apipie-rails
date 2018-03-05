@@ -16,9 +16,7 @@ class Apipie::Railtie
       end
     end
     app.middleware.use ::Apipie::Extractor::Recorder::Middleware
-    ActionController::TestCase::Behavior.instance_eval do
-      prepend Apipie::Extractor::Recorder::FunctionalTestRecording
-    end
+    ActionController::TestCase.send(:prepend, Apipie::Extractor::Recorder::FunctionalTestRecording)
   end
 end
 
