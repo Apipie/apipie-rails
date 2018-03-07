@@ -257,6 +257,7 @@ module Apipie
 
     def json_schema_for_method_response(version, controller_name, method_name, return_code, allow_nulls)
       method = @resource_descriptions[version][controller_name].method_description(method_name)
+      raise NoDocumentedMethod.new(controller_name, method_name) if method.nil?
       @swagger_generator.json_schema_for_method_response(method, return_code, allow_nulls)
     end
 
