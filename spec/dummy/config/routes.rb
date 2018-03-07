@@ -41,6 +41,7 @@ Dummy::Application.routes.draw do
 
       get "/pets/returns_response_with_valid_array" => "pets#returns_response_with_valid_array"
       get "/pets/returns_response_with_invalid_array" => "pets#returns_response_with_invalid_array"
+      get "/pets/undocumented_method" => "pets#undocumented_method"
     end
 
     apipie

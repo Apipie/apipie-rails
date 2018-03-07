@@ -79,6 +79,11 @@ RSpec.describe PetsController, :type => :controller do
     it "raises exception when a response field has the wrong type and auto validation is turned on" do
       expect { get :return_and_validate_type_mismatch, {format: :json} }.to raise_error(Apipie::ResponseDoesNotMatchSwaggerSchema)
     end
+
+    it "does not raise an exception when calling an undocumented method" do
+      expect { get :undocumented_method, {format: :json} }.not_to raise_error
+    end
+
   end
 
 

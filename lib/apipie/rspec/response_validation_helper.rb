@@ -103,8 +103,9 @@ class ActionController::Base
       error_object = Apipie::ResponseDoesNotMatchSwaggerSchema.new(controller_name, action_name, response.code, error_list, schema, response.body)
 
       [schema, error_list, error_object]
+    rescue Apipie::NoDocumentedMethod
+      [nil, [], nil]
     end
-
   end
 
   include Apipie::ControllerValidationHelpers

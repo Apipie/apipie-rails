@@ -72,4 +72,15 @@ module Apipie
       "Response does not match swagger schema (#{@controller_name}##{@method_name} #{@response_code}): #{@error_messages}\nSchema: #{JSON(@schema)}\nReturned object: #{@returned_object}"
     end
   end
+
+  class NoDocumentedMethod < Error
+    def initialize(controller_name, method_name)
+      @method_name = method_name
+      @controller_name = controller_name
+    end
+
+    def to_s
+      "There is no documented method #{@controller_name}##{@method_name}"
+    end
+  end
 end

@@ -244,6 +244,12 @@ class PetsController < ApplicationController
     render :json => result
   end
 
+  #-----------------------------------------------------------
+  # A method with no documentation
+  #-----------------------------------------------------------
+  def undocumented_method
+    render :json => {:result => "ok"}
+  end
 
   #-----------------------------------------------------------
   # A method which has a response with a missing field
