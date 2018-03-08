@@ -320,6 +320,24 @@ describe "Swagger Responses" do
         expect(pai_schema).to have_field(:avg_meals_per_day, 'number')
       end
 
+      it "should return code 204 with array of integer" do
+        returns_obj = subject.returns.detect{|e| e.code == 204 }
+
+        puts returns_obj.to_json
+        expect(returns_obj.code).to eq(204)
+        expect(returns_obj.is_array?).to eq(false)
+
+        expect(returns_obj).to match_field_structure([:int_array, :enum_array])
+      end
+      it 'should have the 204 response described in the swagger' do
+        response = swagger_response_for('/pets/{id}/extra_info', 204)
+
+        schema = response[:schema]
+        expect(schema).to have_field(:int_array, 'array', {items: {type: 'number'}})
+        expect(schema).to have_field(:enum_array, 'array', {items: {type: 'string', enum: ['v1','v2','v3']}})
+      end
+
+
       it "should return code matching :unprocessable_entity (422) with spread out 'pet' and 'num_fleas'" do
         returns_obj = subject.returns.detect{|e| e.code == 422 }
 

@@ -456,7 +456,7 @@ module Apipie
       end
 
       if swagger_def[:type] == "array"
-        swagger_def[:items] = {type: "string"} # TODO: add support for arrays of non-string items
+        swagger_def[:items] = {type: "string"}
       end
 
       if swagger_def[:type] == "enum"
@@ -467,6 +467,17 @@ module Apipie
       if swagger_def[:type] == "object"  # we only get here if there is no specification of properties for this object
         swagger_def[:additionalProperties] = true
         warn_hash_without_internal_typespec(param_desc.name)
+      end
+
+      if param_desc.is_array?
+        new_swagger_def = {
+            items: swagger_def,
+            type: 'array'
+        }
+        swagger_def = new_swagger_def
+        if allow_nulls
+          swagger_def[:type] = [swagger_def[:type], "null"]
+        end
       end
 
       if allow_nulls

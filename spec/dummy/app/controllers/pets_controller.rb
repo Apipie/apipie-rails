@@ -140,6 +140,10 @@ class PetsController < ApplicationController
       param_group :pet_history
     end
   end
+  returns :code => 204 do
+    property :int_array, :array_of => Integer
+    property :enum_array, :array_of => ['v1','v2','v3']
+  end
   returns :code => :unprocessable_entity, :desc => "Fleas were discovered on the pet" do
     param_group :pet
     property :num_fleas, Integer, :desc => "Number of fleas on this pet"
@@ -340,7 +344,6 @@ class PetsController < ApplicationController
     }
     render :json => result
   end
-
 
   #=======================================================================
   # Methods for testing array field responses
