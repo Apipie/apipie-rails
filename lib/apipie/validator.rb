@@ -61,6 +61,10 @@ module Apipie
         "<code>#{CGI::escapeHTML(value.to_s)}</code>"
       end
 
+      def base_error(error_value, desc)
+        ParamInvalid.new(param_name, error_value, desc)
+      end
+
       def error
         ParamInvalid.new(param_name, @error_value, description)
       end
