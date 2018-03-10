@@ -99,8 +99,16 @@ module Apipie
       return true if @allow_nil && value.nil?
       return true if @allow_blank && value.blank?
       value = normalized_value(value)
-      if (!@allow_nil && value.nil?) || !@validator.valid?(value)
-        error = @validator.error
+      error =
+        case
+        when !@validator.valid?(value)
+          @validator.error
+        when !@allow_nil && value.nil?
+          @validator.base_error(value, "Can't be nil")
+        when !@allow_blank && value.blank?
+          @validator.base_error(value, "Can't be blank value")
+        end
+      unless error.nil?
         error = ParamError.new(error) unless error.is_a? StandardError
         raise error
       end

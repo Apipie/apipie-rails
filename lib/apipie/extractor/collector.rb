@@ -110,4 +110,3 @@ module Apipie
     end
   end
 end
-

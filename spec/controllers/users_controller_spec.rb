@@ -321,19 +321,19 @@ describe UsersController do
                 }.to raise_error(Apipie::ParamInvalid)
               end
             end
-            it "should work with empty array" do
-              put :update,
-                  :params => {
-                    :id => 5,
-                    :user => {
-                      :name => "root",
-                      :pass => "12345"
-                    },
-                    :comments => [
-                    ]
-                  }
-
-              assert_response :success
+            it "should raise an error with empty array" do
+              expect {
+                put :update,
+                    :params => {
+                      :id => 5,
+                      :user => {
+                        :name => "root",
+                        :pass => "12345"
+                      },
+                      :comments => [
+                      ]
+                    }
+              }.to raise_error(Apipie::ParamInvalid)
             end
           end
 
