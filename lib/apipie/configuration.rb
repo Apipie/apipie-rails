@@ -11,13 +11,14 @@ module Apipie
       :persist_show_in_doc, :authorize,
       :swagger_include_warning_tags, :swagger_content_type_input, :swagger_json_input_uses_refs,
       :swagger_suppress_warnings, :swagger_api_host, :swagger_generate_x_computed_id_field,
-      :swagger_allow_additional_properties_in_response
+      :swagger_allow_additional_properties_in_response, :swagger_responses_use_refs
 
     alias_method :validate?, :validate
     alias_method :required_by_default?, :required_by_default
     alias_method :namespaced_resources?, :namespaced_resources
     alias_method :swagger_include_warning_tags?, :swagger_include_warning_tags
     alias_method :swagger_json_input_uses_refs?, :swagger_json_input_uses_refs
+    alias_method :swagger_responses_use_refs?, :swagger_responses_use_refs
     alias_method :swagger_generate_x_computed_id_field?, :swagger_generate_x_computed_id_field
 
     # matcher to be used in Dir.glob to find controllers to be reloaded e.g.
@@ -179,6 +180,7 @@ module Apipie
       @swagger_api_host = "localhost:3000"
       @swagger_generate_x_computed_id_field = false
       @swagger_allow_additional_properties_in_response = false
+      @swagger_responses_use_refs = true
     end
   end
 end
