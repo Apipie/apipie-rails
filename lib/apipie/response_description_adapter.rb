@@ -147,18 +147,19 @@ module Apipie
   class ResponseDescriptionAdapter
 
     def self.from_self_describing_class(cls)
-      adapter = ResponseDescriptionAdapter.new
+      adapter = ResponseDescriptionAdapter.new(cls.to_s)
       props = cls.describe_own_properties
       adapter.add_property_descriptions(props)
       adapter
     end
 
-    def initialize
+    def initialize(typename)
       @property_descs = []
       @additional_properties = false
+      @typename = typename
     end
 
-    attr_accessor :additional_properties
+    attr_accessor :additional_properties, :typename
 
     def allow_additional_properties
       additional_properties

@@ -24,6 +24,10 @@ module Apipie
       Apipie.configuration.swagger_json_input_uses_refs
     end
 
+    def responses_use_reference?
+      Apipie.configuration.swagger_responses_use_refs?
+    end
+
     def include_warning_tags?
       Apipie.configuration.swagger_include_warning_tags
     end
@@ -259,6 +263,10 @@ module Apipie
       remove_colons method.resource.controller.name + "::" + method.method
     end
 
+    def swagger_id_for_typename(typename)
+      typename
+    end
+
     def swagger_op_id_for_path(http_method, path)
       # using lowercase http method, because the 'swagger-codegen' tool outputs
       # strange method names if the http method is in uppercase
@@ -351,7 +359,13 @@ module Apipie
         # no need to warn about "missing default value for optional param" when processing response definitions
         prev_value = @disable_default_value_warning
         @disable_default_value_warning = true
-        schema = json_schema_obj_from_params_array(response.params_ordered, allow_nulls)
+
+        if responses_use_reference? && response.typename
+          schema = {"$ref" => gen_referenced_block_from_params_array(swagger_id_for_typename(response.typename), response.params_ordered, allow_nulls)}
+        else
+          schema = json_schema_obj_from_params_array(response.params_ordered, allow_nulls)
+        end
+
       ensure
         @disable_default_value_warning = prev_value
       end
@@ -525,10 +539,10 @@ module Apipie
       param_defs.length > 0 ? result : nil
     end
 
-    def gen_referenced_block_from_params_array(name, params_array)
+    def gen_referenced_block_from_params_array(name, params_array, allow_nulls=false)
       return ref_to(:name) if @definitions.key(:name)
 
-      schema_obj = json_schema_obj_from_params_array(params_array)
+      schema_obj = json_schema_obj_from_params_array(params_array, allow_nulls)
       return nil if schema_obj.nil?
 
       @definitions[name.to_sym] = schema_obj
