@@ -343,6 +343,12 @@ module Apipie
     #--------------------------------------------------------------------------
 
     def response_schema(response)
+      @definitions = {}
+        if response.code.to_s == return_code.to_s
+          schema = response_schema(response, allow_nulls) if response.code.to_s == return_code.to_s
+          schema[:definitions] = @definitions if @definitions != {}
+          return schema
+        end
       begin
         # no need to warn about "missing default value for optional param" when processing response definitions
         prev_value = @disable_default_value_warning
