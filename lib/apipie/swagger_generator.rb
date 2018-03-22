@@ -343,8 +343,13 @@ module Apipie
     #--------------------------------------------------------------------------
 
     def json_schema_for_method_response(method, return_code, allow_nulls)
+      @definitions = {}
       for response in method.returns
-        return response_schema(response, allow_nulls) if response.code.to_s == return_code.to_s
+        if response.code.to_s == return_code.to_s
+          schema = response_schema(response, allow_nulls) if response.code.to_s == return_code.to_s
+          schema[:definitions] = @definitions if @definitions != {}
+          return schema
+        end
       end
       nil
     end
