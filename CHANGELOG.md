@@ -1,6 +1,14 @@
  Changelog
 ===========
 
+v0.5.7
+------
+
+- Fix example recording with Rails 5 [\#607](https://github.com/Apipie/apipie-rails/pull/607) ([adamruzicka](https://github.com/adamruzicka))
+- Use SHA1 instead of MD5 to enable using APIPIE at FIPS-enables systems [\#605](https://github.com/Apipie/apipie-rails/pull/605) ([iNecas](https://github.com/iNecas))
+- Replaced String\#constantize with String\#safe\_constantize so apipie won't break on a missing constant [\#575](https://github.com/Apipie/apipie-rails/pull/575) ([Haniyya](https://github.com/Haniyya))
+- Added Swagger generation [\#569](https://github.com/Apipie/apipie-rails/pull/569) ([elasti-ron](https://github.com/elasti-ron))
+
 v0.5.6
 ------
 
