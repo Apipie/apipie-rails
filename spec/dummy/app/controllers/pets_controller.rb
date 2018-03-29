@@ -44,7 +44,7 @@ class PetsController < ApplicationController
   end
 
   api :GET, "/pets/:id/as_param_group_of_properties", "Get a pet record"
-  returns :pet, "The pet"
+  returns :pet, :code => 200, :desc => "The pet"
   def show_as_param_group_of_properties
     render :plain => "showing pet properties defined as param groups"
   end

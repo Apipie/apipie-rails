@@ -117,6 +117,9 @@ desc (also description and full_description)
 param
   Common params for all methods defined in controller/child controllers.
 
+returns
+  Common responses for all methods defined in controller/child controllers.
+
 api_base_url
   What URL is the resource available under.
 
@@ -156,6 +159,9 @@ Example:
      error 404, "Missing"
      error 500, "Server crashed for some <%= reason %>", :meta => {:anything => "you can think of"}
      error :unprocessable_entity, "Could not save the entity."
+     returns :code => 403 do
+        property :reason, String, :desc => "Why this was forbidden"
+     end
      meta :author => {:name => 'John', :surname => 'Doe'}
      deprecated false
      description <<-EOS
@@ -211,7 +217,10 @@ api_versions (also api_version)
   What version(s) does the action belong to. (See `Versioning`_ for details.)
 
 param
-  Look at Parameter description section for details.
+  Look at `Parameter description`_ section for details.
+
+returns
+  Look at `Response description`_ section for details.
 
 formats
   Method level request / response formats.
@@ -261,6 +270,13 @@ Example:
      val == "param value" ? true : "The only good value is 'param value'."
    }, :desc => "proc validator"
    param :param_with_metadata, String, :desc => "", :meta => [:your, :custom, :metadata]
+   returns :code => 200, :desc => "a successful response" do
+      property :value1, String, :desc => "A string value"
+      property :value2, Integer, :desc => "An integer value"
+      property :value3, Hash, :desc => "An object" do
+        property :enum1, ['v1', 'v2'], :desc => "One of 2 possible string values"
+      end
+   end
    description "method description"
    formats ['json', 'jsonp', 'xml']
    meta :message => "Some very important info"
@@ -270,7 +286,6 @@ Example:
    def show
      #...
    end
-
 
 Parameter Description
 ---------------------
@@ -308,6 +323,13 @@ show
 missing_message
   Specify the message to be returned if the parameter is missing as a string or Proc.
   Defaults to ``Missing parameter #{name}`` if not specified.
+
+only_in
+   This can be set to ``:request`` or ``:response``.
+   Setting to ``:response`` causes the param to be ignored when used as part of a request description.
+   Setting to ``:request`` causes this param to be ignored when used as part of a response description.
+   If ``only_in`` is not specified, the param definition is used for both requests and responses.
+   (Note that the keyword ``property`` is similar to ``param``, but it has a ``:only_in => :response`` default).
 
 Example:
 ~~~~~~~~
@@ -428,6 +450,176 @@ with ``allow_nil`` set explicitly don't have this value changed.
 
 Action awareness is inherited from ancestors (in terms of
 nested params).
+
+
+Response Description
+--------------------
+
+The response from an API call can be documented by adding a ``returns`` statement to the method
+description.  This is especially useful when using Apipie to auto-generate a machine-readable Swagger
+definition of your API (see the `swagger`_ section for more details).
+
+A ``returns`` statement has several possible formats:
+
+.. code:: ruby
+
+    # format #1:  reference to a param-group
+    returns <param-group-name> [, :code => <number>|<http-response-code-symbol>] [, :desc => <human-readable description>]
+
+    # format #2:  inline response definition
+    returns :code => <number>|<http-response-code-symbol> [, :desc => <human-readable description>] do
+        # property ...
+        # property ...
+        # param_group ...
+    end
+
+    # format #3:  describing an array-of-objects response
+    returns :array_of => <param-group-name> [, :code => <number>|<http-response-code-symbol>] [, :desc => <human-readable description>]
+
+
+If the ``:code`` argument is ommitted, ``200`` is used.
+
+
+Example
+~~~~~~~
+
+.. code:: ruby
+
+  # ------------------------------------------------
+  # Example of format #1 (reference to param-group):
+  # ------------------------------------------------
+  # the param_group :pet is defined here to describe the output returned by the method below.
+  def_param_group :pet do
+    property :pet_name, String, :desc => "Name of pet"
+    property :animal_type, ['dog','cat','iguana','kangaroo'], :desc => "Type of pet"
+  end
+
+  api :GET, "/pets/:id", "Get a pet record"
+  returns :pet, :desc => "The pet"
+  def show_detailed
+    render JSON({:pet_name => "Skippie", :animal_type => "kangaroo"})
+  end
+
+  # ------------------------------------------------
+  # Example of format #2 (inline):
+  # ------------------------------------------------
+  api :GET, "/pets/:id/with-extra-details", "Get a detailed pet record"
+  returns :code => 200, :desc => "Detailed info about the pet" do
+    param_group :pet
+    property :num_legs, Integer, :desc => "How many legs the pet has"
+  end
+  def show
+    render JSON({:pet_name => "Barkie", :animal_type => "iguana", :legs => 4})
+  end
+
+  # ------------------------------------------------
+  # Example of format #3 (array response):
+  # ------------------------------------------------
+  api :GET, "/pets", "Get all pet records"
+  returns :array_of => :pet, :code => 200, :desc => "All pets"
+  def index
+    render JSON([ {:pet_name => "Skippie", :animal_type => "kangaroo"},
+                  {:pet_name => "Woofie", :animal_type => "cat"} ])
+  end
+
+
+Note the use of the ``property`` keyword rather than ``param``.  This is the
+preferred mechanism for documenting response-only fields.
+
+
+The Property keyword
+::::::::::::::::::::::::::::::::::::::::::::::::
+
+``property`` is very similar to ``param`` with the following differences:
+
+* a ``property`` is ``:only_in => :response`` by default
+
+* a ``property`` is ``:required => :true`` by default
+
+* a ``property`` can be an ``:array_of`` objects
+
+Example
+_______
+.. code:: ruby
+
+    property :example, :array_of => Hash do
+      property :number1, Integer
+      property :number2, Integer
+    end
+
+
+Describing multiple return codes
+::::::::::::::::::::::::::::::::::::::::::::::::
+
+To describe multiple possible return codes, the ``:returns`` keyword can be repeated as many times as necessary
+(once for each return code).  Each one of the ``:returns`` entries can specify a different response format.
+
+Example
+_______
+
+.. code:: ruby
+
+    api :GET, "/pets/:id/extra_info", "Get extra information about a pet"
+      returns :desc => "Found a pet" do
+        param_group :pet
+        property 'pet_history', Hash do
+          param_group :pet_history
+        end
+      end
+      returns :code => :unprocessable_entity, :desc => "Fleas were discovered on the pet" do
+        param_group :pet
+        property :num_fleas, Integer, :desc => "Number of fleas on this pet"
+      end
+      def show_extra_info
+        # ... implementation here
+      end
+
+
+
+Reusing a param_group to describe inputs and outputs
+::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+In many cases (such as CRUD implementations), the output from certain API calls is very similar - but not
+identical - to the inputs of the same or other API calls.
+
+If you already have a ``:param_group`` that defines the input to a `create` or `update` routine, it would be quite
+frustrating to have to define a completely separate ``:param_group`` to describe the output of the `show` routine.
+
+To address such situations, it is possible to define a single ``:param_group`` which combines ``param`` and ``property``
+statements (as well as ``:only_in => :request`` / ``:only_in => :response``) to differentiate between fields that are
+only expected in the request, only included in the response, or common to both.
+
+This is somewhat analogous to the way `Action Aware params`_ work.
+
+Example
+_______
+
+.. code:: ruby
+
+    def_param_group :user_record
+        param :name, String                                         # this is commong to both the request and the response
+        param :force_update, [true, false], :only_in => :request    # this does not show up in responses
+        property :last_login, String                                # this shows up only in the response
+    end
+
+   api :POST, "/users", "Create a user"
+   param_group :user_record  # the :last_login field is not expected here
+   def create
+     # ...
+   end
+
+   api :GET, "/users", "Create a user"
+   returns :array_of => :user_record  # the :last_login field will be included in the response
+   def index
+     # ...
+   end
+
+
+External response descriptions
+::::::::::::::::::::::::::::::
+
+** I will describe this soon **
+
 
 Concerns
 --------
@@ -1154,6 +1346,8 @@ If, for some complex cases, you need to generate/re-generate just part of the ca
 use ``rake apipie:cache cache_part=index`` resp. ``rake apipie:cache cache_part=resources``
 To generate it for different locations for further processing use ``rake apipie:cache OUT=/tmp/apipie_cache``.
 
+.. _Swagger:
+
 ====================================
  Static Swagger (OpenAPI 2.0) files
 ====================================
@@ -1236,6 +1430,11 @@ There are several configuration parameters that determine the structure of the g
 
     If ``nil`` then then host field will not be included.
 
+``config.swagger_allow_additional_properties_in_response``
+    If ``false`` (default):  response descriptions in the generated swagger will include an ``additional-properties: false``
+    field
+
+    If ``true``:  the ``additional-properties: false`` field will not be included in response object descriptions
 
 
 Known limitations of the current implementation
@@ -1246,6 +1445,7 @@ Known limitations of the current implementation
 * It is not possible to specify the "consumed" content type on a per-method basis
 * It is not possible to leverage all of the parameter type/format capabilities of swagger
 * Only OpenAPI 2.0 is supported
+* Responses are defined inline and not as a $ref
 
 ====================================
  Dynamic Swagger generation
