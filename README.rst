@@ -603,22 +603,137 @@ _______
     end
 
    api :POST, "/users", "Create a user"
-   param_group :user_record  # the :last_login field is not expected here
+   param_group :user_record  # the :last_login field is not expected here, but :force_update is
    def create
      # ...
    end
 
    api :GET, "/users", "Create a user"
-   returns :array_of => :user_record  # the :last_login field will be included in the response
+   returns :array_of => :user_record  # the :last_login field will be included in the response, but :force_update will not
    def index
      # ...
    end
 
 
-External response descriptions
+Embedded response descriptions
 ::::::::::::::::::::::::::::::
 
-** I will describe this soon **
+If the code creating JSON responses is encapsulated within dedicated classes, it can be more convenient to
+place the response descriptions outside of the controller and embed them within the response generator.
+
+To support such use cases, Apipie allows any class to provide a `describe_own_properties` class method which
+returns a description of the properties such a class would expose.  It is then possible to specify that
+class in the `returns` statement instead of a `param_group`.
+
+The `describe_own_properties` method is expected to return an array of `Apipie::prop` objects, each one
+describing a single property.
+
+Example
+_______
+
+.. code:: ruby
+
+    class Pet
+      # this method is automatically called by Apipie when Pet is specified as the returned object type
+      def self.describe_own_properties
+        [
+            Apipie::prop(:pet_name, 'string', {:description => 'Name of pet', :required => false}),
+            Apipie::prop(:animal_type, 'string', {:description => 'Type of pet', :values => ["dog", "cat", "iguana", "kangaroo"]}),
+            Apipie::additional_properties(false)  # this indicates that :pet_name and :animal_type are the only properties in the response
+        ]
+      end
+
+      # this method w
+      def json
+        JSON({:pet_name => @name, :animal_type => @type })
+      end
+    end
+
+
+    class PetsController
+        api :GET, "/index", "Get all pets"
+        returns :array_of => Pet  # Pet is a 'self-describing-class'
+        def index
+         # ...
+        end
+    end
+
+
+A use case where this is very useful is when JSON generation is done using a reflection mechanism or some
+other sort of declarative mechanism.
+
+
+
+
+The `Apipie::prop` function expects the following inputs:
+
+.. code:: ruby
+
+    Apipie::prop(<property-name>, <property-type>, <options-hash> [, <array of sub-properties>])
+
+    # property-name should be a symbol
+    #
+    # property-type can be any of the following strings:
+    #   "integer": maps to a swagger "integer" with an "int32" format
+    #   "long": maps to a swagger "integer" with an "int64" format
+    #   "number": maps to a swagger "number"(no format specifier)
+    #   "float": maps to a swagger "number" with a "float" format
+    #   "double": maps to a swagger "number" with a "double" format
+    #   "string": maps to a swagger "string" (no format specifier)
+    #   "byte": maps to a swagger "string" with a "byte" format
+    #   "binary": maps to a swagger "string" with a "binary" format
+    #   "boolean": maps to a swagger "boolean" (no format specifier)
+    #   "date": maps to a swagger "string" with a "date" format
+    #   "dateTime": maps to a swagger "string" with a "date-time" format
+    #   "password": maps to a swagger "string" with a "password" format
+    #   "object": the property has sub-properties. include <array of sub-properties> in the call.
+    # (see https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#data-types for more information
+    # about the mapped swagger types)
+    #
+    # options-hash can include any of the options fields allowed in a :returns statement.
+    # additionally, it can include the ':is_array => true', in which case the property is understood to be
+    # an array of the described type.
+
+
+
+To describe an embedded object:
+
+.. code:: ruby
+
+
+    #
+    # PetWithMeasurements is a self-describing class with an embedded object
+    #
+    class PetWithMeasurements
+      def self.describe_own_properties
+        [
+            Apipie::prop(:pet_name, 'string', {:description => 'Name of pet', :required => false}),
+            Apipie::prop('animal_type', 'string', {:description => 'Type of pet', :values => ["dog", "cat", "iguana", "kangaroo"]}),
+            Apipie::prop(:pet_measurements, 'object', {}, [
+                Apipie::prop(:weight, 'number', {:description => "Weight in pounds" }),
+                Apipie::prop(:height, 'number', {:description => "Height in inches" }),
+                Apipie::prop(:num_legs, 'number', {:description => "Number of legs", :required => false }),
+                Apipie::additional_properties(false)
+            ])
+        ]
+      end
+    end
+
+    #
+    # PetWithManyMeasurements is a self-describing class with an embedded array of objects
+    #
+    class PetWithManyMeasurements
+      def self.describe_own_properties
+        [
+            Apipie::prop(:pet_name, 'string', {:description => 'Name of pet', :required => false}),
+            Apipie::prop(:many_pet_measurements, 'object', {is_array: true}, [
+                Apipie::prop(:weight, 'number', {:description => "Weight in pounds" }),
+                Apipie::prop(:height, 'number', {:description => "Height in inches" }),
+            ])
+        ]
+      end
+    end
+
 
 
 Concerns
