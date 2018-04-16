@@ -42,6 +42,12 @@ describe Apipie::Validator do
 
     end
 
+    describe 'NumberValidator' do
+      it 'should expect a Numeric type' do
+        validator = Apipie::Validator::BaseValidator.find(params_desc, :number, nil, nil)
+        expect(validator.expected_type).to eq('numeric')
+      end
+    end
   end
 
   describe 'ArrayClassValidator' do

@@ -435,6 +435,10 @@ module Apipie
         "Must be a number."
       end
 
+      def expected_type
+        'numeric'
+      end
+
       def self.validate(value)
         value.to_s =~ /\A(0|[1-9]\d*)\Z$/
       end
