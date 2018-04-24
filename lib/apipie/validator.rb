@@ -391,7 +391,7 @@ module Apipie
       end
 
       def self.validate(value)
-        value.to_s =~ /\A[0-9]+([,.][0-9]+)?\Z$/
+        value.to_s =~ /\A^[-+]?[0-9]+([,.][0-9]+)?\Z$/
       end
     end
 
