@@ -61,12 +61,13 @@ RSpec::Matchers.define :match_field_structure do |expected|
 
   def deep_match?(actual, expected, breadcrumb=[])
     num = 0
-    for pdesc in expected do
+    expected.each do |pdesc|
       if pdesc.is_a? Symbol
-        return false unless fields_match?(actual.params_ordered[num], pdesc, breadcrumb)
+        return false unless matching_param(actual.params_ordered, pdesc, breadcrumb)
       elsif pdesc.is_a? Hash
-        return false unless fields_match?(actual.params_ordered[num], pdesc.keys[0], breadcrumb)
-        return false unless deep_match?(actual.params_ordered[num].validator, pdesc.values[0], breadcrumb + [pdesc.keys[0]])
+        param = matching_param(actual.params_ordered, pdesc.keys[0], breadcrumb)
+        return false unless param
+        return false unless deep_match?(param.validator, pdesc.values[0], breadcrumb + [pdesc.keys[0]])
       end
       num+=1
     end
@@ -74,15 +75,12 @@ RSpec::Matchers.define :match_field_structure do |expected|
     actual.params_ordered.count == num
   end
 
-  def fields_match?(param, expected_name, breadcrumb)
-    return false unless have_field?(param, expected_name, breadcrumb)
-    @fail_message = "expected #{(breadcrumb + [param.name]).join('.')} to eq #{(breadcrumb + [expected_name]).join('.')}"
-    param.name.to_s == expected_name.to_s
-  end
-
-  def have_field?(field, expected_name, breadcrumb)
-    @fail_message = "expected property #{(breadcrumb+[expected_name]).join('.')}"
-    !field.nil?
+  def matching_param(params, expected_name, breadcrumb)
+    param = params.find { |p| p.name.to_s == expected_name.to_s }
+    unless param
+      @fail_message = "expected [#{ params.map(&:name).join(', ') }] to include #{(breadcrumb + [expected_name]).join('.')}"
+    end
+    param
   end
 
   failure_message do |actual|
