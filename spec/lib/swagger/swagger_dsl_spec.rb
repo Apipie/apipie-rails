@@ -12,10 +12,6 @@ describe "Swagger Responses" do
 
   let(:controller_class ) { described_class }
 
-  def print_swagger
-    puts JSON.generate(swagger)
-  end
-
   def swagger_response_for(path, code=200, method='get')
     swagger[:paths][path][method][:responses][code]
   end
@@ -45,7 +41,6 @@ describe "Swagger Responses" do
       end
 
       it "should return code 200 with array of entries of the format {'pet_name', 'animal_type'}" do
-        print_swagger
         returns_obj = subject.returns.detect{|e| e.code == 200 }
 
         puts returns_obj.to_json
@@ -56,7 +51,6 @@ describe "Swagger Responses" do
       end
 
       it 'should have the response described in the swagger' do
-        print_swagger
         response = swagger_response_for('/pets')
         expect(response[:description]).to eq("list of pets")
 
@@ -70,10 +64,8 @@ describe "Swagger Responses" do
 
 
       it "should return code 401 with a String description field" do
-        # print_swagger
         returns_obj = subject.returns.detect{|e| e.code == 404 }
 
-        # puts returns_obj.to_json
         expect(returns_obj.code).to eq(404)
         expect(returns_obj.is_array?).to eq(false)
 
@@ -82,10 +74,8 @@ describe "Swagger Responses" do
 
 
       it "should return code 401 with a :reason field (defined in the superclass)" do
-        # print_swagger
         returns_obj = subject.returns.detect{|e| e.code == 401 }
 
-        # puts returns_obj.to_json
         expect(returns_obj.code).to eq(401)
         expect(returns_obj.is_array?).to eq(false)
 
@@ -93,7 +83,6 @@ describe "Swagger Responses" do
       end
 
       it 'should have the 404 response described in the swagger' do
-        print_swagger
         response = swagger_response_for('/pets', 404)
         expect(response[:description]).to eq("Not Found")
 
@@ -130,7 +119,6 @@ describe "Swagger Responses" do
       end
 
       it 'should have the 404 response description overridden' do
-        # print_swagger
         returns_obj = subject.returns.detect{|e| e.code == 404 }
 
         # puts returns_obj.to_json
@@ -372,7 +360,6 @@ describe "Swagger Responses" do
       end
 
       it "should return code 200 with array of entries of the format {'pet_name', 'animal_type'}" do
-        print_swagger
         returns_obj = subject.returns.detect{|e| e.code == 200 }
 
         puts returns_obj.to_json
@@ -383,7 +370,6 @@ describe "Swagger Responses" do
       end
 
       it 'should have the response described in the swagger' do
-        print_swagger
         response = swagger_response_for('/pets_described_as_class')
         expect(response[:description]).to eq("list of pets")
 
@@ -478,18 +464,14 @@ describe "Swagger Responses" do
       end
 
       it "should return code 200 with array of entries of the format {'pet_name', 'animal_type'}" do
-        print_swagger
         returns_obj = subject.returns.detect{|e| e.code == 200 }
 
-        puts returns_obj.to_json
         expect(returns_obj.code).to eq(200)
         expect(returns_obj.is_array?).to eq(false)
-
         expect(returns_obj).to match_field_structure([:pet_name, :animal_type, :age])
       end
 
       it 'should have the response described in the swagger' do
-        print_swagger
         response = swagger_response_for('/pet_described_using_automated_view/{id}')
         expect(response[:description]).to eq("like Pet, but different")
 
