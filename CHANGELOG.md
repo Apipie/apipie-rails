@@ -1,6 +1,14 @@
  Changelog
 ===========
 
+v0.5.8
+------
+
+- Swagger json includes apipie's description as swagger's description [\#615](https://github.com/Apipie/apipie-rails/pull/615) ([gogotanaka](https://github.com/gogotanaka))
+- Fix api! issue by using underscore when appending `controller` to the default controller string [\#613](https://github.com/Apipie/apipie-rails/pull/613) ([kevinmarx](https://github.com/kevinmarx))
+- Possibility to compress examples [\#600](https://github.com/Apipie/apipie-rails/pull/600) ([Haniyya](https://github.com/Haniyya))
+- Possibility to describe responses [\#588](https://github.com/Apipie/apipie-rails/pull/588) ([elasti-ron](https://github.com/elasti-ron))
+
 v0.5.7
 ------
 
