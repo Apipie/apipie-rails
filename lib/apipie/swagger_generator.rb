@@ -225,7 +225,8 @@ module Apipie
             operationId: op_id,
             summary: Apipie.app.translate(api.short_description, @current_lang),
             parameters: swagger_params_array_for_method(ruby_method, api.path),
-            responses: responses
+            responses: responses,
+            description: ruby_method.full_description
         }
 
         if methods[method_key][:summary].nil?
