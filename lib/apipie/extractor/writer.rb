@@ -3,10 +3,75 @@ require 'set'
 module Apipie
   module Extractor
     class Writer
+      class << self
+        def compressed
+          Apipie.configuration.compress_examples
+        end
+
+        def update_action_description(controller, action)
+          updater = ActionDescriptionUpdater.new(controller, action)
+          yield updater
+          updater.write!
+        rescue ActionDescriptionUpdater::ControllerNotFound
+          logger.warn("REST_API: Couldn't find controller file for #{controller}")
+        rescue ActionDescriptionUpdater::ActionNotFound
+          logger.warn("REST_API: Couldn't find action #{action} in #{controller}")
+        end
+
+        def write_recorded_examples(examples)
+          FileUtils.mkdir_p(File.dirname(examples_file))
+          content = serialize_examples(examples)
+          content = Zlib::Deflate.deflate(content).force_encoding('utf-8') if compressed
+          File.open(examples_file, 'w') { |f| f << content }
+        end
+
+        def load_recorded_examples
+          return {} unless File.exist?(examples_file)
+          load_json_examples
+        end
+
+        def examples_file
+          pure_path = Rails.root.join(
+            Apipie.configuration.doc_path, 'apipie_examples.json'
+          )
+          zipped_path = pure_path.to_s + '.gz'
+          return zipped_path if compressed
+          pure_path.to_s
+        end
+
+        protected
+
+        def serialize_examples(examples)
+          JSON.pretty_generate(
+            OrderedHash[*examples.sort_by(&:first).flatten(1)]
+          )
+        end
+
+        def deserialize_examples(examples_string)
+          examples = JSON.parse(examples_string)
+          return {} if examples.nil?
+          examples.each_value do |records|
+            records.each do |record|
+              record['verb'] = record['verb'].to_sym if record['verb']
+            end
+          end
+        end
+
+        def load_json_examples
+          raw = IO.read(examples_file)
+          raw = Zlib::Inflate.inflate(raw).force_encoding('utf-8') if compressed
+          deserialize_examples(raw)
+        end
+
+        def logger
+          Extractor.logger
+        end
+      end
 
       def initialize(collector)
         @collector = collector
       end
+
 
       def write_examples
         merged_examples = merge_old_new_examples
@@ -26,47 +91,9 @@ module Apipie
         end
       end
 
-      def self.update_action_description(controller, action)
-        updater = ActionDescriptionUpdater.new(controller, action)
-        yield updater
-        updater.write!
-      rescue ActionDescriptionUpdater::ControllerNotFound
-        logger.warn("REST_API: Couldn't find controller file for #{controller}")
-      rescue ActionDescriptionUpdater::ActionNotFound
-        logger.warn("REST_API: Couldn't find action #{action} in #{controller}")
-      end
-
-      def self.write_recorded_examples(examples)
-        examples_file = self.examples_file
-        FileUtils.mkdir_p(File.dirname(examples_file))
-        File.open(examples_file, "w") do |f|
-          f << JSON.pretty_generate(OrderedHash[*examples.sort_by(&:first).flatten(1)])
-        end
-      end
-
-      def self.load_recorded_examples
-        examples_file = self.examples_file
-        if File.exists?(examples_file)
-          return load_json_examples
-        end
-        return {}
-      end
-
-      def self.examples_file
-        File.join(Rails.root,Apipie.configuration.doc_path,"apipie_examples.json")
-      end
 
       protected
 
-      def self.load_json_examples
-        examples = JSON.load(IO.read(examples_file))
-        return {} if examples.nil?
-        examples.each do |method, records|
-          records.each do |record|
-            record["verb"] = record["verb"].to_sym if record["verb"]
-          end
-        end
-      end
 
       def desc_to_s(description)
         "#{description[:controller].name}##{description[:action]}"
@@ -175,10 +202,6 @@ module Apipie
 
       def logger
         self.class.logger
-      end
-
-      def self.logger
-        Extractor.logger
       end
 
       def showable_in_doc?(call)

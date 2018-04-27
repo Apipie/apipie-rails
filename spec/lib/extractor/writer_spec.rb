@@ -57,10 +57,38 @@ describe Apipie::Extractor::Writer do
     }
   }
 
-  describe "with doc_path overriden in configuration" do
-    it "should use the doc_path specified in configuration" do
-      Apipie.configuration.doc_path = "user_specified_doc_path"
-      expect(writer_class.examples_file).to eql(File.join(Rails.root, "user_specified_doc_path", "apipie_examples.json"))
+  context 'with doc_path overriden in configuration' do
+    around(:each) do |example|
+      standard_path = Apipie.configuration.doc_path
+      Apipie.configuration.doc_path = 'user_specified_doc_path'
+      example.run
+      Apipie.configuration.doc_path = standard_path
+    end
+
+    it 'should use the doc_path specified in configuration' do
+      expect(writer_class.examples_file).to eql(File.join(Rails.root, 'user_specified_doc_path', 'apipie_examples.json'))
+    end
+  end
+
+  context 'when compressing examples' do
+    around(:each) do |example|
+      Apipie.configuration.compress_examples = true
+      example.run
+      FileUtils.rm(writer_class.examples_file) if File.exist?(writer_class.examples_file)
+      Apipie.configuration.compress_examples = nil
+    end
+
+    it 'should write to a compressed file' do
+      expect(writer_class.examples_file).to match(/\.gz$/)
+      writer_class.write_recorded_examples(records)
+      expect(File.exist?(writer_class.examples_file))
+    end
+
+    it 'should read from a compressed file' do
+      writer_class.write_recorded_examples(records)
+      expected_string = writer_class.send(:serialize_examples, records)
+      expect(writer_class.load_recorded_examples)
+        .to eql(writer_class.send(:deserialize_examples, expected_string))
     end
   end
 
