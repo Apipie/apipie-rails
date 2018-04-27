@@ -8,8 +8,13 @@ module Apipie
   # validator - Validator::BaseValidator subclass
   class ParamDescription
 
-    attr_reader :method_description, :name, :desc, :allow_nil, :allow_blank, :validator, :options, :metadata, :show, :as, :validations
+    attr_reader :method_description, :name, :desc, :allow_nil, :allow_blank, :validator, :options, :metadata, :show, :as, :validations, :response_only, :request_only
+    attr_reader :additional_properties, :is_array
     attr_accessor :parent, :required
+
+    alias_method :response_only?, :response_only
+    alias_method :request_only?, :request_only
+    alias_method :is_array?, :is_array
 
     def self.from_dsl_data(method_description, args)
       param_name, validator, desc_or_options, options, block = args
@@ -62,6 +67,10 @@ module Apipie
 
       @required = is_required?
 
+      @response_only = (@options[:only_in] == :response)
+      @request_only = (@options[:only_in] == :request)
+      raise ArgumentError.new("'#{@options[:only_in]}' is not a valid value for :only_in") if (!@response_only && !@request_only) && @options[:only_in].present?
+
       @show = if @options.has_key? :show
         @options[:show]
       else
@@ -74,11 +83,20 @@ module Apipie
       action_awareness
 
       if validator
+        if (validator != Hash) && (validator.is_a? Hash) && (validator[:array_of])
+          @is_array = true
+          rest_of_options = validator
+          validator = validator[:array_of]
+          options.merge!(rest_of_options.select{|k,v| k != :array_of })
+          raise "an ':array_of =>' validator is allowed exclusively on response-only fields" unless @response_only
+        end
         @validator = Validator::BaseValidator.find(self, validator, @options, block)
         raise "Validator for #{validator} not found." unless @validator
       end
 
       @validations = Array(options[:validations]).map {|v| concern_subst(Apipie.markup_to_html(v)) }
+
+      @additional_properties = @options[:additional_properties]
     end
 
     def from_concern?

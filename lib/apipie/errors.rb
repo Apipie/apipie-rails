@@ -9,6 +9,12 @@ module Apipie
   class UnknownCode < Error
   end
 
+  class ReturnsMultipleDefinitionError < Error
+    def to_s
+      "a 'returns' statement cannot indicate both array_of and type"
+    end
+  end
+
   # abstract
   class DefinedParamError < ParamError
     attr_accessor :param
@@ -51,5 +57,4 @@ module Apipie
       "Invalid parameter '#{@param}' value #{@value.inspect}: #{@error}"
     end
   end
-
 end

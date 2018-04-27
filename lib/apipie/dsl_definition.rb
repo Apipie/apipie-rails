@@ -2,7 +2,7 @@
 
 module Apipie
 
-  # DSL is a module that provides #api, #error, #param, #error.
+  # DSL is a module that provides #api, #error, #param, #returns.
   module DSL
 
     module Base
@@ -32,6 +32,7 @@ module Apipie
          :api_args          => [],
          :api_from_routes   => nil,
          :errors            => [],
+         :returns           => {},
          :params            => [],
          :headers           => [],
          :resource_id        => nil,
@@ -309,6 +310,7 @@ module Apipie
       end
     end
 
+
     # this describes the params, it's in separate module because it's
     # used in Validators as well
     module Param
@@ -327,6 +329,13 @@ module Apipie
                                       desc_or_options,
                                       options.merge(:param_group => @_current_param_group),
                                       block]
+      end
+
+      def property(param_name, validator, desc_or_options = nil, options = {}, &block) #:doc:
+        return unless Apipie.active_dsl?
+        options[:only_in] ||= :response
+        options[:required] = true if options[:required].nil?
+        param(param_name, validator, desc_or_options, options, &block)
       end
 
       # Reuses param group for this method. The definition is looked up
@@ -352,6 +361,65 @@ module Apipie
         self.instance_exec(&Apipie.get_param_group(scope, name))
       ensure
         @_current_param_group = nil
+      end
+
+      # Describe possible responses
+      #
+      # Example:
+      #     def_param_group :user do
+      #       param :user, Hash do
+      #         param :name, String
+      #       end
+      #     end
+      #
+      #   returns :user, "the speaker"
+      #   returns "the speaker" do
+      #        param_group: :user
+      #   end
+      #   returns :param_group => :user, "the speaker"
+      #   returns :user, :code => 201, :desc => "the created speaker record"
+      #   returns :array_of => :user, "many speakers"
+      #   def hello_world
+      #     render json: {user: {name: "Alfred"}}
+      #   end
+      #
+      def returns(pgroup_or_options, desc_or_options=nil, options={}, &block) #:doc:
+        return unless Apipie.active_dsl?
+
+
+        if desc_or_options.is_a? Hash
+          options.merge!(desc_or_options)
+        elsif !desc_or_options.nil?
+          options[:desc] = desc_or_options
+        end
+
+        if pgroup_or_options.is_a? Hash
+          options.merge!(pgroup_or_options)
+        else
+          options[:param_group] = pgroup_or_options
+        end
+
+        code = options[:code] || 200
+        scope = options[:scope] || _default_param_group_scope
+        descriptor = options[:param_group] || options[:array_of]
+
+        if block.nil?
+          if descriptor.is_a? ResponseDescriptionAdapter
+            adapter = descriptor
+          elsif descriptor.respond_to? :describe_own_properties
+            adapter = ResponseDescriptionAdapter.from_self_describing_class(descriptor)
+          else
+            begin
+              block = Apipie.get_param_group(scope, descriptor) if descriptor
+            rescue
+              raise "No param_group or self-describing class named #{descriptor}"
+            end
+          end
+        elsif descriptor
+          raise "cannot specify both block and param_group"
+        end
+
+        _apipie_dsl_data[:returns][code] = [options, scope, block, adapter]
       end
 
       # where the group definition should be looked up when no scope
