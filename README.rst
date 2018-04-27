@@ -819,6 +819,17 @@ ArrayValidator
 
 Check if the parameter is an array
 
+DecimalValidator
+--------------
+
+Check if the parameter is a decimal number
+
+.. code:: ruby
+
+  param :latitude, :decimal, :desc => "Geographic latitude", :required => true
+  param :longitude, :decimal, :desc => "Geographic longitude", :required => true
+
+
 Additional options
 ~~~~~~~~~~~~~~~~~
 
