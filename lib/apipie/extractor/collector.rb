@@ -75,6 +75,10 @@ module Apipie
             if param_desc[:type].first == :number && (key.to_s !~ /id$/ || !Apipie::Validator::NumberValidator.validate(value))
               param_desc[:type].shift
             end
+
+            if param_desc[:type].first == :decimal && (key.to_s !~ /id$/ || !Apipie::Validator::DecimalValidator.validate(value))
+              param_desc[:type].shift
+            end
           end
 
           if value.is_a? Hash
