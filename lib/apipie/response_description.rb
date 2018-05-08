@@ -5,13 +5,14 @@ module Apipie
       include Apipie::DSL::Base
       include Apipie::DSL::Param
 
-      attr_accessor :additional_properties
+      attr_accessor :additional_properties, :typename
 
-      def initialize(method_description, scope, block)
+      def initialize(method_description, scope, block, typename)
         @method_description = method_description
         @scope = scope
         @param_group = {scope: scope}
         @additional_properties = false
+        @typename = typename
 
         self.instance_exec(&block) if block
 
@@ -67,6 +68,11 @@ module Apipie
       @is_array_of != false
     end
 
+    def typename
+      @response_object.typename
+    end
+
+
     def initialize(method_description, code, options, scope, block, adapter)
 
       @type_ref = options[:param_group]
@@ -93,7 +99,7 @@ module Apipie
       if adapter
         @response_object = adapter
       else
-        @response_object = ResponseObject.new(method_description, scope, block)
+        @response_object = ResponseObject.new(method_description, scope, block, @type_ref)
       end
 
       @response_object.additional_properties ||= options[:additional_properties]

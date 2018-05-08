@@ -35,62 +35,6 @@ end
 
 
 #
-# Matcher to validate the hierarchy of fields described in an internal 'returns' object (without checking their type)
-#
-# For example, code such as:
-#           returns_obj = Apipie.get_resource_description(...)._methods.returns.detect{|e| e.code=200})
-#           expect(returns_obj).to match_param_structure([:pet_name, :animal_type, :pet_measurements => [:weight, :height]])
-#
-# will verify that the payload structure described for the response of return code 200 is:
-#           {
-#             "pet_name": <any>,
-#             "animal_type": <any>,
-#             "pet_measurements": {
-#                 "weight": <any>,
-#                 "height": <any>
-#             }
-#           }
-#
-#
-RSpec::Matchers.define :match_field_structure do |expected|
-  @last_message = nil
-
-  match do |actual|
-    deep_match?(actual, expected)
-  end
-
-  def deep_match?(actual, expected, breadcrumb=[])
-    num = 0
-    expected.each do |pdesc|
-      if pdesc.is_a? Symbol
-        return false unless matching_param(actual.params_ordered, pdesc, breadcrumb)
-      elsif pdesc.is_a? Hash
-        param = matching_param(actual.params_ordered, pdesc.keys[0], breadcrumb)
-        return false unless param
-        return false unless deep_match?(param.validator, pdesc.values[0], breadcrumb + [pdesc.keys[0]])
-      end
-      num+=1
-    end
-    @fail_message = "expected property count#{breadcrumb == [] ? '' : ' of ' + (breadcrumb).join('.')} (#{actual.params_ordered.count}) to be #{num}"
-    actual.params_ordered.count == num
-  end
-
-  def matching_param(params, expected_name, breadcrumb)
-    param = params.find { |p| p.name.to_s == expected_name.to_s }
-    unless param
-      @fail_message = "expected [#{ params.map(&:name).join(', ') }] to include #{(breadcrumb + [expected_name]).join('.')}"
-    end
-    param
-  end
-
-  failure_message do |actual|
-    @fail_message
-  end
-end
-
-
-
-#
 # Matcher to validate the properties (name, type and options) of a single field in the
 # internal representation of a swagger schema
 #
@@ -112,7 +56,8 @@ RSpec::Matchers.define :have_field do |name, type, opts={}|
     @fail_message
   end
 
-  match do |actual|
+  match do |unresolved|
+    actual = resolve_refs(unresolved)
     return fail("expected schema to have type 'object' (got '#{actual[:type]}')") if (actual[:type]) != 'object'
     return fail("expected schema to include param named '#{name}' (got #{actual[:properties].keys})") if (prop = actual[:properties][name]).nil?
     return fail("expected param '#{name}' to have type '#{type}' (got '#{prop[:type]}')") if prop[:type] != type
