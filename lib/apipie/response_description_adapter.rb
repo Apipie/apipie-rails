@@ -135,6 +135,7 @@ module Apipie
       def is_array?
         @is_array
       end
+      alias_method :is_array, :is_array?
 
       def validator
         Validator.new(@expected_type, options[:values], @sub_properties)
