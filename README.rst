@@ -842,6 +842,77 @@ The concern needs to be included to the controller after the methods are defined
 (either at the end of the class, or by using
 ``Controller.send(:include, Concerns::OauthConcern)``.
 
+
+Response validation
+-------------------
+
+The swagger definitions created by Apipie can be used to auto-generate clients that access the
+described APIs.  Those clients will break if the responses returned from the API do not match
+the declarations.  As such, it is very important to include unit tests that validate the actual
+responses against the swagger definitions.
+
+The implemented mechanism provides two ways to include such validations in RSpec unit tests:
+manual (using an RSpec matcher) and automated (by injecting a test into the http operations 'get', 'post',
+raising an error if there is no match).
+
+Example of the manual mechanism:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: ruby
+
+  require 'apipie/rspec/response_validation_helper'
+
+  RSpec.describe MyController, :type => :controller, :show_in_doc => true do
+
+    describe "GET stuff with response validation" do
+      render_views   # this makes sure the 'get' operation will actually
+                     # return the rendered view even though this is a Controller spec
+
+      it "does something" do
+        response = get :index, {format: :json}
+
+        # the following expectation will fail if the returned object
+        # does not match the 'returns' declaration in the Controller,
+        # or if there is no 'returns' declaration for the returned
+        # HTTP status code
+        expect(response).to match_declared_responses
+      end
+    end
+  end
+
+
+Example of the automated mechanism:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: ruby
+
+  require 'apipie/rspec/response_validation_helper'
+
+  RSpec.describe MyController, :type => :controller, :show_in_doc => true do
+
+    describe "GET stuff with response validation" do
+      render_views
+      auto_validate_rendered_views
+
+      it "does something" do
+        get :index, {format: :json}
+      end
+      it "does something else" do
+        get :another_index, {format: :json}
+      end
+    end
+
+    describe "GET stuff without response validation" do
+      it "does something" do
+        get :index, {format: :json}
+      end
+      it "does something else" do
+        get :another_index, {format: :json}
+      end
+    end
+  end
+
+
 =========================
  Configuration Reference
 =========================
