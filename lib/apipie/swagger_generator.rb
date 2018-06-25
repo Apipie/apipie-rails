@@ -70,6 +70,7 @@ module Apipie
               "x-copyright" => Apipie.configuration.copyright,
           },
           basePath: Apipie.api_base_url(version),
+          schemes: [ "http", "https" ],
           consumes: [],
           paths: {},
           definitions: {},
