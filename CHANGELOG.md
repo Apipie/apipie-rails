@@ -1,6 +1,14 @@
  Changelog
 ===========
 
+v0.5.9
+------
+
+- Support response validation [\#619](https://github.com/Apipie/apipie-rails/pull/619) ([abenari](https://github.com/abenari))
+- Expect :number to have type 'numeric' [\#614](https://github.com/Apipie/apipie-rails/pull/614) ([akofink](https://github.com/akofink))
+- New validator - DecimalValidator [\#431](https://github.com/Apipie/apipie-rails/pull/431) ([kiddrew](https://github.com/kiddrew))
+
+
 v0.5.8
 ------
 
