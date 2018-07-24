@@ -225,7 +225,13 @@ module Apipie
 
       def has_valid_type?(value)
         if @items_type
-          value.kind_of?(@items_type)
+          item_validator = BaseValidator.find('', @items_type, nil, nil)
+
+          if item_validator
+            item_validator.valid?(value)
+          else
+            value.kind_of?(@items_type)
+          end
         else
           true
         end

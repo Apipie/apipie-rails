@@ -24,18 +24,38 @@ module Apipie::Validator
     end
 
     context "with a constraint on items type" do
-      let(:validator) { ArrayValidator.new(param_desc, Array, :of => String) }
+      let(:validator) { ArrayValidator.new(param_desc, Array, :of => type) }
 
-      it "accepts array of specified type" do
-        expect(validator.validate(['string1', 'string2'])).to eq(true)
+      context "String" do
+        let(:type) { String }
+
+        it "accepts array of specified type" do
+          expect(validator.validate(['string1', 'string2'])).to eq(true)
+        end
+
+        it "accepts empty array" do
+          expect(validator.validate([])).to eq(true)
+        end
+
+        it "does not accepts array with other types" do
+          expect(validator.validate(['string1', true])).to eq(false)
+        end
       end
 
-      it "accepts empty array" do
-        expect(validator.validate([])).to eq(true)
-      end
+      context ":number" do
+        let(:type) { :decimal }
 
-      it "does not accepts array with other types" do
-        expect(validator.validate(['string1', true])).to eq(false)
+        it "accepts array of specified type" do
+          expect(validator.validate([12, '14'])).to eq(true)
+        end
+
+        it "accepts empty array" do
+          expect(validator.validate([])).to eq(true)
+        end
+
+        it "does not accepts array with other types" do
+          expect(validator.validate([12, 'potato'])).to eq(false)
+        end
       end
     end
 
