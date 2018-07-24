@@ -1,6 +1,11 @@
  Changelog
 ===========
 
+v0.5.10
+------
+
+- Support response validation [\#626](https://github.com/Apipie/apipie-rails/pull/626) ([COzero](https://github.com/COzero))
+
 v0.5.9
 ------
 
