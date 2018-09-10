@@ -291,7 +291,7 @@ class UsersController < ApplicationController
 
   api :GET, '/users/action_with_headers'
   header :RequredHeaderName, 'Required header description', required: true
-  header :OptionalHeaderName, 'Optional header description', required: false
+  header :OptionalHeaderName, 'Optional header description', required: false, type: 'string'
   def action_with_headers
   end
 end

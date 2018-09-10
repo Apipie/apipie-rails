@@ -482,7 +482,8 @@ describe UsersController do
             name: :OptionalHeaderName,
             description: 'Optional header description',
             options: {
-              required: false
+              required: false,
+              type: "string"
             }
           }
         end

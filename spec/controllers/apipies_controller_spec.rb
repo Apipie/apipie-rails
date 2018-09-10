@@ -143,6 +143,7 @@ describe Apipie::ApipiesController do
       assert_response :success
       expect(response.body).to match(/"swagger":"2.0"/)
       # puts response.body
+
       expect(JSON::Validator.validate(swagger_schema, response.body)).to be_truthy
     end
 

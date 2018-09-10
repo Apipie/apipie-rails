@@ -643,7 +643,24 @@ module Apipie
         add_params_from_hash(swagger_result, body_param_defs_hash)
       end
 
+      add_headers_from_hash(swagger_result, method.headers) if method.headers.present?
+
       swagger_result
+    end
+
+
+    def add_headers_from_hash(swagger_params_array, headers)
+      swagger_headers = headers.map do |header|
+        {
+          name: header[:name],
+          in: 'header',
+          required: header[:options][:required],
+          description: header[:description],
+          type:  header[:options][:type] || 'string'
+        }
+
+      end
+      swagger_params_array.push(*swagger_headers)
     end
 
 
@@ -684,7 +701,7 @@ module Apipie
         end
       end
     end
-    
+
   end
 
 end

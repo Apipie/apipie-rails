@@ -558,6 +558,7 @@ describe "Swagger Responses" do
 
         expect(returns_obj.code).to eq(200)
         expect(returns_obj.is_array?).to eq(false)
+
         expect(returns_obj).to match_field_structure([:pet_name, :animal_type, :age])
       end
 
