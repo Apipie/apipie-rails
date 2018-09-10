@@ -558,7 +558,11 @@ describe "Swagger Responses" do
 
         expect(returns_obj.code).to eq(200)
         expect(returns_obj.is_array?).to eq(false)
-        expect(returns_obj).to match_field_structure([:pet_name, :animal_type, :age])
+        if RUBY_VERSION == "2.5.0"
+          expect(returns_obj).to match_field_structure([:age, :pet_name, :animal_type])
+        else
+          expect(returns_obj).to match_field_structure([:pet_name, :animal_type, :age])
+        end
       end
 
       it 'should have the response described in the swagger' do
