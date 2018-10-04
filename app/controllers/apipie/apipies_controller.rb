@@ -114,19 +114,33 @@ module Apipie
       return @doc unless Apipie.configuration.authorize
 
       new_doc = { :docs => @doc[:docs].clone }
+      resources = @doc[:docs][:resources]
 
-      new_doc[:docs][:resources] = @doc[:docs][:resources].select do |k, v|
-        if instance_exec(k, nil, v, &Apipie.configuration.authorize)
-          v[:methods] = v[:methods].select do |h|
-            instance_exec(k, h[:name], h, &Apipie.configuration.authorize)
-          end
-          true
-        else
-          false
+      if params[:resource].present? and resources.is_a?(Array)
+        # We assume only one resource in the array when a specific resource was queried
+        resource_name = params[:resource]
+        authorized_resources = []
+        authorized_resources << resources.first if authorize_resource?(resource_name, resources.first)
+        new_doc[:docs][:resources] = authorized_resources
+      else
+        # Assume resource is a hash
+        new_doc[:docs][:resources] = resources.select do |k, v|
+          authorize_resource?(k, v)
         end
       end
 
       new_doc
+    end
+
+    def authorize_resource?(name, value)
+      if instance_exec(name, nil, value, &Apipie.configuration.authorize)
+        value[:methods] = value[:methods].select do |h|
+          instance_exec(name, h[:name], h, &Apipie.configuration.authorize)
+        end
+        return true
+      end
+
+      false
     end
 
     def get_format
