@@ -224,7 +224,7 @@ module Apipie
         @current_http_method = method_key
 
         methods[method_key] = {
-            tags: [tag_name_for_resource(ruby_method.resource)] + warning_tags,
+            tags: [tag_name_for_resource(ruby_method.resource)] + warning_tags + ruby_method.tag_list.tags,
             consumes: params_in_body? ? ['application/json'] : ['application/x-www-form-urlencoded', 'multipart/form-data'],
             operationId: op_id,
             summary: Apipie.app.translate(api.short_description, @current_lang),

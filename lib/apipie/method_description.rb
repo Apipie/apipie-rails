@@ -17,7 +17,7 @@ module Apipie
 
     end
 
-    attr_reader :full_description, :method, :resource, :apis, :examples, :see, :formats, :metadata, :headers, :show
+    attr_reader :full_description, :method, :resource, :apis, :examples, :see, :formats, :metadata, :headers, :show, :tag_list
 
     def initialize(method, resource, dsl_data)
       @method = method.to_s
@@ -33,6 +33,8 @@ module Apipie
       @errors = dsl_data[:errors].map do |args|
         Apipie::ErrorDescription.from_dsl_data(args)
       end
+
+      @tag_list = Apipie::TagListDescription.new(dsl_data[:tag_lists])
 
       @returns = dsl_data[:returns].map do |code,args|
         Apipie::ResponseDescription.from_dsl_data(self, code, args)

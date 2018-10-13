@@ -395,6 +395,14 @@ class PetsController < ApplicationController
   end
 
 
+  #-----------------------------------------------------------
+  # A method with simple tags.
+  #-----------------------------------------------------------
+  api!
+  tags(%w[Dogs Cats LivingBeings])
+  def show_plain_response_with_tags
+    render :plain => "showing pet properties"
+  end
 
 end
 

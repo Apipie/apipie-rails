@@ -32,10 +32,11 @@ module Apipie
          :api_args          => [],
          :api_from_routes   => nil,
          :errors            => [],
+         :tag_lists         => [],
          :returns           => {},
          :params            => [],
          :headers           => [],
-         :resource_id        => nil,
+         :resource_id       => nil,
          :short_description => nil,
          :description       => nil,
          :examples          => [],
@@ -132,6 +133,12 @@ module Apipie
       def show(show)
         return unless Apipie.active_dsl?
         _apipie_dsl_data[:show] = show
+      end
+
+      # Add tags to group operations together.
+      def tags(tags)
+        return unless Apipie.active_dsl?
+        _apipie_dsl_data[:tag_lists] += tags
       end
 
       # Describe whole resource

@@ -166,6 +166,19 @@ describe "Swagger Responses" do
 
     end
 
+    describe "PetsController#show_plain_response_with_tags" do
+      subject do
+        desc._methods[:show_plain_response_with_tags]
+      end
+
+      it "should return tags with 'Dogs', 'Cats', and 'LivingBeings'" do
+        returns_obj = subject.tag_list
+        puts returns_obj.inspect
+
+        expect(returns_obj.tags).to eq(%w[Dogs Cats LivingBeings])
+      end
+    end
+
     describe "PetsController#show_as_properties" do
       subject do
         desc._methods[:show_as_properties]
