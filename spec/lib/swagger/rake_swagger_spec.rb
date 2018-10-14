@@ -51,6 +51,10 @@ describe 'rake tasks' do
       expect(param[field]).to eq(value)
     end
 
+    def expect_tags_def(http_method, path, value)
+      params = apidoc_swagger["paths"][path][http_method]["tags"]
+      expect(params).to eq(value)
+    end
 
     def body_param_def(http_method, path, param_name)
       params = apidoc_swagger["paths"][path][http_method]["parameters"]
@@ -88,6 +92,8 @@ describe 'rake tasks' do
         expect_param_def("get", "/users/by_department", "department", "in", "query")
         expect_param_def("get", "/users/by_department", "department", "enum",
                          ["finance", "operations", "sales", "marketing", "HR"])
+
+        expect_tags_def("get", "/twitter_example/{id}/followers", %w[twitter_example following index search])
       end
 
       it "generates a valid swagger file" do
@@ -112,6 +118,8 @@ describe 'rake tasks' do
         expect_param_def("get", "/users/by_department", "department", "in", "query")
         expect_param_def("get", "/users/by_department", "department", "enum",
                          ["finance", "operations", "sales", "marketing", "HR"])
+
+        expect_tags_def("get", "/twitter_example/{id}/followers", %w[twitter_example following index search])
 
       end
 

@@ -299,4 +299,9 @@ class TwitterExampleController < ApplicationController
     render :text => 'twitter example'
   end
   
+  api :GET, '/twitter_example/{id}/followers', 'Find the followers for the given screen name'
+  tags %w[following index search]
+  def followers
+    render :text => 'followers'
+  end
 end
