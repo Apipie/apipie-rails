@@ -13,11 +13,20 @@ class TaggedCatsController < ApplicationController
   end
 
   #-----------------------------------------------------------
-  # simple 'returns' example: a method that returns a pet record
+  # simple 'returns' example: a method that returns a cat record
   #-----------------------------------------------------------
-  api :GET, "/pets/:id/as_properties", "Get a pet record"
+  api :GET, "/pets/:id/as_properties", "Get a cat record"
   tags(%w[Animals])
   def show_as_properties
+    render :plain => "showing pet properties"
+  end
+
+  #-----------------------------------------------------------
+  # simple 'returns' example: a method that returns another cat record
+  #-----------------------------------------------------------
+  api :GET, "/pets/:id/as_same_properties", "Get a cat record"
+  tags("Puma", "Animals")
+  def show_as_same_properties
     render :plain => "showing pet properties"
   end
 end

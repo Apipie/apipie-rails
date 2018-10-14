@@ -224,8 +224,9 @@ module Apipie
       end
 
       # Add tags to resources and actions group operations together.
-      def tags(tags)
+      def tags(*args)
         return unless Apipie.active_dsl?
+        tags = args.length == 1 ? args.first : args
         _apipie_dsl_data[:tag_list] += tags
       end
 

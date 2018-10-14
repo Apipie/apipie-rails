@@ -467,6 +467,19 @@ describe "Swagger Responses" do
         expect(returns_obj.tags).to eq(%w[Dogs Pets Animals])
       end
     end
+
+    describe "TaggedCatsController#show_as_same_properties" do
+      subject do
+        desc._methods[:show_as_same_properties]
+      end
+
+      it "should return tags with 'Dogs', 'Pets', 'Puma', and 'Animals'" do
+        returns_obj = subject.tag_list
+        puts returns_obj.inspect
+
+        expect(returns_obj.tags).to eq(%w[Dogs Pets Puma Animals])
+      end
+    end
   end
 
   #==============================================================================
