@@ -1,6 +1,13 @@
  Changelog
 ===========
 
+v0.5.11
+-------
+
+- Adds swagger tags in swagger output [\#634](https://github.com/Apipie/apipie-rails/pull/634) ([enrique-guillen](https://github.com/enrique-guillen))
+- Generate swagger with headers [\#630](https://github.com/Apipie/apipie-rails/pull/630) ([Uysim](https://github.com/Uysim))
+- Fix examples not being generated for Rails < 5.0.0 [\#633](https://github.com/Apipie/apipie-rails/pull/633) ([RomanKapitonov](https://github.com/RomanKapitonov))
+
 v0.5.10
 ------
 
