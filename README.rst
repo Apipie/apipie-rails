@@ -222,6 +222,12 @@ param
 returns
   Look at `Response description`_ section for details.
 
+tags
+  Adds tags for grouping operations together in Swagger outputs. See `swagger`_
+  for more details. You can also provide tags in the `Resource Description`_
+  block so that they are automatically prepended to all action tags in the
+  controller.
+
 formats
   Method level request / response formats.
 

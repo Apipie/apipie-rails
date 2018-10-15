@@ -34,6 +34,8 @@ module Apipie
         Apipie::ErrorDescription.from_dsl_data(args)
       end
 
+      @tag_list = dsl_data[:tag_list]
+
       @returns = dsl_data[:returns].map do |code,args|
         Apipie::ResponseDescription.from_dsl_data(self, code, args)
       end
@@ -92,6 +94,15 @@ module Apipie
 
     def returns_self
       @returns
+    end
+
+    def tag_list
+      all_tag_list = []
+      parent = Apipie.get_resource_description(@resource.controller.superclass)
+
+      # get tags from parent resource description
+      parent_tags = [parent, @resource].flat_map { |resource| resource._tag_list_arg }
+      Apipie::TagListDescription.new((parent_tags + @tag_list).uniq.compact)
     end
 
     def returns

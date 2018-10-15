@@ -32,10 +32,11 @@ module Apipie
          :api_args          => [],
          :api_from_routes   => nil,
          :errors            => [],
+         :tag_list          => [],
          :returns           => {},
          :params            => [],
          :headers           => [],
-         :resource_id        => nil,
+         :resource_id       => nil,
          :short_description => nil,
          :description       => nil,
          :examples          => [],
@@ -220,6 +221,13 @@ module Apipie
       def error(code_or_options, desc=nil, options={}) #:doc:
         return unless Apipie.active_dsl?
         _apipie_dsl_data[:errors] << [code_or_options, desc, options]
+      end
+
+      # Add tags to resources and actions group operations together.
+      def tags(*args)
+        return unless Apipie.active_dsl?
+        tags = args.length == 1 ? args.first : args
+        _apipie_dsl_data[:tag_list] += tags
       end
 
       def _apipie_define_validators(description)

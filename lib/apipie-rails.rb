@@ -15,6 +15,7 @@ require "apipie/error_description"
 require "apipie/response_description"
 require "apipie/response_description_adapter"
 require "apipie/see_description"
+require "apipie/tag_list_description"
 require "apipie/validator"
 require "apipie/railtie"
 require 'apipie/extractor'
