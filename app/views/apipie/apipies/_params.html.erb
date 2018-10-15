@@ -21,8 +21,10 @@
           <%- if param[:validator].present? %>
             <li><%= Apipie.markup_to_html(param[:validator]).html_safe %></li>
           <%- end %>
-          <%- param[:validations].each do |item| %>
-            <li><%= item.html_safe %></li>
+          <%- if param[:validations].present? %>
+            <%- param[:validations].each do |item| %>
+              <li><%= item.html_safe %></li>
+            <%- end %>
           <%- end %>
         </ul>
       <%- end %>
