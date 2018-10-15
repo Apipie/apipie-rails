@@ -5,3 +5,13 @@ body {
 .sidebar-nav {
   padding: 9px 0;
 }
+
+.panel-collapse.in {
+  /*
+   * This !important is used to override Bootstraps
+   * collapse function, which assigns a fixed height to
+   * a collapsed panel, which breakes on nested collapsibles.
+   * In our case this breaks example display on method_detail.
+   */
+  height: auto !important;
+}

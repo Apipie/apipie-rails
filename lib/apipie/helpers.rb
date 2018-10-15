@@ -33,8 +33,8 @@ module Apipie
     end
 
     def include_javascripts
-      %w[ bundled/jquery.js
-          bundled/bootstrap-collapse.js
+      %w[ bundled/jquery.min.js
+          bundled/bootstrap.js
           bundled/prettify.js
           apipie.js ].map do |file|
         "<script type='text/javascript' src='#{Apipie.full_url("javascripts/#{file}")}'></script>"
@@ -43,30 +43,27 @@ module Apipie
 
     def include_stylesheets
       %w[ bundled/bootstrap.min.css
-          bundled/prettify.css
-          bundled/bootstrap-responsive.min.css ].map do |file|
+          bundled/prettify.css ].map do |file|
         "<link type='text/css' rel='stylesheet' href='#{Apipie.full_url("stylesheets/#{file}")}'/>"
       end.join("\n").html_safe
     end
 
+    #
+    # Returns a label for a given error code. If the code is not recognized,
+    # an empty string is returned.
+    #
     def label_class_for_error(err)
       case err[:code]
-        when 200
-          'label label-info'
-        when 201
-          'label label-success'
-        when 204
-          'label label-info2'
-        when 401
-          'label label-warning'
-        when 403
-          'label label-warning2'
-        when 422
-          'label label-important'
-        when 404
-          'label label-inverse'
-        else
-          'label'
+      when 200
+        'label label-info'
+      when 201, 204
+        'label label-success'
+      when 401, 403, 422
+        'label label-danger'
+      when 404
+        'label label-warning'
+      else
+        ''
       end
     end
   end

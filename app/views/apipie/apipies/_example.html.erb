@@ -1,0 +1,29 @@
+<div class="panel panel-<%= example[:code].to_i >= 400 ? 'danger' : 'success'  %>">
+  <div class="panel-heading">
+    <a role="button"
+       href="#example-<%= "#{index}#{example[:path].tr('/', '-')}-#{example[:verb]}" %>"
+       data-toggle="collapse"
+       aria-controls="example-<%= "#{index}#{example[:path].tr('/', '-')}-#{example[:verb]}" %>">
+      <%= example[:doc_title].presence || "#{example[:path]} with #{example[:request_data]}" %>
+      <span class="caret right"></span>
+    </a>
+  </div>
+  <div id="example-<%= "#{index}#{example[:path].tr('/', '-')}-#{example[:verb]}" %>"
+    aria-controls="example-<%= "#{index}#{example[:path].tr('/', '-')}-#{example[:verb]}" %>"
+    aria-expanded="false"
+    class="panel-collapse collapse">
+    <div class="panel-body">
+      <h4>Path:</h4>
+      <pre><%= example[:path] %>
+      </pre>
+      <%- if !example[:request_data].blank? %>
+        <h4>Request Data:</h4>
+        <pre><%= example[:request_data] %></pre>
+        <h4>Request Data Json:</h4>
+        <pre class="prettyprint"><%= example[:request_data_json] %></pre>
+      <% end %>
+      <h4>Response Data:</h4>
+      <pre class="prettyprint pre-scrollable" style="max-height: 600px"><%= example[:response_data] %></pre>
+    </div>
+  </div>
+</div>
