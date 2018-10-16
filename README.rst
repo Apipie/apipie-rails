@@ -1154,7 +1154,7 @@ You must then call the ``apipie_validations`` method yourself, e.g.:
 
 .. code:: ruby
 
-   before_action: :apipie_validations
+   before_action :apipie_validations
 
 This is useful if you have before_actions which use parameter values: just add them
 after the ``apipie_validations`` before_action.
