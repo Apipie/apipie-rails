@@ -101,7 +101,7 @@ module Apipie
       parent = Apipie.get_resource_description(@resource.controller.superclass)
 
       # get tags from parent resource description
-      parent_tags = [parent, @resource].flat_map { |resource| resource._tag_list_arg }
+      parent_tags = [parent, @resource].compact.flat_map { |resource| resource._tag_list_arg }
       Apipie::TagListDescription.new((parent_tags + @tag_list).uniq.compact)
     end
 
