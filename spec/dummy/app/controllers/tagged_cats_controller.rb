@@ -3,7 +3,7 @@
 # defining a set of tags for the contained methods to include.
 #
 
-class TaggedCatsController < ApplicationController
+class TaggedCatsController < ActionController::Base
   resource_description do
     description 'A controller to test "returns"'
     short 'Pets'
