@@ -1,6 +1,10 @@
  Changelog
 ===========
 
+v0.5.12
+-------
+- Fix returns displaying [\#635](https://github.com/Apipie/apipie-rails/pull/635) ([X1ting](https://github.com/X1ting))
+
 v0.5.11
 -------
 
