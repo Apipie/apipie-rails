@@ -449,6 +449,27 @@ describe "Swagger Responses" do
   end
 
   #==============================================================================
+  # TaggedDogsController is a demonstration of how tags may be defined in a simple
+  # controller class without defining either the controller resource-description
+  # block or the controller's superclass's resource-description block.
+  #==============================================================================
+
+  describe TaggedDogsController do
+    describe "TaggedDogsController#show_as_properties" do
+      subject do
+        desc._methods[:show_as_properties]
+      end
+
+      it "should return tags with 'Dogs', and 'Wolves'" do
+        returns_obj = subject.tag_list
+        puts returns_obj.inspect
+
+        expect(returns_obj.tags).to eq(%w[Dogs Wolves])
+      end
+    end
+  end
+
+  #==============================================================================
   # TaggedCatsController is a demonstration of how tags may be defined in the
   # controller's resource description so that they may be automatically prefixed
   # to a particular operation's tags.

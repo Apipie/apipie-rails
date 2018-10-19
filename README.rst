@@ -283,6 +283,8 @@ Example:
         property :enum1, ['v1', 'v2'], :desc => "One of 2 possible string values"
       end
    end
+   tags %w[profiles logins]
+   tags 'more', 'related', 'resources'
    description "method description"
    formats ['json', 'jsonp', 'xml']
    meta :message => "Some very important info"
