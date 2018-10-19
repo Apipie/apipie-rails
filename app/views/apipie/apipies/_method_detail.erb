@@ -40,6 +40,8 @@
   <%= heading(t('apipie.returns'), h_level) %>
   <% method[:returns].each do |item| %>
     <%= heading("#{t('apipie.code')}: #{item[:code]}", h_level + 1) %>
+    <%= heading("#{t('apipie.description')}:", h_level + 2) %>
+    <p><%= item[:description] %></p>
     <table class='table'>
       <thead>
         <tr>
