@@ -23,6 +23,7 @@ class Apipie::Railtie
       end
     else
       ActionController::TestCase.send(:prepend, Apipie::Extractor::Recorder::FunctionalTestRecording)
+      ActionController::TestCase::Behavior.send(:prepend, Apipie::Extractor::Recorder::FunctionalTestRecording)
     end
   end
 end
