@@ -7,4 +7,8 @@ class ExtendedController < ApplicationController
   end
   def create
   end
+
+  apipie_update_params([:create]) do
+    param :admin, :boolean
+  end
 end
