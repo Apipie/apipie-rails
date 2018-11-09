@@ -498,7 +498,7 @@ module Apipie
           params_ordered = dsl_data[:params].map do |args|
             Apipie::ParamDescription.from_dsl_data(method_description, args)
           end
-          ParamDescription.unify(method_description.params_ordered_self + params_ordered)
+          ParamDescription.merge(method_description.params_ordered_self, params_ordered)
         end
       end
 

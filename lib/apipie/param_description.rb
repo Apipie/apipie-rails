@@ -197,6 +197,14 @@ module Apipie
       end.sort_by { |param| ordering.index(param.name) }
     end
 
+    def self.merge(target_params, source_params)
+      params_to_merge, params_to_add = source_params.partition do |source_param|
+        target_params.any? { |target_param| source_param.name == target_param.name }
+      end
+      unify(target_params + params_to_merge)
+      target_params.concat(params_to_add)
+    end
+
     # action awareness is being inherited from ancestors (in terms of
     # nested params)
     def action_aware?
