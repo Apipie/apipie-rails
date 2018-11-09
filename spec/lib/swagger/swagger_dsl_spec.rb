@@ -73,18 +73,28 @@ describe "Swagger Responses" do
     end
 
     def deep_match?(actual, expected, breadcrumb=[])
-      num = 0
-      for pdesc in expected do
-        if pdesc.is_a? Symbol
-          return false unless fields_match?(actual.params_ordered[num], pdesc, breadcrumb)
-        elsif pdesc.is_a? Hash
-          return false unless fields_match?(actual.params_ordered[num], pdesc.keys[0], breadcrumb)
-          return false unless deep_match?(actual.params_ordered[num].validator, pdesc.values[0], breadcrumb + [pdesc.keys[0]])
+      pending_params = actual.params_ordered.dup
+      expected.each do |expected_param|
+        expected_param_name = expected_param.is_a?(Hash) ? expected_param.keys.first : expected_param
+        actual_param = pending_params.find { |param| param.name.to_s == expected_param_name.to_s }
+        unless actual_param
+          @fail_message = "Couldn't find #{expected_param_name.inspect} among #{pending_params.map(&:name)} in #{breadcrumb.join('.')}"
+          return false
+        else
+          pending_params.delete_if { |p| p.object_id ==  actual_param.object_id }
         end
-        num+=1
+
+        return false unless fields_match?(actual_param, expected_param_name, breadcrumb)
+        if expected_param.is_a? Hash
+          return false unless deep_match?(actual_param.validator, expected_param.values[0], breadcrumb + [expected_param.keys.first])
+        end
       end
-      @fail_message = "expected property count#{breadcrumb == [] ? '' : ' of ' + (breadcrumb).join('.')} (#{actual.params_ordered.count}) to be #{num}"
-      actual.params_ordered.count == num
+
+      unless pending_params.empty?
+        @fail_message = "Unexpected properties #{pending_params.map(&:name)} in #{breadcrumb.join('.')}"
+        return false
+      end
+      true
     end
 
     def fields_match?(param, expected_name, breadcrumb)
