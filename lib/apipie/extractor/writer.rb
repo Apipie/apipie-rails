@@ -104,14 +104,22 @@ module Apipie
         ordered_call = OrderedHash.new
         %w[title verb path versions query request_data response_data code show_in_doc recorded].each do |k|
           next unless call.has_key?(k)
-          ordered_call[k] = case call[k]
-                     when ActiveSupport::HashWithIndifferentAccess
-                       convert_file_value(call[k]).to_hash
-                     else
-                       call[k]
-                     end
+          ordered_call[k] = preserve_call[k]
       end
         return ordered_call
+      end
+
+      def preserve_call call
+        if call.is_a?(Rack::Test::UploadedFile) || call.is_a?(ActionDispatch::Http::UploadedFile)
+          "<FILE CONTENT '#{call.original_filename}'>"
+        elsif call.is_a? ActiveSupport::HashWithIndifferentAccess
+          call.each do |pkey, pval|
+            call[pkey] = preserve_call pval
+          end
+          JSON.parse(call.to_json)
+        else
+          call
+        end
       end
 
       def convert_file_value hash
