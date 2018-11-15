@@ -61,6 +61,9 @@ module Apipie
           raw = IO.read(examples_file)
           raw = Zlib::Inflate.inflate(raw).force_encoding('utf-8') if compressed
           deserialize_examples(raw)
+        rescue StandardError => error
+          logger.error("Could not parse examples file: #{examples_file} - #{error.message}")
+          {}
         end
 
         def logger
