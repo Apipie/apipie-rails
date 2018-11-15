@@ -57,6 +57,10 @@ module Apipie
         "TODO: validator description"
       end
 
+      def format_description_value(value)
+        "<code>#{CGI::escapeHTML(value.to_s)}</code>"
+      end
+
       def error
         ParamInvalid.new(param_name, @error_value, description)
       end
@@ -148,7 +152,7 @@ module Apipie
       end
 
       def description
-        "Must match regular expression <code>/#{@regexp.source}/</code>."
+        "Must match regular expression #{format_description_value("/#{@regexp.source}/")}."
       end
     end
 
@@ -172,7 +176,7 @@ module Apipie
       end
 
       def description
-        string = @array.map { |value| "<code>#{value}</code>" }.join(', ')
+        string = @array.map { |value| format_description_value(value) }.join(', ')
         "Must be one of: #{string}."
       end
     end
@@ -272,7 +276,8 @@ module Apipie
       end
 
       def description
-        "Must be one of: #{@array.join(', ')}."
+        string = @array.map { |value| format_description_value(value) }.join(', ')
+        "Must be one of: #{string}."
       end
     end
 
@@ -467,8 +472,8 @@ module Apipie
       end
 
       def description
-        string = %w(true false 1 0).map { |value| "<code>#{value}</code>" }.join(', ')
-        "Must be one of: #{string}"
+        string = %w(true false 1 0).map { |value| format_description_value(value) }.join(', ')
+        "Must be one of: #{string}."
       end
     end
 
