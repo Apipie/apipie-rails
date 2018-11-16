@@ -1,6 +1,15 @@
  Changelog
 ===========
 
+v0.5.14
+-------
+- HTML escape validator values [\#645](https://github.com/Apipie/apipie-rails/pull/645) ([ekohl](https://github.com/ekohl))
+- Support for adding new params via `update\_api` [\#642](https://github.com/Apipie/apipie-rails/pull/642) ([iNecas](https://github.com/iNecas))
+- Allow the "null" JSON string to be used as a parameter in Apipie spec examples \(`show\_in\_doc`\) [\#641](https://github.com/Apipie/apipie-rails/pull/641) ([enrique-guillen](https://github.com/enrique-guillen))
+- Fix examples recording for specific cases  [\#640](https://github.com/Apipie/apipie-rails/pull/640) ([Marri](https://github.com/Marri))
+- Add description section to response [\#639](https://github.com/Apipie/apipie-rails/pull/639) ([X1ting](https://github.com/X1ting))
+
+
 v0.5.13
 -------
 -  Fix swagger generation if a controller's parent doesn't define a resource_description [\#637](https://github.com/Apipie/apipie-rails/pull/637) ([enrique-guillen](https://github.com/enrique-guillen))
