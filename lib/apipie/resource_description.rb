@@ -106,6 +106,7 @@ module Apipie
 
       {
         :doc_url => doc_url,
+        :resource_name => _id,
         :api_url => api_url,
         :name => @_name,
         :short_description => Apipie.app.translate(@_short_description, lang),
