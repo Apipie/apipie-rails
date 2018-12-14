@@ -129,9 +129,9 @@ module Apipie
     end
 
     def authorize_resource resource
-      if instance_exec(resource[:resource_name], nil, resource, &Apipie.configuration.authorize)
+      if instance_exec(resource[:id], nil, resource, &Apipie.configuration.authorize)
         resource[:methods] = resource[:methods].select do |m|
-          instance_exec(resource[:resource_name], m[:name], m, &Apipie.configuration.authorize)
+          instance_exec(resource[:id], m[:name], m, &Apipie.configuration.authorize)
         end
         true
       else
