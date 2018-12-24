@@ -45,7 +45,7 @@ Now you can start documenting your resources and actions (see
 .. code:: ruby
 
    api :GET, '/users/:id'
-   param :id, :number
+   param :id, :number, desc: 'id of the requested user'
    def show
      # ...
    end
