@@ -115,18 +115,28 @@ module Apipie
 
       new_doc = { :docs => @doc[:docs].clone }
 
-      new_doc[:docs][:resources] = @doc[:docs][:resources].select do |k, v|
-        if instance_exec(k, nil, v, &Apipie.configuration.authorize)
-          v[:methods] = v[:methods].select do |h|
-            instance_exec(k, h[:name], h, &Apipie.configuration.authorize)
-          end
-          true
-        else
-          false
+      new_doc[:docs][:resources] = if @doc[:docs][:resources].kind_of?(Array)
+        @doc[:docs][:resources].select do |resource|
+          authorize_resource(resource)
+        end
+      else
+        @doc[:docs][:resources].select do |_resource_name, resource|
+          authorize_resource(resource)
         end
       end
 
       new_doc
+    end
+
+    def authorize_resource resource
+      if instance_exec(resource[:id], nil, resource, &Apipie.configuration.authorize)
+        resource[:methods] = resource[:methods].select do |m|
+          instance_exec(resource[:id], m[:name], m, &Apipie.configuration.authorize)
+        end
+        true
+      else
+        false
+      end
     end
 
     def get_format
