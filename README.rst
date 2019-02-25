@@ -1237,10 +1237,15 @@ override parameters described on the resource level.
      #...
    end
 
-ArrayValidator
---------------
+NumberValidator
+---------------
 
-Check if the parameter is an array
+Check if the parameter is a positive integer number or zero
+
+.. code:: ruby
+
+  param :product_id, :number, :desc => "Identifier of the product", :required => true
+  param :quantity, :number, :desc => "Number of products to order", :required => true
 
 DecimalValidator
 --------------
@@ -1252,6 +1257,10 @@ Check if the parameter is a decimal number
   param :latitude, :decimal, :desc => "Geographic latitude", :required => true
   param :longitude, :decimal, :desc => "Geographic longitude", :required => true
 
+ArrayValidator
+--------------
+
+Check if the parameter is an array
 
 Additional options
 ~~~~~~~~~~~~~~~~~
