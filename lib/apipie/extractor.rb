@@ -15,10 +15,13 @@ class Apipie::Railtie
         end
       end
     end
-    app.middleware.use ::Apipie::Extractor::Recorder::Middleware
 
-    ActionController::TestCase.send(:prepend, Apipie::Extractor::Recorder::FunctionalTestRecording)
-    ActionController::TestCase::Behavior.send(:prepend, Apipie::Extractor::Recorder::FunctionalTestRecording)
+    if Apipie.configuration.record
+      app.middleware.use ::Apipie::Extractor::Recorder::Middleware
+
+      ActionController::TestCase.send(:prepend, Apipie::Extractor::Recorder::FunctionalTestRecording)
+      ActionController::TestCase::Behavior.send(:prepend, Apipie::Extractor::Recorder::FunctionalTestRecording)
+    end
   end
 end
 
