@@ -11,17 +11,16 @@ rvm:
   - 2.5.3
   - 2.6.0
 gemfile:
-  - Gemfile.rails41
   - Gemfile.rails42
-  - Gemfile.rails50 # Min ruby 2.2.2
   - Gemfile.rails51 # Min ruby 2.2.2
+  - Gemfile.rails60 # Min ruby 2.5.0
 matrix:
   exclude:
-    - rvm: 2.4.5
-      gemfile: Gemfile.rails41
-    - rvm: 2.5.3
-      gemfile: Gemfile.rails41
-    - rvm: 2.6.0
-      gemfile: Gemfile.rails41
     - rvm: 2.6.0
       gemfile: Gemfile.rails42
+    - rvm: 2.2.10
+      gemfile: Gemfile.rails60
+    - rvm: 2.3.8
+      gemfile: Gemfile.rails60
+    - rvm: 2.4.5
+      gemfile: Gemfile.rails60
