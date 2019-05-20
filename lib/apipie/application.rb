@@ -434,8 +434,7 @@ module Apipie
     end
 
     def load_controller_from_file(controller_file)
-      controller_class_name = controller_file.gsub(/\A.*\/app\/controllers\//,"").gsub(/\.\w*\Z/,"").camelize
-      controller_class_name.constantize
+      require_dependency controller_file
     end
 
     def ignored?(controller, method = nil)
