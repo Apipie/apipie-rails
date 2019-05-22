@@ -1,6 +1,13 @@
  Changelog
 ===========
 
+[v0.5.16](https://github.com/Apipie/apipie-rails/tree/v0.5.16) (2019-05-22)
+--------
+
+[Full Changelog](https://github.com/Apipie/apipie-rails/compare/v0.5.15...v0.5.16)
+
+- Load file directly instead of using Rails constant [\#665](https://github.com/Apipie/apipie-rails/pull/665) ([speckins](https://github.com/speckins))
+
 [v0.5.15](https://github.com/Apipie/apipie-rails/tree/v0.5.15) (2019-01-03)
 --------
 [Full Changelog](https://github.com/Apipie/apipie-rails/compare/v0.5.14...v0.5.15)
