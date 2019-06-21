@@ -22,6 +22,13 @@
   <% end %>
 <% end %>
 
+<% unless method[:examples_data].blank? %>
+  <%= heading(t('apipie.examples'), h_level) %>
+  <% method[:examples].each do |example| %>
+    <%= render(:partial => "example", :locals => {:example => example}) %>
+  <% end %>
+<% end %>
+
 <% unless method[:params].blank? %>
   <%= heading(t('apipie.params'), h_level) %>
   <table class='table'>
