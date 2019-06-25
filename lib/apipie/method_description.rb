@@ -17,7 +17,8 @@ module Apipie
 
     end
 
-    attr_reader :full_description, :method, :resource, :apis, :examples, :see, :formats, :metadata, :headers, :show
+    attr_reader :full_description, :method, :resource, :apis, :examples, :see, :formats, :headers, :show
+    attr_accessor :metadata
 
     def initialize(method, resource, dsl_data)
       @method = method.to_s
