@@ -488,19 +488,33 @@ module Apipie
       #         param_names.each { |p| param p, String }
       #       end
       #      end
-      def apipie_update_params(methods, *args, &block)
+      def _apipie_update_params(method_desc, dsl_data)
+        params_ordered = dsl_data[:params].map do |args|
+          Apipie::ParamDescription.from_dsl_data(method_desc, args)
+        end
+        ParamDescription.merge(method_desc.params_ordered_self, params_ordered)
+      end
+
+      def _apipie_update_meta(method_desc, dsl_data)
+        return unless dsl_data[:meta] && dsl_data[:meta].is_a?(Hash)
+
+        method_desc.metadata ||= {}
+        method_desc.metadata.merge!(dsl_data[:meta])
+      end
+
+      def apipie_update_methods(methods, *args, &block)
         methods.each do |method|
-          method_description = Apipie.get_method_description(self, method)
-          unless method_description
+          method_desc = Apipie.get_method_description(self, method)
+          unless method_desc
             raise "Could not find method description for #{self}##{method}. Was the method defined?"
           end
           dsl_data = _apipie_eval_dsl(*args, &block)
-          params_ordered = dsl_data[:params].map do |args|
-            Apipie::ParamDescription.from_dsl_data(method_description, args)
-          end
-          ParamDescription.merge(method_description.params_ordered_self, params_ordered)
+          _apipie_update_params(method_desc, dsl_data)
+          _apipie_update_meta(method_desc, dsl_data)
         end
       end
+      # backwards compatibility
+      alias_method :apipie_update_params, :apipie_update_methods
 
       def _apipie_concern_subst
         @_apipie_concern_subst ||= {:controller_path => self.controller_path,
@@ -550,7 +564,7 @@ module Apipie
           controller._apipie_define_validators(description)
         end
         _apipie_concern_update_api_blocks.each do |(methods, block)|
-          controller.apipie_update_params(methods, &block)
+          controller.apipie_update_methods(methods, &block)
         end
       end
 
