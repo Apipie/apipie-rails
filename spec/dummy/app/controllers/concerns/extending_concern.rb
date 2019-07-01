@@ -6,6 +6,7 @@ module Concerns
       param :user, Hash do
         param :from_concern, String, :desc => 'param from concern', :allow_nil => false
       end
+      meta metadata: 'data'
     end
   end
 end
