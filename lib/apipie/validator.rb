@@ -129,6 +129,8 @@ module Apipie
           'array'
         elsif @type.ancestors.include? Numeric
           'numeric'
+        elsif @type.ancestors.include? File
+          'file'
         else
           'string'
         end
