@@ -488,12 +488,24 @@ describe UsersController do
           }
         end
 
+        let(:expected_header_with_default) do
+          {
+            name: :HeaderNameWithDefaultValue,
+            description: 'Header with default value',
+            options: {
+              required: true,
+              default: 'default value'
+            }
+          }
+        end
+
         it 'contains all headers description in method doc' do
           headers = Apipie.get_method_description(UsersController, :action_with_headers).headers
           expect(headers).to be_an(Array)
 
           compare_hashes headers[0], expected_required_header
           compare_hashes headers[1], expected_optional_header
+          compare_hashes headers[2], expected_header_with_default
         end
       end
 

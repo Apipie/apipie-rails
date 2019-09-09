@@ -651,14 +651,15 @@ module Apipie
 
     def add_headers_from_hash(swagger_params_array, headers)
       swagger_headers = headers.map do |header|
-        {
+        header_hash = {
           name: header[:name],
           in: 'header',
           required: header[:options][:required],
           description: header[:description],
           type:  header[:options][:type] || 'string'
         }
-
+        header_hash[:default] = header[:options][:default] if header[:options][:default]
+        header_hash
       end
       swagger_params_array.push(*swagger_headers)
     end
