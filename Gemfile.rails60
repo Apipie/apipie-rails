@@ -10,3 +10,5 @@ gem 'rspec-core', git: 'https://github.com/rspec/rspec-core'
 gem 'rspec-mocks', git: 'https://github.com/rspec/rspec-mocks'
 gem 'rspec-support', git: 'https://github.com/rspec/rspec-support'
 gem 'rspec-expectations', git: 'https://github.com/rspec/rspec-expectations'
+
+gem 'test_engine', path: 'spec/dummy/components/test_engine', group: :test
