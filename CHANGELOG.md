@@ -1,6 +1,13 @@
  Changelog
 ===========
 
+[v0.5.17](https://github.com/Apipie/apipie-rails/tree/v0.5.17) (2020-01-20)
+--------
+
+[Full Changelog](https://github.com/Apipie/apipie-rails/compare/v0.5.16...v0.5.17)
+
+- Allows update metadata for methods [\#667](https://github.com/Apipie/apipie-rails/pull/667) ([speckins](https://github.com/speckins))
+
 [v0.5.16](https://github.com/Apipie/apipie-rails/tree/v0.5.16) (2019-05-22)
 --------
 
@@ -208,7 +215,7 @@ v0.3.2
 v0.3.1
 ------
 
-* Support for ``api!`` keyword in concerns 
+* Support for ``api!`` keyword in concerns
   [#322](https://github.com/Apipie/apipie-rails/pull/322) [@iNecas][]
 * More explicit ordering of the static dispatcher middleware
   [#315](https://github.com/Apipie/apipie-rails/pull/315) [@iNecas][]
