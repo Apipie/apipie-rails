@@ -1,6 +1,13 @@
  Changelog
 ===========
 
+[v0.5.17](https://github.com/Apipie/apipie-rails/tree/v0.5.18) (2020-05-20)
+--------
+
+[Full Changelog](https://github.com/Apipie/apipie-rails/compare/v0.5.17...v0.5.18)
+
+- Optional rdoc dependency with lazyload [\#683](https://github.com/Apipie/apipie-rails/pull/683) ([vkrizan](https://github.com/vkrizan))
+
 [v0.5.17](https://github.com/Apipie/apipie-rails/tree/v0.5.17) (2020-01-20)
 --------
 
