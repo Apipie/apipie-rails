@@ -21,7 +21,7 @@ class Apipie::Railtie
       ActionController::TestCase::Behavior.instance_eval do
         prepend Apipie::Extractor::Recorder::FunctionalTestRecording
       end
-    else
+    elsif Rails.env.test?
       ActionController::TestCase.send(:prepend, Apipie::Extractor::Recorder::FunctionalTestRecording)
       ActionController::TestCase::Behavior.send(:prepend, Apipie::Extractor::Recorder::FunctionalTestRecording)
     end
