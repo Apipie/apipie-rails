@@ -475,7 +475,14 @@ module Apipie
       end
 
       if swagger_def[:type] == "array"
-        swagger_def[:items] = {type: "string"}
+        array_of_validator_opts = param_desc.validator.param_description.options
+        items_type = array_of_validator_opts[:of].to_s || array_of_validator_opts[:array_of].to_s
+        if items_type == "Hash"
+          ref_name = "#{swagger_op_id_for_path(param_desc.method_description.apis.first.http_method, param_desc.method_description.apis.first.path)}_param_#{param_desc.name}"
+          swagger_def[:items] = {"$ref" => gen_referenced_block_from_params_array(ref_name, param_desc.validator.param_description.validator.params_ordered, allow_nulls)}
+        else
+          swagger_def[:items] = {type: "string"}
+        end
       end
 
       if swagger_def[:type] == "enum"
