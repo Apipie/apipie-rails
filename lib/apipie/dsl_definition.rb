@@ -262,7 +262,9 @@ module Apipie
               if Apipie.configuration.validate_key?
                 params.reject{|k,_| %w[format controller action].include?(k.to_s) }.each_pair do |param, _|
                   # params allowed
-                  raise UnknownParam.new(param) if method_params.select {|_,p| p.name.to_s == param.to_s}.empty?
+                  if method_params.select {|_,p| p.name.to_s == param.to_s}.empty?
+                    self.class._apipie_handle_validate_key_error params, param
+                  end
                 end
               end
 
@@ -287,6 +289,15 @@ module Apipie
             end
           end
 
+        end
+      end
+
+      def _apipie_handle_validate_key_error params, param
+        if Apipie.configuration.action_on_non_validated_keys == :raise
+          raise UnknownParam, param
+        elsif Apipie.configuration.action_on_non_validated_keys == :skip
+          params.delete(param)
+          Rails.logger.warn(UnknownParam.new(param).to_s)
         end
       end
 
