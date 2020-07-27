@@ -128,7 +128,7 @@ describe UsersController do
           before do
             Apipie.configuration.validate_value = false
             Apipie.configuration.validate_presence = true
-            Apipie.configuration.validate_key = false
+            Apipie.configuration.validate_key = true
             Apipie.configuration.action_on_non_validated_keys = :skip
           end
 
