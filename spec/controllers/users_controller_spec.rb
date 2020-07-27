@@ -128,7 +128,7 @@ describe UsersController do
           before do
             Apipie.configuration.validate_value = false
             Apipie.configuration.validate_presence = true
-            Apipie.configuration.validate_key = true
+            Apipie.configuration.validate_key = false
             Apipie.configuration.action_on_non_validated_keys = :skip
           end
 
@@ -137,8 +137,9 @@ describe UsersController do
             assert_response :success
           end
 
-          it "should not fail even if extra parameter is passed in" do
+          it "should delete the param and not fail if an extra parameter is passed." do
             expect { get :show, :params => { :id => 5 , :badparam => 'badfoo', :session => "secret_hash" }}.not_to raise_error
+            expect(controller.params.as_json).to eq({"session"=>"secret_hash", "id"=>"5", "controller"=>"users", "action"=>"show"})
           end
 
           after do
