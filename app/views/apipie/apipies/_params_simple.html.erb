@@ -7,7 +7,7 @@
     <li>
       <span>
         <b>
-          <a href="#<%= param[:full_name] %>" data-toggle="tooltip" data-placement="top" title="<%= param[:description] ? param[:description].html_safe : param[:name] %>">
+          <a href="#<%= param[:full_name] %>" data-toggle="tooltip" data-placement="top" title="<%= param[:description] ? param[:description] : param[:name] %>">
             <%= param[:name] %>
           </a>
         </b>
@@ -25,7 +25,7 @@
                 <span> { </span>
               <%- elsif param[:expected_type] == "array" %>
                     <span> [ </span>
-              <%- if param[:expected_type] == "array" && param[:params].blank? %>
+              <%- if param[:params].blank? %>
                     <%= param[:validator].html_safe %>
                 <span> ] </span>
                 <% end %>
