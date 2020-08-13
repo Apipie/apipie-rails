@@ -38,7 +38,7 @@ module Apipie
 
       @lang = lang
       @only_method = method_name
-      add_resources(resources)
+      add_resources(resources.sort.to_h)
 
       @swagger[:info]["x-computed-id"] = @computed_interface_id if Apipie.configuration.swagger_generate_x_computed_id_field?
       return @swagger
