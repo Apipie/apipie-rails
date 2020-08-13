@@ -38,6 +38,8 @@ module Apipie
 
       @lang = lang
       @only_method = method_name
+      # The resources hash is sorted to ensure output order is not dependent on module load order which could
+      # vary between environments.
       add_resources(resources.sort.to_h)
 
       @swagger[:info]["x-computed-id"] = @computed_interface_id if Apipie.configuration.swagger_generate_x_computed_id_field?
