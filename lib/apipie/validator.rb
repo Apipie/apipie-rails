@@ -333,6 +333,7 @@ module Apipie
         @params_ordered ||= _apipie_dsl_data[:params].map do |args|
           options = args.find { |arg| arg.is_a? Hash }
           options[:parent] = self.param_description
+          options[:param_group] = @param_group
           Apipie::ParamDescription.from_dsl_data(param_description.method_description, args)
         end
       end
