@@ -157,6 +157,7 @@ module Apipie
                :required => required,
                :allow_nil => allow_nil,
                :allow_blank => allow_blank,
+               :is_array => is_array,
                :validator => validator.to_s,
                :expected_type => validator.expected_type,
                :metadata => metadata,

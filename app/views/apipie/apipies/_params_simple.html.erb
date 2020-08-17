@@ -21,16 +21,15 @@
             <% if param[:validator].include? "one of" %>
               <%= param[:validator].html_safe %>
             <%- else %>
-              <%- if param[:expected_type] == "hash" %>
-                <span> { </span>
-              <%- elsif param[:expected_type] == "array" %>
-                    <span> [ </span>
+              <%- if param[:is_array] || param[:expected_type] == "array" %>
+                <span> [ </span>
               <%- if param[:params].blank? %>
-                    <%= param[:validator].html_safe %>
+                  <%= param[:expected_type] %>
                 <span> ] </span>
-                <% end %>
-              <%- else %>
-                <%= param[:expected_type].html_safe %>
+                <%- end %>
+              <%- end %>
+            <%- if param[:expected_type] == "hash" && !param[:is_array] %>
+                <span> { </span>
               <%- end %>
             <% end %>
         </span>
@@ -38,9 +37,10 @@
     </li>
     <% if param[:params].present? %>
       <%= render(:partial => "params_simple", :locals => {:params => param[:params]}) unless param[:params].blank? %>
-      <%- if param[:expected_type] == "hash" %>
+      <%- if param[:expected_type] == "hash" && !param[:is_array] %>
         <span> } </span>
-      <%- elsif param[:expected_type] == "array" %>
+      <%- end %>
+      <%- if param[:is_array] || param[:expected_type] == "array" %>
         <span> ] </span>
       <%- end %>
     <% end %>
