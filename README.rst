@@ -142,6 +142,9 @@ meta
 deprecated
   Boolean value indicating if the resource is marked as deprecated. (Default false)
 
+show
+  Resource is hidden from documentation when set to false (true by default)
+
 Example:
 ~~~~~~~~
 

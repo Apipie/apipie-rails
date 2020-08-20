@@ -106,6 +106,7 @@ module Apipie
 
     def add_resources(resources)
       resources.each do |resource_name, resource_defs|
+        next if !resource_defs._show
         add_resource_description(resource_name, resource_defs)
         add_resource_methods(resource_name, resource_defs)
       end
