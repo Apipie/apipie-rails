@@ -640,7 +640,12 @@ module Apipie
 
       if params_in_body? && body_allowed_for_current_method
         if params_in_body_use_reference?
-          swagger_schema_for_body = {"$ref" => gen_referenced_block_from_params_array("#{swagger_op_id_for_method(method)}_input", body_param_defs_array)}
+          referenced_block = gen_referenced_block_from_params_array("#{swagger_op_id_for_method(method)}_input", body_param_defs_array)
+          if referenced_block.present?
+            swagger_schema_for_body = {"$ref" => referenced_block}
+          else
+            swagger_schema_for_body = nil
+          end
         else
           swagger_schema_for_body = json_schema_obj_from_params_array(body_param_defs_array)
         end
