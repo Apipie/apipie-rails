@@ -23,13 +23,14 @@
             <%- else %>
               <%- if param[:is_array] || param[:expected_type] == "array" %>
                 <span> [ </span>
-              <%- if param[:params].blank? %>
-                  <%= param[:expected_type] %>
-                <span> ] </span>
-                <%- end %>
               <%- end %>
             <%- if param[:expected_type] == "hash" && !param[:is_array] %>
                 <span> { </span>
+              <%- elsif param[:params].blank? %>
+                  <%= param[:expected_type] %>
+              <%- if (param[:is_array] || param[:expected_type] == "array") %>
+                    <span> ] </span>
+                  <%- end %>
               <%- end %>
             <% end %>
         </span>
