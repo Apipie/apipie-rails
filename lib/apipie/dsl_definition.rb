@@ -84,6 +84,10 @@ module Apipie
         _apipie_dsl_data[:deprecated] = value
       end
 
+      def show(value)
+        _apipie_dsl_data[:show] = value
+      end
+
     end
 
     module Action

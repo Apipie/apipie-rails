@@ -15,7 +15,7 @@ module Apipie
 
     attr_reader :controller, :_short_description, :_full_description, :_methods, :_id,
       :_path, :_name, :_params_args, :_returns_args, :_tag_list_arg, :_errors_args,
-      :_formats, :_parent, :_metadata, :_headers, :_deprecated
+      :_formats, :_parent, :_metadata, :_headers, :_deprecated, :_show
 
     def initialize(controller, resource_name, dsl_data = nil, version = nil, &block)
 
@@ -29,6 +29,7 @@ module Apipie
       @_version = version || Apipie.configuration.default_version
       @_name = @_id.humanize
       @_parent = Apipie.get_resource_description(controller.superclass, version)
+      @_show = true
 
       update_from_dsl_data(dsl_data) if dsl_data
     end
@@ -47,6 +48,11 @@ module Apipie
       @_api_base_url = dsl_data[:api_base_url]
       @_headers = dsl_data[:headers]
       @_deprecated = dsl_data[:deprecated] || false
+      @_show = if dsl_data.has_key? :show
+        dsl_data[:show]
+      else
+        true
+      end
 
       if dsl_data[:app_info]
         Apipie.configuration.app_info[_version] = dsl_data[:app_info]
@@ -116,7 +122,8 @@ module Apipie
         :metadata => @_metadata,
         :methods => methods,
         :headers => _headers,
-        :deprecated => @_deprecated
+        :deprecated => @_deprecated,
+        :show => @_show
       }
     end
 
