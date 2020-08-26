@@ -18,10 +18,10 @@ module Apipie
     app.to_swagger_json(version, resource_name, method_name, lang, clear_warnings)
   end
 
-  def self.json_schema_for_method_response(controller_name, method_name, return_code, allow_nulls)
+  def self.json_schema_for_method_response(controller, method_name, return_code, allow_nulls)
     # note: this does not support versions (only the default version is queried)!
     version ||= Apipie.configuration.default_version
-    app.json_schema_for_method_response(version, controller_name, method_name, return_code, allow_nulls)
+    app.json_schema_for_method_response(version, controller, method_name, return_code, allow_nulls)
   end
 
   def self.json_schema_for_self_describing_class(cls, allow_nulls=true)

@@ -89,7 +89,7 @@ class ActionController::Base
     # this method is injected into ActionController::Base in order to
     # get access to the names of the current controller, current action, as well as to the response
     def schema_validation_errors_for_response
-      unprocessed_schema = Apipie::json_schema_for_method_response(controller_name, action_name, response.code, true)
+      unprocessed_schema = Apipie::json_schema_for_method_response(self.class, action_name, response.code, true)
 
       if unprocessed_schema.nil?
         err = "no schema defined for #{controller_name}##{action_name}[#{response.code}]"
