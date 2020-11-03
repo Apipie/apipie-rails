@@ -89,10 +89,11 @@ class ActionController::Base
     # this method is injected into ActionController::Base in order to
     # get access to the names of the current controller, current action, as well as to the response
     def schema_validation_errors_for_response
-      unprocessed_schema = Apipie::json_schema_for_method_response(controller_name, action_name, response.code, true)
+      resource_name = Apipie::app.get_resource_name(self.class)
+      unprocessed_schema = Apipie::json_schema_for_method_response(resource_name, action_name, response.code, true)
 
       if unprocessed_schema.nil?
-        err = "no schema defined for #{controller_name}##{action_name}[#{response.code}]"
+        err = "no schema defined for #{resource_name}##{action_name}[#{response.code}]"
         return [nil, [err], RuntimeError.new(err)]
       end
 
@@ -100,7 +101,7 @@ class ActionController::Base
 
       error_list = JSON::Validator.fully_validate(schema, response.body, :strict => false, :version => :draft4, :json => true)
 
-      error_object = Apipie::ResponseDoesNotMatchSwaggerSchema.new(controller_name, action_name, response.code, error_list, schema, response.body)
+      error_object = Apipie::ResponseDoesNotMatchSwaggerSchema.new(resource_name, action_name, response.code, error_list, schema, response.body)
 
       [schema, error_list, error_object]
     rescue Apipie::NoDocumentedMethod
