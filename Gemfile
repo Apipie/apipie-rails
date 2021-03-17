@@ -1,1 +1,1 @@
-Gemfile.rails50
+Gemfile.rails60
