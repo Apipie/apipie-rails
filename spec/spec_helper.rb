@@ -13,7 +13,13 @@ require 'test_engine'
 module Rails4Compatibility
   module Testing
     def process(*args)
-      compatible_request(*args) { |*new_args| super(*new_args) }
+      compatible_request(*args) do |*new_args|
+        if Gem::Version.new(RUBY_VERSION) < Gem::Version.new('3.0.0')
+          super(*new_args)
+        else
+          super(new_args[0], **new_args[1])
+        end
+      end
     end
 
     def compatible_request(method, action, hash = {})
