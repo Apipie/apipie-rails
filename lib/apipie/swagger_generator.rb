@@ -73,7 +73,8 @@ module Apipie
           consumes: [],
           paths: {},
           definitions: {},
-          tags: [],
+          schemes: Apipie.configuration.swagger_schemes,
+          tags: []
       }
 
       if Apipie.configuration.swagger_api_host

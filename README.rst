@@ -1653,6 +1653,11 @@ There are several configuration parameters that determine the structure of the g
 
     If ``true``:  the ``additional-properties: false`` field will not be included in response object descriptions
 
+``config.swagger_schemes``
+    An array of transport schemes that the API supports.
+    This can include any combination of ``http``, ``https``, ``ws`` and ``wss``.
+    By default to encourage good security practices, ``['https']`` is specified.
+
 
 Known limitations of the current implementation
 -------------------------------------------------
