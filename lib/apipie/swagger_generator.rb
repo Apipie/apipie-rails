@@ -74,6 +74,8 @@ module Apipie
           paths: {},
           definitions: {},
           tags: [],
+          securityDefinitions: Apipie.configuration.swagger_security_definitions,
+          security: Apipie.configuration.swagger_global_security
       }
 
       if Apipie.configuration.swagger_api_host

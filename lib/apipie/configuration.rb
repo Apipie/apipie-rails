@@ -11,7 +11,8 @@ module Apipie
       :persist_show_in_doc, :authorize,
       :swagger_include_warning_tags, :swagger_content_type_input, :swagger_json_input_uses_refs,
       :swagger_suppress_warnings, :swagger_api_host, :swagger_generate_x_computed_id_field,
-      :swagger_allow_additional_properties_in_response, :swagger_responses_use_refs
+      :swagger_allow_additional_properties_in_response, :swagger_responses_use_refs,
+      :swagger_security_definitions, :swagger_global_security
 
     alias_method :validate?, :validate
     alias_method :required_by_default?, :required_by_default
@@ -181,6 +182,8 @@ module Apipie
       @swagger_generate_x_computed_id_field = false
       @swagger_allow_additional_properties_in_response = false
       @swagger_responses_use_refs = true
+      @swagger_security_definitions = {}
+      @swagger_global_security = []
     end
   end
 end
