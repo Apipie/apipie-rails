@@ -1,0 +1,9 @@
+source "https://rubygems.org"
+
+gemspec
+
+gem 'rails', '~> 6.1'
+gem 'rails-controller-testing'
+gem 'rspec-rails', '~> 5.0'
+
+gem 'test_engine', path: 'spec/dummy/components/test_engine', group: :test

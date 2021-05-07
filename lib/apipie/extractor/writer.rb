@@ -13,9 +13,9 @@ module Apipie
           yield updater
           updater.write!
         rescue ActionDescriptionUpdater::ControllerNotFound
-          logger.warn("REST_API: Couldn't find controller file for #{controller}")
+          Rails.logger.warn("REST_API: Couldn't find controller file for #{controller}")
         rescue ActionDescriptionUpdater::ActionNotFound
-          logger.warn("REST_API: Couldn't find action #{action} in #{controller}")
+          Rails.logger.warn("REST_API: Couldn't find action #{action} in #{controller}")
         end
 
         def write_recorded_examples(examples)
@@ -82,7 +82,7 @@ module Apipie
         descriptions = @collector.finalize_descriptions
         descriptions.each do |_, desc|
           if desc[:api].empty?
-            logger.warn("REST_API: Couldn't find any path for #{desc_to_s(desc)}")
+            Rails.logger.warn("REST_API: Couldn't find any path for #{desc_to_s(desc)}")
             next
           end
           self.class.update_action_description(desc[:controller], desc[:action]) do |u|
