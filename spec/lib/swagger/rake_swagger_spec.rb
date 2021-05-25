@@ -24,7 +24,7 @@ describe 'rake tasks' do
     end
 
     let(:swagger_schema) do
-      File.read(File.join(File.dirname(__FILE__),"openapi_2_0_schema.json"))
+      File.read(File.join(File.dirname(__FILE__), 'openapi_3_0_schema.json'))
     end
 
     let(:apidoc_swagger_json) do
@@ -45,10 +45,10 @@ describe 'rake tasks' do
     end
 
 
-    def expect_param_def(http_method, path, param_name, field, value)
+    def expect_param_def(http_method, path, param_name, field_path, value)
       params = apidoc_swagger["paths"][path][http_method]["parameters"]
-      param = params.select {|p| p if p["name"]==param_name}[0]
-      expect(param[field]).to eq(value)
+      param = params.select { |p| p if p["name"] == param_name }[0]
+      expect(param&.dig(*Array.wrap(field_path))).to eq(value)
     end
 
     def expect_tags_def(http_method, path, value)
@@ -57,8 +57,8 @@ describe 'rake tasks' do
     end
 
     def body_param_def(http_method, path, param_name)
-      params = apidoc_swagger["paths"][path][http_method]["parameters"]
-      body = params.select {|p| p if p["name"]=="body"}[0]
+      request_body = apidoc_swagger.dig("paths", path, http_method, "requestBody", "content")
+      body = request_body.values.first
       schema_properties = body["schema"]["properties"]
       # print JSON.pretty_generate(schema_properties)
       param = (schema_properties.select {|k,v| v if k == param_name })[param_name]
@@ -90,8 +90,8 @@ describe 'rake tasks' do
         expect(user["properties"]["name"]["type"]).to eq("string")
 
         expect_param_def("get", "/users/by_department", "department", "in", "query")
-        expect_param_def("get", "/users/by_department", "department", "enum",
-                         ["finance", "operations", "sales", "marketing", "HR"])
+        expect_param_def("get", "/users/by_department", "department", %w[schema enum],
+                         %w[finance operations sales marketing HR])
 
         expect_tags_def("get", "/twitter_example/{id}/followers", %w[twitter_example following index search])
       end
@@ -114,10 +114,11 @@ describe 'rake tasks' do
       it "includes expected values in the generated swagger file" do
         expect_param_def("get", "/twitter_example/{id}", "screen_name", "in", "query")
         expect_param_def("put", "/users/{id}", "id", "in", "path")
-        expect_param_def("put", "/users/{id}", "oauth", "in", "formData")
         expect_param_def("get", "/users/by_department", "department", "in", "query")
-        expect_param_def("get", "/users/by_department", "department", "enum",
-                         ["finance", "operations", "sales", "marketing", "HR"])
+        expect_param_def("get", "/users/by_department", "department", %w[schema enum],
+                         %w[finance operations sales marketing HR])
+
+        expect_body_param_def("put", "/users/{id}", "oauth", "type", "string")
 
         expect_tags_def("get", "/twitter_example/{id}/followers", %w[twitter_example following index search])
 
