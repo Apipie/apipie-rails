@@ -111,6 +111,11 @@ describe Apipie::ParamDescription do
       expect(param.validator).to eq(:validator_instance)
     end
 
+    it "should not allow proc validators on response_only params" do
+      expect { Apipie::ParamDescription.new(method_desc, :param, lambda { |val|
+        true
+      }, :only_in => :response) }.to raise_error(RuntimeError, /Proc validators not supported.*/)
+    end
   end
 
   describe "concern substitution" do

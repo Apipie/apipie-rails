@@ -91,6 +91,7 @@ module Apipie
           raise "an ':array_of =>' validator is allowed exclusively on response-only fields" unless @response_only
         end
         @validator = Validator::BaseValidator.find(self, validator, @options, block)
+        raise "Proc validators not supported on param #{method_description.id}:#{name}" if (@validator.is_a? Validator::ProcValidator) && @response_only
         raise "Validator for #{validator} not found." unless @validator
       end
 
