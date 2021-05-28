@@ -105,6 +105,15 @@ module Apipie
       @response_object.additional_properties ||= options[:additional_properties]
     end
 
+    def response_name
+      suffix = if @code == 200
+                 'response'
+               else
+                 "#{@code}_response"
+               end
+      "#{@method_description.method}_#{@method_description.resource._name}_#{suffix}"
+    end
+
     def param_description
       nil
     end
