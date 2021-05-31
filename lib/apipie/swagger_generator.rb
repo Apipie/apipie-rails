@@ -498,7 +498,7 @@ module Apipie
       end
 
       if swagger_def[:type] == 'object'  # we only get here if there is no specification of properties for this object
-        swagger_def[:additionalProperties] = true
+        swagger_def[:additionalProperties] = {}
         warn_hash_without_internal_typespec(param_desc.name)
       end
 
