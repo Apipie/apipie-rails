@@ -517,6 +517,9 @@ module Apipie
         swagger_def = { **swagger_def.slice(:name, :description), schema: swagger_def.except(:name, :description) }
         swagger_def[:in] = param_desc.options.fetch(:in, @default_value_for_param_in)
         swagger_def[:required] = param_desc.required if param_desc.required
+        # This option maintains the default behaviour from v2 schemas where array params are encoded as ?foo=1,2,3
+        # instead of ?foo=1&foo=2&foo=3
+        swagger_def[:explode] = false if swagger_def[:schema][:type] == 'array'
       end
 
       save_field(swagger_def, :description, param_desc.options, :desc, true) unless param_desc.options[:desc].nil?
