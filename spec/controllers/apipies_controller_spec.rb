@@ -134,14 +134,14 @@ describe Apipie::ApipiesController do
   describe "GET index as swagger" do
 
     let(:swagger_schema) do
-      File.read(File.join(File.dirname(__FILE__),"../lib/swagger/openapi_2_0_schema.json"))
+      File.read(File.join(File.dirname(__FILE__),"../lib/swagger/openapi_3_0_schema.json"))
     end
 
     it "outputs swagger when format is json and type is swagger" do
       get :index, :params => { :format => "json", :type => "swagger"}
 
       assert_response :success
-      expect(response.body).to match(/"swagger":"2.0"/)
+      expect(response.body).to match(/"openapi":"3.0.3"/)
       # puts response.body
 
       expect(JSON::Validator.validate(swagger_schema, response.body)).to be_truthy
@@ -151,14 +151,14 @@ describe Apipie::ApipiesController do
       get :index, :params => { :type => "swagger"}
 
       assert_response :success
-      expect(response.body).not_to match(/"swagger":"2.0"/)
+      expect(response.body).not_to match(/"openapi":"3.0.3"/)
     end
 
     it "does not output swagger when format is json even but type is not swagger" do
       get :index, :params => { :format => "json"}
 
       assert_response :success
-      expect(response.body).not_to match(/"swagger":"2.0"/)
+      expect(response.body).not_to match(/"openapi":"3.0.3"/)
     end
   end
 

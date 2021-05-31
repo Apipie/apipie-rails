@@ -5,7 +5,7 @@ require 'rspec/expectations'
 describe "Swagger Responses" do
   let(:desc) { Apipie.get_resource_description(controller_class, Apipie.configuration.default_version) }
 
-  let(:swagger) {
+  let(:openapi_schema) {
     Apipie.configuration.swagger_suppress_warnings = true
     Apipie.to_swagger_json(Apipie.configuration.default_version, controller_class.to_s.underscore.sub("_controller", ""))
   }
@@ -13,8 +13,8 @@ describe "Swagger Responses" do
   let(:controller_class ) { described_class }
 
   def get_ref(ref)
-    name = ref.split('#/definitions/')[1].to_sym
-    swagger[:definitions][name]
+    name = ref.split('#/components/schemas/')[1].to_sym
+    openapi_schema[:components][:schemas][name]
   end
 
   def resolve_refs(schema)
@@ -25,13 +25,19 @@ describe "Swagger Responses" do
   end
 
   def swagger_response_for(path, code=200, method='get')
-    response = swagger[:paths][path][method][:responses][code]
-    response[:schema] = resolve_refs(response[:schema])
-    response
+    response = openapi_schema[:paths][path][method][:responses][code]
+    response[:content].transform_values do |r|
+      r[:schema] = resolve_refs(r[:schema])
+      r
+    end
+    {
+      **response.slice(:description, :headers),
+      **response[:content].values.first
+    }
   end
 
   def swagger_params_for(path, method='get')
-    swagger[:paths][path][method][:parameters]
+    openapi_schema[:paths][path][method][:parameters]
   end
 
   def swagger_param_by_name(param_name, path, method='get')
@@ -288,13 +294,13 @@ describe "Swagger Responses" do
 
       it "creates a swagger definition with all input parameters" do
         # a parameter defined for this method
-        expect(swagger_param_by_name(:pet_id, '/pets/pet_by_id')[:type]).to eq('number')
+        expect(swagger_param_by_name(:pet_id, '/pets/pet_by_id')[:schema][:type]).to eq('number')
 
         # a parameter defined for the resource
-        expect(swagger_param_by_name(:common_param, '/pets/pet_by_id')[:type]).to eq('number')
+        expect(swagger_param_by_name(:common_param, '/pets/pet_by_id')[:schema][:type]).to eq('number')
 
         # a parameter defined in the controller's superclass
-        expect(swagger_param_by_name(:oauth, '/pets/pet_by_id')[:type]).to eq('string')
+        expect(swagger_param_by_name(:oauth, '/pets/pet_by_id')[:schema][:type]).to eq('string')
       end
 
     end
