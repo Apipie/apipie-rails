@@ -43,13 +43,11 @@ module Apipie
       @openapi_schema
     end
 
-
     #--------------------------------------------------------------------------
     # Initialization
     #--------------------------------------------------------------------------
 
     def init_swagger_vars(version, lang, clear_warnings = false)
-
       # docs = {
       #     :name => Apipie.configuration.app_name,
       #     :info => Apipie.app_info(version, lang),
@@ -58,7 +56,6 @@ module Apipie
       #     :api_url => Apipie.api_base_url(version),
       #     :resources => _resources
       # }
-
 
       @openapi_schema = {
         openapi: '3.0.3',
@@ -113,7 +110,6 @@ module Apipie
       end
     end
 
-
     #--------------------------------------------------------------------------
     # Logging, debugging and regression-testing utilities
     #--------------------------------------------------------------------------
@@ -124,16 +120,23 @@ module Apipie
       method.resource.controller.name + '#' + method.method
     end
 
-
     def warn_missing_method_summary() warn 100, 'missing short description for method'; end
-    def warn_added_missing_slash(path) warn 101,"added missing / at beginning of path: #{path}"; end
-    def warn_no_return_codes_specified()  warn 102,"no return codes ('errors') specified"; end
-    def warn_hash_without_internal_typespec(param_name)  warn 103,"the parameter :#{param_name} is a generic Hash without an internal type specification"; end
+
+    def warn_added_missing_slash(path) warn 101, "added missing / at beginning of path: #{path}"; end
+
+    def warn_no_return_codes_specified() warn 102, "no return codes ('errors') specified"; end
+
+    def warn_hash_without_internal_typespec(param_name) warn 103, "the parameter :#{param_name} is a generic Hash without an internal type specification"; end
+
     def warn_optional_param_in_path(param_name) warn 104, "the parameter :#{param_name} is 'in-path'.  Ignoring 'not required' in DSL"; end
-    def warn_optional_without_default_value(param_name) warn 105,"the parameter :#{param_name} is optional but default value is not specified (use :default_value => ...)"; end
-    def warn_param_ignored_in_form_data(param_name) warn 106,"ignoring param :#{param_name} -- cannot include Hash without fields in a formData specification"; end
-    def warn_path_parameter_not_described(name,path) warn 107,"the parameter :#{name} appears in the path #{path} but is not described"; end
-    def warn_inferring_boolean(name) warn 108,"the parameter [#{name}] is Enum with [true,false] values. Inferring 'boolean'"; end
+
+    def warn_optional_without_default_value(param_name) warn 105, "the parameter :#{param_name} is optional but default value is not specified (use :default_value => ...)"; end
+
+    def warn_param_ignored_in_form_data(param_name) warn 106, "ignoring param :#{param_name} -- cannot include Hash without fields in a formData specification"; end
+
+    def warn_path_parameter_not_described(name, path) warn 107, "the parameter :#{name} appears in the path #{path} but is not described"; end
+
+    def warn_inferring_boolean(name) warn 108, "the parameter [#{name}] is Enum with [true,false] values. Inferring 'boolean'"; end
 
     def warn(warning_num, msg)
       suppress = Apipie.configuration.swagger_suppress_warnings
@@ -156,7 +159,6 @@ module Apipie
     def info(msg)
       print "--- INFO: [#{ruby_name_for_method(@current_method)}] -- #{msg}\n"
     end
-
 
     # the @computed_interface_id is a number that is uniquely derived from the list of operations
     # added to the swagger definition (in an order-dependent way).
@@ -194,7 +196,6 @@ module Apipie
     #--------------------------------------------------------------------------
 
     def add_ruby_method(paths, ruby_method)
-
       if @only_method
         return unless ruby_method.method == @only_method
       else
@@ -278,7 +279,7 @@ module Apipie
     def swagger_op_id_for_path(http_method, path)
       # using lowercase http method, because the 'swagger-codegen' tool outputs
       # strange method names if the http method is in uppercase
-      http_method.downcase + path.gsub(/\//,'_').gsub(/:(\w+)/, '\1').gsub(/_$/,'')
+      http_method.downcase + path.gsub(/\//, '_').gsub(/:(\w+)/, '\1').gsub(/_$/, '')
     end
 
     class SwaggerTypeWithFormat
@@ -312,13 +313,13 @@ module Apipie
         string: SwaggerTypeWithFormat.new('string', nil),  # here just for completeness
         byte: SwaggerTypeWithFormat.new('string', 'byte'),
         binary: SwaggerTypeWithFormat.new('string', 'binary'),
-        boolean: SwaggerTypeWithFormat.new('boolean', nil),  # here just for completeness
+        boolean: SwaggerTypeWithFormat.new('boolean', nil), # here just for completeness
         date: SwaggerTypeWithFormat.new('string', 'date'),
         dateTime: SwaggerTypeWithFormat.new('string', 'date-time'),
         password: SwaggerTypeWithFormat.new('string', 'password'),
+        oneOf: SwaggerTypeWithFormat.new('oneOf', nil)
       }
     end
-
 
     def swagger_param_type(param_desc)
       raise 'problem' if param_desc.nil?
@@ -337,9 +338,9 @@ module Apipie
         # pp v
       end
 
-      lookup[v.expected_type.to_sym] || v.expected_type
+      lookup_type = v.respond_to?(:swagger_type) ? v.swagger_type : v.expected_type
+      lookup[lookup_type.to_sym] || lookup_type
     end
-
 
     #--------------------------------------------------------------------------
     # Responses
@@ -362,7 +363,7 @@ module Apipie
       response_schema(adapter, allow_nulls)
     end
 
-    def response_schema(response, allow_nulls=false)
+    def response_schema(response, allow_nulls = false)
       begin
         # no need to warn about "missing default value for optional param" when processing response definitions
         prev_value = @disable_default_value_warning
@@ -379,7 +380,6 @@ module Apipie
                                                      allow_nulls: allow_nulls,
                                                      title: response.response_name)
                  end
-
       ensure
         @disable_default_value_warning = prev_value
       end
@@ -429,8 +429,6 @@ module Apipie
       result
     end
 
-
-
     #--------------------------------------------------------------------------
     # Auto-insertion of parameters that are implicitly defined in the path
     #--------------------------------------------------------------------------
@@ -477,29 +475,68 @@ module Apipie
         swagger_def[:format] = swg_param_type.str_format
       end
 
-      if swagger_def[:type] == 'array'
+      case swagger_def[:type]
+      when 'array'
         array_of_validator_opts = param_desc.validator.param_description.options
         items_type = array_of_validator_opts[:of] || array_of_validator_opts[:array_of]
-        if items_type == Hash
-          ref_name = "#{swagger_op_id_for_path(param_desc.method_description.apis.first.http_method, param_desc.method_description.apis.first.path)}_param_#{param_desc.name}"
-          swagger_def[:items] = { '$ref' => gen_referenced_block_from_params_array(ref_name, param_desc.validator.param_description.validator.params_ordered, allow_nulls) }
-        elsif items_type == Integer
-          swagger_def[:items] = { type: 'integer' }
-        elsif items_type == Float
-          swagger_def[:items] = { type: 'number' }
-        else
-          swagger_def[:items] = { type: 'string' }
-        end
-      end
+        swagger_def[:items] = if items_type == Hash
+                                {
+                                  '$ref' => gen_referenced_block_from_params_array(
+                                    ref_name_from_param_desc(param_desc),
+                                    param_desc.validator.param_description.validator.params_ordered,
+                                    allow_nulls
+                                  )
+                                }
+                              elsif param_desc.validator.respond_to?(:items_validator) && param_desc.validator.items_validator
+                                items_validator = param_desc.validator.items_validator
+                                swagger_atomic_param(items_validator.param_description, true, nil, allow_nulls)
+                              else
+                                { type: 'string' }
+                              end
 
-      if swagger_def[:type] == 'enum'
+      when 'enum'
         swagger_def[:type] = 'string'
         swagger_def[:enum] = param_desc.validator.values
-      end
 
-      if swagger_def[:type] == 'object'  # we only get here if there is no specification of properties for this object
+      when 'oneOf'
+        swagger_def.delete(:type)
+        discriminator_mapping = {}
+
+        swagger_def[:oneOf] = param_desc.validator.params_ordered.map.with_index do |param, ind|
+          unless swagger_param_type(param) == 'object' && param.validator.params_ordered
+            next swagger_atomic_param(param, true, nil, allow_nulls)
+          end
+
+          ref_path = gen_referenced_block_from_params_array(
+            ref_name_from_param_desc(param, ind),
+            param.validator.params_ordered,
+            allow_nulls
+          )
+
+          discriminator_mapping[param.options[:discriminator]] = ref_path if param.options[:discriminator].present?
+
+          {
+            '$ref' => ref_path
+          }
+        end
+
+        if param_desc.options[:discriminator_property].present?
+          swagger_def[:discriminator] = {
+            propertyName: param_desc.options[:discriminator_property],
+            mapping: discriminator_mapping
+          }
+        end
+
+        ref_name = ref_name_from_param_desc(param_desc)
+        swagger_def = {
+          **swagger_def.slice(:name, :description),
+          '$ref' => put_schema_reference(ref_name, swagger_def.except(:name, :description))
+        }
+
+      when 'object' # we only get here if there is no specification of properties for this object
         swagger_def[:additionalProperties] = {}
         warn_hash_without_internal_typespec(param_desc.name)
+
       end
 
       if param_desc.is_array?
@@ -537,7 +574,7 @@ module Apipie
       swagger_def
     end
 
-    def save_field(entry, openapi_key, v, apipie_key=openapi_key, translate = false)
+    def save_field(entry, openapi_key, v, apipie_key = openapi_key, translate = false)
       return unless v.key?(apipie_key)
 
       entry[openapi_key] = if translate
@@ -555,6 +592,16 @@ module Apipie
       "#/components/schemas/#{name}"
     end
 
+    def ref_name_from_param_desc(param_desc, name_fallback = '')
+      op_id = swagger_op_id_for_path(param_desc.method_description.apis.first.http_method,
+                                     param_desc.method_description.apis.first.path)
+      "#{op_id}_param_#{param_desc.name || name_fallback}"
+    end
+
+    def put_schema_reference(name, schema_obj)
+      @schemas[name.to_sym] = schema_obj unless @schemas.key(name.to_sym)
+      ref_to(name.to_sym)
+    end
 
     def json_schema_obj_from_params_array(params_array, allow_nulls: false, title: nil)
       (param_defs, required_params) = json_schema_param_defs_from_params_array(params_array,
@@ -578,8 +625,7 @@ module Apipie
       schema_obj = json_schema_obj_from_params_array(params_array, allow_nulls: allow_nulls, title: name)
       return nil if schema_obj.nil?
 
-      @schemas[name.to_sym] = schema_obj
-      ref_to(name.to_sym)
+      put_schema_reference(name, schema_obj)
     end
 
     def json_schema_param_defs_from_params_array(params_array, allow_nulls: false, title_prefix: nil)
@@ -634,8 +680,6 @@ module Apipie
       [param_defs, required_params]
     end
 
-
-
     #--------------------------------------------------------------------------
     # swagger "Params" block generation
     #--------------------------------------------------------------------------
@@ -685,7 +729,7 @@ module Apipie
         path_param_names.include?(k)
       end.map(&:to_h)
 
-      path_param_defs_hash.each{ |_, desc| desc.required = true }
+      path_param_defs_hash.each { |_, desc| desc.required = true }
       add_params_from_hash(swagger_result, path_param_defs_hash, nil, 'path')
 
       add_params_from_hash(swagger_result, body_param_defs_hash) unless body_allowed_for_current_method

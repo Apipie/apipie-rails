@@ -1317,6 +1317,27 @@ description of nested values.
    end
 
 
+OneOfValidator
+-------------
+
+// TODO: More info here
+
+.. code:: ruby
+
+   param :pet, :one_of, :desc => "Pet info" do
+     # Param names do not have an effect on validation functionality, but they are included in
+     # OpenAPI schema output
+     param :dog, Hash do
+       param :type, ["dog"], required: true
+       param :barks, :boolean, required: true
+     end
+     param :cat, Hash do
+       param :type, ["cat"], required: true
+       param :meows, :boolean, required: true
+     end
+   end
+
+
 
 Adding custom validator
 -----------------------

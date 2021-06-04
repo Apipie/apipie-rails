@@ -1,12 +1,8 @@
-# -*- coding: utf-8 -*-
 module Apipie
-
   module Validator
-
     # to create new validator, inherit from Apipie::Validator::Base
     # and implement class method build and instance method validate
     class BaseValidator
-
       attr_accessor :param_description
 
       def initialize(param_description)
@@ -80,6 +76,10 @@ module Apipie
         'string'
       end
 
+      def swagger_type
+        expected_type
+      end
+
       def merge_with(other_validator)
         return self if self == other_validator
         raise NotImplementedError, "Don't know how to merge #{self.inspect} with #{other_validator.inspect}"
@@ -135,6 +135,16 @@ module Apipie
           'string'
         end
       end
+
+      def swagger_type
+        # We override expected_type here so that Integer fields
+        # are properly typed in the OpenAPI generator
+        if @type.ancestors.include? Integer
+          'long'
+        else
+          expected_type
+        end
+      end
     end
 
     # validate arguments value with regular expression
@@ -185,15 +195,29 @@ module Apipie
 
     # arguments value must be an array
     class ArrayValidator < Apipie::Validator::BaseValidator
-      def initialize(param_description, argument, options={})
+      ITEMS_OPTIONS_EXCLUDE = %i[of array_of desc].freeze
+
+      attr_reader :items_validator
+
+      def initialize(param_description, argument, options = {})
         super(param_description)
         @type = argument
         @items_type = options[:of]
         @items_enum = options[:in]
+
+        items_param_description = Apipie::ParamDescription.new(
+          param_description.method_description,
+          param_description.name,
+          @items_type,
+          nil,
+          options.reject { |k, _| ITEMS_OPTIONS_EXCLUDE.include?(k) }
+        )
+        @items_validator = items_param_description.validator
       end
 
       def validate(values)
         return false unless process_value(values).respond_to?(:each) && !process_value(values).is_a?(String)
+
         process_value(values).all? { |v| validate_item(v)}
       end
 
@@ -206,13 +230,13 @@ module Apipie
       end
 
       def expected_type
-        "array"
+        'array'
       end
 
       def self.build(param_description, argument, options, block)
-        if argument == Array && !block.is_a?(Proc)
-          self.new(param_description, argument, options)
-        end
+        return unless argument == Array && !block.is_a?(Proc)
+
+        new(param_description, argument, options)
       end
 
       private
@@ -231,12 +255,10 @@ module Apipie
 
       def has_valid_type?(value)
         if @items_type
-          item_validator = BaseValidator.find('', @items_type, nil, nil)
-
-          if item_validator
-            item_validator.valid?(value)
+          if @items_validator.is_a?(BaseValidator)
+            @items_validator.valid?(value)
           else
-            value.kind_of?(@items_type)
+            value.is_a?(@items_type)
           end
         else
           true
@@ -363,7 +385,7 @@ module Apipie
       end
 
       def description
-        "Must be a Hash"
+        'Must be a Hash'
       end
 
       def expected_type
@@ -395,7 +417,6 @@ module Apipie
 
     # special type of validator: we say that it's not specified
     class UndefValidator < BaseValidator
-
       def validate(value)
         true
       end
@@ -412,19 +433,18 @@ module Apipie
     end
 
     class DecimalValidator < BaseValidator
-
       def validate(value)
         self.class.validate(value)
       end
 
       def self.build(param_description, argument, options, block)
-        if argument == :decimal
-          self.new(param_description)
-        end
+        return unless argument == :decimal
+
+        new(param_description)
       end
 
       def description
-        "Must be a decimal number."
+        'Must be a decimal number.'
       end
 
       def expected_type
@@ -437,19 +457,18 @@ module Apipie
     end
 
     class NumberValidator < BaseValidator
-
       def validate(value)
         self.class.validate(value)
       end
 
       def self.build(param_description, argument, options, block)
-        if argument == :number
-          self.new(param_description)
-        end
+        return unless argument == :number
+
+        new(param_description)
       end
 
       def description
-        "Must be a number."
+        'Must be a number.'
       end
 
       def expected_type
@@ -462,15 +481,14 @@ module Apipie
     end
 
     class BooleanValidator < BaseValidator
-
       def validate(value)
         %w[true false 1 0].include?(value.to_s)
       end
 
-      def self.build(param_description, argument, options, block)
-        if argument == :bool || argument == :boolean
-          self.new(param_description)
-        end
+      def self.build(param_description, argument, _options, _block)
+        return unless %i[bool boolean].include?(argument)
+
+        new(param_description)
       end
 
       def expected_type
@@ -478,41 +496,53 @@ module Apipie
       end
 
       def description
-        string = %w(true false 1 0).map { |value| format_description_value(value) }.join(', ')
+        string = %w[true false 1 0].map { |value| format_description_value(value) }.join(', ')
         "Must be one of: #{string}."
       end
     end
 
     class NestedValidator < BaseValidator
+      ITEMS_OPTIONS_EXCLUDE = %i[of array_of desc].freeze
 
-      def initialize(param_description, argument, param_group)
+      def initialize(param_description, items_argument, options, block)
         super(param_description)
-        @validator = Apipie::Validator:: HashValidator.new(param_description, argument, param_group)
-        @type = argument
+
+        items_param_description = Apipie::ParamDescription.new(
+          param_description.method_description,
+          param_description.name,
+          items_argument,
+          nil,
+          options.reject { |k, _| ITEMS_OPTIONS_EXCLUDE.include?(k) },
+          &block
+        )
+        @validator = items_param_description.validator
+        @type = Array
       end
 
       def validate(value)
         value ||= [] # Rails convert empty array to nil
         return false if value.class != Array
-        value.each do |child|
-          return false unless @validator.validate(child)
+
+        value.all? do |child|
+          @validator.validate(child)
         end
-        true
       end
 
       def process_value(value)
         value ||= [] # Rails convert empty array to nil
-        @values = []
-        value.each do |child|
-          @values << @validator.process_value(child)
+        value.map do |child|
+          @validator.process_value(child)
         end
-        @values
       end
 
       def self.build(param_description, argument, options, block)
         # in Ruby 1.8.x the arity on block without args is -1
         # while in Ruby 1.9+ it is 0
-        self.new(param_description, block, options[:param_group]) if block.is_a?(Proc) && block.arity <= 0 && argument == Array
+        return unless argument == Array && block.is_a?(Proc) && block.arity <= 0
+
+        items_argument = options.fetch(:of, Hash)
+
+        new(param_description, items_argument, options, block)
       end
 
       def expected_type
@@ -520,13 +550,16 @@ module Apipie
       end
 
       def description
-        "Must be an Array of nested elements"
+        'Must be an Array of nested elements'
       end
 
       def params_ordered
         @validator.params_ordered
       end
-    end
 
+      def items_validator
+        @validator
+      end
+    end
   end
 end
