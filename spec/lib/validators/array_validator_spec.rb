@@ -3,7 +3,10 @@ require 'spec_helper'
 module Apipie::Validator
   describe ArrayValidator do
 
-    let(:param_desc) { double(:param_desc) }
+    let(:dsl_data) { ActionController::Base.send(:_apipie_dsl_data_init) }
+    let(:resource_desc) { Apipie::ResourceDescription.new(UsersController, 'users') }
+    let(:method_desc) { Apipie::MethodDescription.new(:show, resource_desc, dsl_data) }
+    let(:param_desc) { Apipie::ParamDescription.new(method_desc, :param, nil) }
 
     context "with no constraint" do
       let(:validator) { ArrayValidator.new(param_desc, Array) }
