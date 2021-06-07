@@ -52,10 +52,6 @@ module Apipie
         end
       end
 
-      def expected_type
-        'array'
-      end
-
       def swagger_type
         @type
       end
@@ -64,7 +60,7 @@ module Apipie
 
       def valid_param_for(value)
         error = nil
-        result = params_ordered.find do |param|
+        result = params_ordered.select do |param|
           begin
             param.validator.validate(value)
           rescue Apipie::ParamError => e
@@ -73,7 +69,9 @@ module Apipie
           end
         end
 
-        return result unless result.nil?
+        raise Apipie::ParamInvalid.new(param_name, value, 'Matched multiple validators') if result.size > 1
+        return result.first unless result.empty?
+
         raise error unless error.nil?
 
         nil

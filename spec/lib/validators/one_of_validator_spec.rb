@@ -54,14 +54,12 @@ describe Apipie::Validator::OneOfValidator do
     validator = described_class.new(param_desc, lambda {
       param nil, ['foo', 10]
       param nil, [20, 'bar']
-      param nil, Integer
     })
     expect(validator.validate('foo')).to be true
     expect(validator.validate(10)).to be true
     expect(validator.validate(20)).to be true
     expect(validator.validate('bar')).to be true
     expect(validator.validate('something else')).to be false
-    expect(validator.validate(300)).to be true
   end
 
   it 'accepts arguments for validators' do
@@ -124,5 +122,23 @@ describe Apipie::Validator::OneOfValidator do
     expect { validator.validate({ str: 20, int: 20 }) }.to raise_error Apipie::ParamError
     expect { validator.validate({ id: 20 }) }.to raise_error Apipie::ParamError
     expect { validator.validate({ id: 20, name: 'John Doe', email: false }) }.to raise_error Apipie::ParamError
+  end
+
+  it 'marks values that match multiple validators as invalid' do
+    validator = described_class.new(param_desc, lambda {
+      param nil, Hash do
+        param :foo, String, required: true
+        param :baz, String
+      end
+      param nil, Hash do
+        param :bar, Integer, required: true
+      end
+    })
+
+    expect(validator.validate({ foo: 'bar' })).to be true
+    expect(validator.validate({ foo: 'bar', baz: 'bar2' })).to be true
+    expect(validator.validate({ bar: 12 })).to be true
+
+    expect { validator.validate({ foo: 'bar', bar: 20 }) }.to raise_error Apipie::ParamError
   end
 end
