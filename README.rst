@@ -1318,25 +1318,57 @@ description of nested values.
 
 
 OneOfValidator
--------------
+--------------
 
-// TODO: More info here
+Check if the parameter is exactly one of the param types defined in the provided block.
+
+Important notes:
+  - The name of child params does not have an effect on validation behaviour, but it will affect the name of refs to Hash params in OpenAPI schema generation.
+
+Additional options
+~~~~~~~~~~~~~~~~~~
+
+discriminator_property
+  The name of the property used to discriminate between the different schemas. This is translated to the `discriminator.propertyName <https://swagger.io/specification/#discriminator-object>`_ field in OpenAPI schema generation. It does not have an effect on the behaviour of Apipie validation.
+
+discriminator (on ``Hash`` children only)
+  The value of ``discriminator_property`` that indicates this validator should be used. Again, this does not have an effect on Apipie validation; it only affects OpenAPI schema generation.
+
+Examples
+~~~~~~~~
+
+Primitive types
 
 .. code:: ruby
 
-   param :pet, :one_of, :desc => "Pet info" do
-     # Param names do not have an effect on validation functionality, but they are included in
-     # OpenAPI schema output
-     param :dog, Hash do
+   param :int_or_string, :one_of, do
+     param nil, Integer
+     param nil, String
+   end
+
+Discriminated union
+
+.. code:: ruby
+
+   param :pet, :one_of, :desc => "Pet info", :discriminator_property => :type do
+     param :dog, Hash, discriminator: "dog" do
        param :type, ["dog"], required: true
        param :barks, :boolean, required: true
      end
-     param :cat, Hash do
+     param :cat, Hash, discriminator: "cat" do
        param :type, ["cat"], required: true
        param :meows, :boolean, required: true
      end
    end
 
+Using a single child validator to define a nested array type
+
+.. code:: ruby
+
+   # Validates values like `[[1, 2, 3], [4, 5, 6]]`
+   param :array_of_array_of_integer, Array, of: :one_of do
+     param nil, Array, of: Integer
+   end
 
 
 Adding custom validator
