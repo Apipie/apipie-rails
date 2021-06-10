@@ -107,4 +107,8 @@ class Apipie::Validator::IntegerValidator < Apipie::Validator::BaseValidator
   def expected_type
     'numeric'
   end
+
+  def swagger_type
+    'long'
+  end
 end

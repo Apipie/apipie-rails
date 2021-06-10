@@ -286,7 +286,7 @@ describe "Swagger Responses" do
         expect(response[:description]).to eq("OK")
 
         schema = response[:schema]
-        expect(schema).to have_field(:pet_id, 'number', {:description => 'id of pet'})
+        expect(schema).to have_field(:pet_id, 'integer', {:description => 'id of pet'})
         expect(schema).to have_field(:pet_name, 'string', {:description => 'Name of pet', :required => false})
         expect(schema).to have_field(:animal_type, 'string', {:description => 'Type of pet', :enum => ['dog','cat','iguana','kangaroo']})
         expect(schema).not_to have_field(:partial_match_allowed, 'boolean', {:required => false})
@@ -294,10 +294,10 @@ describe "Swagger Responses" do
 
       it "creates a swagger definition with all input parameters" do
         # a parameter defined for this method
-        expect(swagger_param_by_name(:pet_id, '/pets/pet_by_id')[:schema][:type]).to eq('number')
+        expect(swagger_param_by_name(:pet_id, '/pets/pet_by_id')[:schema][:type]).to eq('integer')
 
         # a parameter defined for the resource
-        expect(swagger_param_by_name(:common_param, '/pets/pet_by_id')[:schema][:type]).to eq('number')
+        expect(swagger_param_by_name(:common_param, '/pets/pet_by_id')[:schema][:type]).to eq('integer')
 
         # a parameter defined in the controller's superclass
         expect(swagger_param_by_name(:oauth, '/pets/pet_by_id')[:schema][:type]).to eq('string')
@@ -375,9 +375,9 @@ describe "Swagger Responses" do
         expect(schema).to have_field(:pet_measurements, 'object')
 
         pm_schema = schema[:properties][:pet_measurements]
-        expect(pm_schema).to have_field(:weight, 'number', {:description => "Weight in pounds"})
-        expect(pm_schema).to have_field(:height, 'number', {:description => "Height in inches"})
-        expect(pm_schema).to have_field(:num_legs, 'number', {:description => "Number of legs", :required => false})
+        expect(pm_schema).to have_field(:weight, 'integer', {:description => "Weight in pounds"})
+        expect(pm_schema).to have_field(:height, 'integer', {:description => "Height in inches"})
+        expect(pm_schema).to have_field(:num_legs, 'integer', {:description => "Number of legs", :required => false})
       end
 
       it "should return code 203 with spread out 'pet', encapsulated 'pet_measurements' and encapsulated 'pet_history'" do
@@ -406,9 +406,9 @@ describe "Swagger Responses" do
         expect(schema).to have_field(:additional_histories, 'array')
 
         pm_schema = schema[:properties][:pet_measurements]
-        expect(pm_schema).to have_field(:weight, 'number', {:description => "Weight in pounds"})
-        expect(pm_schema).to have_field(:height, 'number', {:description => "Height in inches"})
-        expect(pm_schema).to have_field(:num_legs, 'number', {:description => "Number of legs", :required => false})
+        expect(pm_schema).to have_field(:weight, 'integer', {:description => "Weight in pounds"})
+        expect(pm_schema).to have_field(:height, 'integer', {:description => "Height in inches"})
+        expect(pm_schema).to have_field(:num_legs, 'integer', {:description => "Number of legs", :required => false})
 
         ph_schema = schema[:properties][:pet_history]
         expect(ph_schema).to have_field(:did_visit_vet, 'boolean')
@@ -434,7 +434,7 @@ describe "Swagger Responses" do
         response = swagger_response_for('/pets/{id}/extra_info', 204)
 
         schema = response[:schema]
-        expect(schema).to have_field(:int_array, 'array', {items: {type: 'number'}})
+        expect(schema).to have_field(:int_array, 'array', {items: {type: 'integer', format: 'int64'}})
         expect(schema).to have_field(:enum_array, 'array', {items: {type: 'string', enum: ['v1','v2','v3']}})
       end
 
@@ -457,7 +457,7 @@ describe "Swagger Responses" do
         schema = response[:schema]
         expect(schema).to have_field(:pet_name, 'string', {:required => false})
         expect(schema).to have_field(:animal_type, 'string')
-        expect(schema).to have_field(:num_fleas, 'number')
+        expect(schema).to have_field(:num_fleas, 'integer')
       end
 
     end
