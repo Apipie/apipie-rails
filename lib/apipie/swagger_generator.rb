@@ -744,7 +744,7 @@ module Apipie
         header_hash = {
           name: header[:name],
           in: 'header',
-          required: header[:options][:required],
+          required: !!header[:options][:required],
           description: header[:description],
           schema: {
             type: header[:options][:type] || 'string'
