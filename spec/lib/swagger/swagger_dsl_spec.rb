@@ -660,5 +660,28 @@ describe "Swagger Responses" do
     end
   end
 
+  #========================================================
+  # UsersController is used for validation of header params
+  #========================================================
+  describe UsersController do
+    describe "Headers" do
+      it "should have correct required property" do
+        get_action = openapi_schema.dig(:paths, '/users/action_with_headers', 'get')
+        headers = get_action&.dig(:parameters)
+                    &.filter { |p| p[:in] == 'header' }
+                    &.index_by { |p| p[:name] }
+        headers.each do |_k, h|
+          (expect(h["required"]).not.to be(nil)) if h.key?("required")
+        end
+        expect(headers[:HeaderWithRequiredNull]).to eq({
+                                                         "name": :HeaderWithRequiredNull,
+                                                         "in": "header",
+                                                         "required": false,
+                                                         "description": "Header where don't specify required",
+                                                         "schema": { "type": "string" }
+                                                       } )
+      end
+    end
+  end
 
 end
