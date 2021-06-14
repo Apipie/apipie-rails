@@ -50,7 +50,15 @@ describe "Swagger Responses" do
     matching[0]
   end
 
+  shared_examples_for "meta schema validation" do
+    let(:swagger_meta_schema) do
+      JSON.parse(File.read(File.join(File.dirname(__FILE__), 'openapi_3_0_schema.json')))
+    end
 
+    it "produces a valid schema" do
+      expect(openapi_schema).to match_json_schema(swagger_meta_schema)
+    end
+  end
 
 
   #
@@ -121,7 +129,7 @@ describe "Swagger Responses" do
 
 
   describe PetsController do
-
+    include_examples "meta schema validation"
 
     describe "PetsController#index" do
       subject do
@@ -471,6 +479,8 @@ describe "Swagger Responses" do
   #==============================================================================
 
   describe TaggedDogsController do
+    include_examples "meta schema validation"
+
     describe "TaggedDogsController#show_as_properties" do
       subject do
         desc._methods[:show_as_properties]
@@ -492,6 +502,8 @@ describe "Swagger Responses" do
   #==============================================================================
 
   describe TaggedCatsController do
+    include_examples "meta schema validation"
+
     describe "TaggedCatsController#show_as_properties" do
       subject do
         desc._methods[:show_as_properties]
@@ -527,6 +539,7 @@ describe "Swagger Responses" do
 
 
   describe PetsUsingSelfDescribingClassesController do
+    include_examples "meta schema validation"
 
     describe "PetsController#pets_described_as_class" do
       subject do
@@ -631,6 +644,7 @@ describe "Swagger Responses" do
   #=========================================================
 
   describe PetsUsingAutoViewsController do
+    include_examples "meta schema validation"
 
     describe "PetsController#pet_described_using_automated_view" do
       subject do
@@ -664,6 +678,8 @@ describe "Swagger Responses" do
   # UsersController is used for validation of header params
   #========================================================
   describe UsersController do
+    include_examples "meta schema validation"
+
     describe "Headers" do
       it "should have correct required property" do
         get_action = openapi_schema.dig(:paths, '/users/action_with_headers', 'get')
