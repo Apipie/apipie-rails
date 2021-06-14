@@ -74,6 +74,19 @@ RSpec::Matchers.define :have_field do |name, type, opts={}|
   end
 end
 
+RSpec::Matchers.define :match_json_schema do |expected_schema|
+  match do |actual|
+    errors = JSON::Validator.fully_validate(expected_schema, actual, validate_schema: true)
+
+    errors.empty?
+  end
+
+  failure_message do |actual|
+    errors = JSON::Validator.fully_validate(expected_schema, actual, validate_schema: true)
+    "Object expected to match json schema but found validation errors\n\n" + errors.join("\n")
+  end
+end
+
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
 Dir[File.expand_path("../support/**/*.rb", __FILE__)].each {|f| require f}

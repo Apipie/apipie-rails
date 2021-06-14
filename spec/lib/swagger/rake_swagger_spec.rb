@@ -98,7 +98,7 @@ describe 'rake tasks' do
 
       it "generates a valid swagger file" do
         # print apidoc_swagger_json
-        expect(JSON::Validator.validate(swagger_schema, apidoc_swagger_json)).to be_truthy
+        expect(apidoc_swagger_json).to match_json_schema(swagger_schema)
       end
     end
 
@@ -126,7 +126,7 @@ describe 'rake tasks' do
 
       it "generates a valid swagger file" do
         # print apidoc_swagger_json
-        expect(JSON::Validator.validate(swagger_schema, apidoc_swagger_json)).to be_truthy
+        expect(apidoc_swagger_json).to match_json_schema(swagger_schema)
       end
     end
 

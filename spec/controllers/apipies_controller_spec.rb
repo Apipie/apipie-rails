@@ -144,7 +144,7 @@ describe Apipie::ApipiesController do
       expect(response.body).to match(/"openapi":"3.0.3"/)
       # puts response.body
 
-      expect(JSON::Validator.validate(swagger_schema, response.body)).to be_truthy
+      expect(response.body).to match_json_schema(swagger_schema)
     end
 
     it "does not output swagger when format is not json even if type is swagger" do

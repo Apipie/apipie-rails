@@ -38,7 +38,7 @@ describe 'one of swagger gen' do
 
   describe 'apipie:static_swagger_json[development,json,_tmp]' do
     it 'generates a valid swagger file' do
-      expect(JSON::Validator.validate(swagger_schema, apidoc_swagger_json)).to be_truthy
+      expect(apidoc_swagger_json).to match_json_schema(swagger_schema)
     end
 
     it 'generates static swagger files for the default version of apipie docs' do
