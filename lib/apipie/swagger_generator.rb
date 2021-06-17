@@ -599,8 +599,18 @@ module Apipie
     end
 
     def put_schema_reference(name, schema_obj)
-      @schemas[name.to_sym] = schema_obj unless @schemas.key(name.to_sym)
-      ref_to(name.to_sym)
+      unique_name = name.to_sym
+      if @schemas.key?(unique_name)
+        schema_string = schema_obj.to_s
+        if schema_string != @schemas[unique_name].to_s
+          unique_name = (1..Float::INFINITY).lazy.map { |num| "#{name}_#{num}".to_sym }.find do |name_variation|
+            !@schemas.key?(name_variation) || schema_string == @schemas[name_variation].to_s
+          end
+        end
+      end
+
+      @schemas[unique_name] = schema_obj
+      ref_to(unique_name)
     end
 
     def json_schema_obj_from_params_array(params_array, allow_nulls: false, title: nil)
@@ -620,8 +630,6 @@ module Apipie
     end
 
     def gen_referenced_block_from_params_array(name, params_array, allow_nulls = false)
-      return ref_to(name.to_sym) if @schemas.key(name.to_sym)
-
       schema_obj = json_schema_obj_from_params_array(params_array, allow_nulls: allow_nulls, title: name)
       return nil if schema_obj.nil?
 
