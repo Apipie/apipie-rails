@@ -141,7 +141,7 @@ module Apipie
     end
 
     def full_path
-      path = parents_and_self.map { |p| p.name if p.show }.compact.join("_")
+      path = parents_and_self.map { |p| p.name if p.show }.compact
       return [name.to_s] if path.blank?
       return path
     end
