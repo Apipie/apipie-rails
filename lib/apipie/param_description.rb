@@ -135,9 +135,15 @@ module Apipie
     end
 
     def full_name
-      name_parts = parents_and_self.map{|p| p.name if p.show}.compact
-      return name.to_s if name_parts.blank?
+      name_parts = full_path
+      return name.to_s if name_parts.length <= 1
       return ([name_parts.first] + name_parts[1..-1].map { |n| "[#{n}]" }).join("")
+    end
+
+    def full_path
+      path = parents_and_self.map { |p| p.name if p.show }.compact
+      return [name.to_s] if path.blank?
+      return path
     end
 
     # returns an array of all the parents: starting with the root parent

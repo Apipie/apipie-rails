@@ -595,7 +595,8 @@ module Apipie
     def ref_name_from_param_desc(param_desc, name_fallback = '')
       op_id = swagger_op_id_for_path(param_desc.method_description.apis.first.http_method,
                                      param_desc.method_description.apis.first.path)
-      "#{op_id}_param_#{param_desc.name || name_fallback}"
+      name = param_desc.options[:unique_param_names] ? param_desc.full_path.join('_') : param_desc.name
+      "#{op_id}_param_#{name || name_fallback}"
     end
 
     def put_schema_reference(name, schema_obj)
