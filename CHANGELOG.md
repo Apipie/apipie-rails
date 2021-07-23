@@ -1,7 +1,7 @@
  Changelog
 ===========
 
-[v0.5.17](https://github.com/Apipie/apipie-rails/tree/v0.5.18) (2020-05-20)
+[v0.5.18](https://github.com/Apipie/apipie-rails/tree/v0.5.18) (2020-05-20)
 --------
 
 [Full Changelog](https://github.com/Apipie/apipie-rails/compare/v0.5.17...v0.5.18)
