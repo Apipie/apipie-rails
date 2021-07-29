@@ -595,7 +595,7 @@ module Apipie
     def ref_name_from_param_desc(param_desc, name_fallback = '')
       op_id = swagger_op_id_for_path(param_desc.method_description.apis.first.http_method,
                                      param_desc.method_description.apis.first.path)
-      name = param_desc.options[:unique_param_names] ? param_desc.full_path.join('_') : param_desc.name
+      name = param_desc.full_path.join('_')
       "#{op_id}_param_#{name || name_fallback}"
     end
 
