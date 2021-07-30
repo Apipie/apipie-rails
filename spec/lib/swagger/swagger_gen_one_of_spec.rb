@@ -55,8 +55,8 @@ describe 'one of swagger gen' do
     it 'includes expected schemas' do
       schemas = apidoc_swagger['components']['schemas']
 
-      expect(schemas['get_pets_param_tag_id']['oneOf']).to match_array [{ type: 'integer', format: 'int64' },
-                                                                        { type: 'string' }]
+      expect(schemas['get_pets_param_dog_tag_id']['oneOf']).to match_array [{ type: 'integer', format: 'int64' },
+                                                                            { type: 'string' }]
 
       expect(schemas['get_pets_param_data']['oneOf']).to match_array [{ "$ref": '#/components/schemas/get_pets_param_dog' },
                                                                       { "$ref": '#/components/schemas/get_pets_param_cat' }]
