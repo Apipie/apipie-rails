@@ -71,6 +71,7 @@ module Apipie
           },
           basePath: Apipie.api_base_url(version),
           consumes: [],
+          produces: ['application/json'],
           paths: {},
           definitions: {},
           tags: [],
@@ -510,6 +511,7 @@ module Apipie
 
       save_field(swagger_def, :description, param_desc.options, :desc, true) unless param_desc.options[:desc].nil?
       save_field(swagger_def, :default, param_desc.options, :default_value)
+      save_field(swagger_def, :example, param_desc.options)
 
       if param_desc.respond_to?(:_gen_added_from_path) && !param_desc.required
         warn_optional_param_in_path(param_desc.name)
