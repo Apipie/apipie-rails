@@ -14,6 +14,7 @@ class PetsOneOfController < ApplicationController
   def_param_group :pet_common do
     param :name, String, desc: 'Name of pet'
     param :age, Integer, desc: 'Age of pet in years'
+    param :numeric_attributes, Hash, of: Integer
   end
 
   def_param_group :dog do
@@ -30,6 +31,13 @@ class PetsOneOfController < ApplicationController
     param :animal_type, ['cat'], desc: 'Type of pet'
     param_group :pet_common, PetsOneOfController
     param :meow_frequency, :decimal, desc: "The fundamental frequency of the cat's meow in hertz"
+    param :meow_types, Hash, of: :one_of do
+      param :meow_description, Hash do
+        param :volume, :decimal
+        param :tone, :decimal
+        param :timbre, String
+      end
+    end
   end
 
   def_param_group :pet do

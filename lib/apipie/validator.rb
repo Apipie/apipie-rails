@@ -334,7 +334,7 @@ module Apipie
       include Apipie::DSL::Param
 
       def self.build(param_description, argument, options, block)
-        self.new(param_description, block, options[:param_group]) if block.is_a?(Proc) && block.arity <= 0 && argument == Hash
+        self.new(param_description, block, options[:param_group]) if block.is_a?(Proc) && block.arity <= 0 && argument == Hash && options[:of].blank?
       end
 
       def initialize(param_description, argument, param_group)

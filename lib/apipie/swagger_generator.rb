@@ -533,10 +533,35 @@ module Apipie
           '$ref' => put_schema_reference(ref_name, swagger_def.except(:name, :description))
         }
 
-      when 'object' # we only get here if there is no specification of properties for this object
-        swagger_def[:additionalProperties] = {}
-        warn_hash_without_internal_typespec(param_desc.name)
-
+      when 'object'
+        validator_opts = param_desc.validator.param_description.options
+        values_type = validator_opts[:of]
+        swagger_def[:additionalProperties] = if values_type == Hash
+                                               {
+                                                 '$ref' => gen_referenced_block_from_params_array(
+                                                   ref_name_from_param_desc(param_desc),
+                                                   param_desc.validator.param_description.validator.params_ordered,
+                                                   allow_nulls
+                                                 )
+                                               }
+                                             elsif param_desc.validator.respond_to?(:values_validator) && param_desc.validator.values_validator
+                                               values_validator = param_desc.validator.values_validator
+                                               if values_validator.instance_of?(Apipie::Validator::HashValidator)
+                                                 {
+                                                   '$ref' => gen_referenced_block_from_params_array(
+                                                     "#{ref_name_from_param_desc(param_desc)}_values",
+                                                     values_validator.params_ordered,
+                                                     allow_nulls
+                                                   )
+                                                 }
+                                               else
+                                                 swagger_atomic_param(values_validator.param_description, true, nil, allow_nulls)
+                                               end
+                                             else
+                                               # we only get here if there is no specification of properties for this object
+                                               warn_hash_without_internal_typespec(param_desc.name)
+                                               {}
+                                             end
       end
 
       if param_desc.is_array?
@@ -642,7 +667,7 @@ module Apipie
 
         param_type = swagger_param_type(param_desc)
 
-        if param_type == 'object' && param_desc.validator.params_ordered
+        if param_type == 'object' && param_desc.validator.params_ordered && !param_desc.options.has_key?(:of)
           title = if title_prefix
                     "#{title_prefix}_#{param_desc.name}"
                   else
@@ -763,7 +788,7 @@ module Apipie
       param_defs.each do |name, desc|
         name = "#{prefix}[#{name}]" unless prefix.nil?
 
-        if swagger_param_type(desc) == 'object'
+        if swagger_param_type(desc) == 'object' and !desc.options.has_key?(:of)
           if desc.validator.params_ordered
             params_hash = Hash[desc.validator.params_ordered.map { |param| [param.name, param] }]
             add_params_from_hash(swagger_params_array, params_hash, name)
