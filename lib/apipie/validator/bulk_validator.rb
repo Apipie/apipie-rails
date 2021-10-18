@@ -17,17 +17,16 @@ module Apipie
         instance_exec(&@proc)
       end
 
-      def validate(value)
+      def validate(_value)
         # always return true for the apipie validator, we use our own validator to do the real param validation
-        return true
-        end
+        true
       end
 
-      def process_value(value)
-      end
+      def process_value(value); end
 
-      def self.build(param_description, argument, options, block)
+      def self.build(param_description, argument, _options, block)
         return unless argument == VALIDATOR_TYPE && block.is_a?(Proc) && block.arity <= 0
+
         new(param_description, block)
       end
 

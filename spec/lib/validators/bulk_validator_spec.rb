@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Apipie::Validator::BulkfValidator do
+describe Apipie::Validator::BulkValidator do
   before do
     Apipie.configuration.validate = true
     Apipie.configuration.validate_presence = true
@@ -13,19 +13,6 @@ describe Apipie::Validator::BulkfValidator do
   let(:param_desc) { Apipie::ParamDescription.new(method_desc, :param, nil) }
   let(:argument) { described_class::VALIDATOR_TYPE }
 
-  before do
-    Apipie.add_param_group UsersController, :param_group_a do
-      param :str, String, required: true
-      param :int, Integer, required: true
-    end
-
-    Apipie.add_param_group UsersController, :param_group_b do
-      param :id, :number, required: true
-      param :name, String, required: true
-      param :email, String
-    end
-  end
-
   it 'throws an error when no block is provided' do
     expect { described_class.new(param_desc, nil) }.to raise_error ArgumentError
   end
@@ -35,7 +22,7 @@ describe Apipie::Validator::BulkfValidator do
       param :str, String
     })
     expect(validator.validate('hello')).to be true
-    expect(validator.validate(nil)).to be true
+    expect(validator.validate(20)).to be true
   end
 
   it 'always return true after pass the block check' do
