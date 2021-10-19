@@ -21,6 +21,7 @@ require "apipie/tag_list_description"
 require "apipie/validator"
 require "apipie/validator/nested_hash_validator"
 require "apipie/validator/one_of_validator"
+require "apipie/validator/bulk_validator"
 require "apipie/railtie"
 require 'apipie/extractor'
 require "apipie/version"

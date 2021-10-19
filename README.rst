@@ -1316,6 +1316,18 @@ description of nested values.
      param :comment, String, :desc => "Full comment", :required => true
    end
 
+BulkValidator
+-------------
+
+BulkValidator is only a placeholder validator which always return true for bulk params. BulkValidator is introduced because we need to bypass apipie validation for our bulk params and create its own non-apipie validation logic without touching other endpoints.
+
+.. code:: ruby
+
+   param :bulk_params, :bulk, :desc => "Bulk params" do
+     param :id, String, :desc => "Id of keyword", :required => true
+     param :keyword, String, :desc => "Keyword", :required => true
+   end   
+
 
 OneOfValidator
 --------------
