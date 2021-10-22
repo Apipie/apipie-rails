@@ -14,9 +14,9 @@ module Apipie
       end
 
       def inspect
-        string = "#<#{self.class.name}:#{self.object_id} "
-        fields = inspected_fields.map {|field| "#{field}: #{self.send(field)}"}
-        string << fields.join(", ") << ">"
+        string = "#<#{self.class.name}:#{object_id} "
+        fields = inspected_fields.map { |field| "#{field}: #{send(field)}" }
+        string << fields.join(', ') << '>'
       end
 
       def self.inherited(subclass)
@@ -25,17 +25,21 @@ module Apipie
       end
 
       # find the right validator for given options
-      def self.find(param_description, argument, options, block)
+      def self.find(param_description, argument, options, block, always_valid: false)
         @validators.each do |validator_type|
-          validator = validator_type.build(param_description, argument, options, block)
+          validator = if validator_type == Validator::HashValidator
+                        validator_type.build(param_description, argument, options, block, always_valid: always_valid)
+                      else
+                        validator_type.build(param_description, argument, options, block)
+                      end
           return validator if validator
         end
-        return nil
+        nil
       end
 
       # check if value is valid
       def valid?(value)
-        if self.validate(value)
+        if validate(value)
           @error_value = nil
           true
         else
@@ -50,11 +54,11 @@ module Apipie
 
       # validator description
       def description
-        "TODO: validator description"
+        'TODO: validator description'
       end
 
       def format_description_value(value)
-        "<code>#{CGI::escapeHTML(value.to_s)}</code>"
+        "<code>#{CGI.escapeHTML(value.to_s)}</code>"
       end
 
       def error
@@ -62,11 +66,11 @@ module Apipie
       end
 
       def to_s
-        self.description
+        description
       end
 
-      def to_json
-        self.description
+      def to_json(*_args)
+        description
       end
 
       # what type is expected, mostly string
@@ -81,8 +85,11 @@ module Apipie
       end
 
       def merge_with(other_validator)
-        return self if self == other_validator
-        raise NotImplementedError, "Don't know how to merge #{self.inspect} with #{other_validator.inspect}"
+        return self if expected_type == other_validator.expected_type
+
+        puts expected_type == other_validator.expected_type
+
+        raise NotImplementedError, "Don't know how to merge #{inspect} with #{other_validator.inspect}"
       end
 
       def params_ordered
@@ -91,17 +98,13 @@ module Apipie
 
       def ==(other)
         return false unless self.class == other.class
-        if param_description == other.param_description
-          true
-        else
-          false
-        end
+
+        param_description == other.param_description
       end
     end
 
     # validate arguments type
     class TypeValidator < BaseValidator
-
       def initialize(param_description, argument)
         super(param_description)
         @type = argument
@@ -109,13 +112,12 @@ module Apipie
 
       def validate(value)
         return false if value.nil?
+
         value.is_a? @type
       end
 
-      def self.build(param_description, argument, options, block)
-        if argument.is_a?(Class) && (argument != Hash || block.nil?)
-          self.new(param_description, argument)
-        end
+      def self.build(param_description, argument, _options, block)
+        new(param_description, argument) if argument.is_a?(Class) && (argument != Hash || block.nil?)
       end
 
       def description
@@ -149,7 +151,6 @@ module Apipie
 
     # validate arguments value with regular expression
     class RegexpValidator < BaseValidator
-
       def initialize(param_description, argument)
         super(param_description)
         @regexp = argument
@@ -159,8 +160,8 @@ module Apipie
         value =~ @regexp
       end
 
-      def self.build(param_description, argument, options, proc)
-        self.new(param_description, argument) if argument.is_a? Regexp
+      def self.build(param_description, argument, _options, _proc)
+        new(param_description, argument) if argument.is_a? Regexp
       end
 
       def description
@@ -179,8 +180,8 @@ module Apipie
         @array.include?(value)
       end
 
-      def self.build(param_description, argument, options, proc)
-        self.new(param_description, argument) if argument.is_a?(Array)
+      def self.build(param_description, argument, _options, _proc)
+        new(param_description, argument) if argument.is_a?(Array)
       end
 
       def values
@@ -218,7 +219,7 @@ module Apipie
       def validate(values)
         return false unless process_value(values).respond_to?(:each) && !process_value(values).is_a?(String)
 
-        process_value(values).all? { |v| validate_item(v)}
+        process_value(values).all? { |v| validate_item(v) }
       end
 
       def process_value(values)
@@ -242,9 +243,7 @@ module Apipie
       private
 
       def enum
-        if @items_enum.kind_of?(Proc)
-          @items_enum = Array(@items_enum.call)
-        end
+        @items_enum = Array(@items_enum.call) if @items_enum.is_a?(Proc)
         @items_enum
       end
 
@@ -274,16 +273,15 @@ module Apipie
       end
 
       def items
-        unless enum
-          @items_type || "any type"
-        else
+        if enum
           enum.inspect
+        else
+          @items_type || 'any type'
         end
       end
     end
 
     class ArrayClassValidator < BaseValidator
-
       def initialize(param_description, argument)
         super(param_description)
         @array = argument
@@ -293,9 +291,9 @@ module Apipie
         @array.include?(value.class)
       end
 
-      def self.build(param_description, argument, options, block)
-        if argument.is_a?(Array) && argument.first.class == Class && !block.is_a?(Proc)
-          self.new(param_description, argument)
+      def self.build(param_description, argument, _options, block)
+        if argument.is_a?(Array) && argument.first.instance_of?(Class) && !block.is_a?(Proc)
+          new(param_description, argument)
         end
       end
 
@@ -306,7 +304,6 @@ module Apipie
     end
 
     class ProcValidator < BaseValidator
-
       def initialize(param_description, argument)
         super(param_description)
         @proc = argument
@@ -316,8 +313,8 @@ module Apipie
         (@help = @proc.call(value)) === true
       end
 
-      def self.build(param_description, argument, options, proc)
-        self.new(param_description, argument) if argument.is_a?(Proc) && argument.arity == 1
+      def self.build(param_description, argument, _options, _proc)
+        new(param_description, argument) if argument.is_a?(Proc) && argument.arity == 1
       end
 
       def error
@@ -325,7 +322,7 @@ module Apipie
       end
 
       def description
-        ""
+        ''
       end
     end
 
@@ -333,15 +330,19 @@ module Apipie
       include Apipie::DSL::Base
       include Apipie::DSL::Param
 
-      def self.build(param_description, argument, options, block)
-        self.new(param_description, block, options[:param_group]) if block.is_a?(Proc) && block.arity <= 0 && argument == Hash && options[:of].blank?
+      def self.build(param_description, argument, options, block, always_valid: false)
+        if block.is_a?(Proc) && block.arity <= 0 && argument == Hash && options[:of].blank?
+          new(param_description, block,
+              options[:param_group], always_valid)
+        end
       end
 
-      def initialize(param_description, argument, param_group)
+      def initialize(param_description, argument, param_group, always_valid)
         super(param_description)
         @proc = argument
         @param_group = param_group
-        self.instance_exec(&@proc)
+        @always_valid = always_valid
+        instance_exec(&@proc)
         # specifying action_aware on Hash influences the child params,
         # not the hash param itself: assuming it's required when
         # updating as well
@@ -354,32 +355,29 @@ module Apipie
       def params_ordered
         @params_ordered ||= _apipie_dsl_data[:params].map do |args|
           options = args.find { |arg| arg.is_a? Hash }
-          options[:parent] = self.param_description
+          options[:parent] = param_description
           Apipie::ParamDescription.from_dsl_data(param_description.method_description, args)
         end
       end
 
       def validate(value)
-        return false if !value.is_a? Hash
+        return true if @always_valid
+        return false unless value.is_a? Hash
+
         if @hash_params
           @hash_params.each do |k, p|
-            if Apipie.configuration.validate_presence?
-              raise ParamMissing.new(p) if p.required && !value.has_key?(k)
-            end
-            if Apipie.configuration.validate_value?
-              p.validate(value[k]) if value.has_key?(k)
-            end
+            raise ParamMissing, p if Apipie.configuration.validate_presence? && (p.required && !value.has_key?(k))
+
+            p.validate(value[k]) if Apipie.configuration.validate_value? && value.has_key?(k)
           end
         end
-        return true
+        true
       end
 
       def process_value(value)
         if @hash_params && value
-          return @hash_params.each_with_object({}) do |(key, param), api_params|
-            if value.has_key?(key)
-              api_params[param.as] = param.process_value(value[key])
-            end
+          @hash_params.each_with_object({}) do |(key, param), api_params|
+            api_params[param.as] = param.process_value(value[key]) if value.has_key?(key)
           end
         end
       end
@@ -400,7 +398,7 @@ module Apipie
 
       def merge_with(other_validator)
         if other_validator.is_a? HashValidator
-          @params_ordered = ParamDescription.unify(self.params_ordered + other_validator.params_ordered)
+          @params_ordered = ParamDescription.unify(params_ordered + other_validator.params_ordered)
           prepare_hash_params
         else
           super
@@ -414,17 +412,14 @@ module Apipie
       end
     end
 
-
     # special type of validator: we say that it's not specified
     class UndefValidator < BaseValidator
-      def validate(value)
+      def validate(_value)
         true
       end
 
-      def self.build(param_description, argument, options, block)
-        if argument == :undef
-          self.new(param_description)
-        end
+      def self.build(param_description, argument, _options, _block)
+        new(param_description) if argument == :undef
       end
 
       def description
@@ -437,7 +432,7 @@ module Apipie
         self.class.validate(value)
       end
 
-      def self.build(param_description, argument, options, block)
+      def self.build(param_description, argument, _options, _block)
         return unless argument == :decimal
 
         new(param_description)
@@ -461,7 +456,7 @@ module Apipie
         self.class.validate(value)
       end
 
-      def self.build(param_description, argument, options, block)
+      def self.build(param_description, argument, _options, _block)
         return unless argument == :number
 
         new(param_description)

@@ -1,5 +1,4 @@
 module Apipie
-
   # method parameter description
   #
   # name - method name (show)
@@ -7,22 +6,22 @@ module Apipie
   # required - boolean if required
   # validator - Validator::BaseValidator subclass
   class ParamDescription
-
-    attr_reader :method_description, :name, :desc, :allow_nil, :allow_blank, :validator, :options, :metadata, :show, :as, :validations, :response_only, :request_only
-    attr_reader :additional_properties, :is_array
+    attr_reader :method_description, :name, :desc, :allow_nil, :allow_blank, :validator, :options, :metadata, :show,
+                :as, :validations, :response_only, :request_only, :additional_properties, :is_array
     attr_accessor :parent, :required
 
-    alias_method :response_only?, :response_only
-    alias_method :request_only?, :request_only
-    alias_method :is_array?, :is_array
+    alias response_only? response_only
+    alias request_only? request_only
+    alias is_array? is_array
 
-    def self.from_dsl_data(method_description, args)
+    def self.from_dsl_data(method_description, args, always_valid: false)
       param_name, validator, desc_or_options, options, block = args
       Apipie::ParamDescription.new(method_description,
                                    param_name,
                                    validator,
                                    desc_or_options,
                                    options,
+                                   always_valid,
                                    &block)
     end
 
@@ -32,6 +31,7 @@ module Apipie
 
     def ==(other)
       return false unless self.class == other.class
+
       if method_description == other.method_description && @options == other.options
         true
       else
@@ -39,23 +39,20 @@ module Apipie
       end
     end
 
-    def initialize(method_description, name, validator, desc_or_options = nil, options = {}, &block)
-
+    def initialize(method_description, name, validator, desc_or_options = nil, options = {}, always_valid = false, &block)
       if desc_or_options.is_a?(Hash)
         options = options.merge(desc_or_options)
       elsif desc_or_options.is_a?(String)
         options[:desc] = desc_or_options
       elsif !desc_or_options.nil?
-        raise ArgumentError.new("param description: expected description or options as 3rd parameter")
+        raise ArgumentError, 'param description: expected description or options as 3rd parameter'
       end
 
       options.symbolize_keys!
 
       # we save options to know what was passed in DSL
       @options = options
-      if @options[:param_group]
-        @from_concern = @options[:param_group][:from_concern]
-      end
+      @from_concern = @options[:param_group][:from_concern] if @options[:param_group]
 
       @method_description = method_description
       @name = concern_subst(name)
@@ -69,13 +66,15 @@ module Apipie
 
       @response_only = (@options[:only_in] == :response)
       @request_only = (@options[:only_in] == :request)
-      raise ArgumentError.new("'#{@options[:only_in]}' is not a valid value for :only_in") if (!@response_only && !@request_only) && @options[:only_in].present?
+      if (!@response_only && !@request_only) && @options[:only_in].present?
+        raise ArgumentError, "'#{@options[:only_in]}' is not a valid value for :only_in"
+      end
 
       @show = if @options.has_key? :show
-        @options[:show]
-      else
-        true
-      end
+                @options[:show]
+              else
+                true
+              end
 
       @allow_nil = @options[:allow_nil] || false
       @allow_blank = @options[:allow_blank] || false
@@ -87,15 +86,18 @@ module Apipie
           @is_array = true
           rest_of_options = validator
           validator = validator[:array_of]
-          options.merge!(rest_of_options.select{|k,v| k != :array_of })
+          options.merge!(rest_of_options.select { |k, _v| k != :array_of })
           raise "an ':array_of =>' validator is allowed exclusively on response-only fields" unless @response_only
         end
-        @validator = Validator::BaseValidator.find(self, validator, @options, block)
-        raise "Proc validators not supported on param #{method_description.id}:#{name}" if (@validator.is_a? Validator::ProcValidator) && @response_only
+        @validator = Validator::BaseValidator.find(self, validator, @options, block, always_valid: always_valid)
+        puts @validator
+        if (@validator.is_a? Validator::ProcValidator) && @response_only
+          raise "Proc validators not supported on param #{method_description.id}:#{name}"
+        end
         raise "Validator for #{validator} not found." unless @validator
       end
 
-      @validations = Array(options[:validations]).map {|v| concern_subst(Apipie.markup_to_html(v)) }
+      @validations = Array(options[:validations]).map { |v| concern_subst(Apipie.markup_to_html(v)) }
 
       @additional_properties = @options[:additional_properties]
     end
@@ -108,7 +110,7 @@ module Apipie
       if value.is_a?(ActionController::Parameters) && !value.is_a?(Hash)
         value.to_unsafe_hash
       elsif value.is_a? Array
-        value.map { |v| normalized_value (v) }
+        value.map { |v| normalized_value(v) }
       else
         value
       end
@@ -117,6 +119,7 @@ module Apipie
     def validate(value)
       return true if @allow_nil && value.nil?
       return true if @allow_blank && value.blank?
+
       value = normalized_value(value)
       if (!@allow_nil && value.nil?) || !@validator.valid?(value)
         error = @validator.error
@@ -137,47 +140,47 @@ module Apipie
     def full_name
       name_parts = full_path
       return name.to_s if name_parts.length <= 1
-      return ([name_parts.first] + name_parts[1..-1].map { |n| "[#{n}]" }).join("")
+
+      ([name_parts.first] + name_parts[1..-1].map { |n| "[#{n}]" }).join('')
     end
 
     def full_path
       path = parents_and_self.map { |p| p.name if p.show }.compact
       return [name.to_s] if path.blank?
-      return path
+
+      path
     end
 
     # returns an array of all the parents: starting with the root parent
     # ending with itself
     def parents_and_self
       ret = []
-      if self.parent
-        ret.concat(self.parent.parents_and_self)
-      end
+      ret.concat(parent.parents_and_self) if parent
       ret << self
       ret
     end
 
     def to_json(lang = nil)
-      hash = { :name => name.to_s,
-               :full_name => full_name,
-               :description => preformat_text(Apipie.app.translate(@options[:desc], lang)),
-               :required => required,
-               :allow_nil => allow_nil,
-               :allow_blank => allow_blank,
-               :validator => validator.to_s,
-               :expected_type => validator.expected_type,
-               :metadata => metadata,
-               :show => show,
-               :validations => validations }
+      hash = { name: name.to_s,
+               full_name: full_name,
+               description: preformat_text(Apipie.app.translate(@options[:desc], lang)),
+               required: required,
+               allow_nil: allow_nil,
+               allow_blank: allow_blank,
+               validator: validator.to_s,
+               expected_type: validator.expected_type,
+               metadata: metadata,
+               show: show,
+               validations: validations }
       if sub_params = validator.params_ordered
-        hash[:params] = sub_params.map { |p| p.to_json(lang)}
+        hash[:params] = sub_params.map { |p| p.to_json(lang) }
       end
       hash
     end
 
     def merge_with(other_param_desc)
-      if self.validator && other_param_desc.validator
-        self.validator.merge_with(other_param_desc.validator)
+      if validator && other_param_desc.validator
+        validator.merge_with(other_param_desc.validator)
       else
         self.validator ||= other_param_desc.validator
       end
@@ -199,7 +202,7 @@ module Apipie
     #     end
     def self.unify(params)
       ordering = params.map(&:name)
-      params.group_by(&:name).map do |name, param_descs|
+      params.group_by(&:name).map do |_name, param_descs|
         param_descs.reduce(&:merge_with)
       end.sort_by { |param| ordering.index(param.name) }
     end
@@ -216,7 +219,7 @@ module Apipie
     # nested params)
     def action_aware?
       if @options.has_key?(:action_aware)
-        return @options[:action_aware]
+        @options[:action_aware]
       elsif @parent
         @parent.action_aware?
       else
@@ -226,7 +229,7 @@ module Apipie
 
     def as_action
       if @options[:param_group] && @options[:param_group][:options] &&
-          @options[:param_group][:options][:as]
+         @options[:param_group][:options][:as]
         @options[:param_group][:options][:as].to_s
       elsif @parent
         @parent.as_action
@@ -240,21 +243,19 @@ module Apipie
     # crate/update actions.
     def action_awareness
       if action_aware?
-        if !@options.has_key?(:allow_nil)
-          if @required
-            @allow_nil = false
-          else
-            @allow_nil = true
-          end
+        unless @options.has_key?(:allow_nil)
+          @allow_nil = if @required
+                         false
+                       else
+                         true
+                       end
         end
-        if as_action != "create"
-          @required = false
-        end
+        @required = false if as_action != 'create'
       end
     end
 
     def concern_subst(string)
-      return string if string.nil? or !from_concern?
+      return string if string.nil? || !from_concern?
 
       original = string
       string = ":#{original}" if original.is_a? Symbol
@@ -263,7 +264,8 @@ module Apipie
 
       return original if replaced == string
       return replaced.to_sym if original.is_a? Symbol
-      return replaced
+
+      replaced
     end
 
     def preformat_text(text)
@@ -281,7 +283,5 @@ module Apipie
         Apipie.configuration.required_by_default?
       end
     end
-
   end
-
 end
