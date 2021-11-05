@@ -2,7 +2,9 @@ source "https://rubygems.org"
 
 gemspec
 
-gem 'rails', '~> 5.1.0.rc1'
+gem 'actionpack', '~> 5.1.0'
+gem 'actionview', '~> 5.1.0'
+gem 'activesupport', '~> 5.1.0'
 gem 'mime-types', '~> 2.99.3'
 gem 'rails-controller-testing'
 
