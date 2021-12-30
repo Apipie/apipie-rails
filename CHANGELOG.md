@@ -1,6 +1,15 @@
  Changelog
 ===========
-## [v0.5.19](https://github.com/Apipie/apipie-rails/tree/v0.5.19) (2021-07-25)
+[v0.5.20](https://github.com/user-interviews/apipie-rails/tree/v0.5.20) (2020-01-20)
+--------
+
+[Full Changelog](https://github.com/Apipie/apipie-rails/compare/v0.5.19...v0.5.20)
+
+### Fixed
+- schema generation for param descriptions using the array validator in option ([frankhock](https://github.com/frankhock))
+
+[v0.5.19](https://github.com/Apipie/apipie-rails/tree/v0.5.19) (2021-07-25)
+
 [Full Changelog](https://github.com/Apipie/apipie-rails/compare/v0.5.18...v0.5.19)
 * Add rel-eng notebook (Oleh Fedorenko)
 * Correct the word parâmentros for brazilian portuguese [#687](https://github.com/Apipie/apipie-rails/pull/687) (Diego Noronha)
