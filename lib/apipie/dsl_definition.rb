@@ -44,7 +44,7 @@ module Apipie
          :formats           => nil,
          :api_versions      => [],
          :meta              => nil,
-         :show              => true,
+         :show              => Apipie.configuration.swagger_show_all_descriptions?,
          :deprecated        => false
        }
       end
