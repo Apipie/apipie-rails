@@ -52,12 +52,12 @@ namespace :apipie do
   end
 
   desc "Generate static swagger json"
-  task :static_swagger_json, %i[version swagger_content_type_input filename_suffix swagger_show_all_descriptions] => :environment do |t, args|
+  task :static_swagger_json, %i[version swagger_content_type_input filename_suffix swagger_include_all_paths] => :environment do |t, args|
     args.with_defaults(
-      swagger_show_all_descriptions: Apipie.configuration.swagger_show_all_descriptions?
+      swagger_include_all_paths: Apipie.configuration.swagger_include_all_paths
     )
 
-    Apipie.configuration.swagger_show_all_descriptions = args[:swagger_show_all_descriptions].to_s == 'true'
+    Apipie.configuration.swagger_include_all_paths = args[:swagger_include_all_paths].to_s == 'true'
 
     with_loaded_documentation do
       out = ENV["OUT"] || File.join(::Rails.root, Apipie.configuration.doc_path, 'apidoc')
