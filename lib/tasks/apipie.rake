@@ -54,7 +54,7 @@ namespace :apipie do
   desc "Generate static swagger json"
   task :static_swagger_json, %i[version swagger_content_type_input filename_suffix swagger_include_all_paths] => :environment do |t, args|
     args.with_defaults(
-      swagger_include_all_paths: Apipie.configuration.swagger_include_all_paths
+      swagger_include_all_paths: Apipie.configuration.swagger_include_all_paths?
     )
 
     Apipie.configuration.swagger_include_all_paths = args[:swagger_include_all_paths].to_s == 'true'
@@ -204,7 +204,7 @@ namespace :apipie do
     args.with_defaults(
       version: Apipie.configuration.default_version,
       swagger_content_type_input: Apipie.configuration.swagger_content_type_input || :form_data,
-      filename_suffix: nil,
+      filename_suffix: nil
     )
     Apipie.configuration.swagger_content_type_input = args[:swagger_content_type_input].to_sym
     count = 0
