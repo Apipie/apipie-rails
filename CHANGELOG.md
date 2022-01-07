@@ -1,9 +1,17 @@
  Changelog
 ===========
-[v0.5.20](https://github.com/user-interviews/apipie-rails/tree/v0.5.20) (2020-01-20)
+[v0.5.19.2](https://github.com/user-interviews/apipie-rails/tree/v0.5.19.2) (2020-01-07)
 --------
 
-[Full Changelog](https://github.com/Apipie/apipie-rails/compare/v0.5.19...v0.5.20)
+[Full Changelog](https://github.com/Apipie/apipie-rails/compare/v0.5.19.1...v0.5.19.2)
+
+### Added
+- configuration setting to hide all paths by default ([frankhock](https://github.com/frankhock))
+
+[v0.5.19](https://github.com/user-interviews/apipie-rails/tree/v0.5.19) (2020-01-20)
+--------
+
+[Full Changelog](https://github.com/Apipie/apipie-rails/compare/v0.5.19...v0.5.19.1)
 
 ### Fixed
 - schema generation for param descriptions using the array validator in option ([frankhock](https://github.com/frankhock))
