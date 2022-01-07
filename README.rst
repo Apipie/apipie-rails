@@ -1043,6 +1043,10 @@ translate
   Pass proc to translate strings using the localization library your project uses.
   For example see `Localization`_
 
+swagger_include_all_paths
+  Set this to ``false`` to hide all paths in the swagger documentation (``true`` by default).
+  Reveal paths by marking method definitions with ``show true``.
+
 Example:
 
 .. code:: ruby

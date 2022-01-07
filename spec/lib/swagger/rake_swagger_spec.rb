@@ -113,6 +113,17 @@ describe 'rake tasks' do
       end
     end
 
+    describe 'apipie:static_swagger_json[development,json,_tmp,false]' do
+      it 'sets config.swagger_include_all_paths  setting to false' do
+        expect(Apipie.configuration.swagger_include_all_paths).to be(false)
+      end
+
+      it 'only includes paths that explicitly set show to true' do
+        pending('figure out how things load')
+        fail
+      end
+    end
+
     describe 'apipie:static_swagger_json[development,form_data,_tmp]' do
       it "generates static swagger files for the default version of apipie docs" do
         # print apidoc_swagger_json
