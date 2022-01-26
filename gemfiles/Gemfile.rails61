@@ -2,7 +2,7 @@ source "https://rubygems.org"
 
 gemspec path: '..'
 
-gem 'rails', '~> 6.1.1'
+gem 'railties', '~> 6.1.1'
 gem 'mime-types', '~> 3.0'
 gem 'rails-controller-testing'
 gem 'rspec-rails', '~> 5.0'
