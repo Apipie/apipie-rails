@@ -149,10 +149,10 @@ module Apipie
 
         dsl_data = ResourceDescriptionDsl.eval_dsl(self, &block)
         versions = dsl_data[:api_versions]
+        Apipie.set_controller_versions(self, versions)
         @apipie_resource_descriptions = versions.map do |version|
           Apipie.define_resource_description(self, version, dsl_data)
         end
-        Apipie.set_controller_versions(self, versions)
       end
     end
 
