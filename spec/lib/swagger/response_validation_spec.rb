@@ -68,7 +68,7 @@ RSpec.describe PetsController, :type => :controller do
     expect(response).not_to match_declared_responses
   end
 
-  it "does not rais error when a response sub-object has an extra field and 'additional_properties' is specified on it" do
+  it "does not raise error when a response sub-object has an extra field and 'additional_properties' is specified on it" do
     Apipie.configuration.swagger_allow_additional_properties_in_response = false
     response = get :sub_object_allowed_extra_property, format: :json
     expect(response).to match_declared_responses
