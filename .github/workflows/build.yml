@@ -18,7 +18,7 @@ jobs:
         ruby:
           - 2.6
           - 2.7
-          - 3.0
+          - '3.0'
           - 3.1
         gemfile:
           - Gemfile.rails42
@@ -29,13 +29,13 @@ jobs:
         - gemfile: Gemfile.rails42
           ruby: 2.7
         - gemfile: Gemfile.rails42
-          ruby: 3.0
+          ruby: '3.0'
         - gemfile: Gemfile.rails42
           ruby: 3.1
         - gemfile: Gemfile.rails52
           ruby: 2.7
         - gemfile: Gemfile.rails52
-          ruby: 3.0
+          ruby: '3.0'
         - gemfile: Gemfile.rails52
           ruby: 3.1
 
