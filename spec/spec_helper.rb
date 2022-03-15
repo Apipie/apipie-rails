@@ -14,7 +14,7 @@ module Rails4Compatibility
   module Testing
     def process(*args)
       compatible_request(*args) do |*new_args|
-        if Gem::Version.new(RUBY_VERSION) < Gem::Version.new('3.0.0')
+        if Gem.ruby_version < Gem::Version.new('3.0.0')
           super(*new_args)
         else
           super(new_args[0], **new_args[1])
