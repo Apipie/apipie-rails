@@ -3,8 +3,8 @@ source "https://rubygems.org"
 gemspec path: '..'
 
 gem 'rails', '~> 6.0.2'
-gem 'mime-types', '~> 2.99.3'
+gem 'mime-types', '~> 3.0'
 gem 'rails-controller-testing'
-gem 'rspec-rails', '~> 4.0.2'
+gem 'rspec-rails', '~> 5.0'
 
 gem 'test_engine', path: '../spec/dummy/components/test_engine', group: :test
