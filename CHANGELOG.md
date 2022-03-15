@@ -1,7 +1,15 @@
  Changelog
 ===========
+## [v0.5.19](https://github.com/Apipie/apipie-rails/tree/v0.5.19) (2021-07-25)
+[Full Changelog](https://github.com/Apipie/apipie-rails/compare/v0.5.18...v0.5.19)
+* Add rel-eng notebook (Oleh Fedorenko)
+* Correct the word parâmentros for brazilian portuguese [#687](https://github.com/Apipie/apipie-rails/pull/687) (Diego Noronha)
+* Fix depreciated file.exists. [#721](https://github.com/Apipie/apipie-rails/pull/721) (Diane Delallée)
+* Fix typo in changelog [#703](https://github.com/Apipie/apipie-rails/pull/703) (Pavel Rodionov)
+* Add rails 6.1 support in doc generation [#702](https://github.com/Apipie/apipie-rails/pull/702) (andrew-newell)
 
-[v0.5.17](https://github.com/Apipie/apipie-rails/tree/v0.5.18) (2020-05-20)
+
+[v0.5.18](https://github.com/Apipie/apipie-rails/tree/v0.5.18) (2020-05-20)
 --------
 
 [Full Changelog](https://github.com/Apipie/apipie-rails/compare/v0.5.17...v0.5.18)

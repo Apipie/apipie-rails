@@ -387,20 +387,20 @@ Example:
      end
    end
 
-   api :POST, "/users", "Create an user"
+   api :POST, "/users", "Create a user"
    param_group :user
    def create
      # ...
    end
 
-   api :PUT, "/users/:id", "Update an user"
+   api :PUT, "/users/:id", "Update a user"
    param_group :user
    def update
      # ...
    end
 
    # v2/users_controller.rb
-   api :POST, "/users", "Create an user"
+   api :POST, "/users", "Create a user"
    param_group :user, V1::UsersController
    def create
      # ...
@@ -434,7 +434,7 @@ Example
      end
    end
 
-   api :POST, "/users", "Create an user"
+   api :POST, "/users", "Create a user"
    param_group :user
    def create
      # ...
@@ -446,7 +446,7 @@ Example
      # ...
    end
 
-   api :PUT, "/users/:id", "Update an user"
+   api :PUT, "/users/:id", "Update a user"
    param_group :user
    def update
      # ...
