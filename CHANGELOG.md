@@ -1,5 +1,13 @@
  Changelog
 ===========
+## [v0.5.20](https://github.com/Apipie/apipie-rails/tree/v0.5.20) (2022-03-16)
+[Full Changelog](https://github.com/Apipie/apipie-rails/compare/v0.5.19...v0.5.20)
+* Update rel-eng (Oleh Fedorenko)
+* Deprecate travis, run tests on github actions [#740](https://github.com/Apipie/apipie-rails/pull/740) (Mathieu Jobin)
+* Update validator.rb [#739](https://github.com/Apipie/apipie-rails/pull/739) (Dmytro Budnyk)
+* Fix wrong number of arguments for recorder#process [#725](https://github.com/Apipie/apipie-rails/pull/725) (rob mathews)
+* Change "an" to "a" [#723](https://github.com/Apipie/apipie-rails/pull/723) (Naokimi)
+
 ## [v0.5.19](https://github.com/Apipie/apipie-rails/tree/v0.5.19) (2021-07-25)
 [Full Changelog](https://github.com/Apipie/apipie-rails/compare/v0.5.18...v0.5.19)
 * Add rel-eng notebook (Oleh Fedorenko)
