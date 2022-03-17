@@ -16,8 +16,10 @@ jobs:
       fail-fast: false
       matrix:
         ruby:
-          - 2.7
           - 2.6
+          - 2.7
+          - '3.0'
+          - 3.1
         gemfile:
           - Gemfile.rails42
           - Gemfile.rails52 # Min ruby 2.2.2
@@ -26,8 +28,16 @@ jobs:
         exclude:
         - gemfile: Gemfile.rails42
           ruby: 2.7
+        - gemfile: Gemfile.rails42
+          ruby: '3.0'
+        - gemfile: Gemfile.rails42
+          ruby: 3.1
         - gemfile: Gemfile.rails52
           ruby: 2.7
+        - gemfile: Gemfile.rails52
+          ruby: '3.0'
+        - gemfile: Gemfile.rails52
+          ruby: 3.1
 
     env:
       BUNDLE_GEMFILE: ${{ github.workspace }}/gemfiles/${{ matrix.gemfile }}
