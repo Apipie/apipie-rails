@@ -47,6 +47,31 @@ describe Apipie::ApipiesController do
 
       assert_response :not_found
     end
+
+    it "succeeds on method details with a supported language" do
+      allow(Apipie.configuration).to receive(:languages).and_return(%w[en es])
+
+      get :index, :params => { :version => "2.0", :resource => "architectures", :method => "index.es" }
+
+      assert_response :success
+    end
+
+    it "succeeds on method details with the default language" do
+      allow(Apipie.configuration).to receive(:default_locale).and_return("en")
+      allow(Apipie.configuration).to receive(:languages).and_return([])
+
+      get :index, :params => { :version => "2.0", :resource => "architectures", :method => "index.en" }
+
+      assert_response :success
+    end
+
+    it "returns not_found on a method with an unsupported language" do
+      allow(Apipie.configuration).to receive(:languages).and_return(%w[en es])
+
+      get :index, :params => { :version => "2.0", :resource => "architectures", :method => "index.jp" }
+
+      assert_response :not_found
+    end
   end
 
   describe "reload_controllers" do
