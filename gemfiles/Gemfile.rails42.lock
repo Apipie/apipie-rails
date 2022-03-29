@@ -6,7 +6,7 @@ PATH
 PATH
   remote: ..
   specs:
-    apipie-rails (0.5.20)
+    apipie-rails (0.6.0)
       actionpack (>= 4.1)
       activesupport (>= 4.1)
 
@@ -48,10 +48,10 @@ GEM
       nokogiri (>= 1.5.9)
     maruku (0.7.3)
     mime-types (2.99.3)
-    mini_portile2 (2.8.0)
+    mini_portile2 (2.6.1)
     minitest (5.15.0)
-    nokogiri (1.13.3)
-      mini_portile2 (~> 2.8.0)
+    nokogiri (1.12.5)
+      mini_portile2 (~> 2.6.1)
       racc (~> 1.4)
     psych (4.0.3)
       stringio
