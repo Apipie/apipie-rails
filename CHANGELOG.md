@@ -1,6 +1,13 @@
  Changelog
 ===========
 
+## [v0.7.0](https://github.com/Apipie/apipie-rails/tree/v0.7.0) (2022-03-30)
+[Full Changelog](https://github.com/Apipie/apipie-rails/compare/v0.6.0...v0.7.0)
+* ArgumentError (invalid byte sequence in UTF-8) [#746](https://github.com/Apipie/apipie-rails/pull/746) (David Milanese)
+* Fix allow_blank does not work [#733](https://github.com/Apipie/apipie-rails/pull/733) (CHEN Song)
+* Fix schema generation for param descriptions using the array validator in option [#732](https://github.com/Apipie/apipie-rails/pull/732) (Frank Hock)
+* Remove support for Rails 4 and Ruby <= 2.5 [#747](https://github.com/Apipie/apipie-rails/pull/747) (Mathieu Jobin)
+
 ## [v0.6.0](https://github.com/Apipie/apipie-rails/tree/v0.6.0) (2022-03-29)
 [Full Changelog](https://github.com/Apipie/apipie-rails/compare/v0.5.20...v0.6.0)
 * Ruby 3.0 fixes [#716](https://github.com/Apipie/apipie-rails/pull/716) (hank-spokeo)
