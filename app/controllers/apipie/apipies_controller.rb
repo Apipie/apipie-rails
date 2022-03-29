@@ -100,7 +100,7 @@ module Apipie
       [:resource, :method, :version].each do |par|
         if params[par]
           splitted = params[par].split('.')
-          if splitted.length > 1 && Apipie.configuration.languages.include?(splitted.last)
+          if splitted.length > 1 && (Apipie.configuration.languages.include?(splitted.last) || Apipie.configuration.default_locale == splitted.last)
             lang = splitted.last
             params[par].sub!(".#{lang}", '')
           end
