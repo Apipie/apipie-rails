@@ -22,6 +22,8 @@ jobs:
           - 3.1
         gemfile:
           - Gemfile.rails42
+          - Gemfile.rails50
+          - Gemfile.rails51
           - Gemfile.rails52 # Min ruby 2.2.2
           - Gemfile.rails60 # Min ruby 2.5.0
           - Gemfile.rails61 # Min ruby 2.5.0
@@ -31,6 +33,18 @@ jobs:
         - gemfile: Gemfile.rails42
           ruby: '3.0'
         - gemfile: Gemfile.rails42
+          ruby: 3.1
+        - gemfile: Gemfile.rails50
+          ruby: 2.7
+        - gemfile: Gemfile.rails50
+          ruby: '3.0'
+        - gemfile: Gemfile.rails50
+          ruby: 3.1
+        - gemfile: Gemfile.rails51
+          ruby: 2.7
+        - gemfile: Gemfile.rails51
+          ruby: '3.0'
+        - gemfile: Gemfile.rails51
           ruby: 3.1
         - gemfile: Gemfile.rails52
           ruby: 2.7
