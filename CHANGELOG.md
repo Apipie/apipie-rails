@@ -1,5 +1,12 @@
  Changelog
 ===========
+
+## [v0.6.0](https://github.com/Apipie/apipie-rails/tree/v0.6.0) (2022-03-29)
+[Full Changelog](https://github.com/Apipie/apipie-rails/compare/v0.5.20...v0.6.0)
+* Ruby 3.0 fixes [#716](https://github.com/Apipie/apipie-rails/pull/716) (hank-spokeo)
+* only depends on actionpack and activesupport [#741](https://github.com/Apipie/apipie-rails/pull/741) (Mathieu Jobin)
+* language fix, fallback to default locale [#726](https://github.com/Apipie/apipie-rails/pull/726) (Alex Coomans)
+
 ## [v0.5.20](https://github.com/Apipie/apipie-rails/tree/v0.5.20) (2022-03-16)
 [Full Changelog](https://github.com/Apipie/apipie-rails/compare/v0.5.19...v0.5.20)
 * Update rel-eng (Oleh Fedorenko)
