@@ -118,6 +118,10 @@ describe Apipie::ParamDescription do
       it "should not throw an exception when passed false" do
         expect { Apipie::ParamDescription.new(method_desc, :param, :boolean).validate(false) }.to_not raise_error
       end
+
+      it "should throw an exception when passed an empty value" do
+        expect { Apipie::ParamDescription.new(method_desc, :param, :boolean).validate('') }.to raise_error(Apipie::ParamInvalid)
+      end
     end
 
     context 'when the parameter is a string' do
