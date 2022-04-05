@@ -113,6 +113,24 @@ describe Apipie::ParamDescription do
 
   end
 
+  describe 'validate' do
+    context 'when the parameter is a boolean' do
+      it "should not throw an exception when passed false" do
+        expect { Apipie::ParamDescription.new(method_desc, :param, :boolean).validate(false) }.to_not raise_error
+      end
+
+      it "should throw an exception when passed an empty value" do
+        expect { Apipie::ParamDescription.new(method_desc, :param, :boolean).validate('') }.to raise_error(Apipie::ParamInvalid)
+      end
+    end
+
+    context 'when the parameter is a string' do
+      it "should throw an exception when passed an empty value" do
+        expect { Apipie::ParamDescription.new(method_desc, :param, String).validate('') }.to raise_error(Apipie::ParamInvalid)
+      end
+    end
+  end
+
   describe "concern substitution" do
 
     let(:concern_dsl_data) { dsl_data.merge(:from_concern => true) }
