@@ -1654,6 +1654,18 @@ There are several configuration parameters that determine the structure of the g
     If ``true``:  the ``additional-properties: false`` field will not be included in response object descriptions
 
 
+``config:swagger_security_definitions``
+    If the API requires authentication, you can specify details of the authentication mechanisms supported as a (Hash) value here.
+    See [https://swagger.io/docs/specification/2-0/authentication/] for details of what values can be specified
+    By default, no security is defined.
+
+``config.swagger_global_security``
+    If the API requires authentication, you can specify which of the authentication mechanisms are supported by all API operations as an Array of hashes here.
+    This should be used in conjunction with the mechanisms defined by ``swagger_security_definitions``.
+    See [https://swagger.io/docs/specification/2-0/authentication/] for details of what values can be specified
+    By default, no security is defined.
+
+
 Known limitations of the current implementation
 -------------------------------------------------
 * There is currently no way to document the structure and content-type of the data returned from a method
@@ -1663,6 +1675,7 @@ Known limitations of the current implementation
 * It is not possible to leverage all of the parameter type/format capabilities of swagger
 * Only OpenAPI 2.0 is supported
 * Responses are defined inline and not as a $ref
+* It is not possible to specify per-operation security requirements (only global)
 
 ====================================
  Dynamic Swagger generation
