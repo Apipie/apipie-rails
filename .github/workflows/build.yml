@@ -26,6 +26,7 @@ jobs:
           - Gemfile.rails52 # Min ruby 2.2.2
           - Gemfile.rails60 # Min ruby 2.5.0
           - Gemfile.rails61 # Min ruby 2.5.0
+          - Gemfile.rails70 # Min ruby 2.7.0
         exclude:
         - gemfile: Gemfile.rails50
           ruby: 2.7
@@ -45,6 +46,8 @@ jobs:
           ruby: '3.0'
         - gemfile: Gemfile.rails52
           ruby: 3.1
+        - gemfile: Gemfile.rails70
+          ruby: 2.6
 
     env:
       BUNDLE_GEMFILE: ${{ github.workspace }}/gemfiles/${{ matrix.gemfile }}
