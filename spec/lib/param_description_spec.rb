@@ -125,8 +125,20 @@ describe Apipie::ParamDescription do
     end
 
     context 'when the parameter is a string' do
-      it "should throw an exception when passed an empty value" do
-        expect { Apipie::ParamDescription.new(method_desc, :param, String).validate('') }.to raise_error(Apipie::ParamInvalid)
+      context 'when allow_blank is specified as true' do
+        it "should throw an exception when passed an empty value" do
+          expect { Apipie::ParamDescription.new(method_desc, :param, String, allow_blank: true).validate('') }.to_not raise_error
+        end
+      end
+      context 'when allow_blank is specified as false' do
+        it "should throw an exception when passed an empty value" do
+          expect { Apipie::ParamDescription.new(method_desc, :param, String, allow_blank: false).validate('') }.to raise_error(Apipie::ParamInvalid)
+        end
+      end
+      context 'when allow_blank is not specified' do
+        it "should throw an exception when passed an empty value" do
+          expect { Apipie::ParamDescription.new(method_desc, :param, String).validate('') }.to raise_error(Apipie::ParamInvalid)
+        end
       end
     end
   end
