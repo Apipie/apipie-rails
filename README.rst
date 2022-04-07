@@ -966,6 +966,9 @@ validate_presence
 validate_key
   Check the received params to ensure they are defined in the API. (false by default)
 
+action_on_non_validated_keys
+  Either `:raise` or `:skip`. If `validate_key` fails, raise error or delete the non-validated key from the params and log the key (`:raise` by default)
+
 process_params
   Process and extract the parameter defined from the params of the request
   to the api_params variable
