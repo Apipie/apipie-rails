@@ -3,6 +3,7 @@
 
 ## [v0.7.1](https://github.com/Apipie/apipie-rails/tree/v0.7.1) (2022-04-06)
 [Full Changelog](https://github.com/Apipie/apipie-rails/compare/v0.7.0...v0.7.1)
+* Skip extra parameters while validating the keys. [#690](https://github.com/Apipie/apipie-rails/pull/690) (Omkar Joshi)
 * Support defining security mechanisms for Swagger [#711](https://github.com/Apipie/apipie-rails/pull/711) (Dan Leyden)
 * Update boolean handling of false [#749](https://github.com/Apipie/apipie-rails/pull/749) (Colin Bruce)
 
