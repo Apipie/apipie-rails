@@ -8,7 +8,7 @@ module Apipie
       :validate, :validate_value, :validate_presence, :validate_key, :action_on_non_validated_keys, :authenticate, :doc_path,
       :show_all_examples, :process_params, :update_checksum, :checksum_path,
       :link_extension, :record, :languages, :translate, :locale, :default_locale,
-      :persist_show_in_doc, :authorize,
+      :persist_show_in_doc, :authorize, :ignore_allow_blank_false,
       :swagger_include_warning_tags, :swagger_content_type_input, :swagger_json_input_uses_refs,
       :swagger_suppress_warnings, :swagger_api_host, :swagger_generate_x_computed_id_field,
       :swagger_allow_additional_properties_in_response, :swagger_responses_use_refs,
@@ -161,6 +161,7 @@ module Apipie
       @disqus_shortname = nil
       @default_version = "1.0"
       @debug = false
+      @ignore_allow_blank_false = false
       @version_in_url = true
       @namespaced_resources = false
       @doc_path = "doc"
