@@ -1021,6 +1021,10 @@ authorize
 show_all_examples
   Set this to true to set show_in_doc=1 in all recorded examples
 
+ignore_allow_blank_false
+  `allow_blank: false` was incorrectly ignored up until version 0.6.0, this bug was fixed in 0.7.0
+  if you need the old behavior, set this to true
+
 link_extension
   The extension to use for API pages ('.html' by default). Link extensions
   in static API docs cannot be changed from '.html'.
