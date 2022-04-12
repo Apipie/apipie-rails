@@ -10,37 +10,6 @@ require 'rspec/rails'
 require 'apipie-rails'
 require 'test_engine'
 
-module Rails4Compatibility
-  module Testing
-    def process(*args)
-      compatible_request(*args) do |*new_args|
-        if Gem.ruby_version < Gem::Version.new('3.0.0')
-          super(*new_args)
-        else
-          super(new_args[0], **new_args[1])
-        end
-      end
-    end
-
-    def compatible_request(method, action, hash = {})
-      if hash.is_a?(Hash)
-        if Gem::Version.new(Rails.version) < Gem::Version.new('5.0.0')
-          hash = hash.dup
-          hash.merge!(hash.delete(:params) || {})
-        elsif hash.key?(:params)
-          hash = { :params => hash }
-        end
-      end
-      if hash.empty?
-        yield method, action
-      else
-        yield method, action, hash
-      end
-    end
-  end
-end
-
-
 #
 # Matcher to validate the properties (name, type and options) of a single field in the
 # internal representation of a swagger schema
@@ -114,4 +83,3 @@ RSpec.configure do |config|
 end
 
 require 'action_controller/test_case.rb'
-ActionController::TestCase::Behavior.send(:prepend, Rails4Compatibility::Testing)

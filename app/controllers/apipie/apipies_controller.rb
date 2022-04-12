@@ -34,7 +34,7 @@ module Apipie
 
         @language = get_language
 
-        Apipie.load_documentation if Apipie.configuration.reload_controllers? || (Rails.version.to_i >= 4.0 && !Rails.application.config.eager_load)
+        Apipie.load_documentation if Apipie.configuration.reload_controllers? || !Rails.application.config.eager_load
 
         I18n.locale = @language
 
