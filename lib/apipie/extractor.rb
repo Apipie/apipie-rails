@@ -19,14 +19,8 @@ class Apipie::Railtie
     if Apipie.configuration.record
       app.middleware.use ::Apipie::Extractor::Recorder::Middleware
 
-      if Gem::Version.new(Rails.version) < Gem::Version.new('5.0.0')
-        ActionController::TestCase::Behavior.instance_eval do
-          prepend Apipie::Extractor::Recorder::FunctionalTestRecording
-        end
-      else
-        ActionController::TestCase.send(:prepend, Apipie::Extractor::Recorder::FunctionalTestRecording)
-        ActionController::TestCase::Behavior.send(:prepend, Apipie::Extractor::Recorder::FunctionalTestRecording)
-      end
+      ActionController::TestCase.send(:prepend, Apipie::Extractor::Recorder::FunctionalTestRecording)
+      ActionController::TestCase::Behavior.send(:prepend, Apipie::Extractor::Recorder::FunctionalTestRecording)
     end
   end
 end
