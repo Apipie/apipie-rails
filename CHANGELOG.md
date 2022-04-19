@@ -1,6 +1,12 @@
  Changelog
 ===========
 
+## [v0.7.2](https://github.com/Apipie/apipie-rails/tree/v0.7.2) (2022-04-19)
+[Full Changelog](https://github.com/Apipie/apipie-rails/compare/v0.7.1...v0.7.2)
+* Added Korean locale. [#480](https://github.com/Apipie/apipie-rails/pull/480) (Jaehyun Shin ) [#757](https://github.com/Apipie/apipie-rails/pull/757) (Jorge Santos)
+* `Security` Upgraded Bootstrap from 2.0.2 to 2.3.2, JQuery from 1.11.3 to 1.12.4 [#708](https://github.com/Apipie/apipie-rails/pull/708) (Nicolas Waissbluth)
+* Fix ruby2 keyword argument warning [#756](https://github.com/Apipie/apipie-rails/pull/756) (Jorge Santos)
+
 ## [v0.7.1](https://github.com/Apipie/apipie-rails/tree/v0.7.1) (2022-04-06)
 [Full Changelog](https://github.com/Apipie/apipie-rails/compare/v0.7.0...v0.7.1)
 * Skip extra parameters while validating the keys. [#690](https://github.com/Apipie/apipie-rails/pull/690) (Omkar Joshi)
