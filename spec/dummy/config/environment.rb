@@ -1,8 +1,5 @@
-# uncomment this line to test rails relative url root
-# ENV['RAILS_RELATIVE_URL_ROOT'] = '/relative/path'
+# Load the Rails application.
+require_relative "application"
 
-# Load the rails application
-require File.expand_path('../application', __FILE__)
-
-# Initialize the rails application
-Dummy::Application.initialize!
+# Initialize the Rails application.
+Rails.application.initialize!
