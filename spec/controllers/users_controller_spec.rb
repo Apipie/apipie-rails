@@ -124,6 +124,29 @@ describe UsersController do
           end
         end
 
+        context "key validations are enabled and skip on non-validated keys" do
+          before do
+            Apipie.configuration.validate_value = false
+            Apipie.configuration.validate_presence = true
+            Apipie.configuration.validate_key = true
+            Apipie.configuration.action_on_non_validated_keys = :skip
+          end
+
+          it "should reply to valid request" do
+            expect { get :show, :params => { :id => 5, :session => 'secret_hash' }}.not_to raise_error
+            assert_response :success
+          end
+
+          it "should delete the param and not fail if an extra parameter is passed." do
+            expect { get :show, :params => { :id => 5 , :badparam => 'badfoo', :session => "secret_hash" }}.not_to raise_error
+            expect(controller.params.as_json).to eq({"session"=>"secret_hash", "id"=>"5", "controller"=>"users", "action"=>"show"})
+          end
+
+          after do
+            Apipie.configuration.action_on_non_validated_keys = :raise
+          end
+        end
+
         context "presence and value validations are enabled" do
           before do
             Apipie.configuration.validate_value = true

@@ -1,6 +1,24 @@
  Changelog
 ===========
 
+## [v0.7.2](https://github.com/Apipie/apipie-rails/tree/v0.7.2) (2022-04-19)
+[Full Changelog](https://github.com/Apipie/apipie-rails/compare/v0.7.1...v0.7.2)
+* Added Korean locale. [#480](https://github.com/Apipie/apipie-rails/pull/480) (Jaehyun Shin ) [#757](https://github.com/Apipie/apipie-rails/pull/757) (Jorge Santos)
+* `Security` Upgraded Bootstrap from 2.0.2 to 2.3.2, JQuery from 1.11.3 to 1.12.4 [#708](https://github.com/Apipie/apipie-rails/pull/708) (Nicolas Waissbluth)
+* Fix ruby2 keyword argument warning [#756](https://github.com/Apipie/apipie-rails/pull/756) (Jorge Santos)
+
+## [v0.7.1](https://github.com/Apipie/apipie-rails/tree/v0.7.1) (2022-04-06)
+[Full Changelog](https://github.com/Apipie/apipie-rails/compare/v0.7.0...v0.7.1)
+* Skip extra parameters while validating the keys. [#690](https://github.com/Apipie/apipie-rails/pull/690) (Omkar Joshi)
+* Support defining security mechanisms for Swagger [#711](https://github.com/Apipie/apipie-rails/pull/711) (Dan Leyden)
+* Update boolean handling of false [#749](https://github.com/Apipie/apipie-rails/pull/749) (Colin Bruce)
+
+Note: Up until and including v0.6.x, apipie-rails was silently ignoring allow_blank == false on String validation.
+when allow_blank is not specified, it default to false. to allow blank strings, you must specify it as a parameter.
+
+Alternatively, if you want to revert to the previous behavior, you can set this configuration option:
+`Apipie.configuration.ignore_allow_blank_false = true`.
+
 ## [v0.7.0](https://github.com/Apipie/apipie-rails/tree/v0.7.0) (2022-03-30)
 [Full Changelog](https://github.com/Apipie/apipie-rails/compare/v0.6.0...v0.7.0)
 * ArgumentError (invalid byte sequence in UTF-8) [#746](https://github.com/Apipie/apipie-rails/pull/746) (David Milanese)

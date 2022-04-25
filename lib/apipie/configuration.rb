@@ -5,14 +5,14 @@ module Apipie
       :markup, :disqus_shortname,
       :api_base_url, :doc_base_url, :required_by_default, :layout,
       :default_version, :debug, :version_in_url, :namespaced_resources,
-      :validate, :validate_value, :validate_presence, :validate_key, :authenticate, :doc_path,
+      :validate, :validate_value, :validate_presence, :validate_key, :action_on_non_validated_keys, :authenticate, :doc_path,
       :show_all_examples, :process_params, :update_checksum, :checksum_path,
       :link_extension, :record, :languages, :translate, :locale, :default_locale,
-      :persist_show_in_doc, :authorize,
+      :persist_show_in_doc, :authorize, :ignore_allow_blank_false,
       :swagger_include_warning_tags, :swagger_content_type_input, :swagger_json_input_uses_refs,
       :swagger_suppress_warnings, :swagger_api_host, :swagger_generate_x_computed_id_field,
       :swagger_allow_additional_properties_in_response, :swagger_responses_use_refs,
-      :swagger_schemes
+      :swagger_schemes, :swagger_security_definitions, :swagger_global_security
 
     alias_method :validate?, :validate
     alias_method :required_by_default?, :required_by_default
@@ -153,6 +153,7 @@ module Apipie
       @validate_value = true
       @validate_presence = true
       @validate_key = false
+      @action_on_non_validated_keys = :raise
       @required_by_default = false
       @api_base_url = HashWithIndifferentAccess.new
       @doc_base_url = "/apipie"
@@ -160,6 +161,7 @@ module Apipie
       @disqus_shortname = nil
       @default_version = "1.0"
       @debug = false
+      @ignore_allow_blank_false = false
       @version_in_url = true
       @namespaced_resources = false
       @doc_path = "doc"
@@ -183,6 +185,8 @@ module Apipie
       @swagger_allow_additional_properties_in_response = false
       @swagger_responses_use_refs = true
       @swagger_schemes = [:https]
+      @swagger_security_definitions = {}
+      @swagger_global_security = []
     end
   end
 end
