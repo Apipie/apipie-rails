@@ -41,7 +41,7 @@ module Dummy
     config.filter_parameters += [:password]
 
     config.to_prepare do
-      ExtendedController.send(:include, Concerns::ExtendingConcern)
+      ExtendedController.send(:include, ExtendingConcern)
     end
   end
 end

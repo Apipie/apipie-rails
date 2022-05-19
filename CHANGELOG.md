@@ -1,6 +1,9 @@
  Changelog
 ===========
 
+Also deleted the `Gemfile` that was now a broken symlink.
+please use `export BUNDLE_GEMFILE='gemfiles/Gemfile.rails61'; bundle exec rspec` to run the test suite
+
 ## [v0.7.2](https://github.com/Apipie/apipie-rails/tree/v0.7.2) (2022-04-19)
 [Full Changelog](https://github.com/Apipie/apipie-rails/compare/v0.7.1...v0.7.2)
 * Added Korean locale. [#480](https://github.com/Apipie/apipie-rails/pull/480) (Jaehyun Shin ) [#757](https://github.com/Apipie/apipie-rails/pull/757) (Jorge Santos)
