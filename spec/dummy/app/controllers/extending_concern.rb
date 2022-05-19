@@ -1,4 +1,3 @@
-module Concerns
   module ExtendingConcern
     extend Apipie::DSL::Concern
 
@@ -9,4 +8,3 @@ module Concerns
       meta metadata: 'data'
     end
   end
-end
