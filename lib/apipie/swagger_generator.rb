@@ -73,6 +73,7 @@ module Apipie
           consumes: [],
           paths: {},
           definitions: {},
+          schemes: Apipie.configuration.swagger_schemes,
           tags: [],
           securityDefinitions: Apipie.configuration.swagger_security_definitions,
           security: Apipie.configuration.swagger_global_security
