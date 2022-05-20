@@ -73,7 +73,10 @@ module Apipie
           consumes: [],
           paths: {},
           definitions: {},
+          schemes: Apipie.configuration.swagger_schemes,
           tags: [],
+          securityDefinitions: Apipie.configuration.swagger_security_definitions,
+          security: Apipie.configuration.swagger_global_security
       }
 
       if Apipie.configuration.swagger_api_host
@@ -483,6 +486,9 @@ module Apipie
         else
           swagger_def[:items] = {type: "string"}
         end
+
+        enum = param_desc.options.fetch(:in, [])
+        swagger_def[:items][:enum] = enum if enum.any?
       end
 
       if swagger_def[:type] == "enum"
@@ -511,7 +517,8 @@ module Apipie
       end
 
       if !in_schema
-        swagger_def[:in] = param_desc.options.fetch(:in, @default_value_for_param_in)
+        # the "name" and "in" keys can only be set on root parameters (non-nested)
+        swagger_def[:in] = @default_value_for_param_in if name.present?
         swagger_def[:required] = param_desc.required if param_desc.required
       end
 

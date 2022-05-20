@@ -40,8 +40,10 @@ module Apipie
       flatten_routes = []
 
       route_set.routes.each do |route|
-        # This is a hack to workaround a bug in apipie with Rails 4.2.5.1 or newer. See https://github.com/Apipie/apipie-rails/issues/415
-        route_app = Rails::VERSION::STRING.to_f >= 4.2 ? route.app.app : route.app
+        # route is_a ActionDispatch::Journey::Route
+        # route.app is_a ActionDispatch::Routing::Mapper::Constraints
+        # route.app.app is_a TestEngine::Engine
+        route_app = route.app.app
         if route_app.respond_to?(:routes) && route_app.routes.is_a?(ActionDispatch::Routing::RouteSet)
           # recursively go though the mounted engines
           flatten_routes.concat(rails_routes(route_app.routes, File.join(base_url, route.path.spec.to_s)))
@@ -456,10 +458,10 @@ module Apipie
     # as this would break loading of the controllers.
     def rails_mark_classes_for_reload
       unless Rails.application.config.cache_classes
-        Rails::VERSION::MAJOR == 4 ? ActionDispatch::Reloader.cleanup! : Rails.application.reloader.reload!
+        Rails.application.reloader.reload!
         init_env
         reload_examples
-        Rails::VERSION::MAJOR == 4 ? ActionDispatch::Reloader.prepare! : Rails.application.reloader.prepare!
+        Rails.application.reloader.prepare!
       end
     end
 

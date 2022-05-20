@@ -3,7 +3,7 @@ module Apipie
 
   module Validator
 
-    # to create new validator, inherit from Apipie::Validator::Base
+    # to create new validator, inherit from Apipie::Validator::BaseValidator
     # and implement class method build and instance method validate
     class BaseValidator
 

@@ -23,7 +23,3 @@ require "apipie/railtie"
 require 'apipie/extractor'
 require "apipie/version"
 require "apipie/swagger_generator"
-
-if Rails.version.start_with?("3.0")
-  warn 'Warning: apipie-rails is not going to support Rails 3.0 anymore in future versions'
-end

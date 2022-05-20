@@ -1,4 +1,3 @@
-module Concerns
   module SampleController
     extend Apipie::DSL::Concern
 
@@ -38,4 +37,3 @@ module Concerns
       render :plain => "OK #{params.inspect}"
     end
   end
-end

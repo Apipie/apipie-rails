@@ -10,13 +10,14 @@ Gem::Specification.new do |s|
   s.homepage    = "http://github.com/Apipie/apipie-rails"
   s.summary     = %q{Rails REST API documentation tool}
   s.description = %q{Rails REST API documentation tool}
-  s.required_ruby_version = '>= 2.0.0'
+  s.required_ruby_version = '>= 2.6.0'
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.require_paths = ["lib"]
 
-  s.add_dependency "rails", ">= 4.1"
+  s.add_dependency "actionpack", ">= 5.0"
+  s.add_dependency "activesupport", ">= 5.0"
   s.add_development_dependency "rspec-rails", "~> 3.0"
   s.add_development_dependency "sqlite3"
   s.add_development_dependency "minitest"

@@ -34,7 +34,7 @@ module Apipie
 
         @language = get_language
 
-        Apipie.load_documentation if Apipie.configuration.reload_controllers? || (Rails.version.to_i >= 4.0 && !Rails.application.config.eager_load)
+        Apipie.load_documentation if Apipie.configuration.reload_controllers? || !Rails.application.config.eager_load
 
         I18n.locale = @language
 
@@ -100,7 +100,7 @@ module Apipie
       [:resource, :method, :version].each do |par|
         if params[par]
           splitted = params[par].split('.')
-          if splitted.length > 1 && Apipie.configuration.languages.include?(splitted.last)
+          if splitted.length > 1 && (Apipie.configuration.languages.include?(splitted.last) || Apipie.configuration.default_locale == splitted.last)
             lang = splitted.last
             params[par].sub!(".#{lang}", '')
           end

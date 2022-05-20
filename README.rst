@@ -387,20 +387,20 @@ Example:
      end
    end
 
-   api :POST, "/users", "Create an user"
+   api :POST, "/users", "Create a user"
    param_group :user
    def create
      # ...
    end
 
-   api :PUT, "/users/:id", "Update an user"
+   api :PUT, "/users/:id", "Update a user"
    param_group :user
    def update
      # ...
    end
 
    # v2/users_controller.rb
-   api :POST, "/users", "Create an user"
+   api :POST, "/users", "Create a user"
    param_group :user, V1::UsersController
    def create
      # ...
@@ -434,7 +434,7 @@ Example
      end
    end
 
-   api :POST, "/users", "Create an user"
+   api :POST, "/users", "Create a user"
    param_group :user
    def create
      # ...
@@ -446,7 +446,7 @@ Example
      # ...
    end
 
-   api :PUT, "/users/:id", "Update an user"
+   api :PUT, "/users/:id", "Update a user"
    param_group :user
    def update
      # ...
@@ -966,6 +966,9 @@ validate_presence
 validate_key
   Check the received params to ensure they are defined in the API. (false by default)
 
+action_on_non_validated_keys
+  Either `:raise` or `:skip`. If `validate_key` fails, raise error or delete the non-validated key from the params and log the key (`:raise` by default)
+
 process_params
   Process and extract the parameter defined from the params of the request
   to the api_params variable
@@ -1020,6 +1023,10 @@ authorize
 
 show_all_examples
   Set this to true to set show_in_doc=1 in all recorded examples
+
+ignore_allow_blank_false
+  `allow_blank: false` was incorrectly ignored up until version 0.6.0, this bug was fixed in 0.7.0
+  if you need the old behavior, set this to true
 
 link_extension
   The extension to use for API pages ('.html' by default). Link extensions
@@ -1653,6 +1660,23 @@ There are several configuration parameters that determine the structure of the g
 
     If ``true``:  the ``additional-properties: false`` field will not be included in response object descriptions
 
+``config.swagger_schemes``
+    An array of transport schemes that the API supports.
+    This can include any combination of ``http``, ``https``, ``ws`` and ``wss``.
+    By default to encourage good security practices, ``['https']`` is specified.
+
+
+``config:swagger_security_definitions``
+    If the API requires authentication, you can specify details of the authentication mechanisms supported as a (Hash) value here.
+    See [https://swagger.io/docs/specification/2-0/authentication/] for details of what values can be specified
+    By default, no security is defined.
+
+``config.swagger_global_security``
+    If the API requires authentication, you can specify which of the authentication mechanisms are supported by all API operations as an Array of hashes here.
+    This should be used in conjunction with the mechanisms defined by ``swagger_security_definitions``.
+    See [https://swagger.io/docs/specification/2-0/authentication/] for details of what values can be specified
+    By default, no security is defined.
+
 
 Known limitations of the current implementation
 -------------------------------------------------
@@ -1663,6 +1687,7 @@ Known limitations of the current implementation
 * It is not possible to leverage all of the parameter type/format capabilities of swagger
 * Only OpenAPI 2.0 is supported
 * Responses are defined inline and not as a $ref
+* It is not possible to specify per-operation security requirements (only global)
 
 ====================================
  Dynamic Swagger generation
