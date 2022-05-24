@@ -4,6 +4,14 @@
 Also deleted the `Gemfile` that was now a broken symlink.
 please use `export BUNDLE_GEMFILE='gemfiles/Gemfile.rails61'; bundle exec rspec` to run the test suite
 
+## [v0.8.0](https://github.com/Apipie/apipie-rails/tree/v0.8.0) (2022-05-24)
+[Full Changelog](https://github.com/Apipie/apipie-rails/compare/v0.7.2...v0.8.0)
+* Add support for scheme definition in Swagger docs. [#710](https://github.com/Apipie/apipie-rails/pull/710) (Dan Leyden)
+* Add support for Rails 7 [#760](https://github.com/Apipie/apipie-rails/pull/760) (Mathieu Jobin)
+* Clean up code base, removing all trace of unsupported Rails 4.x [#752](https://github.com/Apipie/apipie-rails/pull/752) (Mathieu Jobin)
+* fix: Controller resource set before version [#744](https://github.com/Apipie/apipie-rails/pull/744) (LuukvH)
+* fix: enable swagger generator to add referenced schema for an array of hashes param [#689](https://github.com/Apipie/apipie-rails/pull/689) (Francis San Juan)
+
 ## [v0.7.2](https://github.com/Apipie/apipie-rails/tree/v0.7.2) (2022-04-19)
 [Full Changelog](https://github.com/Apipie/apipie-rails/compare/v0.7.1...v0.7.2)
 * Added Korean locale. [#480](https://github.com/Apipie/apipie-rails/pull/480) (Jaehyun Shin ) [#757](https://github.com/Apipie/apipie-rails/pull/757) (Jorge Santos)
