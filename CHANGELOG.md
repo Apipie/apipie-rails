@@ -4,6 +4,10 @@
 Also deleted the `Gemfile` that was now a broken symlink.
 please use `export BUNDLE_GEMFILE='gemfiles/Gemfile.rails61'; bundle exec rspec` to run the test suite
 
+## [v0.8.1](https://github.com/Apipie/apipie-rails/tree/v0.8.1) (2022-05-26)
+[Full Changelog](https://github.com/Apipie/apipie-rails/compare/v0.8.0...v0.8.1)
+* Remove warning that came back as of [#752](https://github.com/Apipie/apipie-rails/pull/752). [#761](https://github.com/Apipie/apipie-rails/pull/761) (Jorge Santos / Mathieu Jobin)
+
 ## [v0.8.0](https://github.com/Apipie/apipie-rails/tree/v0.8.0) (2022-05-24)
 [Full Changelog](https://github.com/Apipie/apipie-rails/compare/v0.7.2...v0.8.0)
 * Add support for scheme definition in Swagger docs. [#710](https://github.com/Apipie/apipie-rails/pull/710) (Dan Leyden)
