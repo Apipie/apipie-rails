@@ -1876,16 +1876,16 @@ And if you write one on your own, don't hesitate to share it with us!
  Contributing
 ====================
 
-Install dependencies:
+Since this gem does not have a Gemfile, you need to specify it in your shel with:
 
 .. code:: shell
-   > bundle install --gemfile gemfiles/Gemfile.rails61
+   BUNDLE_GEMFILE='gemfiles/Gemfile.rails61'
 
-Then run the tests:
+Then, you can install dependencies and run the test suite:
 
 .. code:: shell
-   > export BUNDLE_GEMFILE='gemfiles/Gemfile.rails61'; bundle exec rspec
-
+   > bundle install
+   > bundle exec rspec
 
 ====================
  Disqus Integration
