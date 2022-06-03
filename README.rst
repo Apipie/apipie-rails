@@ -1872,6 +1872,20 @@ provided it uses Apipie as a backend.
 
 And if you write one on your own, don't hesitate to share it with us!
 
+====================
+ Contributing
+====================
+
+Install dependencies:
+
+.. code:: shell
+   > bundle install --gemfile gemfiles/Gemfile.rails61
+
+Then run the tests:
+
+.. code:: shell
+   > export BUNDLE_GEMFILE='gemfiles/Gemfile.rails61'; bundle exec rspec
+
 
 ====================
  Disqus Integration
