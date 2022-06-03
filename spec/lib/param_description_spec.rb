@@ -157,8 +157,26 @@ describe Apipie::ParamDescription do
         expect { Apipie::ParamDescription.new(method_desc, :param, :boolean).validate(false) }.to_not raise_error
       end
 
+      it "should still not throw an exception when passed false with explicit allow_blank: false" do
+        expect { Apipie::ParamDescription.new(method_desc, :param, :boolean, allow_blank: false).validate(false) }.to_not raise_error
+      end
+
       it "should throw an exception when passed an empty value" do
         expect { Apipie::ParamDescription.new(method_desc, :param, :boolean).validate('') }.to raise_error(Apipie::ParamInvalid)
+      end
+    end
+
+    context "when the parameter is a custom type with ignore_allow_blank? returning true" do
+      it "should not throw an exception when passed a blank but valid value" do
+        expect { Apipie::ParamDescription.new(method_desc, :param, :custom_bool).validate(false) }.to_not raise_error
+      end
+
+      it "should still not throw an exception when passed false with explicit allow_blank: false" do
+        expect { Apipie::ParamDescription.new(method_desc, :param, :custom_bool, allow_blank: false).validate(false) }.to_not raise_error
+      end
+
+      it "should throw an exception when passed an invalid but blank value" do
+        expect { Apipie::ParamDescription.new(method_desc, :param, :custom_bool).validate("") }.to raise_error(Apipie::ParamInvalid)
       end
     end
 

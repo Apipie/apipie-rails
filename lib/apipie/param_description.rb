@@ -125,7 +125,7 @@ module Apipie
     end
 
     def blank_forbidden?
-      !Apipie.configuration.ignore_allow_blank_false && !allow_blank && !validator.is_a?(Validator::BooleanValidator)
+      !Apipie.configuration.ignore_allow_blank_false && !allow_blank && !validator.ignore_allow_blank?
     end
 
     def process_value(value)
