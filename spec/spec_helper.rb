@@ -1,6 +1,10 @@
 require 'rubygems'
 require 'bundler/setup'
 
+require 'simplecov'
+SimpleCov.minimum_coverage 89
+SimpleCov.start
+
 ENV["RAILS_ENV"] ||= 'test'
 APIPIE_ROOT = File.expand_path('../..', __FILE__)
 require File.expand_path("../dummy/config/environment", __FILE__)
