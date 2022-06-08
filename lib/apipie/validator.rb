@@ -80,6 +80,10 @@ module Apipie
         'string'
       end
 
+      def ignore_allow_blank?
+        false
+      end
+
       def merge_with(other_validator)
         return self if self == other_validator
         raise NotImplementedError, "Don't know how to merge #{self.inspect} with #{other_validator.inspect}"
@@ -476,6 +480,10 @@ module Apipie
       def description
         string = %w(true false 1 0).map { |value| format_description_value(value) }.join(', ')
         "Must be one of: #{string}."
+      end
+
+      def ignore_allow_blank?
+        true
       end
     end
 

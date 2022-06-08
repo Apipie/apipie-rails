@@ -1385,6 +1385,15 @@ options
 block
   Block converted into Proc, use it as you desire. In this example nil.
 
+If your validator includes valid values that respond true to `.blank?`, you
+should also define:
+
+.. code:: ruby
+   def ignore_allow_blank?
+     true
+   end
+
+so that the validation does not fail for valid values.
 
 ============
  Versioning
