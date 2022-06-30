@@ -1389,6 +1389,7 @@ If your validator includes valid values that respond true to `.blank?`, you
 should also define:
 
 .. code:: ruby
+
    def ignore_allow_blank?
      true
    end
