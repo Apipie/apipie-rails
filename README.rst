@@ -1368,6 +1368,10 @@ So we create apipie_validators.rb initializer with this content:
      def description
        "Must be #{@type}."
      end
+
+     def expected_type
+       'numeric'
+     end
    end
 
 Parameters of the build method:
