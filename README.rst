@@ -1160,6 +1160,7 @@ Here is an example of how to rescue and process a +ParamMissing+ or
 +ParamInvalid+ error from within the ApplicationController.
 
 .. code:: ruby
+  
   class ApplicationController < ActionController::Base
 
     # ParamError is superclass of ParamMissing, ParamInvalid
