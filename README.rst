@@ -1156,6 +1156,21 @@ is raised and can be rescued and processed. It contains a description
 of the parameter value expectations. Validations can be turned off
 in the configuration file.
 
+Here is an example of how to rescue and process a +ParamMissing+ or
++ParamInvalid+ error from within the ApplicationController.
+
+.. code:: ruby
+  
+  class ApplicationController < ActionController::Base
+
+    # ParamError is superclass of ParamMissing, ParamInvalid
+    rescue_from Apipie::ParamError do |e|
+      render text: e.message, status: :unprocessable_entity
+    end
+
+    # ...
+  end
+
 Parameter validation normally happens after before_actions, just before
 your controller method is invoked. If you prefer to control when parameter
 validation occurs, set the configuration parameter ``validate`` to ``:explicitly``.
