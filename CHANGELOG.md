@@ -4,6 +4,16 @@
 Also deleted the `Gemfile` that was now a broken symlink.
 please use `export BUNDLE_GEMFILE='gemfiles/Gemfile.rails61'; bundle exec rspec` to run the test suite
 
+## [v0.8.2](https://github.com/Apipie/apipie-rails/tree/v0.8.2) (2022-09-03)
+[Full Changelog](https://github.com/Apipie/apipie-rails/compare/v0.8.1...v0.8.2)
+* Allow custom validators to opt out of allow_blank behavior [#762](https://github.com/Apipie/apipie-rails/pull/762).  (Stephen Hanson)
+* Enforce test coverage, set current 89% as minimum [#764](https://github.com/Apipie/apipie-rails/pull/764). (Mathieu Jobin)
+* Add contributing instructions to readme [#763](https://github.com/Apipie/apipie-rails/pull/763).  (Stephen Hanson)
+* Fix readme formatting [#765](https://github.com/Apipie/apipie-rails/pull/765).  (Stephen Hanson)
+* Adds expected_type to IntegerValidator example [#769](https://github.com/Apipie/apipie-rails/pull/769).  (Jeremy Liberman)
+* Update readme with error handling example [#768](https://github.com/Apipie/apipie-rails/pull/768).  (Jesse Eisenberg)
+* Fix scope incorrectly set to nil when a param_group is used inside an array_of_hash and the param_group is in a different module / controller. [#693](https://github.com/Apipie/apipie-rails/pull/693) [#774](https://github.com/Apipie/apipie-rails/pull/774).  (Omkar Joshi / Oliver Iyer)
+
 ## [v0.8.1](https://github.com/Apipie/apipie-rails/tree/v0.8.1) (2022-05-26)
 [Full Changelog](https://github.com/Apipie/apipie-rails/compare/v0.8.0...v0.8.1)
 * Remove warning that came back as of [#752](https://github.com/Apipie/apipie-rails/pull/752). [#761](https://github.com/Apipie/apipie-rails/pull/761) (Jorge Santos / Mathieu Jobin)
