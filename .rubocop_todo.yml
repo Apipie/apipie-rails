@@ -1123,13 +1123,6 @@ RSpec/RepeatedExampleGroupDescription:
     - 'spec/controllers/apipies_controller_spec.rb'
     - 'spec/lib/application_spec.rb'
 
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: and_return, block
-RSpec/ReturnFromStub:
-  Exclude:
-    - 'spec/lib/application_spec.rb'
 
 # Offense count: 2
 RSpec/StubbedMock:
