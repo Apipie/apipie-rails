@@ -1,0 +1,37 @@
+require:
+  - rubocop-rails
+  - rubocop-rspec
+  - rubocop-performance
+
+inherit_from: .rubocop_todo.yml
+
+Rails:
+  Enabled: true
+
+AllCops:
+  NewCops: enable
+
+Layout/LineLength:
+  Max: 140
+  Exclude:
+    - app/controllers/apipie/apipies_controller.rb
+    - lib/apipie/extractor/writer.rb
+    - lib/apipie/param_description.rb
+    - lib/apipie/response_description_adapter.rb
+    - lib/apipie/swagger_generator.rb
+    - lib/apipie/errors.rb
+    - lib/apipie/rspec/response_validation_helper.rb
+    - spec/controllers/users_controller_spec.rb
+    - spec/dummy/app/controllers/twitter_example_controller.rb
+    - spec/dummy/config/initializers/secret_token.rb
+    - spec/lib/application_spec.rb
+    - spec/lib/param_description_spec.rb
+    - spec/lib/swagger/response_validation_spec.rb
+    - spec/spec_helper.rb
+
+Naming/PredicateName:
+  AllowedMethods:
+    - have_field?
+
+Style/NumericPredicate:
+  Enabled: false
