@@ -2,8 +2,8 @@
  API Documentation Tool
 ========================
 
-.. image:: https://travis-ci.org/Apipie/apipie-rails.svg?branch=master
-    :target: https://travis-ci.org/Apipie/apipie-rails
+.. image:: https://github.com/Apipie/apipie-rails/actions/workflows/build.yml/badge.svg
+    :target: https://github.com/Apipie/apipie-rails/actions/workflows/build.yml
 .. image:: https://codeclimate.com/github/Apipie/apipie-rails.svg
     :target: https://codeclimate.com/github/Apipie/apipie-rails
 .. image:: https://badges.gitter.im/Apipie/apipie-rails.svg
