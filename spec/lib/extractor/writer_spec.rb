@@ -6,7 +6,8 @@ describe Apipie::Extractor::Writer do
   let(:writer_class) { Apipie::Extractor::Writer }
   let(:writer) { writer_class.new(collector) }
   let(:test_examples_file) { File.join(Rails.root, "doc", "apipie_examples_test.json") }
-  let(:records) { {
+  let(:records) {
+    {
     "concern_resources#show" =>
       [{
         :controller=>ConcernsController,
@@ -31,7 +32,8 @@ describe Apipie::Extractor::Writer do
       }]
     }
   }
-  let(:loaded_records) { {
+  let(:loaded_records) {
+    {
     "concern_resources#show" =>
       [{
         "verb"=>:GET,

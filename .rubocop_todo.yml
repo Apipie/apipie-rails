@@ -310,11 +310,6 @@ Layout/MultilineArrayBraceLayout:
     - 'spec/controllers/users_controller_spec.rb'
     - 'spec/lib/swagger/swagger_dsl_spec.rb'
 
-# Offense count: 2
-# This cop supports safe autocorrection (--autocorrect).
-Layout/MultilineBlockLayout:
-  Exclude:
-    - 'spec/lib/extractor/writer_spec.rb'
 
 # Offense count: 5
 # This cop supports safe autocorrection (--autocorrect).
