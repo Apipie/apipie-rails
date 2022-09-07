@@ -1,9 +1,9 @@
 require 'spec_helper'
 require "json-schema"
 
-require File.expand_path("../../../dummy/app/controllers/twitter_example_controller.rb", __FILE__)
-require File.expand_path("../../../dummy/app/controllers/users_controller.rb", __FILE__)
-require File.expand_path("../../../dummy/app/controllers/pets_controller.rb", __FILE__)
+require File.expand_path('../../dummy/app/controllers/twitter_example_controller.rb', __dir__)
+require File.expand_path('../../dummy/app/controllers/users_controller.rb', __dir__)
+require File.expand_path('../../dummy/app/controllers/pets_controller.rb', __dir__)
 
 describe 'rake tasks' do
   include_context "rake"
