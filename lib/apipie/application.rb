@@ -147,7 +147,7 @@ module Apipie
 
     def get_param_group(controller, name)
       key = "#{controller.name}##{name}"
-      if @param_groups.has_key?(key)
+      if @param_groups.key?(key)
         return @param_groups[key]
       else
         raise "param group #{key} not defined"
@@ -198,7 +198,7 @@ module Apipie
           version = crumbs.first
         end
         version ||= Apipie.configuration.default_version
-        if @resource_descriptions.has_key?(version)
+        if @resource_descriptions.key?(version)
           return @resource_descriptions[version][crumbs.last]
         end
       else
@@ -373,7 +373,7 @@ module Apipie
     def get_resource_name(klass)
       if klass.class == String
         klass
-      elsif @controller_to_resource_id.has_key?(klass)
+      elsif @controller_to_resource_id.key?(klass)
         @controller_to_resource_id[klass]
       elsif Apipie.configuration.namespaced_resources? && klass.respond_to?(:controller_path)
         return nil if klass == ActionController::Base
@@ -408,9 +408,9 @@ module Apipie
     # Make sure that the version/resource_name/method_name are valid combination
     # resource_name and method_name can be nil
     def valid_search_args?(version, resource_name, method_name)
-      return false unless self.resource_descriptions.has_key?(version)
+      return false unless self.resource_descriptions.key?(version)
       if resource_name
-        return false unless self.resource_descriptions[version].has_key?(resource_name)
+        return false unless self.resource_descriptions[version].key?(resource_name)
         if method_name
           resource_description = self.resource_descriptions[version][resource_name]
           return false unless resource_description.valid_method_name?(method_name)

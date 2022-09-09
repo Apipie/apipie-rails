@@ -1723,21 +1723,6 @@ Style/PerlBackrefs:
   Exclude:
     - 'lib/apipie/extractor.rb'
 
-# Offense count: 27
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: short, verbose
-Style/PreferredHashMethods:
-  Exclude:
-    - 'lib/apipie/apipie_module.rb'
-    - 'lib/apipie/application.rb'
-    - 'lib/apipie/dsl_definition.rb'
-    - 'lib/apipie/extractor/writer.rb'
-    - 'lib/apipie/method_description.rb'
-    - 'lib/apipie/param_description.rb'
-    - 'lib/apipie/resource_description.rb'
-    - 'lib/apipie/validator.rb'
-    - 'spec/lib/param_group_spec.rb'
 
 # Offense count: 5
 # This cop supports safe autocorrection (--autocorrect).

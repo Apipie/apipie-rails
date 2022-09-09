@@ -103,7 +103,7 @@ module Apipie
         call = call.stringify_keys
         ordered_call = OrderedHash.new
         %w[title verb path versions query request_data response_data code show_in_doc recorded].each do |k|
-          next unless call.has_key?(k)
+          next unless call.key?(k)
           ordered_call[k] = case call[k]
                      when ActiveSupport::HashWithIndifferentAccess
                        convert_file_value(call[k]).to_hash
@@ -134,8 +134,8 @@ module Apipie
         old_examples = self.load_recorded_examples
         merged_examples = []
         (new_examples.keys + old_examples.keys).uniq.each do |key|
-          if new_examples.has_key?(key)
-            if old_examples.has_key?(key)
+          if new_examples.key?(key)
+            if old_examples.key?(key)
               records = deep_merge_examples(new_examples[key], old_examples[key])
             else
               records = new_examples[key]

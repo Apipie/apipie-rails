@@ -71,7 +71,7 @@ module Apipie
     end
 
     def remove_method_description(method_name)
-      if @_methods.has_key?(method_name)
+      if @_methods.key?(method_name)
         @_methods.delete(method_name)
       end
     end

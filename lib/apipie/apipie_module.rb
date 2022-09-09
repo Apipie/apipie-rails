@@ -70,11 +70,11 @@ module Apipie
   end
 
   def self.app_info_version_valid?(version)
-    version && self.configuration.app_info.has_key?(version)
+    version && self.configuration.app_info.key?(version)
   end
 
   def self.api_base_url_version_valid?(version)
-    version && self.configuration.api_base_url.has_key?(version)
+    version && self.configuration.api_base_url.key?(version)
   end
 
   def self.record(record)
