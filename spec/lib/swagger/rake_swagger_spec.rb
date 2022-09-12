@@ -72,9 +72,8 @@ describe 'rake tasks' do
       body = params.select {|p| p if p["name"]=="body"}[0]
       schema_properties = body["schema"]["properties"]
       # print JSON.pretty_generate(schema_properties)
-      param = (schema_properties.select {|k,v| v if k == param_name })[param_name]
+      (schema_properties.select {|k,v| v if k == param_name })[param_name]
       # print JSON.pretty_generate(param)
-      param
     end
 
     def expect_body_param_def(http_method, path, param_name, field, value)

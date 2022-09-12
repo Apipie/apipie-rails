@@ -1776,11 +1776,6 @@ Style/RedundantArgument:
   Exclude:
     - 'lib/apipie/param_description.rb'
 
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-Style/RedundantAssignment:
-  Exclude:
-    - 'spec/lib/swagger/rake_swagger_spec.rb'
 
 # Offense count: 1
 # This cop supports safe autocorrection (--autocorrect).
