@@ -323,7 +323,7 @@ module Apipie
           desc ||= case @action.to_s
                    when "show", "create", "update", "destroy"
                      name = name.singularize
-                     "#{@action.capitalize} #{name =~ /^[aeiou]/ ? "an" : "a"} #{name}"
+                     "#{@action.capitalize} #{name =~ /^[aeiou]/ ? 'an' : 'a'} #{name}"
                    when "index"
                      "List #{name}"
                    end
