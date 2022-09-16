@@ -170,10 +170,6 @@ module Apipie
       end
     end
 
-    def see
-      @see
-    end
-
     def formats
       @formats || @resource._formats
     end
