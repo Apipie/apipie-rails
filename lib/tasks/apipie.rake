@@ -166,10 +166,10 @@ namespace :apipie do
   def renderer
     return @apipie_renderer if @apipie_renderer
 
-    base_paths = [File.expand_path("../../../app/views/apipie/apipies", __FILE__)]
+    base_paths = [File.expand_path('../../app/views/apipie/apipies', __dir__)]
     base_paths.unshift("#{Rails.root}/app/views/apipie/apipies") if File.directory?("#{Rails.root}/app/views/apipie/apipies")
 
-    layouts_paths = [File.expand_path("../../../app/views/layouts", __FILE__)]
+    layouts_paths = [File.expand_path('../../app/views/layouts', __dir__)]
     layouts_paths.unshift("#{Rails.root}/app/views/layouts") if File.directory?("#{Rails.root}/app/views/layouts/apipie")
 
     if ActionView::Base.respond_to?(:with_empty_template_cache) && ActionView::Base.respond_to?(:with_view_paths)
