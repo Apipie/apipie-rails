@@ -6,8 +6,8 @@ SimpleCov.minimum_coverage 89
 SimpleCov.start
 
 ENV["RAILS_ENV"] ||= 'test'
-APIPIE_ROOT = File.expand_path('../..', __FILE__)
-require File.expand_path("../dummy/config/environment", __FILE__)
+APIPIE_ROOT = File.expand_path('..', __dir__)
+require File.expand_path('dummy/config/environment', __dir__)
 
 require 'rspec/rails'
 
@@ -55,7 +55,7 @@ end
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
-Dir[File.expand_path("../support/**/*.rb", __FILE__)].each {|f| require f}
+Dir[File.expand_path('support/**/*.rb', __dir__)].each {|f| require f}
 
 RSpec.configure do |config|
 
