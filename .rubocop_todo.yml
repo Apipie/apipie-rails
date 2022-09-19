@@ -1693,13 +1693,6 @@ Style/ParallelAssignment:
     - 'lib/apipie/extractor.rb'
     - 'lib/apipie/extractor/recorder.rb'
 
-# Offense count: 2
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: AllowSafeAssignment, AllowInMultilineConditions.
-Style/ParenthesesAroundCondition:
-  Exclude:
-    - 'lib/apipie/dsl_definition.rb'
-    - 'lib/apipie/extractor/writer.rb'
 
 # Offense count: 6
 # This cop supports safe autocorrection (--autocorrect).
