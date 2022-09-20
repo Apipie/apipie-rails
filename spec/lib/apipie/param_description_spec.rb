@@ -121,6 +121,10 @@ describe Apipie::ParamDescription do
 
       context 'when the parameter is a boolean' do
         it "should not throw an exception when passed false" do
+          expect { Apipie::ParamDescription.new(method_desc, :param, [true, false]).validate(false) }.to_not raise_error
+        end
+
+        it "should not throw an exception when passed false" do
           expect { Apipie::ParamDescription.new(method_desc, :param, :boolean).validate(false) }.to_not raise_error
         end
 
@@ -153,6 +157,10 @@ describe Apipie::ParamDescription do
     end
 
     context 'when the parameter is a boolean' do
+      it "should not throw an exception when passed false" do
+        expect { Apipie::ParamDescription.new(method_desc, :param, [true, false]).validate(false) }.to_not raise_error
+      end
+
       it "should not throw an exception when passed false" do
         expect { Apipie::ParamDescription.new(method_desc, :param, :boolean).validate(false) }.to_not raise_error
       end
