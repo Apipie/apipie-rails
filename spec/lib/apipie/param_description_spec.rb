@@ -134,6 +134,14 @@ describe Apipie::ParamDescription do
       context 'when validation type is :boolean' do
         let(:validation_type) { :boolean }
 
+        it "should not throw an exception when passed false" do
+          expect { Apipie::ParamDescription.new(method_desc, :param, [true, false]).validate(false) }.to_not raise_error
+        end
+
+        it "should not throw an exception when passed false" do
+          expect { Apipie::ParamDescription.new(method_desc, :param, :boolean).validate(false) }.to_not raise_error
+        end
+
         context 'when validation value is false' do
           let(:validation_value) { false }
 
@@ -225,6 +233,16 @@ describe Apipie::ParamDescription do
             expect { subject }.not_to raise_error
           end
         end
+      end
+    end
+
+    context 'when the parameter is a boolean' do
+      it "should not throw an exception when passed false" do
+        expect { Apipie::ParamDescription.new(method_desc, :param, [true, false]).validate(false) }.to_not raise_error
+      end
+
+      it "should not throw an exception when passed false" do
+        expect { Apipie::ParamDescription.new(method_desc, :param, :boolean).validate(false) }.to_not raise_error
       end
 
       context 'when validation value is empty string' do
