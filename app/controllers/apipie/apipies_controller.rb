@@ -98,12 +98,11 @@ module Apipie
       return nil unless Apipie.configuration.translate
       lang = Apipie.configuration.default_locale
       [:resource, :method, :version].each do |par|
-        if params[par]
-          splitted = params[par].split('.')
-          if splitted.length > 1 && (Apipie.configuration.languages.include?(splitted.last) || Apipie.configuration.default_locale == splitted.last)
-            lang = splitted.last
-            params[par].sub!(".#{lang}", '')
-          end
+        next unless params[par]
+        splitted = params[par].split('.')
+        if splitted.length > 1 && (Apipie.configuration.languages.include?(splitted.last) || Apipie.configuration.default_locale == splitted.last)
+          lang = splitted.last
+          params[par].sub!(".#{lang}", '')
         end
       end
       lang

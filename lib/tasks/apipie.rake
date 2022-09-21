@@ -150,12 +150,11 @@ namespace :apipie do
           doc[:docs][:link_extension] = (lang ? ".#{lang}.html" : ".html")
 
           generate_index_page(file_base_version, doc, true, true, lang) if generate_index
-          if generate_resources
-            Apipie.url_prefix = "../#{subdir_traversal_prefix}#{subdir}"
-            generate_resource_pages(version, file_base_version, doc, true, lang)
-            Apipie.url_prefix = "../../#{subdir_traversal_prefix}#{subdir}"
-            generate_method_pages(version, file_base_version, doc, true, lang)
-          end
+          next unless generate_resources
+          Apipie.url_prefix = "../#{subdir_traversal_prefix}#{subdir}"
+          generate_resource_pages(version, file_base_version, doc, true, lang)
+          Apipie.url_prefix = "../../#{subdir_traversal_prefix}#{subdir}"
+          generate_method_pages(version, file_base_version, doc, true, lang)
         end
       end
     end

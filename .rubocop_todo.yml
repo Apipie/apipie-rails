@@ -1660,16 +1660,6 @@ Style/NestedParenthesizedCalls:
   Exclude:
     - 'spec/lib/file_handler_spec.rb'
 
-# Offense count: 4
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle, MinBodyLength.
-# SupportedStyles: skip_modifier_ifs, always
-Style/Next:
-  Exclude:
-    - 'app/controllers/apipie/apipies_controller.rb'
-    - 'lib/apipie/extractor/writer.rb'
-    - 'lib/apipie/swagger_generator.rb'
-    - 'lib/tasks/apipie.rake'
 
 # Offense count: 1
 Style/OpenStructUse:
