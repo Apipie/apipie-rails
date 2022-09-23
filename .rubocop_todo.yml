@@ -1332,18 +1332,6 @@ Style/CaseLikeIf:
     - 'lib/apipie/response_description_adapter.rb'
     - 'spec/controllers/users_controller_spec.rb'
 
-# Offense count: 11
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: nested, compact
-Style/ClassAndModuleChildren:
-  Exclude:
-    - 'lib/apipie/core_ext/route.rb'
-    - 'lib/apipie/extractor.rb'
-    - 'lib/apipie/rspec/response_validation_helper.rb'
-    - 'spec/dummy/app/controllers/api/v2/nested/resources_controller.rb'
-    - 'spec/dummy/config/initializers/apipie.rb'
-    - 'spec/lib/validators/array_validator_spec.rb'
 
 # Offense count: 4
 # This cop supports safe autocorrection (--autocorrect).

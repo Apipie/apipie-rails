@@ -4,6 +4,10 @@ module Apipie
   end
 end
 
-class ActionDispatch::Journey::Route
-  include Apipie::BaseUrlExtension
+module ActionDispatch
+  module Journey
+    class Route
+      include Apipie::BaseUrlExtension
+    end
+  end
 end

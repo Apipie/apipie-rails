@@ -6,19 +6,21 @@ require 'apipie/extractor/recorder'
 require 'apipie/extractor/writer'
 require 'apipie/extractor/collector'
 
-class Apipie::Railtie
-  initializer 'apipie.extractor' do |app|
-    ActiveSupport.on_load :action_controller do
-      before_action do |controller|
-        if Apipie.configuration.record
-          Apipie::Extractor.call_recorder.analyse_controller(controller)
+module Apipie
+  class Railtie
+    initializer 'apipie.extractor' do |app|
+      ActiveSupport.on_load :action_controller do
+        before_action do |controller|
+          if Apipie.configuration.record
+            Apipie::Extractor.call_recorder.analyse_controller(controller)
+          end
         end
       end
-    end
-    app.middleware.use ::Apipie::Extractor::Recorder::Middleware
+      app.middleware.use ::Apipie::Extractor::Recorder::Middleware
 
-    ActionController::TestCase.send(:prepend, Apipie::Extractor::Recorder::FunctionalTestRecording)
-    ActionController::TestCase::Behavior.send(:prepend, Apipie::Extractor::Recorder::FunctionalTestRecording)
+      ActionController::TestCase.send(:prepend, Apipie::Extractor::Recorder::FunctionalTestRecording)
+      ActionController::TestCase::Behavior.send(:prepend, Apipie::Extractor::Recorder::FunctionalTestRecording)
+    end
   end
 end
 

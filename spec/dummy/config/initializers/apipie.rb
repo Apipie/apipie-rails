@@ -76,35 +76,39 @@ Apipie.configure do |config|
 end
 
 # integer validator
-class Apipie::Validator::IntegerValidator < Apipie::Validator::BaseValidator
+module Apipie
+  module Validator
+    class IntegerValidator < Apipie::Validator::BaseValidator
 
-  def initialize(param_description, argument)
-    super(param_description)
-    @type = argument
-  end
+      def initialize(param_description, argument)
+        super(param_description)
+        @type = argument
+      end
 
-  def validate(value)
-    return false if value.nil?
-    !!(value.to_s =~ /^[-+]?[0-9]+$/)
-  end
+      def validate(value)
+        return false if value.nil?
+        !!(value.to_s =~ /^[-+]?[0-9]+$/)
+      end
 
-  def self.build(param_description, argument, options, block)
-    if argument == Integer || argument == Fixnum
-      self.new(param_description, argument)
+      def self.build(param_description, argument, options, block)
+        if argument == Integer || argument == Fixnum
+          self.new(param_description, argument)
+        end
+      end
+
+      def error
+        # Newer style is to return an instance of ParamInvalid.  Keeping this
+        # to test backwards compatibility.
+        "Parameter #{param_name} expecting to be #{@type.name}, got: #{@error_value.class.name}"
+      end
+
+      def description
+        "Parameter has to be #{@type}."
+      end
+
+      def expected_type
+        'numeric'
+      end
     end
-  end
-
-  def error
-    # Newer style is to return an instance of ParamInvalid.  Keeping this
-    # to test backwards compatibility.
-    "Parameter #{param_name} expecting to be #{@type.name}, got: #{@error_value.class.name}"
-  end
-
-  def description
-    "Parameter has to be #{@type}."
-  end
-
-  def expected_type
-    'numeric'
   end
 end

@@ -84,31 +84,35 @@
 #----------------------------------------------------------------------------------------------
 # Response validation: core logic  (used by auto-validation and manual-validation mechanisms)
 #----------------------------------------------------------------------------------------------
-class ActionController::Base
-  module Apipie::ControllerValidationHelpers
-    # this method is injected into ActionController::Base in order to
-    # get access to the names of the current controller, current action, as well as to the response
-    def schema_validation_errors_for_response
-      unprocessed_schema = Apipie::json_schema_for_method_response(controller_name, action_name, response.code, true)
+module ActionController
+  class Base
+    module Apipie
+      module ControllerValidationHelpers
+        # this method is injected into ActionController::Base in order to
+        # get access to the names of the current controller, current action, as well as to the response
+        def schema_validation_errors_for_response
+          unprocessed_schema = Apipie::json_schema_for_method_response(controller_name, action_name, response.code, true)
 
-      if unprocessed_schema.nil?
-        err = "no schema defined for #{controller_name}##{action_name}[#{response.code}]"
-        return [nil, [err], RuntimeError.new(err)]
+          if unprocessed_schema.nil?
+            err = "no schema defined for #{controller_name}##{action_name}[#{response.code}]"
+            return [nil, [err], RuntimeError.new(err)]
+          end
+
+          schema = JSON.parse(JSON(unprocessed_schema))
+
+          error_list = JSON::Validator.fully_validate(schema, response.body, :strict => false, :version => :draft4, :json => true)
+
+          error_object = Apipie::ResponseDoesNotMatchSwaggerSchema.new(controller_name, action_name, response.code, error_list, schema, response.body)
+
+          [schema, error_list, error_object]
+        rescue Apipie::NoDocumentedMethod
+          [nil, [], nil]
+        end
       end
-
-      schema = JSON.parse(JSON(unprocessed_schema))
-
-      error_list = JSON::Validator.fully_validate(schema, response.body, :strict => false, :version => :draft4, :json => true)
-
-      error_object = Apipie::ResponseDoesNotMatchSwaggerSchema.new(controller_name, action_name, response.code, error_list, schema, response.body)
-
-      [schema, error_list, error_object]
-    rescue Apipie::NoDocumentedMethod
-      [nil, [], nil]
     end
-  end
 
-  include Apipie::ControllerValidationHelpers
+    include Apipie::ControllerValidationHelpers
+  end
 end
 
 module Apipie
@@ -141,16 +145,20 @@ end
 #---------------------------------
 # Auto-validation logic
 #---------------------------------
-module RSpec::Rails::ViewRendering
-  # Augment the RSpec DSL
-  module ClassMethods
-    def auto_validate_rendered_views
-      before do
-        @is_response_validation_on = true
-      end
+module RSpec
+  module Rails
+    module ViewRendering
+      # Augment the RSpec DSL
+      module ClassMethods
+        def auto_validate_rendered_views
+          before do
+            @is_response_validation_on = true
+          end
 
-      after do
-        @is_response_validation_on = false
+          after do
+            @is_response_validation_on = false
+          end
+        end
       end
     end
   end
@@ -159,17 +167,19 @@ end
 
 ActionController::TestCase::Behavior.instance_eval do
   # instrument the 'process' method in ActionController::TestCase to enable response validation
-  module Apipie::ResponseValidationHelpers
-    @is_response_validation_on = false
-    def process(*, **)
-      result = super
-      validate_response if @is_response_validation_on
+  module Apipie
+    module ResponseValidationHelpers
+      @is_response_validation_on = false
+      def process(*, **)
+        result = super
+        validate_response if @is_response_validation_on
 
-      result
-    end
+        result
+      end
 
-    def validate_response
-      controller.send(:validate_response_and_abort_with_info_if_errors)
+      def validate_response
+        controller.send(:validate_response_and_abort_with_info_if_errors)
+      end
     end
   end
 
@@ -177,15 +187,19 @@ ActionController::TestCase::Behavior.instance_eval do
 end
 
 
-class ActionController::Base
-  module Apipie::ControllerValidationHelpers
-    def validate_response_and_abort_with_info_if_errors
+module ActionController
+  class Base
+    module Apipie
+      module ControllerValidationHelpers
+        def validate_response_and_abort_with_info_if_errors
 
-      (schema, validation_errors, error_object) = schema_validation_errors_for_response
+          (schema, validation_errors, error_object) = schema_validation_errors_for_response
 
-      valid = (validation_errors == [])
-      if !valid
-        Apipie::print_validation_errors(validation_errors, schema, response, error_object)
+          valid = (validation_errors == [])
+          if !valid
+            Apipie::print_validation_errors(validation_errors, schema, response, error_object)
+          end
+        end
       end
     end
   end
