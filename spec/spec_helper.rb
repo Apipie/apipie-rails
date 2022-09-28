@@ -86,4 +86,4 @@ RSpec.configure do |config|
   config.infer_spec_type_from_file_location!
 end
 
-require 'action_controller/test_case.rb'
+require 'action_controller/test_case'
