@@ -185,7 +185,7 @@ module Apipie
         resource_description.method_description(method_name.to_sym)
       end
     end
-    alias :[] :get_method_description
+    alias [] get_method_description
 
     # options:
     # => "users"

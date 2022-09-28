@@ -1280,18 +1280,6 @@ Style/AccessorGrouping:
     - 'lib/apipie/param_description.rb'
     - 'spec/dummy/app/controllers/pets_using_auto_views_controller.rb'
 
-# Offense count: 22
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: prefer_alias, prefer_alias_method
-Style/Alias:
-  Exclude:
-    - 'lib/apipie/application.rb'
-    - 'lib/apipie/configuration.rb'
-    - 'lib/apipie/dsl_definition.rb'
-    - 'lib/apipie/param_description.rb'
-    - 'lib/apipie/response_description.rb'
-    - 'lib/apipie/response_description_adapter.rb'
 
 # Offense count: 1
 # This cop supports unsafe autocorrection (--autocorrect-all).

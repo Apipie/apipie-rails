@@ -116,7 +116,7 @@ module Apipie
     def additional_properties
       !!@response_object.additional_properties
     end
-    alias :allow_additional_properties :additional_properties
+    alias allow_additional_properties additional_properties
 
     def to_json(lang=nil)
       {
