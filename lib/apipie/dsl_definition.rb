@@ -278,7 +278,7 @@ module Apipie
             end
           end
 
-          if (Apipie.configuration.validate == :implicitly || Apipie.configuration.validate == true)
+          if Apipie.configuration.validate == :implicitly || Apipie.configuration.validate == true
             old_method = instance_method(description.method)
 
             define_method(description.method) do |*args|
