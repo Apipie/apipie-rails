@@ -1931,14 +1931,6 @@ Style/StringLiterals:
 Style/SymbolArray:
   EnforcedStyle: brackets
 
-# Offense count: 4
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: AllowMethodsWithArguments, AllowedMethods, AllowedPatterns, IgnoredMethods, AllowComments.
-# AllowedMethods: respond_to, define_method
-Style/SymbolProc:
-  Exclude:
-    - 'lib/apipie/method_description.rb'
-    - 'lib/tasks/apipie.rake'
 
 # Offense count: 2
 # This cop supports safe autocorrection (--autocorrect).
