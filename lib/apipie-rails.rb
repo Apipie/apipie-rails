@@ -23,3 +23,7 @@ require "apipie/railtie"
 require 'apipie/extractor'
 require "apipie/version"
 require "apipie/swagger_generator"
+require "apipie/generator/generator"
+require "apipie/generator/swagger/swagger"
+require "apipie/generator/swagger/warning"
+require "apipie/generator/swagger/warning_writer"
