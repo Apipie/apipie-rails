@@ -8,7 +8,7 @@ require File.expand_path('../../dummy/app/controllers/pets_controller.rb', __dir
 describe 'rake tasks' do
   include_context "rake"
 
-  let(:doc_path)  { "user_specified_doc_path" }
+  let(:doc_path)  { 'tmp/user_specified_doc_path' }
 
   before do
     Apipie.configuration.doc_path = doc_path

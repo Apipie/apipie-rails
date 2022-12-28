@@ -59,16 +59,16 @@ describe Apipie::Extractor::Writer do
     }
   }
 
-  context 'with doc_path overriden in configuration' do
+  context 'with doc_path overridden in configuration' do
     around(:each) do |example|
       standard_path = Apipie.configuration.doc_path
-      Apipie.configuration.doc_path = 'user_specified_doc_path'
+      Apipie.configuration.doc_path = 'tmp/user_specified_doc_path'
       example.run
       Apipie.configuration.doc_path = standard_path
     end
 
     it 'should use the doc_path specified in configuration' do
-      expect(writer_class.examples_file).to eql(File.join(Rails.root, 'user_specified_doc_path', 'apipie_examples.json'))
+      expect(writer_class.examples_file).to eql(File.join(Rails.root, 'tmp', 'user_specified_doc_path', 'apipie_examples.json'))
     end
   end
 
