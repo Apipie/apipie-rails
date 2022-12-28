@@ -20,7 +20,7 @@ class Apipie::Generator::Swagger::TypeExtractor
     password: Apipie::Generator::Swagger::Type.new('string', 'password')
   }
 
-  # @param [<Apipie::Validator::BaseValidator>] validator
+  # @param [Apipie::Validator::BaseValidator, ResponseDescriptionAdapter::PropDesc::Validator, nil] validator
   def initialize(validator)
     @validator = validator
   end
