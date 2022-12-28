@@ -37,15 +37,16 @@ class Apipie::Generator::Swagger::TypeExtractor
   private
 
   def extract
-    expected_type = if string?
-                      :string
-                    elsif boolean?
-                      :boolean
-                    elsif enum?
-                      :enum
-                    else
-                      @validator.expected_type.to_sym
-                    end
+    expected_type =
+      if string?
+        :string
+      elsif boolean?
+        :boolean
+      elsif enum?
+        :enum
+      else
+        @validator.expected_type.to_sym
+      end
 
     TYPES[expected_type] || @validator.expected_type
   end
