@@ -36,7 +36,6 @@ module Apipie
     def generate_from_resources(version, resources, method_name, lang, clear_warnings=false)
       init_swagger_vars(version, lang, clear_warnings)
 
-      @lang = lang
       @only_method = method_name
       add_resources(resources)
 
