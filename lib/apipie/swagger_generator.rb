@@ -349,7 +349,7 @@ module Apipie
       @definitions = {}
       for response in method.returns
         next unless response.code.to_s == return_code.to_s
-        schema = response_schema(response, allow_nulls) if response.code.to_s == return_code.to_s
+        schema = response_schema(response, allow_nulls)
         schema[:definitions] = @definitions if @definitions != {}
         return schema
       end
