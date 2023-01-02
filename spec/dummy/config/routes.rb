@@ -11,6 +11,7 @@ Dummy::Application.routes.draw do
         end
       end
       resources :concerns, :only => [:index, :show]
+      get '/:resource_id/:custom_subst' => 'concerns#custom'
       namespace :files do
         get '/*file_path', format: false, :action => 'download'
       end

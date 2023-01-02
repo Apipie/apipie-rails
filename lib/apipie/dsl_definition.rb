@@ -360,7 +360,7 @@ module Apipie
       # Reuses param group for this method. The definition is looked up
       # in scope of this controller. If the group was defined in
       # different controller, the second param can be used to specify it.
-      # when using action_aware parmas, you can specify :as =>
+      # when using action_aware params, you can specify :as =>
       # :create or :update to explicitly say how it should behave
       def param_group(name, scope_or_options = nil, options = {})
         if scope_or_options.is_a? Hash
@@ -533,7 +533,7 @@ module Apipie
       end
 
       def _apipie_perform_concern_subst(string)
-        return _apipie_concern_subst.reduce(string) do |ret, (key, val)|
+        _apipie_concern_subst.reduce(string) do |ret, (key, val)|
           ret.gsub(":#{key}", val)
         end
       end

@@ -128,33 +128,75 @@ module Apipie
       method.resource.controller.name + "#" + method.method
     end
 
+    def warn_missing_method_summary
+      warn(Apipie::Generator::Swagger::Warning::MISSING_METHOD_SUMMARY_CODE)
+    end
 
-    def warn_missing_method_summary() warn 100, "missing short description for method"; end
-    def warn_added_missing_slash(path) warn 101,"added missing / at beginning of path: #{path}"; end
-    def warn_no_return_codes_specified()  warn 102,"no return codes ('errors') specified"; end
-    def warn_hash_without_internal_typespec(param_name)  warn 103,"the parameter :#{param_name} is a generic Hash without an internal type specification"; end
-    def warn_optional_param_in_path(param_name) warn 104, "the parameter :#{param_name} is 'in-path'.  Ignoring 'not required' in DSL"; end
-    def warn_optional_without_default_value(param_name) warn 105,"the parameter :#{param_name} is optional but default value is not specified (use :default_value => ...)"; end
-    def warn_param_ignored_in_form_data(param_name) warn 106,"ignoring param :#{param_name} -- cannot include Hash without fields in a formData specification"; end
-    def warn_path_parameter_not_described(name,path) warn 107,"the parameter :#{name} appears in the path #{path} but is not described"; end
-    def warn_inferring_boolean(name) warn 108,"the parameter [#{name}] is Enum with [true,false] values. Inferring 'boolean'"; end
+    def warn_added_missing_slash(path)
+      warn(
+        Apipie::Generator::Swagger::Warning::ADDED_MISSING_SLASH_CODE,
+        { path: path }
+      )
+    end
 
-    def warn(warning_num, msg)
-      suppress = Apipie.configuration.swagger_suppress_warnings
-      return if suppress == true
-      return if suppress.is_a?(Array) && suppress.include?(warning_num)
+    def warn_no_return_codes_specified
+      warn(Apipie::Generator::Swagger::Warning::NO_RETURN_CODES_SPECIFIED_CODE)
+    end
 
-      method_id = ruby_name_for_method(@current_method)
-      warning_id = "#{method_id}#{warning_num}#{msg}"
+    def warn_hash_without_internal_typespec(param_name)
+      warn(
+        Apipie::Generator::Swagger::Warning::HASH_WITHOUT_INTERNAL_TYPESPEC_CODE,
+        { parameter: param_name }
+      )
+    end
 
-      if @issued_warnings.include?(warning_id)
-        # Already issued this warning for the current method
-        return
-      end
+    def warn_optional_param_in_path(param_name)
+      warn(
+        Apipie::Generator::Swagger::Warning::OPTIONAL_PARAM_IN_PATH_CODE,
+        { parameter: param_name }
+      )
+    end
 
-      print "WARNING (#{warning_num}): [#{method_id}] -- #{msg}\n"
-      @issued_warnings.push(warning_id)
-      @warnings_issued = true
+    def warn_optional_without_default_value(param_name)
+      warn(
+        Apipie::Generator::Swagger::Warning::OPTIONAL_WITHOUT_DEFAULT_VALUE_CODE,
+        { parameter: param_name }
+      )
+    end
+
+    def warn_param_ignored_in_form_data(param_name)
+      warn(
+        Apipie::Generator::Swagger::Warning::PARAM_IGNORED_IN_FORM_DATA_CODE,
+        { parameter: param_name }
+      )
+    end
+
+    def warn_path_parameter_not_described(name, path)
+      warn(
+        Apipie::Generator::Swagger::Warning::PATH_PARAM_NOT_DESCRIBED_CODE,
+        { name: name, path: path }
+      )
+    end
+
+    def warn_inferring_boolean(name)
+      warn(
+        Apipie::Generator::Swagger::Warning::INFERRING_BOOLEAN_CODE,
+        { name: name }
+      )
+    end
+
+    # @param [Integer] warning_code
+    # @param [Hash] message_attributes
+    def warn(warning_code, message_attributes = {})
+      Apipie::Generator::Swagger::Warning.for_code(
+        warning_code,
+        ruby_name_for_method(@current_method),
+        message_attributes
+      ).warn_through_writer
+
+      @warnings_issued = Apipie::Generator::Swagger::WarningWriter.
+        instance.
+        issued_warnings?
     end
 
     def info(msg)
@@ -276,68 +318,21 @@ module Apipie
       http_method.downcase + path.gsub(/\//,'_').gsub(/:(\w+)/, '\1').gsub(/_$/,'')
     end
 
-    class SwaggerTypeWithFormat
-      attr_reader :str_format
-      def initialize(type, str_format)
-        @type = type
-        @str_format = str_format
-      end
-
-      def to_s
-        @type
-      end
-
-      def ==(other)
-        other.to_s == self.to_s
-      end
-    end
-
-    def lookup
-      @lookup ||= {
-        numeric: "number",
-        hash: "object",
-        array: "array",
-
-        # see https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#data-types
-        integer: SwaggerTypeWithFormat.new("integer", "int32"),
-        long: SwaggerTypeWithFormat.new("integer", "int64"),
-        number: SwaggerTypeWithFormat.new("number", nil),  # here just for completeness
-        float: SwaggerTypeWithFormat.new("number", "float"),
-        double: SwaggerTypeWithFormat.new("number", "double"),
-        string: SwaggerTypeWithFormat.new("string", nil),  # here just for completeness
-        byte: SwaggerTypeWithFormat.new("string", "byte"),
-        binary: SwaggerTypeWithFormat.new("string", "binary"),
-        boolean: SwaggerTypeWithFormat.new("boolean", nil),  # here just for completeness
-        date: SwaggerTypeWithFormat.new("string", "date"),
-        dateTime: SwaggerTypeWithFormat.new("string", "date-time"),
-        password: SwaggerTypeWithFormat.new("string", "password"),
-      }
-    end
-
-
     def swagger_param_type(param_desc)
-      if param_desc.nil?
-        raise("problem")
+      if param_desc.blank?
+        raise ArgumentError, 'param_desc is required'
       end
 
-      v = param_desc.validator
-      if v.nil?
-        return "string"
-      end
+      method_id = ruby_name_for_method(@current_method)
 
-      if v.class == Apipie::Validator::EnumValidator || (v.respond_to?(:is_enum?) && v.is_enum?)
-        if v.values - [true, false] == [] && [true, false] - v.values == []
-          warn_inferring_boolean(param_desc.name)
-          return "boolean"
-        else
-          return "enum"
-        end
-      elsif v.class == Apipie::Validator::HashValidator
-        # pp v
-      end
+      warning = Apipie::Generator::Swagger::Warning.for_code(
+        Apipie::Generator::Swagger::Warning::INFERRING_BOOLEAN_CODE,
+        method_id,
+        { parameter: param_desc.name }
+      )
 
-
-      return lookup[v.expected_type.to_sym] || v.expected_type
+      Apipie::Generator::Swagger::TypeExtractor.new(param_desc.validator).
+        extract_with_warnings({ boolean: warning })
     end
 
 
@@ -473,7 +468,7 @@ module Apipie
 
       swg_param_type = swagger_param_type(param_desc)
       swagger_def[:type] = swg_param_type.to_s
-      if (swg_param_type.is_a? SwaggerTypeWithFormat) && !swg_param_type.str_format.nil?
+      if (swg_param_type.is_a? Apipie::Generator::Swagger::Type) && !swg_param_type.str_format.nil?
         swagger_def[:format] = swg_param_type.str_format
       end
 
