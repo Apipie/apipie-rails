@@ -533,7 +533,7 @@ module Apipie
       end
 
       def _apipie_perform_concern_subst(string)
-        return _apipie_concern_subst.reduce(string) do |ret, (key, val)|
+        _apipie_concern_subst.reduce(string) do |ret, (key, val)|
           ret.gsub(":#{key}", val)
         end
       end
