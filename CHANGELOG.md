@@ -1,6 +1,93 @@
  Changelog
 ===========
 
+Also deleted the `Gemfile` that was now a broken symlink.
+please use `export BUNDLE_GEMFILE='gemfiles/Gemfile.rails61'; bundle exec rspec` to run the test suite
+
+## [v0.8.2](https://github.com/Apipie/apipie-rails/tree/v0.8.2) (2022-09-03)
+[Full Changelog](https://github.com/Apipie/apipie-rails/compare/v0.8.1...v0.8.2)
+* Allow custom validators to opt out of allow_blank behavior [#762](https://github.com/Apipie/apipie-rails/pull/762).  (Stephen Hanson)
+* Enforce test coverage, set current 89% as minimum [#764](https://github.com/Apipie/apipie-rails/pull/764). (Mathieu Jobin)
+* Add contributing instructions to readme [#763](https://github.com/Apipie/apipie-rails/pull/763).  (Stephen Hanson)
+* Fix readme formatting [#765](https://github.com/Apipie/apipie-rails/pull/765).  (Stephen Hanson)
+* Adds expected_type to IntegerValidator example [#769](https://github.com/Apipie/apipie-rails/pull/769).  (Jeremy Liberman)
+* Update readme with error handling example [#768](https://github.com/Apipie/apipie-rails/pull/768).  (Jesse Eisenberg)
+* Fix scope incorrectly set to nil when a param_group is used inside an array_of_hash and the param_group is in a different module / controller. [#693](https://github.com/Apipie/apipie-rails/pull/693) [#774](https://github.com/Apipie/apipie-rails/pull/774).  (Omkar Joshi / Oliver Iyer)
+
+## [v0.8.1](https://github.com/Apipie/apipie-rails/tree/v0.8.1) (2022-05-26)
+[Full Changelog](https://github.com/Apipie/apipie-rails/compare/v0.8.0...v0.8.1)
+* Remove warning that came back as of [#752](https://github.com/Apipie/apipie-rails/pull/752). [#761](https://github.com/Apipie/apipie-rails/pull/761) (Jorge Santos / Mathieu Jobin)
+
+## [v0.8.0](https://github.com/Apipie/apipie-rails/tree/v0.8.0) (2022-05-24)
+[Full Changelog](https://github.com/Apipie/apipie-rails/compare/v0.7.2...v0.8.0)
+* Add support for scheme definition in Swagger docs. [#710](https://github.com/Apipie/apipie-rails/pull/710) (Dan Leyden)
+* Add support for Rails 7 [#760](https://github.com/Apipie/apipie-rails/pull/760) (Mathieu Jobin)
+* Clean up code base, removing all trace of unsupported Rails 4.x [#752](https://github.com/Apipie/apipie-rails/pull/752) (Mathieu Jobin)
+* fix: Controller resource set before version [#744](https://github.com/Apipie/apipie-rails/pull/744) (LuukvH)
+* fix: enable swagger generator to add referenced schema for an array of hashes param [#689](https://github.com/Apipie/apipie-rails/pull/689) (Francis San Juan)
+
+## [v0.7.2](https://github.com/Apipie/apipie-rails/tree/v0.7.2) (2022-04-19)
+[Full Changelog](https://github.com/Apipie/apipie-rails/compare/v0.7.1...v0.7.2)
+* Added Korean locale. [#480](https://github.com/Apipie/apipie-rails/pull/480) (Jaehyun Shin ) [#757](https://github.com/Apipie/apipie-rails/pull/757) (Jorge Santos)
+* `Security` Upgraded Bootstrap from 2.0.2 to 2.3.2, JQuery from 1.11.3 to 1.12.4 [#708](https://github.com/Apipie/apipie-rails/pull/708) (Nicolas Waissbluth)
+* Fix ruby2 keyword argument warning [#756](https://github.com/Apipie/apipie-rails/pull/756) (Jorge Santos)
+
+## [v0.7.1](https://github.com/Apipie/apipie-rails/tree/v0.7.1) (2022-04-06)
+[Full Changelog](https://github.com/Apipie/apipie-rails/compare/v0.7.0...v0.7.1)
+* Skip extra parameters while validating the keys. [#690](https://github.com/Apipie/apipie-rails/pull/690) (Omkar Joshi)
+* Support defining security mechanisms for Swagger [#711](https://github.com/Apipie/apipie-rails/pull/711) (Dan Leyden)
+* Update boolean handling of false [#749](https://github.com/Apipie/apipie-rails/pull/749) (Colin Bruce)
+
+Note: Up until and including v0.6.x, apipie-rails was silently ignoring allow_blank == false on String validation.
+when allow_blank is not specified, it default to false. to allow blank strings, you must specify it as a parameter.
+
+Alternatively, if you want to revert to the previous behavior, you can set this configuration option:
+`Apipie.configuration.ignore_allow_blank_false = true`.
+
+## [v0.7.0](https://github.com/Apipie/apipie-rails/tree/v0.7.0) (2022-03-30)
+[Full Changelog](https://github.com/Apipie/apipie-rails/compare/v0.6.0...v0.7.0)
+* ArgumentError (invalid byte sequence in UTF-8) [#746](https://github.com/Apipie/apipie-rails/pull/746) (David Milanese)
+* Fix allow_blank does not work [#733](https://github.com/Apipie/apipie-rails/pull/733) (CHEN Song)
+* Fix schema generation for param descriptions using the array validator in option [#732](https://github.com/Apipie/apipie-rails/pull/732) (Frank Hock)
+* Remove support for Rails 4 and Ruby <= 2.5 [#747](https://github.com/Apipie/apipie-rails/pull/747) (Mathieu Jobin)
+
+## [v0.6.0](https://github.com/Apipie/apipie-rails/tree/v0.6.0) (2022-03-29)
+[Full Changelog](https://github.com/Apipie/apipie-rails/compare/v0.5.20...v0.6.0)
+* Ruby 3.0 fixes [#716](https://github.com/Apipie/apipie-rails/pull/716) (hank-spokeo)
+* only depends on actionpack and activesupport [#741](https://github.com/Apipie/apipie-rails/pull/741) (Mathieu Jobin)
+* language fix, fallback to default locale [#726](https://github.com/Apipie/apipie-rails/pull/726) (Alex Coomans)
+
+## [v0.5.20](https://github.com/Apipie/apipie-rails/tree/v0.5.20) (2022-03-16)
+[Full Changelog](https://github.com/Apipie/apipie-rails/compare/v0.5.19...v0.5.20)
+* Update rel-eng (Oleh Fedorenko)
+* Deprecate travis, run tests on github actions [#740](https://github.com/Apipie/apipie-rails/pull/740) (Mathieu Jobin)
+* Update validator.rb [#739](https://github.com/Apipie/apipie-rails/pull/739) (Dmytro Budnyk)
+* Fix wrong number of arguments for recorder#process [#725](https://github.com/Apipie/apipie-rails/pull/725) (rob mathews)
+* Change "an" to "a" [#723](https://github.com/Apipie/apipie-rails/pull/723) (Naokimi)
+
+## [v0.5.19](https://github.com/Apipie/apipie-rails/tree/v0.5.19) (2021-07-25)
+[Full Changelog](https://github.com/Apipie/apipie-rails/compare/v0.5.18...v0.5.19)
+* Add rel-eng notebook (Oleh Fedorenko)
+* Correct the word parâmentros for brazilian portuguese [#687](https://github.com/Apipie/apipie-rails/pull/687) (Diego Noronha)
+* Fix depreciated file.exists. [#721](https://github.com/Apipie/apipie-rails/pull/721) (Diane Delallée)
+* Fix typo in changelog [#703](https://github.com/Apipie/apipie-rails/pull/703) (Pavel Rodionov)
+* Add rails 6.1 support in doc generation [#702](https://github.com/Apipie/apipie-rails/pull/702) (andrew-newell)
+
+
+[v0.5.18](https://github.com/Apipie/apipie-rails/tree/v0.5.18) (2020-05-20)
+--------
+
+[Full Changelog](https://github.com/Apipie/apipie-rails/compare/v0.5.17...v0.5.18)
+
+- Optional rdoc dependency with lazyload [\#683](https://github.com/Apipie/apipie-rails/pull/683) ([vkrizan](https://github.com/vkrizan))
+
+[v0.5.17](https://github.com/Apipie/apipie-rails/tree/v0.5.17) (2020-01-20)
+--------
+
+[Full Changelog](https://github.com/Apipie/apipie-rails/compare/v0.5.16...v0.5.17)
+
+- Allows update metadata for methods [\#667](https://github.com/Apipie/apipie-rails/pull/667) ([speckins](https://github.com/speckins))
+
 [v0.5.16](https://github.com/Apipie/apipie-rails/tree/v0.5.16) (2019-05-22)
 --------
 
@@ -208,7 +295,7 @@ v0.3.2
 v0.3.1
 ------
 
-* Support for ``api!`` keyword in concerns 
+* Support for ``api!`` keyword in concerns
   [#322](https://github.com/Apipie/apipie-rails/pull/322) [@iNecas][]
 * More explicit ordering of the static dispatcher middleware
   [#315](https://github.com/Apipie/apipie-rails/pull/315) [@iNecas][]

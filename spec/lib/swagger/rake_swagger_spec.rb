@@ -1,14 +1,14 @@
 require 'spec_helper'
 require "json-schema"
 
-require File.expand_path("../../../dummy/app/controllers/twitter_example_controller.rb", __FILE__)
-require File.expand_path("../../../dummy/app/controllers/users_controller.rb", __FILE__)
-require File.expand_path("../../../dummy/app/controllers/pets_controller.rb", __FILE__)
+require File.expand_path('../../dummy/app/controllers/twitter_example_controller.rb', __dir__)
+require File.expand_path('../../dummy/app/controllers/users_controller.rb', __dir__)
+require File.expand_path('../../dummy/app/controllers/pets_controller.rb', __dir__)
 
 describe 'rake tasks' do
   include_context "rake"
 
-  let(:doc_path)  { "user_specified_doc_path" }
+  let(:doc_path)  { 'tmp/user_specified_doc_path' }
 
   before do
     Apipie.configuration.doc_path = doc_path
@@ -49,6 +49,17 @@ describe 'rake tasks' do
       params = apidoc_swagger["paths"][path][http_method]["parameters"]
       param = params.select {|p| p if p["name"]==param_name}[0]
       expect(param[field]).to eq(value)
+    end
+
+    def expect_array_param_def(http_method, path, param_name, value)
+      params = apidoc_swagger["paths"][path][http_method]["parameters"]
+      param = params.select { |p| p if p["name"] == param_name }[0]
+
+      expect(param['type']).to eq('array')
+      expect(param['items']).to eq(
+        'type' => 'string',
+        'enum' => value
+      )
     end
 
     def expect_tags_def(http_method, path, value)
@@ -117,6 +128,10 @@ describe 'rake tasks' do
         expect_param_def("put", "/users/{id}", "oauth", "in", "formData")
         expect_param_def("get", "/users/by_department", "department", "in", "query")
         expect_param_def("get", "/users/by_department", "department", "enum",
+                         ["finance", "operations", "sales", "marketing", "HR"])
+
+        expect_param_def("get", "/users/in_departments", "departments", "in", "query")
+        expect_array_param_def("get", "/users/in_departments", "departments",
                          ["finance", "operations", "sales", "marketing", "HR"])
 
         expect_tags_def("get", "/twitter_example/{id}/followers", %w[twitter_example following index search])

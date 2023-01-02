@@ -113,6 +113,92 @@ describe Apipie::ParamDescription do
 
   end
 
+  describe 'validate' do
+    context 'when allow_blank is ignored, as it was before 0.7.0' do
+      before do
+        Apipie.configuration.ignore_allow_blank_false = true
+      end
+
+      context 'when the parameter is a boolean' do
+        it "should not throw an exception when passed false" do
+          expect { Apipie::ParamDescription.new(method_desc, :param, :boolean).validate(false) }.to_not raise_error
+        end
+
+        it "should throw an exception when passed an empty value" do
+          expect { Apipie::ParamDescription.new(method_desc, :param, :boolean).validate('') }.to raise_error(Apipie::ParamInvalid)
+        end
+      end
+
+      context 'when the parameter is a string' do
+        context 'when allow_blank is specified as true' do
+          it "should throw an exception when passed an empty value" do
+            expect { Apipie::ParamDescription.new(method_desc, :param, String, allow_blank: true).validate('') }.to_not raise_error
+          end
+        end
+        context 'when allow_blank is specified as false' do
+          it "should throw an exception when passed an empty value" do
+            expect { Apipie::ParamDescription.new(method_desc, :param, String, allow_blank: false).validate('') }.to_not raise_error
+          end
+        end
+        context 'when allow_blank is not specified' do
+          it "should throw an exception when passed an empty value" do
+            expect { Apipie::ParamDescription.new(method_desc, :param, String).validate('') }.to_not raise_error
+          end
+        end
+      end
+
+      after do
+        Apipie.configuration.ignore_allow_blank_false = false
+      end
+    end
+
+    context 'when the parameter is a boolean' do
+      it "should not throw an exception when passed false" do
+        expect { Apipie::ParamDescription.new(method_desc, :param, :boolean).validate(false) }.to_not raise_error
+      end
+
+      it "should still not throw an exception when passed false with explicit allow_blank: false" do
+        expect { Apipie::ParamDescription.new(method_desc, :param, :boolean, allow_blank: false).validate(false) }.to_not raise_error
+      end
+
+      it "should throw an exception when passed an empty value" do
+        expect { Apipie::ParamDescription.new(method_desc, :param, :boolean).validate('') }.to raise_error(Apipie::ParamInvalid)
+      end
+    end
+
+    context "when the parameter is a custom type with ignore_allow_blank? returning true" do
+      it "should not throw an exception when passed a blank but valid value" do
+        expect { Apipie::ParamDescription.new(method_desc, :param, :custom_bool).validate(false) }.to_not raise_error
+      end
+
+      it "should still not throw an exception when passed false with explicit allow_blank: false" do
+        expect { Apipie::ParamDescription.new(method_desc, :param, :custom_bool, allow_blank: false).validate(false) }.to_not raise_error
+      end
+
+      it "should throw an exception when passed an invalid but blank value" do
+        expect { Apipie::ParamDescription.new(method_desc, :param, :custom_bool).validate("") }.to raise_error(Apipie::ParamInvalid)
+      end
+    end
+
+    context 'when the parameter is a string' do
+      context 'when allow_blank is specified as true' do
+        it "should throw an exception when passed an empty value" do
+          expect { Apipie::ParamDescription.new(method_desc, :param, String, allow_blank: true).validate('') }.to_not raise_error
+        end
+      end
+      context 'when allow_blank is specified as false' do
+        it "should throw an exception when passed an empty value" do
+          expect { Apipie::ParamDescription.new(method_desc, :param, String, allow_blank: false).validate('') }.to raise_error(Apipie::ParamInvalid)
+        end
+      end
+      context 'when allow_blank is not specified' do
+        it "should throw an exception when passed an empty value" do
+          expect { Apipie::ParamDescription.new(method_desc, :param, String).validate('') }.to raise_error(Apipie::ParamInvalid)
+        end
+      end
+    end
+  end
+
   describe "concern substitution" do
 
     let(:concern_dsl_data) { dsl_data.merge(:from_concern => true) }

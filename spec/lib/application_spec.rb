@@ -27,7 +27,7 @@ describe Apipie::Application do
       end
 
       context "with an undefined base url" do
-        before {allow(Apipie.app).to receive(:get_base_url) { nil }}
+        before {allow(Apipie.app).to receive(:get_base_url).and_return(nil)}
 
         it "should not raise an error" do
           expect { Apipie.get_resource_name(Api::V2::ArchitecturesController) }.

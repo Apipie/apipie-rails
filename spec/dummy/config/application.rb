@@ -1,13 +1,11 @@
-require File.expand_path('../boot', __FILE__)
+require File.expand_path('boot', __dir__)
 
-require "active_model/railtie"
-require "active_record/railtie"
 require "action_controller/railtie"
 require "action_view/railtie"
-require "action_mailer/railtie"
 
 Bundler.require
 require "apipie-rails"
+require "test_engine"
 
 module Dummy
   class Application < Rails::Application
@@ -43,7 +41,7 @@ module Dummy
     config.filter_parameters += [:password]
 
     config.to_prepare do
-      ExtendedController.send(:include, Concerns::ExtendingConcern)
+      ExtendedController.send(:include, ExtendingConcern)
     end
   end
 end

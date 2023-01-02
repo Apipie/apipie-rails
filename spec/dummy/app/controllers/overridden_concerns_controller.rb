@@ -3,7 +3,7 @@ class OverriddenConcernsController < ApplicationController
   resource_description { resource_id 'overridden_concern_resources' }
 
   apipie_concern_subst(:concern => 'user')
-  include ::Concerns::SampleController
+  include SampleController
 
   def_param_group :concern do
     param :concern, String
@@ -11,7 +11,7 @@ class OverriddenConcernsController < ApplicationController
 
   api :PUT, '/:resource_id/:id'
   param :custom_parameter, String, "New parameter added by the overriding method"
-  param_group :concern, ::Concerns::SampleController
+  param_group :concern, SampleController
   def update
     super
   end

@@ -149,10 +149,10 @@ module Apipie
 
         dsl_data = ResourceDescriptionDsl.eval_dsl(self, &block)
         versions = dsl_data[:api_versions]
+        Apipie.set_controller_versions(self, versions)
         @apipie_resource_descriptions = versions.map do |version|
           Apipie.define_resource_description(self, version, dsl_data)
         end
-        Apipie.set_controller_versions(self, versions)
       end
     end
 
@@ -262,7 +262,9 @@ module Apipie
               if Apipie.configuration.validate_key?
                 params.reject{|k,_| %w[format controller action].include?(k.to_s) }.each_pair do |param, _|
                   # params allowed
-                  raise UnknownParam.new(param) if method_params.select {|_,p| p.name.to_s == param.to_s}.empty?
+                  if method_params.select {|_,p| p.name.to_s == param.to_s}.empty?
+                    self.class._apipie_handle_validate_key_error params, param
+                  end
                 end
               end
 
@@ -276,7 +278,7 @@ module Apipie
             end
           end
 
-          if (Apipie.configuration.validate == :implicitly || Apipie.configuration.validate == true)
+          if Apipie.configuration.validate == :implicitly || Apipie.configuration.validate == true
             old_method = instance_method(description.method)
 
             define_method(description.method) do |*args|
@@ -287,6 +289,15 @@ module Apipie
             end
           end
 
+        end
+      end
+
+      def _apipie_handle_validate_key_error params, param
+        if Apipie.configuration.action_on_non_validated_keys == :raise
+          raise UnknownParam, param
+        elsif Apipie.configuration.action_on_non_validated_keys == :skip
+          params.delete(param)
+          Rails.logger.warn(UnknownParam.new(param).to_s)
         end
       end
 
@@ -349,7 +360,7 @@ module Apipie
       # Reuses param group for this method. The definition is looked up
       # in scope of this controller. If the group was defined in
       # different controller, the second param can be used to specify it.
-      # when using action_aware parmas, you can specify :as =>
+      # when using action_aware params, you can specify :as =>
       # :create or :update to explicitly say how it should behave
       def param_group(name, scope_or_options = nil, options = {})
         if scope_or_options.is_a? Hash
@@ -522,7 +533,7 @@ module Apipie
       end
 
       def _apipie_perform_concern_subst(string)
-        return _apipie_concern_subst.reduce(string) do |ret, (key, val)|
+        _apipie_concern_subst.reduce(string) do |ret, (key, val)|
           ret.gsub(":#{key}", val)
         end
       end

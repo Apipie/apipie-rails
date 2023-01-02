@@ -2,6 +2,8 @@ require 'i18n'
 require 'json'
 require 'active_support/hash_with_indifferent_access'
 
+require 'apipie/core_ext/route'
+
 require "apipie/routing"
 require "apipie/markup"
 require "apipie/apipie_module"
@@ -10,6 +12,8 @@ require "apipie/configuration"
 require "apipie/method_description"
 require "apipie/resource_description"
 require "apipie/param_description"
+require "apipie/method_description/api"
+require "apipie/method_description/apis_service"
 require "apipie/errors"
 require "apipie/error_description"
 require "apipie/response_description"
@@ -21,7 +25,9 @@ require "apipie/railtie"
 require 'apipie/extractor'
 require "apipie/version"
 require "apipie/swagger_generator"
-
-if Rails.version.start_with?("3.0")
-  warn 'Warning: apipie-rails is not going to support Rails 3.0 anymore in future versions'
-end
+require "apipie/generator/generator"
+require "apipie/generator/swagger/swagger"
+require "apipie/generator/swagger/warning"
+require "apipie/generator/swagger/warning_writer"
+require "apipie/generator/swagger/type"
+require "apipie/generator/swagger/type_extractor"

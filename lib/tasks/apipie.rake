@@ -166,13 +166,18 @@ namespace :apipie do
   def renderer
     return @apipie_renderer if @apipie_renderer
 
-    base_paths = [File.expand_path("../../../app/views/apipie/apipies", __FILE__)]
+    base_paths = [File.expand_path('../../app/views/apipie/apipies', __dir__)]
     base_paths.unshift("#{Rails.root}/app/views/apipie/apipies") if File.directory?("#{Rails.root}/app/views/apipie/apipies")
 
-    layouts_paths = [File.expand_path("../../../app/views/layouts", __FILE__)]
+    layouts_paths = [File.expand_path('../../app/views/layouts', __dir__)]
     layouts_paths.unshift("#{Rails.root}/app/views/layouts") if File.directory?("#{Rails.root}/app/views/layouts/apipie")
 
-    @apipie_renderer = ActionView::Base.new(base_paths + layouts_paths)
+    if ActionView::Base.respond_to?(:with_empty_template_cache) && ActionView::Base.respond_to?(:with_view_paths)
+      @apipie_renderer = ActionView::Base.with_empty_template_cache.with_view_paths(base_paths + layouts_paths)
+    else
+      @apipie_renderer = ActionView::Base.new(base_paths + layouts_paths)
+    end
+
     @apipie_renderer.singleton_class.send(:include, ApipieHelper)
     return @apipie_renderer
   end
@@ -210,14 +215,14 @@ namespace :apipie do
   end
 
   def generate_json_page(file_base, doc, lang = nil)
-    FileUtils.mkdir_p(file_base) unless File.exists?(file_base)
+    FileUtils.mkdir_p(file_base) unless File.exist?(file_base)
 
     filename = "schema_apipie#{lang_ext(lang)}.json"
     File.open("#{file_base}/#{filename}", 'w') { |file| file.write(JSON.pretty_generate(doc)) }
   end
 
   def generate_swagger_json_page(file_base, doc, sfx="", lang = nil)
-    FileUtils.mkdir_p(file_base) unless File.exists?(file_base)
+    FileUtils.mkdir_p(file_base) unless File.exist?(file_base)
 
     path = Pathname.new("#{file_base}/schema_swagger#{sfx}#{lang_ext(lang)}.json")
     File.open(path, 'w') { |file| file.write(JSON.pretty_generate(doc)) }
@@ -226,21 +231,21 @@ namespace :apipie do
   end
 
   def generate_one_page(file_base, doc, lang = nil)
-    FileUtils.mkdir_p(File.dirname(file_base)) unless File.exists?(File.dirname(file_base))
+    FileUtils.mkdir_p(File.dirname(file_base)) unless File.exist?(File.dirname(file_base))
 
     render_page("#{file_base}-onepage#{lang_ext(lang)}.html", "static", {:doc => doc[:docs],
       :language => lang, :languages => Apipie.configuration.languages})
   end
 
   def generate_plain_page(file_base, doc, lang = nil)
-    FileUtils.mkdir_p(File.dirname(file_base)) unless File.exists?(File.dirname(file_base))
+    FileUtils.mkdir_p(File.dirname(file_base)) unless File.exist?(File.dirname(file_base))
 
     render_page("#{file_base}-plain#{lang_ext(lang)}.html", "plain", {:doc => doc[:docs],
       :language => lang, :languages => Apipie.configuration.languages}, nil)
   end
 
   def generate_index_page(file_base, doc, include_json = false, show_versions = false, lang = nil)
-    FileUtils.mkdir_p(File.dirname(file_base)) unless File.exists?(File.dirname(file_base))
+    FileUtils.mkdir_p(File.dirname(file_base)) unless File.exist?(File.dirname(file_base))
     versions = show_versions && Apipie.available_versions
     render_page("#{file_base}#{lang_ext(lang)}.html", "index", {:doc => doc[:docs],
       :versions => versions, :language => lang, :languages => Apipie.configuration.languages})
@@ -251,7 +256,7 @@ namespace :apipie do
   def generate_resource_pages(version, file_base, doc, include_json = false, lang = nil)
     doc[:docs][:resources].each do |resource_name, _|
       resource_file_base = File.join(file_base, resource_name.to_s)
-      FileUtils.mkdir_p(File.dirname(resource_file_base)) unless File.exists?(File.dirname(resource_file_base))
+      FileUtils.mkdir_p(File.dirname(resource_file_base)) unless File.exist?(File.dirname(resource_file_base))
 
       doc = Apipie.to_json(version, resource_name, nil, lang)
       doc[:docs][:link_extension] = (lang ? ".#{lang}.html" : ".html")
@@ -265,7 +270,7 @@ namespace :apipie do
     doc[:docs][:resources].each do |resource_name, resource_params|
       resource_params[:methods].each do |method|
         method_file_base = File.join(file_base, resource_name.to_s, method[:name].to_s)
-        FileUtils.mkdir_p(File.dirname(method_file_base)) unless File.exists?(File.dirname(method_file_base))
+        FileUtils.mkdir_p(File.dirname(method_file_base)) unless File.exist?(File.dirname(method_file_base))
 
         doc = Apipie.to_json(version, resource_name, method[:name], lang)
         doc[:docs][:link_extension] = (lang ? ".#{lang}.html" : ".html")
@@ -329,7 +334,7 @@ MESSAGE
   desc "Convert your examples from the old yaml into the new json format"
   task :convert_examples => :environment do
     yaml_examples_file = File.join(Rails.root, Apipie.configuration.doc_path, "apipie_examples.yml")
-    if File.exists?(yaml_examples_file)
+    if File.exist?(yaml_examples_file)
       #if SafeYAML gem is enabled, it will load examples as an array of Hash, instead of hash
       if defined? SafeYAML
         examples = YAML.load_file(yaml_examples_file, :safe=>false)

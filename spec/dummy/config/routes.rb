@@ -1,5 +1,7 @@
 Dummy::Application.routes.draw do
 
+  mount TestEngine::Engine => '/test'
+
   scope ENV['RAILS_RELATIVE_URL_ROOT'] || '/' do
 
     scope '/api' do
@@ -9,6 +11,7 @@ Dummy::Application.routes.draw do
         end
       end
       resources :concerns, :only => [:index, :show]
+      get '/:resource_id/:custom_subst' => 'concerns#custom'
       namespace :files do
         get '/*file_path', format: false, :action => 'download'
       end

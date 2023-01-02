@@ -2,8 +2,8 @@
  API Documentation Tool
 ========================
 
-.. image:: https://travis-ci.org/Apipie/apipie-rails.svg?branch=master
-    :target: https://travis-ci.org/Apipie/apipie-rails
+.. image:: https://github.com/Apipie/apipie-rails/actions/workflows/build.yml/badge.svg
+    :target: https://github.com/Apipie/apipie-rails/actions/workflows/build.yml
 .. image:: https://codeclimate.com/github/Apipie/apipie-rails.svg
     :target: https://codeclimate.com/github/Apipie/apipie-rails
 .. image:: https://badges.gitter.im/Apipie/apipie-rails.svg
@@ -387,20 +387,20 @@ Example:
      end
    end
 
-   api :POST, "/users", "Create an user"
+   api :POST, "/users", "Create a user"
    param_group :user
    def create
      # ...
    end
 
-   api :PUT, "/users/:id", "Update an user"
+   api :PUT, "/users/:id", "Update a user"
    param_group :user
    def update
      # ...
    end
 
    # v2/users_controller.rb
-   api :POST, "/users", "Create an user"
+   api :POST, "/users", "Create a user"
    param_group :user, V1::UsersController
    def create
      # ...
@@ -434,7 +434,7 @@ Example
      end
    end
 
-   api :POST, "/users", "Create an user"
+   api :POST, "/users", "Create a user"
    param_group :user
    def create
      # ...
@@ -446,7 +446,7 @@ Example
      # ...
    end
 
-   api :PUT, "/users/:id", "Update an user"
+   api :PUT, "/users/:id", "Update a user"
    param_group :user
    def update
      # ...
@@ -966,6 +966,9 @@ validate_presence
 validate_key
   Check the received params to ensure they are defined in the API. (false by default)
 
+action_on_non_validated_keys
+  Either `:raise` or `:skip`. If `validate_key` fails, raise error or delete the non-validated key from the params and log the key (`:raise` by default)
+
 process_params
   Process and extract the parameter defined from the params of the request
   to the api_params variable
@@ -1020,6 +1023,10 @@ authorize
 
 show_all_examples
   Set this to true to set show_in_doc=1 in all recorded examples
+
+ignore_allow_blank_false
+  `allow_blank: false` was incorrectly ignored up until version 0.6.0, this bug was fixed in 0.7.0
+  if you need the old behavior, set this to true
 
 link_extension
   The extension to use for API pages ('.html' by default). Link extensions
@@ -1148,6 +1155,21 @@ request are validated. If the value is wrong an +ArgumentError+ exception
 is raised and can be rescued and processed. It contains a description
 of the parameter value expectations. Validations can be turned off
 in the configuration file.
+
+Here is an example of how to rescue and process a +ParamMissing+ or
++ParamInvalid+ error from within the ApplicationController.
+
+.. code:: ruby
+  
+  class ApplicationController < ActionController::Base
+
+    # ParamError is superclass of ParamMissing, ParamInvalid
+    rescue_from Apipie::ParamError do |e|
+      render text: e.message, status: :unprocessable_entity
+    end
+
+    # ...
+  end
 
 Parameter validation normally happens after before_actions, just before
 your controller method is invoked. If you prefer to control when parameter
@@ -1361,6 +1383,10 @@ So we create apipie_validators.rb initializer with this content:
      def description
        "Must be #{@type}."
      end
+
+     def expected_type
+       'numeric'
+     end
    end
 
 Parameters of the build method:
@@ -1378,6 +1404,16 @@ options
 block
   Block converted into Proc, use it as you desire. In this example nil.
 
+If your validator includes valid values that respond true to `.blank?`, you
+should also define:
+
+.. code:: ruby
+
+   def ignore_allow_blank?
+     true
+   end
+
+so that the validation does not fail for valid values.
 
 ============
  Versioning
@@ -1653,6 +1689,23 @@ There are several configuration parameters that determine the structure of the g
 
     If ``true``:  the ``additional-properties: false`` field will not be included in response object descriptions
 
+``config.swagger_schemes``
+    An array of transport schemes that the API supports.
+    This can include any combination of ``http``, ``https``, ``ws`` and ``wss``.
+    By default to encourage good security practices, ``['https']`` is specified.
+
+
+``config:swagger_security_definitions``
+    If the API requires authentication, you can specify details of the authentication mechanisms supported as a (Hash) value here.
+    See [https://swagger.io/docs/specification/2-0/authentication/] for details of what values can be specified
+    By default, no security is defined.
+
+``config.swagger_global_security``
+    If the API requires authentication, you can specify which of the authentication mechanisms are supported by all API operations as an Array of hashes here.
+    This should be used in conjunction with the mechanisms defined by ``swagger_security_definitions``.
+    See [https://swagger.io/docs/specification/2-0/authentication/] for details of what values can be specified
+    By default, no security is defined.
+
 
 Known limitations of the current implementation
 -------------------------------------------------
@@ -1663,6 +1716,7 @@ Known limitations of the current implementation
 * It is not possible to leverage all of the parameter type/format capabilities of swagger
 * Only OpenAPI 2.0 is supported
 * Responses are defined inline and not as a $ref
+* It is not possible to specify per-operation security requirements (only global)
 
 ====================================
  Dynamic Swagger generation
@@ -1847,6 +1901,20 @@ provided it uses Apipie as a backend.
 
 And if you write one on your own, don't hesitate to share it with us!
 
+====================
+ Contributing
+====================
+
+Since this gem does not have a Gemfile, you need to specify it in your shell with:
+
+.. code:: shell
+   BUNDLE_GEMFILE='gemfiles/Gemfile.rails61'
+
+Then, you can install dependencies and run the test suite:
+
+.. code:: shell
+   > bundle install
+   > bundle exec rspec
 
 ====================
  Disqus Integration

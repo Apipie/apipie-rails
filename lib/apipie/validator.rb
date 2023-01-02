@@ -3,7 +3,7 @@ module Apipie
 
   module Validator
 
-    # to create new validator, inherit from Apipie::Validator::Base
+    # to create new validator, inherit from Apipie::Validator::BaseValidator
     # and implement class method build and instance method validate
     class BaseValidator
 
@@ -80,6 +80,10 @@ module Apipie
         'string'
       end
 
+      def ignore_allow_blank?
+        false
+      end
+
       def merge_with(other_validator)
         return self if self == other_validator
         raise NotImplementedError, "Don't know how to merge #{self.inspect} with #{other_validator.inspect}"
@@ -129,6 +133,8 @@ module Apipie
           'array'
         elsif @type.ancestors.include? Numeric
           'numeric'
+        elsif @type.ancestors.include? File
+          'file'
         else
           'string'
         end
@@ -331,6 +337,7 @@ module Apipie
         @params_ordered ||= _apipie_dsl_data[:params].map do |args|
           options = args.find { |arg| arg.is_a? Hash }
           options[:parent] = self.param_description
+          options[:param_group] = @param_group
           Apipie::ParamDescription.from_dsl_data(param_description.method_description, args)
         end
       end
@@ -425,6 +432,10 @@ module Apipie
         "Must be a decimal number."
       end
 
+      def expected_type
+        'numeric'
+      end
+
       def self.validate(value)
         value.to_s =~ /\A^[-+]?[0-9]+([,.][0-9]+)?\Z$/
       end
@@ -474,6 +485,10 @@ module Apipie
       def description
         string = %w(true false 1 0).map { |value| format_description_value(value) }.join(', ')
         "Must be one of: #{string}."
+      end
+
+      def ignore_allow_blank?
+        true
       end
     end
 

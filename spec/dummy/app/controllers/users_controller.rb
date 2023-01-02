@@ -274,6 +274,12 @@ class UsersController < ApplicationController
     render :plain => 'nothing to see here'
   end
 
+  api :GET, '/users/in_departments', 'show users from specific departments'
+  param :departments, Array, in: ["finance", "operations", "sales", "marketing", "HR"], default_value: ['sales']
+  def get_in_departments
+    render :plain => 'nothing to see here'
+  end
+
   api :GET, '/users/desc_from_file', 'desc from file'
   document 'users/desc_from_file.md'
   def desc_from_file
@@ -292,6 +298,7 @@ class UsersController < ApplicationController
   api :GET, '/users/action_with_headers'
   header :RequredHeaderName, 'Required header description', required: true
   header :OptionalHeaderName, 'Optional header description', required: false, type: 'string'
+  header :HeaderNameWithDefaultValue, 'Header with default value', required: true, default: 'default value'
   def action_with_headers
   end
 end

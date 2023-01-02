@@ -114,14 +114,18 @@ module Apipie
     end
 
     def validate(value)
-      return true if @allow_nil && value.nil?
-      return true if @allow_blank && value.blank?
+      return true if allow_nil && value.nil?
+      return true if allow_blank && value.blank?
       value = normalized_value(value)
-      if (!@allow_nil && value.nil?) || !@validator.valid?(value)
-        error = @validator.error
+      if (!allow_nil && value.nil?) || (blank_forbidden? && value.blank?) || !validator.valid?(value)
+        error = validator.error
         error = ParamError.new(error) unless error.is_a? StandardError
         raise error
       end
+    end
+
+    def blank_forbidden?
+      !Apipie.configuration.ignore_allow_blank_false && !allow_blank && !validator.ignore_allow_blank?
     end
 
     def process_value(value)

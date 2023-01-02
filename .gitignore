@@ -1,6 +1,7 @@
 .bundle/
 log/*.log
 pkg/
+coverage
 spec/dummy/db/*.sqlite3
 spec/dummy/log/*.log
 spec/dummy/tmp/
@@ -12,3 +13,4 @@ Gemfile.local
 .ruby-gemset
 
 .DS_Store
+rel-eng/.ipynb_checkpoints

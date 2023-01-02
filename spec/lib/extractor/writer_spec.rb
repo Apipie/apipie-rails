@@ -6,7 +6,8 @@ describe Apipie::Extractor::Writer do
   let(:writer_class) { Apipie::Extractor::Writer }
   let(:writer) { writer_class.new(collector) }
   let(:test_examples_file) { File.join(Rails.root, "doc", "apipie_examples_test.json") }
-  let(:records) { {
+  let(:records) {
+    {
     "concern_resources#show" =>
       [{
         :controller=>ConcernsController,
@@ -31,7 +32,8 @@ describe Apipie::Extractor::Writer do
       }]
     }
   }
-  let(:loaded_records) { {
+  let(:loaded_records) {
+    {
     "concern_resources#show" =>
       [{
         "verb"=>:GET,
@@ -57,16 +59,16 @@ describe Apipie::Extractor::Writer do
     }
   }
 
-  context 'with doc_path overriden in configuration' do
+  context 'with doc_path overridden in configuration' do
     around(:each) do |example|
       standard_path = Apipie.configuration.doc_path
-      Apipie.configuration.doc_path = 'user_specified_doc_path'
+      Apipie.configuration.doc_path = 'tmp/user_specified_doc_path'
       example.run
       Apipie.configuration.doc_path = standard_path
     end
 
     it 'should use the doc_path specified in configuration' do
-      expect(writer_class.examples_file).to eql(File.join(Rails.root, 'user_specified_doc_path', 'apipie_examples.json'))
+      expect(writer_class.examples_file).to eql(File.join(Rails.root, 'tmp', 'user_specified_doc_path', 'apipie_examples.json'))
     end
   end
 

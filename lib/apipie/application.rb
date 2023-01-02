@@ -29,7 +29,7 @@ module Apipie
       @controller_to_resource_id[controller] = resource_id
     end
 
-    def rails_routes(route_set = nil)
+    def rails_routes(route_set = nil, base_url = "")
       if route_set.nil? && @rails_routes
         return @rails_routes
       end
@@ -40,10 +40,15 @@ module Apipie
       flatten_routes = []
 
       route_set.routes.each do |route|
-        if route.app.respond_to?(:routes) && route.app.routes.is_a?(ActionDispatch::Routing::RouteSet)
-          # recursively go though the moutned engines
-          flatten_routes.concat(rails_routes(route.app.routes))
+        # route is_a ActionDispatch::Journey::Route
+        # route.app is_a ActionDispatch::Routing::Mapper::Constraints
+        # route.app.app is_a TestEngine::Engine
+        route_app = route.app.app
+        if route_app.respond_to?(:routes) && route_app.routes.is_a?(ActionDispatch::Routing::RouteSet)
+          # recursively go though the mounted engines
+          flatten_routes.concat(rails_routes(route_app.routes, File.join(base_url, route.path.spec.to_s)))
         else
+          route.base_url = base_url
           flatten_routes << route
         end
       end
@@ -453,10 +458,10 @@ module Apipie
     # as this would break loading of the controllers.
     def rails_mark_classes_for_reload
       unless Rails.application.config.cache_classes
-        Rails::VERSION::MAJOR == 4 ? ActionDispatch::Reloader.cleanup! : Rails.application.reloader.reload!
+        Rails.application.reloader.reload!
         init_env
         reload_examples
-        Rails::VERSION::MAJOR == 4 ? ActionDispatch::Reloader.prepare! : Rails.application.reloader.prepare!
+        Rails.application.reloader.prepare!
       end
     end
 

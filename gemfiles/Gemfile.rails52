@@ -1,0 +1,10 @@
+source "https://rubygems.org"
+
+gemspec path: '..'
+
+gem 'actionpack', '~> 5.2.6'
+gem 'activesupport', '~> 5.2.6'
+gem 'mime-types', '~> 2.99.3'
+gem 'rails-controller-testing'
+
+gem 'test_engine', path: '../spec/dummy/components/test_engine', group: :test
