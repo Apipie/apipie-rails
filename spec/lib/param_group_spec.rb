@@ -51,10 +51,19 @@ describe "param groups" do
     expect(Apipie["overridden_concern_resources#create"].params.has_key?(:user)).to eq(false)
   end
 
-it "shouldn't replace name of a parameter defined in the controller" do
+  it "shouldn't replace name of a parameter defined in the controller" do
     expect(Apipie["overridden_concern_resources#custom"].params.has_key?(:concern)).to eq(true)
     expect(Apipie["overridden_concern_resources#custom"].params.has_key?(:user)).to eq(false)
   end
 
+  it 'should allow controllers to inherit param groups from their parents' do
+    expect(Apipie['1.0#architectures#index'].params.key?(:page)).to be true
+    expect(Apipie['1.0#architectures#index'].params.key?(:items_per_page))
+      .to be true
+  end
+
+  it 'should be able to override inherited param_groups' do
+    expect(Apipie['1.0#architectures#show'].params[:identifier].validator.expected_type).to eq 'hash'
+  end
 end
 

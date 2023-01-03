@@ -3,11 +3,17 @@ module Api
     class ArchitecturesController < V1::BaseController
       resource_description { name 'Architectures' }
       api :GET, "/architectures/", "List all architectures."
+      param_group :pagination
       def index
       end
 
       api :GET, "/architectures/:id/", "Show an architecture."
+      param_group :identifier
       def show
+      end
+
+      def_param_group :identifier do
+        param :identifier, Hash, 'A hex based string to identify the resource.'
       end
 
       def_param_group :timestamps do
