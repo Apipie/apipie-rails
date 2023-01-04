@@ -121,7 +121,7 @@ module Apipie
     def to_json(lang=nil)
       {
           :code => code,
-          :description => description,
+          :description => Apipie.app.translate(description, lang),
           :is_array => is_array?,
           :returns_object => params_ordered.map{ |param| param.to_json(lang).tap{|h| h.delete(:validations) }}.flatten,
           :additional_properties => additional_properties,
