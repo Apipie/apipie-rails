@@ -427,15 +427,9 @@ module Apipie
 
       missing.each do |name|
         warn_path_parameter_not_described(name, path)
-        result[name.to_sym] = OpenStruct.new({
-                                                 required: true,
-                                                 _gen_added_from_path: true,
-                                                 name: name,
-                                                 validator: Apipie::Validator::NumberValidator.new(nil),
-                                                 options: {
-                                                     in: "path"
-                                                 }
-                                             })
+
+        result[name.to_sym] = Apipie::Generator::Swagger::ParamDescription.
+          create_for_missing_param(method, name)
       end
 
       result
@@ -515,7 +509,7 @@ module Apipie
       save_field(swagger_def, :description, param_desc.options, :desc, true) unless param_desc.options[:desc].nil?
       save_field(swagger_def, :default, param_desc.options, :default_value)
 
-      if param_desc.respond_to?(:_gen_added_from_path) && !param_desc.required
+      if param_desc.options[:added_from_path] == true && !param_desc.required
         warn_optional_param_in_path(param_desc.name)
         swagger_def[:required] = true
       end
