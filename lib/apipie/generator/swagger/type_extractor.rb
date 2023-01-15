@@ -34,8 +34,6 @@ class Apipie::Generator::Swagger::TypeExtractor
     extract
   end
 
-  private
-
   def extract
     expected_type =
       if string?
@@ -50,6 +48,8 @@ class Apipie::Generator::Swagger::TypeExtractor
 
     TYPES[expected_type] || @validator.expected_type
   end
+
+  private
 
   def string?
     @validator.blank?
