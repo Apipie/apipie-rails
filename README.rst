@@ -1375,7 +1375,7 @@ So we create apipie_validators.rb initializer with this content:
      end
 
      def self.build(param_description, argument, options, block)
-       if argument == Integer || argument == Integer
+       if argument == Integer
          self.new(param_description, argument)
        end
      end
