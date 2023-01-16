@@ -167,7 +167,7 @@ module Apipie
         :apis => method_apis_to_json(lang),
         :formats => formats,
         :full_description => Apipie.app.translate(@full_description, lang),
-        :errors => errors.map(&:to_json),
+        :errors => errors.map{ |error| error.to_json(lang) }.flatten,
         :params => params_ordered.map{ |param| param.to_json(lang) }.flatten,
         :returns => @returns.map{ |return_item| return_item.to_json(lang) }.flatten,
         :examples => @examples,

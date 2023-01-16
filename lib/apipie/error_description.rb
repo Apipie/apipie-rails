@@ -31,10 +31,10 @@ module Apipie
       end
     end
 
-    def to_json
+    def to_json(lang)
       {
         :code => code,
-        :description => description,
+        :description => Apipie.app.translate(description, lang),
         :metadata => metadata
       }
     end
