@@ -85,7 +85,7 @@ namespace :apipie do
           counter = 1
           make_reference = true
         else
-          reference_files.sort_by! {|f| f.ctime }
+          reference_files.sort_by!(&:ctime)
           last_ref = reference_files[-1]
           print "Comparing [#{path}] to reference file: [#{last_ref.basename}]: "
           if !FileUtils.compare_file(path, last_ref)
@@ -108,7 +108,7 @@ namespace :apipie do
 
         num_refs_to_keep = 3
         if reference_files.length > num_refs_to_keep
-          (reference_files - reference_files[-num_refs_to_keep..-1]).each{|f| f.delete}
+          (reference_files - reference_files[-num_refs_to_keep..-1]).each(&:delete)
         end
       }
     end

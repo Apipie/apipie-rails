@@ -7,7 +7,7 @@ module Apipie
   # path - relative path (/api/articles)
   # methods - array of keys to Apipie.method_descriptions (array of Apipie::MethodDescription)
   # name - human readable alias of resource (Articles)
-  # id - resouce name
+  # id - resource name
   # formats - acceptable request/response format types
   # headers - array of headers
   # deprecated - boolean indicating if resource is deprecated

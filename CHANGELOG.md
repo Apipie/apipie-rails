@@ -4,6 +4,20 @@
 Also deleted the `Gemfile` that was now a broken symlink.
 please use `export BUNDLE_GEMFILE='gemfiles/Gemfile.rails61'; bundle exec rspec` to run the test suite
 
+
+
+## [v0.9.0](https://github.com/Apipie/apipie-rails/tree/v0.9.0) (2023-01-03)
+[Full Changelog](https://github.com/Apipie/apipie-rails/compare/v0.8.2...v0.9.0)
+* [Refactor] Move Swagger types and warnings under `/generator` namespace [#803](https://github.com/Apipie/apipie-rails/pull/803) (Panos Dalitsouris)
+* [Refactor] Creates `Apipie::MethodDescription::ApisService` [#805](https://github.com/Apipie/apipie-rails/pull/805) (Panos Dalitsouris)
+* [Refactor] Change output folder to `spec/dummy/tmp/` [#804](https://github.com/Apipie/apipie-rails/pull/804) (Panos Dalitsouris)
+* Fix tiny typo in docs [#798](https://github.com/Apipie/apipie-rails/pull/798) (Erik-B. Ernst)
+* Fix Generated docs.json output [#787](https://github.com/Apipie/apipie-rails/pull/787) (Jeremy Liberman)
+* Rubocop Fixes [#775](https://github.com/Apipie/apipie-rails/pull/775), [#778](https://github.com/Apipie/apipie-rails/pull/778), [#780](https://github.com/Apipie/apipie-rails/pull/780), [#790](https://github.com/Apipie/apipie-rails/pull/790), [#783](https://github.com/Apipie/apipie-rails/pull/783), [#785](https://github.com/Apipie/apipie-rails/pull/785) (RuboCop)
+* Remove/clean up dev dependencies and unused rake tasks [#777](https://github.com/Apipie/apipie-rails/pull/777) (Mathieu Jobin)
+    - remove unused rake task
+* Setup Rubocop Challenger [#776](https://github.com/Apipie/apipie-rails/pull/776) (Mathieu Jobin)
+
 ## [v0.8.2](https://github.com/Apipie/apipie-rails/tree/v0.8.2) (2022-09-03)
 [Full Changelog](https://github.com/Apipie/apipie-rails/compare/v0.8.1...v0.8.2)
 * Allow custom validators to opt out of allow_blank behavior [#762](https://github.com/Apipie/apipie-rails/pull/762).  (Stephen Hanson)

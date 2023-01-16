@@ -374,7 +374,7 @@ describe Apipie::ParamDescription do
 
       subject do
         Apipie::ParamDescription.new(method_desc, :param, Hash) do
-          param :answer, Fixnum
+          param :answer, Integer
         end
       end
 
@@ -392,7 +392,7 @@ describe Apipie::ParamDescription do
 
       subject do
         Apipie::ParamDescription.new(method_desc, :param, Array) do
-          param :answer, Fixnum
+          param :answer, Integer
         end
       end
 
@@ -422,9 +422,9 @@ describe Apipie::ParamDescription do
 
   describe "Array with classes" do
     it "should be valid for objects included in class array" do
-      param = Apipie::ParamDescription.new(method_desc, :param, [Fixnum, String])
+      param = Apipie::ParamDescription.new(method_desc, :param, [Integer, String])
       expect { param.validate("1") }.not_to raise_error
-      expect { param.validate(Fixnum) }.to raise_error(Apipie::ParamInvalid)
+      expect { param.validate(Integer) }.to raise_error(Apipie::ParamInvalid)
     end
   end
 
