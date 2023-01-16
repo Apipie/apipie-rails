@@ -408,12 +408,11 @@ module Apipie
           if line =~ /\s*\b(module|class|def)\b /
             break
           end
-          if line =~ /do\s*(\|.*?\|)?\s*$/
-            block_level -= 1
-            if block_level == 0
-              added_lines.concat(lines_to_add)
-              lines_to_add = []
-            end
+          next unless line =~ /do\s*(\|.*?\|)?\s*$/
+          block_level -= 1
+          if block_level == 0
+            added_lines.concat(lines_to_add)
+            lines_to_add = []
           end
         end
         return added_lines.reverse.join
