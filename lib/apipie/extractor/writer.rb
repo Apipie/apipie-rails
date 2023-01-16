@@ -116,9 +116,10 @@ module Apipie
 
       def convert_file_value hash
         hash.each do |k, v|
-          if v.is_a?(Rack::Test::UploadedFile) || v.is_a?(ActionDispatch::Http::UploadedFile)
+          case v
+          when Rack::Test::UploadedFile, ActionDispatch::Http::UploadedFile
             hash[k] = "<FILE CONTENT '#{v.original_filename}'>"
-          elsif v.is_a?(Hash)
+          when Hash
             hash[k] = convert_file_value(v)
           end
         end

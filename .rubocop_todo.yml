@@ -1323,15 +1323,6 @@ Style/CaseEquality:
   Exclude:
     - 'lib/apipie/validator.rb'
 
-# Offense count: 5
-# This cop supports unsafe autocorrection (--autocorrect-all).
-Style/CaseLikeIf:
-  Exclude:
-    - 'lib/apipie/dsl_definition.rb'
-    - 'lib/apipie/extractor/writer.rb'
-    - 'lib/apipie/response_description_adapter.rb'
-    - 'spec/controllers/users_controller_spec.rb'
-
 # Offense count: 11
 # This cop supports unsafe autocorrection (--autocorrect-all).
 # Configuration parameters: EnforcedStyle.
@@ -1508,13 +1499,12 @@ Style/For:
 Style/FrozenStringLiteralComment:
   Enabled: false
 
-# Offense count: 36
+# Offense count: 35
 # Configuration parameters: MinBodyLength, AllowConsecutiveConditionals.
 Style/GuardClause:
   Exclude:
     - 'app/controllers/apipie/apipies_controller.rb'
     - 'lib/apipie/application.rb'
-    - 'lib/apipie/dsl_definition.rb'
     - 'lib/apipie/extractor.rb'
     - 'lib/apipie/extractor/collector.rb'
     - 'lib/apipie/extractor/writer.rb'

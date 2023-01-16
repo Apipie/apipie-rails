@@ -293,9 +293,10 @@ module Apipie
       end
 
       def _apipie_handle_validate_key_error params, param
-        if Apipie.configuration.action_on_non_validated_keys == :raise
+        case Apipie.configuration.action_on_non_validated_keys
+        when :raise
           raise UnknownParam, param
-        elsif Apipie.configuration.action_on_non_validated_keys == :skip
+        when :skip
           params.delete(param)
           Rails.logger.warn(UnknownParam.new(param).to_s)
         end

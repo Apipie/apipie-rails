@@ -5,9 +5,10 @@ def compare_hashes(h1, h2)
     expect(h1).to eq(h2)
   else
     h1.each do |key, val|
-      if val.is_a? Hash
+      case val
+      when Hash
         compare_hashes val, h2[key]
-      elsif val.is_a? Array
+      when Array
         val.each_with_index do |v, i|
           compare_hashes val[i], h2[key][i]
         end

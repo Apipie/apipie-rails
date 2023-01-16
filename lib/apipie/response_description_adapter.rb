@@ -107,9 +107,10 @@ module Apipie
 
       def add_sub_property(prop_desc)
         raise "Only properties with expected_type 'object' can have sub-properties" unless @expected_type == 'object'
-        if prop_desc.is_a? PropDesc
+        case prop_desc
+        when PropDesc
           @sub_properties << prop_desc
-        elsif prop_desc.is_a? Modifier
+        when Modifier
           prop_desc.apply(self)
         else
           raise "Unrecognized prop_desc type (#{prop_desc.class})"
@@ -170,9 +171,10 @@ module Apipie
     end
 
     def add(prop_desc)
-      if prop_desc.is_a? PropDesc
+      case prop_desc
+      when PropDesc
         @property_descs << prop_desc
-      elsif prop_desc.is_a? Modifier
+      when Modifier
         prop_desc.apply(self)
       else
         raise "Unrecognized prop_desc type (#{prop_desc.class})"
