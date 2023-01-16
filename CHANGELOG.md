@@ -4,7 +4,12 @@
 Also deleted the `Gemfile` that was now a broken symlink.
 please use `export BUNDLE_GEMFILE='gemfiles/Gemfile.rails61'; bundle exec rspec` to run the test suite
 
-
+## [v0.9.1](https://github.com/Apipie/apipie-rails/tree/v0.9.1) (2023-01-16)
+[Full Changelog](https://github.com/Apipie/apipie-rails/compare/v0.9.0...v0.9.1)
+* [Refactor] Create test cache files under a not version controlled directory [#809](https://github.com/Apipie/apipie-rails/pull/809) (Panos Dalitsouris)
+* [Ruby] Support for Ruby 3.2 [#807](https://github.com/Apipie/apipie-rails/pull/807) (Mathieu Jobin)
+* [Fix] Reverted conditional assignment operators that caused #559 [#806](https://github.com/Apipie/apipie-rails/pull/806) (Nick L. Deltik)
+* [Rubocop] Autocorrect Style/SymbolProc [#793](https://github.com/Apipie/apipie-rails/pull/793) (Rubocop Challenger)
 
 ## [v0.9.0](https://github.com/Apipie/apipie-rails/tree/v0.9.0) (2023-01-03)
 [Full Changelog](https://github.com/Apipie/apipie-rails/compare/v0.8.2...v0.9.0)
