@@ -150,7 +150,7 @@ Example:
    resource_description do
      short 'Site members'
      formats ['json']
-     param :id, Fixnum, :desc => "User ID", :required => false
+     param :id, Integer, :desc => "User ID", :required => false
      param :resource_param, Hash, :desc => 'Param description for all methods' do
        param :ausername, String, :desc => "Username for login", :required => true
        param :apassword, String, :desc => "Password for login", :required => true
@@ -1375,7 +1375,7 @@ So we create apipie_validators.rb initializer with this content:
      end
 
      def self.build(param_description, argument, options, block)
-       if argument == Integer || argument == Fixnum
+       if argument == Integer || argument == Integer
          self.new(param_description, argument)
        end
      end

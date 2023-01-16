@@ -4,7 +4,7 @@ class UsersController < ApplicationController
     short 'Site members'
     path '/users'
     formats ['json']
-    param :id, Fixnum, :desc => "User ID", :required => false
+    param :id, Integer, :desc => "User ID", :required => false
     param :legacy_param, Hash, :desc => 'Deprecated parameter not documented', :show => false, :required => false do
       param :resource_param, Hash, :desc => 'Param description for all methods' do
         param :ausername, String, :desc => "Username for login", :required => true
