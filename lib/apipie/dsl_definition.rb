@@ -70,7 +70,7 @@ module Apipie
       def short(short)
         _apipie_dsl_data[:short_description] = short
       end
-      alias :short_description :short
+      alias short_description short
 
       def path(path)
         _apipie_dsl_data[:path] = path
@@ -160,7 +160,7 @@ module Apipie
       def api_versions(*versions)
         _apipie_dsl_data[:api_versions].concat(versions)
       end
-      alias :api_version :api_versions
+      alias api_version api_versions
 
       # Describe the next method.
       #
@@ -177,8 +177,8 @@ module Apipie
         end
         _apipie_dsl_data[:description] = description
       end
-      alias :description :desc
-      alias :full_description :desc
+      alias description desc
+      alias full_description desc
 
       # describe next method with document in given path
       # in convension, these doc located under "#{Rails.root}/doc"
@@ -526,7 +526,7 @@ module Apipie
         end
       end
       # backwards compatibility
-      alias_method :apipie_update_params, :apipie_update_methods
+      alias apipie_update_params apipie_update_methods
 
       def _apipie_concern_subst
         @_apipie_concern_subst ||= {:controller_path => self.controller_path,

@@ -12,9 +12,9 @@ module Apipie
     attr_reader :additional_properties, :is_array
     attr_accessor :parent, :required
 
-    alias_method :response_only?, :response_only
-    alias_method :request_only?, :request_only
-    alias_method :is_array?, :is_array
+    alias response_only? response_only
+    alias request_only? request_only
+    alias is_array? is_array
 
     def self.from_dsl_data(method_description, args)
       param_name, validator, desc_or_options, options, block = args

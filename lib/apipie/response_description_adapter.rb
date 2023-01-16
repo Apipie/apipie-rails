@@ -131,7 +131,7 @@ module Apipie
       attr_reader :name, :required, :expected_type, :options, :description
       attr_accessor :additional_properties
 
-      alias_method :desc, :description
+      alias desc description
 
       def is_array?
         @is_array

@@ -14,13 +14,13 @@ module Apipie
       :swagger_allow_additional_properties_in_response, :swagger_responses_use_refs,
       :swagger_schemes, :swagger_security_definitions, :swagger_global_security
 
-    alias_method :validate?, :validate
-    alias_method :required_by_default?, :required_by_default
-    alias_method :namespaced_resources?, :namespaced_resources
-    alias_method :swagger_include_warning_tags?, :swagger_include_warning_tags
-    alias_method :swagger_json_input_uses_refs?, :swagger_json_input_uses_refs
-    alias_method :swagger_responses_use_refs?, :swagger_responses_use_refs
-    alias_method :swagger_generate_x_computed_id_field?, :swagger_generate_x_computed_id_field
+    alias validate? validate
+    alias required_by_default? required_by_default
+    alias namespaced_resources? namespaced_resources
+    alias swagger_include_warning_tags? swagger_include_warning_tags
+    alias swagger_json_input_uses_refs? swagger_json_input_uses_refs
+    alias swagger_responses_use_refs? swagger_responses_use_refs
+    alias swagger_generate_x_computed_id_field? swagger_generate_x_computed_id_field
 
     # matcher to be used in Dir.glob to find controllers to be reloaded e.g.
     #
@@ -51,17 +51,17 @@ module Apipie
     def validate_value
       return (validate? && @validate_value)
     end
-    alias_method :validate_value?, :validate_value
+    alias validate_value? validate_value
 
     def validate_presence
       return (validate? && @validate_presence)
     end
-    alias_method :validate_presence?, :validate_presence
+    alias validate_presence? validate_presence
 
     def validate_key
       return (validate? && @validate_key)
     end
-    alias_method :validate_key?, :validate_key
+    alias validate_key? validate_key
 
     def process_value?
       @process_params
@@ -73,7 +73,7 @@ module Apipie
     #
     #     rake apipie:cache
     attr_accessor :use_cache
-    alias_method :use_cache?, :use_cache
+    alias use_cache? use_cache
 
     attr_writer :cache_dir
     def cache_dir
