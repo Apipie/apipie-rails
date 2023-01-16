@@ -347,10 +347,10 @@ module Apipie
         if @hash_params
           @hash_params.each do |k, p|
             if Apipie.configuration.validate_presence?
-              raise ParamMissing.new(p) if p.required && !value.has_key?(k)
+              raise ParamMissing.new(p) if p.required && !value.key?(k)
             end
             if Apipie.configuration.validate_value?
-              p.validate(value[k]) if value.has_key?(k)
+              p.validate(value[k]) if value.key?(k)
             end
           end
         end
@@ -360,7 +360,7 @@ module Apipie
       def process_value(value)
         if @hash_params && value
           return @hash_params.each_with_object({}) do |(key, param), api_params|
-            if value.has_key?(key)
+            if value.key?(key)
               api_params[param.as] = param.process_value(value[key])
             end
           end

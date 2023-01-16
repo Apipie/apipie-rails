@@ -246,14 +246,14 @@ module Apipie
               if Apipie.configuration.validate_presence?
                 method_params.each do |_, param|
                   # check if required parameters are present
-                  raise ParamMissing.new(param) if param.required && !params.has_key?(param.name)
+                  raise ParamMissing.new(param) if param.required && !params.key?(param.name)
                 end
               end
 
               if Apipie.configuration.validate_value?
                 method_params.each do |_, param|
                   # params validations
-                  param.validate(params[:"#{param.name}"]) if params.has_key?(param.name)
+                  param.validate(params[:"#{param.name}"]) if params.key?(param.name)
                 end
               end
 
@@ -272,7 +272,7 @@ module Apipie
                 @api_params ||= {}
                 method_params.each do |_, param|
                   # params processing
-                  @api_params[param.as] = param.process_value(params[:"#{param.name}"]) if params.has_key?(param.name)
+                  @api_params[param.as] = param.process_value(params[:"#{param.name}"]) if params.key?(param.name)
                 end
               end
             end

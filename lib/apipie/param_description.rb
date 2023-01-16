@@ -71,7 +71,7 @@ module Apipie
       @request_only = (@options[:only_in] == :request)
       raise ArgumentError.new("'#{@options[:only_in]}' is not a valid value for :only_in") if (!@response_only && !@request_only) && @options[:only_in].present?
 
-      @show = if @options.has_key? :show
+      @show = if @options.key? :show
         @options[:show]
       else
         true
@@ -212,7 +212,7 @@ module Apipie
     # action awareness is being inherited from ancestors (in terms of
     # nested params)
     def action_aware?
-      if @options.has_key?(:action_aware)
+      if @options.key?(:action_aware)
         return @options[:action_aware]
       elsif @parent
         @parent.action_aware?
@@ -237,7 +237,7 @@ module Apipie
     # crate/update actions.
     def action_awareness
       if action_aware?
-        if !@options.has_key?(:allow_nil)
+        if !@options.key?(:allow_nil)
           if @required
             @allow_nil = false
           else
@@ -268,7 +268,7 @@ module Apipie
     end
 
     def is_required?
-      if @options.has_key?(:required)
+      if @options.key?(:required)
         if (@options[:required] == true) || (@options[:required] == false)
           @options[:required]
         else

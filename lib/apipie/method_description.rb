@@ -40,7 +40,7 @@ module Apipie
       @params_ordered = ParamDescription.unify(@params_ordered)
       @headers = dsl_data[:headers]
 
-      @show = if dsl_data.has_key? :show
+      @show = if dsl_data.key? :show
         dsl_data[:show]
       else
         true
