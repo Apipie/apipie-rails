@@ -49,9 +49,7 @@ describe 'rake tasks' do
   end
 
   describe 'apipie:cache' do
-    let(:cache_output) do
-      File.join(::Rails.root, 'public', 'apipie-cache')
-    end
+    let(:cache_output) { Apipie.configuration.cache_dir }
 
     let(:apidoc_html) do
       File.read("#{cache_output}.html")
