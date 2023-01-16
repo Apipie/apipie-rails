@@ -253,7 +253,7 @@ describe Apipie::ApipiesController do
     let(:cache_dir) { File.join(Rails.root, "tmp", "apipie-cache") }
 
     before do
-      FileUtils.rm_r(cache_dir) if File.exists?(cache_dir)
+      FileUtils.rm_r(cache_dir) if File.exist?(cache_dir)
       FileUtils.mkdir_p(File.join(cache_dir, "apidoc", "v1", "resource"))
       File.open(File.join(cache_dir, "apidoc", "v1.html"), "w") { |f| f << "apidoc.html cache v1" }
       File.open(File.join(cache_dir, "apidoc", "v2.html"), "w") { |f| f << "apidoc.html cache v2" }
@@ -272,7 +272,7 @@ describe Apipie::ApipiesController do
       Apipie.configuration.use_cache = false
       Apipie.configuration.default_version = @orig_version
       Apipie.configuration.cache_dir = @orig_cache_dir
-      # FileUtils.rm_r(cache_dir) if File.exists?(cache_dir)
+      # FileUtils.rm_r(cache_dir) if File.exist?(cache_dir)
     end
 
     it "uses the file in cache dir instead of generating the content on runtime" do

@@ -106,7 +106,7 @@ describe Apipie::Extractor::Writer do
     end
 
     after do
-      File.unlink(test_examples_file) if File.exists?(test_examples_file)
+      File.unlink(test_examples_file) if File.exist?(test_examples_file)
     end
   end
 end
