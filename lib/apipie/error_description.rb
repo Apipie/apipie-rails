@@ -34,7 +34,7 @@ module Apipie
     def to_json(lang)
       {
         :code => code,
-        :description => Apipe.app.translate(description, lang),
+        :description => Apipie.app.translate(description, lang),
         :metadata => metadata
       }
     end
