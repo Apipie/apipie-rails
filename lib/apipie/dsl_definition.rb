@@ -139,7 +139,7 @@ module Apipie
       #
       # Example:
       # api :desc => "Show user profile", :path => "/users/", :version => '1.0 - 3.4.2012'
-      # param :id, Fixnum, :desc => "User ID", :required => true
+      # param :id, Integer, :desc => "User ID", :required => true
       # desc <<-EOS
       #   Long description...
       # EOS

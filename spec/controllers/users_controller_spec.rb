@@ -51,7 +51,7 @@ describe UsersController do
       expect(subject._params_args.count).to eq(2)
       name, type, options = subject._params_args.first
       expect(name).to eq(:id)
-      expect(type).to eq(Fixnum)
+      expect(type).to eq(Integer)
       expect(options).to eq({:required=>false, :desc=>"User ID"})
     end
   end

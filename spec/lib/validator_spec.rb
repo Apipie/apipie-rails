@@ -69,7 +69,7 @@ describe Apipie::Validator do
 
   describe 'ArrayClassValidator' do
     it "should validate by object class" do
-      validator = Apipie::Validator::ArrayClassValidator.new(params_desc, [Fixnum, String])
+      validator = Apipie::Validator::ArrayClassValidator.new(params_desc, [Integer, String])
       expect(validator.validate("1")).to be_truthy
       expect(validator.validate(1)).to be_truthy
       expect(validator.validate({ 1 => 1 })).to be_falsey
