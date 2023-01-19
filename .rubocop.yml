@@ -35,3 +35,6 @@ Naming/PredicateName:
 
 Style/NumericPredicate:
   Enabled: false
+
+Style/HashSyntax:
+  EnforcedStyle: ruby19
