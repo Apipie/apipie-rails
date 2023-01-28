@@ -22,7 +22,7 @@ class Apipie::Generator::Swagger::OperationId
   # @return [Apipie::Generator::Swagger::OperationId]
   def self.from(describable, param: nil)
     path, http_method =
-      if describable.is_a?(Apipie::MethodDescription::Api)
+      if describable.respond_to?(:path) && describable.respond_to?(:http_method)
         [describable.path, describable.http_method]
       elsif describable.is_a?(Apipie::MethodDescription)
         [describable.apis.first.path, describable.apis.first.http_method]
