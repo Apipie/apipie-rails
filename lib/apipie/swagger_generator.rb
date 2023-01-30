@@ -7,7 +7,7 @@ module Apipie
     # @param [Array<Apipie::ResourceDescription] resources
     def generate_from_resources(resources, version:, language:, clear_warnings: false)
       Apipie::Generator::Swagger::Schema.new(
-        resources.values,
+        resources,
         version: version,
         language: language,
         clear_warnings: clear_warnings
