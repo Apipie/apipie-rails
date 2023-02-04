@@ -1,11 +1,7 @@
 module Apipie
   class SwaggerGenerator
-    def initialize(apipie)
-      @apipie = apipie
-    end
-
     # @param [Array<Apipie::ResourceDescription] resources
-    def generate_from_resources(resources, version:, language:, clear_warnings: false)
+    def self.generate_from_resources(resources, version:, language:, clear_warnings: false)
       Apipie::Generator::Swagger::Schema.new(
         resources,
         version: version,
@@ -14,7 +10,7 @@ module Apipie
       ).generate
     end
 
-    def json_schema_for_method_response(method, return_code, allow_nulls)
+    def self.json_schema_for_method_response(method, return_code, allow_nulls)
       response = method.returns.find { |response| response.code.to_s == return_code.to_s }
 
       return if response.blank?
