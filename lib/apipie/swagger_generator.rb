@@ -267,7 +267,7 @@ module Apipie
             summary: Apipie.app.translate(api.short_description, @current_lang),
             parameters: swagger_params_array_for_method(ruby_method, api.path),
             responses: responses,
-            description: ruby_method.full_description
+            description: Apipie.app.translate(ruby_method.full_description, @current_lang)
         }
 
         if methods[method_key][:summary].nil?
@@ -392,7 +392,7 @@ module Apipie
 
       for response in method.returns
         swagger_response_block = {
-            description: response.description
+            description: Apipie.app.translate(response.description, @current_lang)
         }
 
         schema = response_schema(response)
