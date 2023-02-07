@@ -60,6 +60,7 @@ Dir[File.expand_path('support/**/*.rb', __dir__)].each {|f| require f}
 RSpec.configure do |config|
 
   config.mock_with :rspec
+  config.raise_errors_for_deprecations!
 
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
