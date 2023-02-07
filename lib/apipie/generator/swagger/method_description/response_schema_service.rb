@@ -1,5 +1,5 @@
 class Apipie::Generator::Swagger::MethodDescription::ResponseSchemaService
-  # @param [Apipie::ResponseDescription] response_description
+  # @param [Apipie::ResponseDescription, Apipie::ResponseDescriptionAdapter] response_description
   def initialize(response_description, allow_null:, http_method:, controller_method:)
     @response_description = response_description
     @allow_null = allow_null

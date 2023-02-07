@@ -328,6 +328,15 @@ module Apipie
 
         if swagger_param_type(desc) == "object"
     end
+
+    def self.json_schema_for_self_describing_class(cls, allow_nulls)
+      Apipie::Generator::Swagger::MethodDescription::ResponseSchemaService.new(
+        ResponseDescriptionAdapter.from_self_describing_class(cls),
+        allow_null: allow_nulls,
+        http_method: nil,
+        controller_method: nil
+      ).to_swagger
+    end
   end
 
 end
