@@ -10,8 +10,7 @@ module Apipie
       @from_concern = dsl_data[:from_concern]
       @apis = ApisService.new(resource, method, dsl_data).call
 
-      desc = dsl_data[:description] || ''
-      @full_description = Apipie.markup_to_html(desc)
+      @full_description = dsl_data[:description] || ''
 
       @errors = dsl_data[:errors].map do |args|
         Apipie::ErrorDescription.from_dsl_data(args)
@@ -166,7 +165,7 @@ module Apipie
         :name => @method,
         :apis => method_apis_to_json(lang),
         :formats => formats,
-        :full_description => Apipie.app.translate(@full_description, lang),
+        :full_description => Apipie.markup_to_html(Apipie.app.translate(@full_description, lang)),
         :errors => errors.map{ |error| error.to_json(lang) }.flatten,
         :params => params_ordered.map{ |param| param.to_json(lang) }.flatten,
         :returns => @returns.map{ |return_item| return_item.to_json(lang) }.flatten,
