@@ -4,6 +4,14 @@
 Also deleted the `Gemfile` that was now a broken symlink.
 please use `export BUNDLE_GEMFILE='gemfiles/Gemfile.rails61'; bundle exec rspec` to run the test suite
 
+## [v0.9.2](https://github.com/Apipie/apipie-rails/tree/v0.9.2) (2023-02-07)
+[Full Changelog](https://github.com/Apipie/apipie-rails/compare/v0.9.1...v0.9.2)
+* [Rubocop] More Rubocop Auto corrections [#795](https://github.com/Apipie/apipie-rails/pull/795)[#781](https://github.com/Apipie/apipie-rails/pull/781)[#791](https://github.com/Apipie/apipie-rails/pull/791)[#788](https://github.com/Apipie/apipie-rails/pull/788) (Rubocop Challenger)
+* [Fix] Can't include translation in full description ([#446](https://github.com/Apipie/apipie-rails/issues/446)) [#808](https://github.com/Apipie/apipie-rails/pull/808)( Peter Nagy)
+* [Refactor] Move swagger param description creation [#810](https://github.com/Apipie/apipie-rails/pull/810) (Panos Dalitsouris)
+* [Rubocop] Redo rubocop TODOs, set HashSyntax config to most used style [#814](https://github.com/Apipie/apipie-rails/pull/814) (Mathieu Jobin)
+* [Fix] Swagger missing i18n [#815](https://github.com/Apipie/apipie-rails/pull/815) (@jirubio)
+
 ## [v0.9.1](https://github.com/Apipie/apipie-rails/tree/v0.9.1) (2023-01-16)
 [Full Changelog](https://github.com/Apipie/apipie-rails/compare/v0.9.0...v0.9.1)
 * [Refactor] Create test cache files under a not version controlled directory [#809](https://github.com/Apipie/apipie-rails/pull/809) (Panos Dalitsouris)
