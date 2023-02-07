@@ -85,6 +85,14 @@ class Apipie::Generator::Swagger::ParamDescription::Composite
     @schema
   end
 
+  # @param [Symbol, String] param_type
+  #
+  # @return [Apipie::Generator::Swagger::ParamDescription::ReferencedComposite]
+  def referenced(param_type)
+    Apipie::Generator::Swagger::ParamDescription::ReferencedComposite.
+      new(self, param_type)
+  end
+
   private
 
   def for_array(schema)
