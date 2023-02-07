@@ -299,34 +299,26 @@ module Apipie
     #--------------------------------------------------------------------------
 
     def json_schema_for_method_response(method, return_code, allow_nulls)
-      @definitions = {}
-      for response in method.returns
-        next unless response.code.to_s == return_code.to_s
-        schema = response_schema(response, allow_nulls)
-        schema[:definitions] = @definitions if @definitions != {}
-        return schema
-      end
-      nil
+      response = method.returns.find { |response| response.code.to_s == return_code.to_s }
 
-      if response.is_array? && schema
+      return if response.blank?
 
-      if response.allow_additional_properties
+      http_method = method.apis.first.http_method
 
-
-
-    #--------------------------------------------------------------------------
-    # Auto-insertion of parameters that are implicitly defined in the path
-    #--------------------------------------------------------------------------
+      schema = Apipie::Generator::Swagger::MethodDescription::ResponseSchemaService.new(
+        response,
+        allow_null: allow_nulls,
+        http_method: http_method,
+        controller_method: method
       ).to_swagger
 
-      return nil if schema_obj.nil?
+      definitions = Apipie::Generator::Swagger::ReferencedDefinitions.instance.definitions
 
-
-      swagger_result
-    end
+      if definitions.present?
+        schema[:definitions] = definitions
       end
 
-        if swagger_param_type(desc) == "object"
+      schema
     end
 
     def self.json_schema_for_self_describing_class(cls, allow_nulls)
