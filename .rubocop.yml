@@ -48,6 +48,7 @@ Metrics/BlockLength:
   Exclude:
     - app/controllers/apipie/apipies_controller.rb
     - lib/apipie/generator/swagger/param_description/composite.rb
+    - lib/apipie/generator/swagger/param_description/path_params_composite.rb
     - lib/tasks/apipie.rake
     - lib/apipie/swagger_generator.rb
 
@@ -65,6 +66,10 @@ Style/HashSyntax:
   EnforcedStyle: no_mixed_keys
   EnforcedShorthandSyntax: never # consistent
 
+Metrics/ParameterLists:
+  Exclude:
+    - 'lib/apipie/generator/swagger/context.rb'
+
 Style/Documentation:
   Exclude:
     - 'app/controllers/apipie/apipies_controller.rb'
@@ -81,20 +86,7 @@ Style/Documentation:
     - 'lib/apipie/extractor/recorder.rb'
     - 'lib/apipie/extractor/writer.rb'
     - 'lib/apipie/generator/generator.rb'
-    - 'lib/apipie/generator/swagger/context.rb'
-    - 'lib/apipie/generator/swagger/operation_id.rb'
-    - 'lib/apipie/generator/swagger/param_description.rb'
-    - 'lib/apipie/generator/swagger/param_description/builder.rb'
-    - 'lib/apipie/generator/swagger/param_description/composite.rb'
-    - 'lib/apipie/generator/swagger/param_description/description.rb'
-    - 'lib/apipie/generator/swagger/param_description/in.rb'
-    - 'lib/apipie/generator/swagger/param_description/name.rb'
-    - 'lib/apipie/generator/swagger/param_description/type.rb'
-    - 'lib/apipie/generator/swagger/swagger.rb'
-    - 'lib/apipie/generator/swagger/type.rb'
-    - 'lib/apipie/generator/swagger/type_extractor.rb'
-    - 'lib/apipie/generator/swagger/warning.rb'
-    - 'lib/apipie/generator/swagger/warning_writer.rb'
+    - 'lib/apipie/generator/swagger/**/*'
     - 'lib/apipie/helpers.rb'
     - 'lib/apipie/markup.rb'
     - 'lib/apipie/method_description.rb'
@@ -106,6 +98,7 @@ Style/Documentation:
     - 'lib/apipie/routes_formatter.rb'
     - 'lib/apipie/routing.rb'
     - 'lib/apipie/rspec/response_validation_helper.rb'
+    - 'lib/apipie/swagger_generator.rb'
     - 'lib/apipie/see_description.rb'
     - 'lib/apipie/static_dispatcher.rb'
     - 'lib/apipie/tag_list_description.rb'
