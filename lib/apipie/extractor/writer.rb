@@ -374,7 +374,7 @@ module Apipie
 
       def align_indented(text)
         shift_left = ensure_line_breaks(text.lines).map { |l| l[/^\s*/].size }.min
-        ensure_line_breaks(text.lines).map { |l| l[shift_left..-1] }.join
+        ensure_line_breaks(text.lines).map { |l| l[shift_left..] }.join
       end
 
       def overwrite_header(new_header)
@@ -387,7 +387,7 @@ module Apipie
         indentation = lines[action_line][/^\s*/]
         self.controller_content= (lines[0...overwrite_line_from] +
                               [new_header.gsub(/^/,indentation)] +
-                              lines[overwrite_line_to..-1]).join
+                              lines[overwrite_line_to..]).join
       end
 
       # returns all the lines before the method that might contain the restpi descriptions

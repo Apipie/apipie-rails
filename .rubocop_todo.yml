@@ -1939,15 +1939,6 @@ Style/SingleLineMethods:
     - 'lib/apipie/resource_description.rb'
     - 'lib/apipie/tag_list_description.rb'
 
-# Offense count: 6
-# This cop supports unsafe autocorrection (--autocorrect-all).
-Style/SlicingWithRange:
-  Exclude:
-    - 'lib/apipie/application.rb'
-    - 'lib/apipie/extractor/writer.rb'
-    - 'lib/apipie/method_description.rb'
-    - 'lib/apipie/param_description.rb'
-    - 'lib/tasks/apipie.rake'
 
 # Offense count: 3
 # This cop supports safe autocorrection (--autocorrect).

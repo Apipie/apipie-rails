@@ -108,7 +108,7 @@ namespace :apipie do
 
         num_refs_to_keep = 3
         if reference_files.length > num_refs_to_keep
-          (reference_files - reference_files[-num_refs_to_keep..-1]).each(&:delete)
+          (reference_files - reference_files[-num_refs_to_keep..]).each(&:delete)
         end
       }
     end

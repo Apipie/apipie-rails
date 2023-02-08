@@ -423,7 +423,7 @@ module Apipie
       version = controller_versions(klass.to_s).first
       base_url = get_base_url(version)
       return "/" if base_url.blank?
-      base_url[1..-1] + "/"
+      base_url[1..] + "/"
     end
 
     def get_base_url(version)
