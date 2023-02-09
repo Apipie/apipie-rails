@@ -155,17 +155,19 @@ module Apipie
     end
 
     def to_json(lang = nil)
-      hash = { :name => name.to_s,
-               :full_name => full_name,
-               :description => preformat_text(Apipie.app.translate(@options[:desc], lang)),
-               :required => required,
-               :allow_nil => allow_nil,
-               :allow_blank => allow_blank,
-               :validator => validator.to_s,
-               :expected_type => validator.expected_type,
-               :metadata => metadata,
-               :show => show,
-               :validations => validations }
+      hash = {
+        name: name.to_s,
+        full_name: full_name,
+        description: preformat_text(Apipie.app.translate(@options[:desc], lang)),
+        required: required,
+        allow_nil: allow_nil,
+        allow_blank: allow_blank,
+        validator: validator.to_s,
+        expected_type: validator.expected_type,
+        metadata: metadata,
+        show: show,
+        validations: validations
+      }
       if sub_params = validator.params_ordered
         hash[:params] = sub_params.map { |p| p.to_json(lang)}
       end
