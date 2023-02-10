@@ -509,13 +509,6 @@ Layout/SpaceInsideParens:
     - 'spec/lib/method_description/apis_service_spec.rb'
     - 'spec/lib/swagger/swagger_dsl_spec.rb'
 
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: space, no_space
-Layout/SpaceInsideStringInterpolation:
-  Exclude:
-    - 'spec/lib/swagger/swagger_dsl_spec.rb'
 
 # Offense count: 15
 # This cop supports safe autocorrection (--autocorrect).
