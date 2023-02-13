@@ -1516,13 +1516,6 @@ Rails/OutputSafety:
   Exclude:
     - 'lib/apipie/helpers.rb'
 
-# Offense count: 6
-# This cop supports safe autocorrection (--autocorrect).
-Rails/Pluck:
-  Exclude:
-    - 'lib/apipie/extractor/writer.rb'
-    - 'spec/lib/method_description_spec.rb'
-    - 'spec/lib/resource_description_spec.rb'
 
 # Offense count: 5
 # This cop supports safe autocorrection (--autocorrect).
