@@ -428,4 +428,82 @@ describe Apipie::ParamDescription do
     end
   end
 
+  describe '#deprecated?' do
+    subject do
+      Apipie::ParamDescription.new(method_desc, :param, Integer, options)
+    end
+
+    let(:options) { {} }
+
+    it { is_expected.not_to be_deprecated }
+
+    context 'when deprecated option is passed' do
+      context 'and is true' do
+        let(:options) { { deprecated: true } }
+
+        it { is_expected.to be_deprecated }
+      end
+
+      context 'and is false' do
+        let(:options) { { deprecated: false } }
+
+        it { is_expected.not_to be_deprecated }
+      end
+
+      context 'and is a string' do
+        let(:options) { { deprecated: 'Some description' } }
+
+        it { is_expected.to be_deprecated }
+      end
+
+      context 'and deprecation options are given' do
+        let(:options) do
+          { deprecated: { in: '2.3', info: 'Something', sunset: '3.0' } }
+        end
+
+        it { is_expected.to be_deprecated }
+      end
+    end
+  end
+
+  describe '#deprecation' do
+    subject { param_description.deprecation }
+
+    let(:options) { {} }
+
+    let(:param_description) do
+      Apipie::ParamDescription.new(method_desc, :param, Integer, options)
+    end
+
+    it { is_expected.to be_blank }
+
+    context 'when deprecated option is passed' do
+      context 'and is true' do
+        let(:options) { { deprecated: true } }
+
+        it { is_expected.to be_blank }
+      end
+
+      context 'and is false' do
+        let(:options) { { deprecated: false } }
+
+        it { is_expected.to be_blank }
+      end
+
+      context 'and is a string' do
+        let(:options) { { deprecated: 'Some description' } }
+
+        it { is_expected.to be_an_instance_of(Apipie::ParamDescription::Deprecation) }
+      end
+
+      context 'and deprecation options are given' do
+        let(:options) do
+          { deprecated: { in: '2.3', info: 'Something', sunset: '3.0' } }
+        end
+
+        it { is_expected.to be_an_instance_of(Apipie::ParamDescription::Deprecation) }
+      end
+    end
+  end
+
 end

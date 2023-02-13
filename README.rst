@@ -355,6 +355,22 @@ Example:
      #...
    end
 
+deprecated
+  Indicates if the parameter is marked as deprecated.
+
+Example
+~~~~~~~~
+
+.. code:: ruby
+
+   param :pet_name, String, desc: "Name of pet", deprecated: true
+   param :pet_name, String, desc: "Name of pet", deprecated: 'Some deprecation info'
+   param :pet_name, String, desc: "Name of pet", deprecated: { in: "2.3", info: "Something", sunset: "3.0" }
+   def create
+     #...
+   end
+
+
 DRY with param_group
 --------------------
 

@@ -97,6 +97,7 @@ module Apipie
       @validations = Array(options[:validations]).map {|v| concern_subst(Apipie.markup_to_html(v)) }
 
       @additional_properties = @options[:additional_properties]
+      @deprecated = @options[:deprecated] || false
     end
 
     def from_concern?
@@ -155,17 +156,25 @@ module Apipie
     end
 
     def to_json(lang = nil)
-      hash = { :name => name.to_s,
-               :full_name => full_name,
-               :description => preformat_text(Apipie.app.translate(@options[:desc], lang)),
-               :required => required,
-               :allow_nil => allow_nil,
-               :allow_blank => allow_blank,
-               :validator => validator.to_s,
-               :expected_type => validator.expected_type,
-               :metadata => metadata,
-               :show => show,
-               :validations => validations }
+      hash = {
+        name: name.to_s,
+        full_name: full_name,
+        description: preformat_text(Apipie.app.translate(@options[:desc], lang)),
+        required: required,
+        allow_nil: allow_nil,
+        allow_blank: allow_blank,
+        validator: validator.to_s,
+        expected_type: validator.expected_type,
+        metadata: metadata,
+        show: show,
+        validations: validations,
+        deprecated: deprecated?
+      }
+
+      if deprecation.present?
+        hash[:deprecation] = deprecation.to_json
+      end
+
       if sub_params = validator.params_ordered
         hash[:params] = sub_params.map { |p| p.to_json(lang)}
       end
@@ -279,6 +288,24 @@ module Apipie
       end
     end
 
+    def deprecated?
+      @deprecated.present?
+    end
+
+    def deprecation
+      return if @deprecated.blank? || @deprecated == true
+
+      case @deprecated
+      when Hash
+        Apipie::ParamDescription::Deprecation.new(
+          info: @deprecated[:info],
+          deprecated_in: @deprecated[:in],
+          sunset_at: @deprecated[:sunset]
+        )
+      when String
+        Apipie::ParamDescription::Deprecation.new(info: @deprecated)
+      end
+    end
   end
 
 end

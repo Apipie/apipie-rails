@@ -1,0 +1,16 @@
+<% if deprecation.present? %>
+  <strong><%= t('apipie.deprecation_details') %></strong>
+  <ul>
+    <% if deprecation[:deprecated_in].present? %>
+      <li><%= t('apipie.deprecation.attributes.deprecated_in') %>: <%= deprecation[:deprecated_in] %></li>
+    <% end %>
+
+    <% if deprecation[:sunset_at].present? %>
+      <li><%= t('apipie.deprecation.attributes.sunset_at') %>: <%= deprecation[:sunset_at] %></li>
+    <% end %>
+
+    <% if deprecation[:info].present? %>
+      <li><%= t('apipie.deprecation.attributes.info') %>: <%= deprecation[:info] %></li>
+    <% end %>
+  </ul>
+<% end %>
