@@ -269,6 +269,7 @@ describe UsersController do
                                   :allow_blank => false,
                                   :metadata => nil,
                                   :show => true,
+                                  :deprecated => false,
                                   :expected_type => "hash",
                                   :validations => [])
           end
@@ -585,6 +586,7 @@ describe UsersController do
                      :description=>"\n<p>Authorization</p>\n",
                      :name=>"oauth",
                      :show=>true,
+                     :deprecated=>false,
                      :expected_type=>"string"},
                     {:validator=>"Must be a Hash",
                      :description=>"\n<p>Deprecated parameter not documented</p>\n",
@@ -595,15 +597,17 @@ describe UsersController do
                      :required=>false,
                      :full_name=>"legacy_param",
                      :show=>false,
+                     :deprecated=>false,
                      :params=>
                       [{:validator=>"Must be a Hash",
                         :description=>"\n<p>Param description for all methods</p>\n",
                         :expected_type=>"hash",
                         :allow_nil=>false,
-                       :allow_blank => false,
+                        :allow_blank => false,
                         :name=>"resource_param",
                         :required=>false,
                         :full_name=>"resource_param",
+                        :deprecated=>false,
                         :show=>true,
                         :params=>
                         [{:required=>true,
@@ -613,6 +617,7 @@ describe UsersController do
                           :description=>"\n<p>Username for login</p>\n",
                           :name=>"ausername", :full_name=>"resource_param[ausername]",
                           :show=>true,
+                          :deprecated=>false,
                           :expected_type=>"string"},
                          {:required=>true,
                           :allow_nil => false,
@@ -621,6 +626,7 @@ describe UsersController do
                           :description=>"\n<p>Password for login</p>\n",
                           :name=>"apassword", :full_name=>"resource_param[apassword]",
                           :show=>true,
+                          :deprecated=>false,
                           :expected_type=>"string"}
                         ]}
                       ]
@@ -631,6 +637,7 @@ describe UsersController do
                      :description=>"\n<p>Company ID</p>\n",
                      :name=>"id", :full_name=>"id",
                      :show=>true,
+                     :deprecated=>false,
                      :expected_type=>"numeric"},
        ],
         :name => 'two_urls',

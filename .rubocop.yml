@@ -27,6 +27,7 @@ Layout/LineLength:
     - spec/dummy/config/initializers/secret_token.rb
     - spec/lib/application_spec.rb
     - spec/lib/param_description_spec.rb
+    - spec/lib/param_description_deprecation_spec.rb
     - spec/lib/swagger/response_validation_spec.rb
     - spec/spec_helper.rb
 
@@ -110,3 +111,7 @@ Style/Documentation:
     - spec/support/custom_bool_validator.rb
     - spec/lib/validators/array_validator_spec.rb
     - spec/dummy/**/*.rb
+
+RSpec/FilePath:
+  Exclude:
+    - 'spec/lib/param_description/deprecation_spec.rb'
