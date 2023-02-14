@@ -24,7 +24,7 @@ module Apipie
 
       def analyse_controller(controller)
         @controller = controller.class
-        @action = controller.params[:action]
+        @action = Apipie.configuration.api_action_matcher.call(controller)
       end
 
       def analyse_response(response)
