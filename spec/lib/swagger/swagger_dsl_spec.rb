@@ -37,7 +37,7 @@ describe "Swagger Responses" do
   def swagger_param_by_name(param_name, path, method='get')
     params = swagger_params_for(path, method)
     matching = params.select{|p| p[:name] == param_name }
-    raise "multiple params named [#{param_name}] in swagger definition for [#{method } #{path}]" if matching.length > 1
+    raise "multiple params named [#{param_name}] in swagger definition for [#{method} #{path}]" if matching.length > 1
 
     nil if matching.length == 0
 
