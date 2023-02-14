@@ -374,7 +374,7 @@ module Apipie
 
       def align_indented(text)
         shift_left = ensure_line_breaks(text.lines).map { |l| l[/^\s*/].size }.min
-        ensure_line_breaks(text.lines).map { |l| l[shift_left..-1] }.join
+        ensure_line_breaks(text.lines).pluck(shift_left..-1).join
       end
 
       def overwrite_header(new_header)

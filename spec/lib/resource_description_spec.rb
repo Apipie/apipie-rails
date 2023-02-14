@@ -36,12 +36,12 @@ describe Apipie::ResourceDescription do
 
     it "should be ordered" do
       expect(@resource._methods.keys).to eq([:a, :b, :c])
-      expect(@resource.to_json[:methods].map{|h| h[:name]}).to eq(['a', 'b', 'c'])
+      expect(@resource.to_json[:methods].pluck(:name)).to eq(['a', 'b', 'c'])
     end
 
     it "should be still ordered" do
       expect(@resource._methods.keys).to eq([:a, :b, :c])
-      expect(@resource.to_json[:methods].map{|h| h[:name]}).to eq(['a', 'b', 'c'])
+      expect(@resource.to_json[:methods].pluck(:name)).to eq(['a', 'b', 'c'])
     end
 
   end
