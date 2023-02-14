@@ -25,4 +25,4 @@ jobs:
       - name: Create RuboCop challenge pull request
         env:
           GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: bundle exec rubocop_challenger go --base-branch=master --email=rubocop@payrollhero.com --name="Rubocop Challenger" --mode=random
+        run: bundle exec rubocop_challenger go --exclude-limit=180 --base-branch=master --email=rubocop@payrollhero.com --name="Rubocop Challenger" --mode=random
