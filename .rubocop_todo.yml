@@ -211,40 +211,6 @@ Layout/EmptyLinesAroundAttributeAccessor:
   Exclude:
     - 'lib/apipie/configuration.rb'
 
-# Offense count: 107
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: empty_lines, no_empty_lines
-Layout/EmptyLinesAroundBlockBody:
-  Exclude:
-    - 'app/controllers/apipie/apipies_controller.rb'
-    - 'lib/tasks/apipie.rake'
-    - 'spec/controllers/api/v1/architectures_controller_spec.rb'
-    - 'spec/controllers/api/v2/architectures_controller_spec.rb'
-    - 'spec/controllers/apipies_controller_spec.rb'
-    - 'spec/controllers/concerns_controller_spec.rb'
-    - 'spec/controllers/extended_controller_spec.rb'
-    - 'spec/controllers/included_param_group_controller_spec.rb'
-    - 'spec/controllers/memes_controller_spec.rb'
-    - 'spec/controllers/users_controller_spec.rb'
-    - 'spec/dummy/app/controllers/pets_controller.rb'
-    - 'spec/dummy/config/routes.rb'
-    - 'spec/lib/application_spec.rb'
-    - 'spec/lib/extractor/writer_spec.rb'
-    - 'spec/lib/file_handler_spec.rb'
-    - 'spec/lib/generator/swagger/param_description/composite_spec.rb'
-    - 'spec/lib/generator/swagger/param_description/type_spec.rb'
-    - 'spec/lib/method_description_spec.rb'
-    - 'spec/lib/param_description_spec.rb'
-    - 'spec/lib/param_group_spec.rb'
-    - 'spec/lib/rake_spec.rb'
-    - 'spec/lib/resource_description_spec.rb'
-    - 'spec/lib/swagger/rake_swagger_spec.rb'
-    - 'spec/lib/swagger/response_validation_spec.rb'
-    - 'spec/lib/swagger/swagger_dsl_spec.rb'
-    - 'spec/lib/validator_spec.rb'
-    - 'spec/lib/validators/array_validator_spec.rb'
-    - 'spec/spec_helper.rb'
 
 # Offense count: 46
 # This cop supports safe autocorrection (--autocorrect).
