@@ -27,6 +27,16 @@ module Apipie
     #   "#{Rails.root}/app/controllers/api/*.rb"
     attr_accessor :api_controllers_matcher
 
+    # An object that responds to a `.call(controller)` method responsible for
+    # matching the correct controller action
+    attr_reader :api_action_matcher
+
+    def api_action_matcher=(callable)
+      raise 'Must implement .call method' unless callable.respond_to?(:call)
+
+      @api_action_matcher = callable
+    end
+
     # set to true if you want to reload the controllers at each refresh of the
     # documentation. It requires +:api_controllers_matcher+ to be set to work
     # properly.
@@ -156,6 +166,7 @@ module Apipie
       @action_on_non_validated_keys = :raise
       @required_by_default = false
       @api_base_url = HashWithIndifferentAccess.new
+      @api_action_matcher = proc { |controller| controller.params[:action] }
       @doc_base_url = "/apipie"
       @layout = "apipie/apipie"
       @disqus_shortname = nil

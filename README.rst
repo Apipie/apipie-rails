@@ -998,6 +998,9 @@ reload_controllers
 api_controllers_matcher
   For reloading to work properly you need to specify where your API controllers are. Can be an array if multiple paths are needed
 
+api_action_matcher
+  Determines the strategy to identity the correct controller action. Needs to be a class that implements a `.call(controller)` method
+
 api_routes
   Set if your application uses a custom API router, different from the Rails
   default
@@ -1079,6 +1082,7 @@ Example:
      config.markup = Apipie::Markup::Markdown.new
      config.reload_controllers = Rails.env.development?
      config.api_controllers_matcher = File.join(Rails.root, "app", "controllers", "**","*.rb")
+     config.api_action_matcher = proc { |controller| controller.params[:action] }
      config.api_routes = Rails.application.routes
      config.app_info["1.0"] = "
        This is where you can inform user about your application and API
