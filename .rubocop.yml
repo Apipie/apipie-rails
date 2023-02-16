@@ -111,7 +111,3 @@ Style/Documentation:
     - spec/support/custom_bool_validator.rb
     - spec/lib/validators/array_validator_spec.rb
     - spec/dummy/**/*.rb
-
-RSpec/FilePath:
-  Exclude:
-    - 'spec/lib/param_description/deprecation_spec.rb'
