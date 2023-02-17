@@ -1705,12 +1705,6 @@ Style/CommentAnnotation:
     - 'spec/lib/swagger/response_validation_spec.rb'
     - 'spec/lib/swagger/swagger_dsl_spec.rb'
 
-# Offense count: 17
-# This cop supports unsafe autocorrection (--autocorrect-all).
-Style/CommentedKeyword:
-  Exclude:
-    - 'lib/apipie/dsl_definition.rb'
-    - 'lib/apipie/extractor/recorder.rb'
 
 # Offense count: 11
 # This cop supports safe autocorrection (--autocorrect).
