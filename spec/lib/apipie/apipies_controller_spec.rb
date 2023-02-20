@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'fileutils'
 require "json-schema"
 
-describe Apipie::ApipiesController do
+describe Apipie::ApipiesController, type: :controller do
 
   describe "GET index" do
 
@@ -159,7 +159,7 @@ describe Apipie::ApipiesController do
   describe "GET index as swagger" do
 
     let(:swagger_schema) do
-      File.read(File.join(File.dirname(__FILE__),"../lib/swagger/openapi_2_0_schema.json"))
+      File.read("#{Rails.root.parent}/lib/swagger/openapi_2_0_schema.json")
     end
 
     it "outputs swagger when format is json and type is swagger" do
