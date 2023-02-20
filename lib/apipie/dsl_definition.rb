@@ -145,7 +145,7 @@ module Apipie
       # EOS
       def resource_description(options = {}, &block) #:doc:
         return unless Apipie.active_dsl?
-        raise ArgumentError, "Block expected" unless block_given?
+        raise ArgumentError, "Block expected" unless block
 
         dsl_data = ResourceDescriptionDsl.eval_dsl(self, &block)
         versions = dsl_data[:api_versions]

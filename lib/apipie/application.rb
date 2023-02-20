@@ -242,7 +242,7 @@ module Apipie
 
     # initialize variables for gathering dsl data
     def init_env
-      @resource_descriptions = HashWithIndifferentAccess.new { |h, version| h[version] = {} }
+      @resource_descriptions = ActiveSupport::HashWithIndifferentAccess.new { |h, version| h[version] = {} }
       @controller_to_resource_id = {}
       @param_groups = {}
       @swagger_generator = Apipie::SwaggerGenerator.new(self)

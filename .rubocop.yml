@@ -111,3 +111,7 @@ Style/Documentation:
     - spec/support/custom_bool_validator.rb
     - spec/lib/validators/array_validator_spec.rb
     - spec/dummy/**/*.rb
+
+Naming/BlockForwarding:
+  EnforcedStyle: explicit
+  BlockForwardingName: block
