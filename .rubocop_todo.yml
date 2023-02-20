@@ -630,7 +630,6 @@ Layout/SpaceInsideBlockBraces:
     - 'spec/lib/apipie/application_spec.rb'
     - 'spec/lib/apipie/generator/swagger/operation_id_spec.rb'
     - 'spec/lib/apipie/generator/swagger/warning_spec.rb'
-    - 'spec/lib/apipie/method_description_spec.rb'
     - 'spec/lib/swagger/rake_swagger_spec.rb'
     - 'spec/lib/swagger/swagger_dsl_spec.rb'
     - 'spec/spec_helper.rb'
