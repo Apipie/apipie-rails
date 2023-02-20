@@ -978,11 +978,6 @@ Naming/VariableNumber:
   Exclude:
     - 'spec/dummy/app/controllers/users_controller.rb'
 
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-Performance/BlockGivenWithExplicitBlock:
-  Exclude:
-    - 'lib/apipie/dsl_definition.rb'
 
 # Offense count: 4
 # Configuration parameters: MinSize.

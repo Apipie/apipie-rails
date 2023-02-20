@@ -3,7 +3,10 @@ require "spec_helper"
 describe Apipie::Application do
 
   describe "api_controllers_paths" do
-    before { Apipie.configuration.api_controllers_matcher = [File.join(Rails.root, "app", "controllers", "**","*.rb"), File.join(Rails.root, "lib", "**","*.rb")] }
+    before do
+      Apipie.configuration.api_controllers_matcher = [File.join(Rails.root, "app", "controllers", "**","*.rb"), 
+                                                      File.join(Rails.root, "lib", "**","*.rb")]
+    end
 
     it "should support receiving array as parameter" do
       expect { Apipie.api_controllers_paths}.
