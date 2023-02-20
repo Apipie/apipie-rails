@@ -22,6 +22,7 @@ Layout/LineLength:
     - lib/apipie/errors.rb
     - lib/apipie/generator/swagger/warning.rb
     - lib/apipie/rspec/response_validation_helper.rb
+    - spec/controllers/pets_controller_spec.rb
     - spec/controllers/users_controller_spec.rb
     - spec/dummy/app/controllers/twitter_example_controller.rb
     - spec/dummy/config/initializers/secret_token.rb
