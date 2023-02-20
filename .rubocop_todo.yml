@@ -440,13 +440,6 @@ Layout/LeadingCommentSpace:
     - 'lib/apipie/dsl_definition.rb'
     - 'lib/tasks/apipie.rake'
 
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, AllowedPatterns, IgnoredPatterns.
-# URISchemes: http, https
-Layout/LineLength:
-  Max: 167
-
 # Offense count: 8
 # This cop supports safe autocorrection (--autocorrect).
 # Configuration parameters: EnforcedStyle.
