@@ -17,7 +17,7 @@ module Apipie
       :_path, :_name, :_params_args, :_returns_args, :_tag_list_arg, :_errors_args,
       :_formats, :_parent, :_metadata, :_headers, :_deprecated
 
-    def initialize(controller, resource_name, dsl_data = nil, version = nil, &block)
+    def initialize(controller, resource_name, dsl_data = nil, version = nil)
 
       @_methods = ActiveSupport::OrderedHash.new
       @_params_args = []

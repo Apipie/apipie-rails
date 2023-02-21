@@ -58,12 +58,12 @@ describe Apipie::MethodDescription do
 
     it "should be ordered" do
       expect(@method.params.keys).to eq([:a, :b, :c])
-      expect(@method.to_json[:params].map{|h| h[:name]}).to eq(['a', 'b', 'c'])
+      expect(@method.to_json[:params].map { |h| h[:name] }).to eq(['a', 'b', 'c'])
     end
 
     it "should be still ordered" do
       expect(@method.params.keys).to eq([:a, :b, :c])
-      expect(@method.to_json[:params].map{|h| h[:name]}).to eq(['a', 'b', 'c'])
+      expect(@method.to_json[:params].map { |h| h[:name] }).to eq(['a', 'b', 'c'])
     end
 
   end
@@ -80,7 +80,7 @@ describe Apipie::MethodDescription do
 
     it "should ignore response-only parameters" do
       expect(@method.params.keys).to eq([:a, :c])
-      expect(@method.to_json[:params].map{|h| h[:name]}).to eq(['a', 'c'])
+      expect(@method.to_json[:params].map { |h| h[:name] }).to eq(['a', 'c'])
     end
   end
 
@@ -90,7 +90,7 @@ describe Apipie::MethodDescription do
       @resource = Apipie::ResourceDescription.new(ApplicationController, "dummy")
       dsl_data[:returns] = { 200 => [{:param_group => 'pet', :array_of => 'pet'}, nil, nil] }
 
-      expect {Apipie::MethodDescription.new(:a, @resource, dsl_data)}.to raise_error(Apipie::ReturnsMultipleDefinitionError)
+      expect { Apipie::MethodDescription.new(:a, @resource, dsl_data) }.to raise_error(Apipie::ReturnsMultipleDefinitionError)
     end
   end
 

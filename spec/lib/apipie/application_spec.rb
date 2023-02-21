@@ -3,7 +3,10 @@ require "spec_helper"
 describe Apipie::Application do
 
   describe "api_controllers_paths" do
-    before { Apipie.configuration.api_controllers_matcher = [File.join(Rails.root, "app", "controllers", "**","*.rb"), File.join(Rails.root, "lib", "**","*.rb")] }
+    before do
+      Apipie.configuration.api_controllers_matcher = [File.join(Rails.root, "app", "controllers", "**","*.rb"),
+                                                      File.join(Rails.root, "lib", "**","*.rb")]
+    end
 
     it "should support receiving array as parameter" do
       expect { Apipie.api_controllers_paths}.
@@ -19,11 +22,11 @@ describe Apipie::Application do
     context "with namespaced_resources enabled" do
       before { Apipie.configuration.namespaced_resources = true }
       context "with a defined base url" do
-        
+
         it "should not overwrite the parent resource" do
           is_expected.not_to eq(Apipie.get_resource_name(Api::V2::ArchitecturesController))
         end
-        
+
       end
 
       context "with an undefined base url" do
