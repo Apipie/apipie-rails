@@ -157,7 +157,7 @@ module Apipie
     def initialize
       @markup = Apipie::Markup::RDoc.new
       @app_name = "Another API"
-      @app_info = HashWithIndifferentAccess.new
+      @app_info = ActiveSupport::HashWithIndifferentAccess.new
       @copyright = nil
       @validate = :implicitly
       @validate_value = true
@@ -165,7 +165,7 @@ module Apipie
       @validate_key = false
       @action_on_non_validated_keys = :raise
       @required_by_default = false
-      @api_base_url = HashWithIndifferentAccess.new
+      @api_base_url = ActiveSupport::HashWithIndifferentAccess.new
       @api_action_matcher = proc { |controller| controller.params[:action] }
       @doc_base_url = "/apipie"
       @layout = "apipie/apipie"
