@@ -16,7 +16,7 @@ describe Apipie::ParamDescription do
 
     it "should return nil when no metadata is provided" do
       param = Apipie::ParamDescription.new(method_desc, :some_param, String)
-      expect(param.to_json[:metadata]).to eq(nil)
+      expect(param.to_json[:metadata]).to be_nil
     end
 
     it "should return the metadata" do
@@ -34,15 +34,15 @@ describe Apipie::ParamDescription do
 
     it "should return true when show option is not provided" do
       param = Apipie::ParamDescription.new(method_desc, :some_param, String)
-      expect(param.to_json[:show]).to eq(true)
+      expect(param.to_json[:show]).to be(true)
     end
 
     it "should return the show option" do
       param = Apipie::ParamDescription.new(method_desc, :some_param, String, :show => true)
-      expect(param.to_json[:show]).to eq(true)
+      expect(param.to_json[:show]).to be(true)
 
       param = Apipie::ParamDescription.new(method_desc, :some_param, String, :show => false)
-      expect(param.to_json[:show]).to eq(false)
+      expect(param.to_json[:show]).to be(false)
     end
 
   end

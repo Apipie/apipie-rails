@@ -688,20 +688,20 @@ EOS2
       a = Apipie.get_method_description(UsersController, :show)
 
       param = a.params[:session]
-      expect(param.required).to eq(true)
+      expect(param.required).to be(true)
       expect(param.desc).to eq("\n<p>user is logged in</p>\n")
       expect(param.validator.class).to be(Apipie::Validator::TypeValidator)
       expect(param.validator.instance_variable_get("@type")).to eq(String)
 
       param = a.params[:id]
-      expect(param.required).to eq(true)
+      expect(param.required).to be(true)
       expect(param.desc).to eq("\n<p>user id</p>\n")
       expect(param.validator.class).to be(Apipie::Validator::IntegerValidator)
       expect(param.validator.instance_variable_get("@type")).to eq(Integer)
 
       param = a.params[:regexp_param]
       expect(param.desc).to eq("\n<p>regexp param</p>\n")
-      expect(param.required).to eq(false)
+      expect(param.required).to be(false)
       expect(param.validator.class).to be(Apipie::Validator::RegexpValidator)
       expect(param.validator.instance_variable_get("@regexp")).to eq(/^[0-9]* years/)
 

@@ -8,18 +8,18 @@ module Apipie::Validator
     context "with no constraint" do
       let(:validator) { ArrayValidator.new(param_desc, Array) }
       it "accepts any array" do
-        expect(validator.validate([42, 'string', true])).to eq(true)
+        expect(validator.validate([42, 'string', true])).to be(true)
       end
 
       it "accepts empty array" do
-        expect(validator.validate([])).to eq(true)
-        expect(validator.validate(nil)).to eq(true)
+        expect(validator.validate([])).to be(true)
+        expect(validator.validate(nil)).to be(true)
       end
 
       it "does not accepts non array" do
-        expect(validator.validate(42)).to eq(false)
-        expect(validator.validate(true)).to eq(false)
-        expect(validator.validate('string')).to eq(false)
+        expect(validator.validate(42)).to be(false)
+        expect(validator.validate(true)).to be(false)
+        expect(validator.validate('string')).to be(false)
       end
     end
 
@@ -30,15 +30,15 @@ module Apipie::Validator
         let(:type) { String }
 
         it "accepts array of specified type" do
-          expect(validator.validate(['string1', 'string2'])).to eq(true)
+          expect(validator.validate(['string1', 'string2'])).to be(true)
         end
 
         it "accepts empty array" do
-          expect(validator.validate([])).to eq(true)
+          expect(validator.validate([])).to be(true)
         end
 
         it "does not accepts array with other types" do
-          expect(validator.validate(['string1', true])).to eq(false)
+          expect(validator.validate(['string1', true])).to be(false)
         end
       end
 
@@ -46,15 +46,15 @@ module Apipie::Validator
         let(:type) { :decimal }
 
         it "accepts array of specified type" do
-          expect(validator.validate([12, '14'])).to eq(true)
+          expect(validator.validate([12, '14'])).to be(true)
         end
 
         it "accepts empty array" do
-          expect(validator.validate([])).to eq(true)
+          expect(validator.validate([])).to be(true)
         end
 
         it "does not accepts array with other types" do
-          expect(validator.validate([12, 'potato'])).to eq(false)
+          expect(validator.validate([12, 'potato'])).to be(false)
         end
       end
     end
@@ -63,21 +63,21 @@ module Apipie::Validator
       let(:validator) { ArrayValidator.new(param_desc, Array, :in => [42, 'string', true]) }
 
       it "accepts array of valid values" do
-        expect(validator.validate([42, 'string'])).to eq(true)
+        expect(validator.validate([42, 'string'])).to be(true)
       end
 
       it "accepts empty array" do
-        expect(validator.validate([])).to eq(true)
+        expect(validator.validate([])).to be(true)
       end
 
       it "does not accepts array with invalid values" do
-        expect(validator.validate([42, 'string', 'foo'])).to eq(false)
+        expect(validator.validate([42, 'string', 'foo'])).to be(false)
       end
 
       it "accepts a proc as list of valid values" do
         validator = ArrayValidator.new(param_desc, Array, :in => lambda { [42, 'string', true] })
-        expect(validator.validate([42, 'string'])).to eq(true)
-        expect(validator.validate([42, 'string', 'foo'])).to eq(false)
+        expect(validator.validate([42, 'string'])).to be(true)
+        expect(validator.validate([42, 'string', 'foo'])).to be(false)
       end
     end
 

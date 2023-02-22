@@ -13,7 +13,7 @@ describe Apipie::Generator::Swagger::ParamDescription do
     end
 
     it 'creates a required param description' do
-      expect(subject.required).to eq(true)
+      expect(subject.required).to be(true)
     end
 
     it 'has the correct name' do
@@ -21,7 +21,7 @@ describe Apipie::Generator::Swagger::ParamDescription do
     end
 
     it 'has been created from path' do
-      expect(subject.options[:added_from_path]).to eq(true)
+      expect(subject.options[:added_from_path]).to be(true)
     end
   end
 end

@@ -8,7 +8,7 @@ describe Apipie::ResourceDescription do
 
     it "should return nil when no metadata is provided" do
       resource = Apipie::ResourceDescription.new(ApplicationController, "dummy", dsl_data)
-      expect(resource.to_json[:metadata]).to eq(nil)
+      expect(resource.to_json[:metadata]).to be_nil
     end
 
     it "should return the metadata" do

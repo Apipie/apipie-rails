@@ -43,17 +43,17 @@ describe "param groups" do
   end
 
   it "should replace parameter name in a group when it comes from concern" do
-    expect(Apipie["overridden_concern_resources#update"].params.key?(:user)).to eq(true)
+    expect(Apipie["overridden_concern_resources#update"].params.key?(:user)).to be(true)
   end
 
   it "shouldn't replace parameter name in a group redefined in the controller" do
-    expect(Apipie["overridden_concern_resources#create"].params.key?(:concern)).to eq(true)
-    expect(Apipie["overridden_concern_resources#create"].params.key?(:user)).to eq(false)
+    expect(Apipie["overridden_concern_resources#create"].params.key?(:concern)).to be(true)
+    expect(Apipie["overridden_concern_resources#create"].params.key?(:user)).to be(false)
   end
 
 it "shouldn't replace name of a parameter defined in the controller" do
-    expect(Apipie["overridden_concern_resources#custom"].params.key?(:concern)).to eq(true)
-    expect(Apipie["overridden_concern_resources#custom"].params.key?(:user)).to eq(false)
+    expect(Apipie["overridden_concern_resources#custom"].params.key?(:concern)).to be(true)
+    expect(Apipie["overridden_concern_resources#custom"].params.key?(:user)).to be(false)
   end
 
 end

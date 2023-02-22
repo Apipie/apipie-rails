@@ -86,7 +86,7 @@ describe Apipie::Generator::Swagger::ParamDescription::Builder do
       context 'and is required' do
         let(:base_param_description_options) { { required: true } }
 
-        it { is_expected.to eq(true) }
+        it { is_expected.to be(true) }
       end
     end
   end

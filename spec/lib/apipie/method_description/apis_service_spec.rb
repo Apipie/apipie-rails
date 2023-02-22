@@ -38,7 +38,7 @@ describe Apipie::MethodDescription::ApisService do
         it 'has the correct values' do
           expect(subject.short_description).to eq(short_description)
           expect(subject.path).to eq('/api/users/:id')
-          expect(subject.from_routes).to eq(true)
+          expect(subject.from_routes).to be(true)
           expect(subject.options).to eq({ from_routes: true })
         end
 
@@ -50,7 +50,7 @@ describe Apipie::MethodDescription::ApisService do
           it 'has the correct values' do
             expect(subject.short_description).to eq(short_description)
             expect(subject.path).to eq('/api/concern_resources/custom')
-            expect(subject.from_routes).to eq(true)
+            expect(subject.from_routes).to be(true)
             expect(subject.options).to eq({ from_routes: true })
           end
         end

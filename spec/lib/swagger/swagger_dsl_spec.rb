@@ -127,7 +127,7 @@ describe "Swagger Responses" do
 
         puts returns_obj.to_json
         expect(returns_obj.code).to eq(200)
-        expect(returns_obj.is_array?).to eq(true)
+        expect(returns_obj.is_array?).to be(true)
 
         expect(returns_obj).to match_field_structure([:pet_name, :animal_type])
       end
@@ -149,7 +149,7 @@ describe "Swagger Responses" do
         returns_obj = subject.returns.detect{|e| e.code == 404 }
 
         expect(returns_obj.code).to eq(404)
-        expect(returns_obj.is_array?).to eq(false)
+        expect(returns_obj.is_array?).to be(false)
 
         expect(returns_obj).to match_field_structure([:error_message])
       end
@@ -159,7 +159,7 @@ describe "Swagger Responses" do
         returns_obj = subject.returns.detect{|e| e.code == 401 }
 
         expect(returns_obj.code).to eq(401)
-        expect(returns_obj.is_array?).to eq(false)
+        expect(returns_obj.is_array?).to be(false)
 
         expect(returns_obj).to match_field_structure([:reason])
       end
@@ -199,7 +199,7 @@ describe "Swagger Responses" do
 
         puts returns_obj.to_json
         expect(returns_obj.code).to eq(200)
-        expect(returns_obj.is_array?).to eq(false)
+        expect(returns_obj.is_array?).to be(false)
 
         expect(returns_obj).to match_field_structure([:pet_name, :animal_type])
       end
@@ -218,7 +218,7 @@ describe "Swagger Responses" do
 
         # puts returns_obj.to_json
         expect(returns_obj.code).to eq(404)
-        expect(returns_obj.is_array?).to eq(false)
+        expect(returns_obj.is_array?).to be(false)
 
         expect(returns_obj).to match_field_structure([:another_error_message])
       end
@@ -234,7 +234,7 @@ describe "Swagger Responses" do
 
         puts returns_obj.to_json
         expect(returns_obj.code).to eq(200)
-        expect(returns_obj.is_array?).to eq(false)
+        expect(returns_obj.is_array?).to be(false)
 
         expect(returns_obj).to match_field_structure([:pet_name, :animal_type])
         expect(returns_obj.params_ordered[0].is_required?).to be_falsey
@@ -269,7 +269,7 @@ describe "Swagger Responses" do
 
         puts returns_obj.to_json
         expect(returns_obj.code).to eq(200)
-        expect(returns_obj.is_array?).to eq(false)
+        expect(returns_obj.is_array?).to be(false)
 
         # note that the response is expected NOT to return the parameters marked ':only_in => :request'
         expect(returns_obj).to match_field_structure([:pet_id, :pet_name, :animal_type])
@@ -309,7 +309,7 @@ describe "Swagger Responses" do
 
         puts returns_obj.to_json
         expect(returns_obj.code).to eq(200)
-        expect(returns_obj.is_array?).to eq(false)
+        expect(returns_obj.is_array?).to be(false)
 
         expect(returns_obj).to match_field_structure([:owner_name, :vote])
       end
@@ -334,7 +334,7 @@ describe "Swagger Responses" do
 
         puts returns_obj.to_json
         expect(returns_obj.code).to eq(201)
-        expect(returns_obj.is_array?).to eq(false)
+        expect(returns_obj.is_array?).to be(false)
 
         expect(returns_obj).to match_field_structure([:pet_name, :animal_type])
       end
@@ -352,7 +352,7 @@ describe "Swagger Responses" do
 
         puts returns_obj.to_json
         expect(returns_obj.code).to eq(202)
-        expect(returns_obj.is_array?).to eq(false)
+        expect(returns_obj.is_array?).to be(false)
 
         expect(returns_obj).to match_field_structure([:pet_name,
                                                       :animal_type,
@@ -379,7 +379,7 @@ describe "Swagger Responses" do
 
         puts returns_obj.to_json
         expect(returns_obj.code).to eq(203)
-        expect(returns_obj.is_array?).to eq(false)
+        expect(returns_obj.is_array?).to be(false)
 
         expect(returns_obj).to match_field_structure([:pet_name,
                                                       :animal_type,
@@ -420,7 +420,7 @@ describe "Swagger Responses" do
 
         puts returns_obj.to_json
         expect(returns_obj.code).to eq(204)
-        expect(returns_obj.is_array?).to eq(false)
+        expect(returns_obj.is_array?).to be(false)
 
         expect(returns_obj).to match_field_structure([:int_array, :enum_array])
       end
@@ -532,7 +532,7 @@ describe "Swagger Responses" do
 
         puts returns_obj.to_json
         expect(returns_obj.code).to eq(200)
-        expect(returns_obj.is_array?).to eq(true)
+        expect(returns_obj.is_array?).to be(true)
 
         expect(returns_obj).to match_field_structure([:pet_name, :animal_type])
       end
@@ -561,7 +561,7 @@ describe "Swagger Responses" do
 
         puts returns_obj.to_json
         expect(returns_obj.code).to eq(200)
-        expect(returns_obj.is_array?).to eq(false)
+        expect(returns_obj.is_array?).to be(false)
 
         expect(returns_obj).to match_field_structure([:pet_name,
                                                       :animal_type,
@@ -594,7 +594,7 @@ describe "Swagger Responses" do
 
         puts returns_obj.to_json
         expect(returns_obj.code).to eq(200)
-        expect(returns_obj.is_array?).to eq(false)
+        expect(returns_obj.is_array?).to be(false)
 
         expect(returns_obj).to match_field_structure([:pet_name,
                                                       {:many_pet_measurements => [:weight, :height]}
@@ -635,7 +635,7 @@ describe "Swagger Responses" do
         returns_obj = subject.returns.detect{|e| e.code == 200 }
 
         expect(returns_obj.code).to eq(200)
-        expect(returns_obj.is_array?).to eq(false)
+        expect(returns_obj.is_array?).to be(false)
 
         expect(returns_obj).to match_field_structure([:pet_name, :animal_type, :age])
       end

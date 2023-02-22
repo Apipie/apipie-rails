@@ -1053,21 +1053,6 @@ RSpec/Be:
     - 'spec/controllers/concerns_controller_spec.rb'
     - 'spec/controllers/users_controller_spec.rb'
 
-# Offense count: 56
-# This cop supports unsafe autocorrection (--autocorrect-all).
-RSpec/BeEq:
-  Exclude:
-    - 'spec/controllers/users_controller_spec.rb'
-    - 'spec/lib/apipie/apipies_controller_spec.rb'
-    - 'spec/lib/apipie/generator/swagger/param_description/builder_spec.rb'
-    - 'spec/lib/apipie/generator/swagger/param_description_spec.rb'
-    - 'spec/lib/apipie/method_description/apis_service_spec.rb'
-    - 'spec/lib/apipie/method_description_spec.rb'
-    - 'spec/lib/apipie/param_description_spec.rb'
-    - 'spec/lib/apipie/param_group_spec.rb'
-    - 'spec/lib/apipie/resource_description_spec.rb'
-    - 'spec/lib/swagger/swagger_dsl_spec.rb'
-    - 'spec/lib/validators/array_validator_spec.rb'
 
 # Offense count: 3
 RSpec/BeforeAfterAll:

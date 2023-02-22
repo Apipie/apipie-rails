@@ -195,7 +195,7 @@ describe Apipie::ApipiesController, type: :controller do
         test = true
       end
       get :index
-      expect(test).to eq(true)
+      expect(test).to be(true)
     end
   end
 
@@ -207,7 +207,7 @@ describe Apipie::ApipiesController, type: :controller do
         true
       end
       get :index
-      expect(test).to eq(true)
+      expect(test).to be(true)
     end
     it "remove all resources" do
       Apipie.configuration.authorize = Proc.new do |&args|

@@ -12,7 +12,7 @@ describe Apipie::MethodDescription do
 
     it "should return nil when no metadata is provided" do
       method = Apipie::MethodDescription.new(:a, @resource, dsl_data)
-      expect(method.to_json[:metadata]).to eq(nil)
+      expect(method.to_json[:metadata]).to be_nil
     end
 
     it "should return the metadata" do
@@ -34,14 +34,14 @@ describe Apipie::MethodDescription do
     it "should return the deprecated flag when provided" do
       dsl_data[:api_args] = [[:GET, "/foo/bar", "description", {:deprecated => true}]]
       method = Apipie::MethodDescription.new(:a, @resource, dsl_data)
-      expect(method.method_apis_to_json.first[:deprecated]).to eq(true)
+      expect(method.method_apis_to_json.first[:deprecated]).to be(true)
     end
 
     it "should return the deprecated flag if resource is deprecated" do
       @resource.instance_variable_set("@_deprecated", true)
       dsl_data[:api_args] = [[:GET, "/foo/bar", "description", {}]]
       method = Apipie::MethodDescription.new(:a, @resource, dsl_data)
-      expect(method.method_apis_to_json.first[:deprecated]).to eq(true)
+      expect(method.method_apis_to_json.first[:deprecated]).to be(true)
     end
   end
 
