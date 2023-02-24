@@ -102,8 +102,8 @@ describe UsersController do
           end
 
           it "should pass if required parameter has wrong type" do
-            expect { get :show, :params => { :id => 5 , :session => "secret_hash" }}.not_to raise_error
-            expect { get :show, :params => { :id => "ten" , :session => "secret_hash" }}.not_to raise_error
+            expect { get :show, :params => { :id => 5, :session => "secret_hash" }}.not_to raise_error
+            expect { get :show, :params => { :id => "ten", :session => "secret_hash" }}.not_to raise_error
           end
 
         end
@@ -121,7 +121,7 @@ describe UsersController do
           end
 
           it "should fail if extra parameter is passed in" do
-            expect { get :show, :params => { :id => 5 , :badparam => 'badfoo', :session => "secret_hash" }}.to raise_error(Apipie::UnknownParam, /\bbadparam\b/)
+            expect { get :show, :params => { :id => 5, :badparam => 'badfoo', :session => "secret_hash" }}.to raise_error(Apipie::UnknownParam, /\bbadparam\b/)
           end
         end
 
@@ -139,7 +139,7 @@ describe UsersController do
           end
 
           it "should delete the param and not fail if an extra parameter is passed." do
-            expect { get :show, :params => { :id => 5 , :badparam => 'badfoo', :session => "secret_hash" }}.not_to raise_error
+            expect { get :show, :params => { :id => 5, :badparam => 'badfoo', :session => "secret_hash" }}.not_to raise_error
             expect(controller.params.as_json).to eq({"session"=>"secret_hash", "id"=>"5", "controller"=>"users", "action"=>"show"})
           end
 

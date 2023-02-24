@@ -592,11 +592,6 @@ Layout/SpaceBeforeBlockBraces:
     - 'spec/dummy/app/controllers/pets_using_auto_views_controller.rb'
     - 'spec/lib/swagger/swagger_dsl_spec.rb'
 
-# Offense count: 4
-# This cop supports safe autocorrection (--autocorrect).
-Layout/SpaceBeforeComma:
-  Exclude:
-    - 'spec/controllers/users_controller_spec.rb'
 
 # Offense count: 4
 # This cop supports safe autocorrection (--autocorrect).
