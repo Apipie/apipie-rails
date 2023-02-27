@@ -86,6 +86,7 @@ module Apipie
     alias use_cache? use_cache
 
     attr_writer :cache_dir
+
     def cache_dir
       @cache_dir ||= File.join(Rails.root, "public", "apipie-cache")
     end
@@ -95,6 +96,7 @@ module Apipie
     # allocation. It you need the DSL for other reasons, you can force the
     # activation.
     attr_writer :force_dsl
+
     def force_dsl?
       @force_dsl
     end
@@ -103,6 +105,7 @@ module Apipie
     # to be ignored # when extracting description form calls.
     # e.g. %w[Api::CommentsController Api::PostsController#post]
     attr_writer :ignored_by_recorder
+
     def ignored_by_recorder
       @ignored_by_recorder ||= []
       @ignored_by_recorder.map(&:to_s)
@@ -112,6 +115,7 @@ module Apipie
     # to be ignored # when generationg the documentation
     # e.g. %w[Api::CommentsController Api::PostsController#post]
     attr_writer :ignored
+
     def ignored
       @ignored ||= []
       @ignored.map(&:to_s)
@@ -126,6 +130,7 @@ module Apipie
     # If you want to keep the documentation (prevent from overriding), remove
     # the line above the docs.
     attr_writer :generated_doc_disclaimer
+
     def generated_doc_disclaimer
       @generated_doc_disclaimer ||= "# DOC GENERATED AUTOMATICALLY: REMOVE THIS LINE TO PREVENT REGENERATING NEXT TIME"
     end
