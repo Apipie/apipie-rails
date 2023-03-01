@@ -1127,14 +1127,6 @@ RSpec/EmptyExampleGroup:
   Exclude:
     - 'spec/lib/apipie/generator/swagger/param_description/composite_spec.rb'
 
-# Offense count: 11
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: AllowConsecutiveOneLiners.
-RSpec/EmptyLineAfterExample:
-  Exclude:
-    - 'spec/lib/apipie/apipies_controller_spec.rb'
-    - 'spec/lib/apipie/generator/swagger/context_spec.rb'
-    - 'spec/lib/swagger/swagger_dsl_spec.rb'
 
 # Offense count: 6
 # This cop supports safe autocorrection (--autocorrect).

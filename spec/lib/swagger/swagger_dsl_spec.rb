@@ -338,6 +338,7 @@ describe "Swagger Responses" do
 
         expect(returns_obj).to match_field_structure([:pet_name, :animal_type])
       end
+
       it 'should have the 201 response described in the swagger' do
         response = swagger_response_for('/pets/{id}/extra_info', 201)
         expect(response[:description]).to eq("Found a pet")
@@ -359,6 +360,7 @@ describe "Swagger Responses" do
                                                       {:pet_measurements => [:weight, :height, :num_legs]}
                                                      ])
       end
+
       it 'should have the 202 response described in the swagger' do
         response = swagger_response_for('/pets/{id}/extra_info', 202)
         expect(response[:description]).to eq('Accepted')
@@ -388,6 +390,7 @@ describe "Swagger Responses" do
                                                       {:additional_histories => [:did_visit_vet, :avg_meals_per_day]}
                                                      ])
       end
+
       it 'should have the 203 response described in the swagger' do
         response = swagger_response_for('/pets/{id}/extra_info', 203)
         expect(response[:description]).to eq('Non-Authoritative Information')
@@ -424,6 +427,7 @@ describe "Swagger Responses" do
 
         expect(returns_obj).to match_field_structure([:int_array, :enum_array])
       end
+
       it 'should have the 204 response described in the swagger' do
         response = swagger_response_for('/pets/{id}/extra_info', 204)
 
@@ -444,6 +448,7 @@ describe "Swagger Responses" do
                                                       :num_fleas
                                                      ])
       end
+
       it 'should have the 422 response described in the swagger' do
         response = swagger_response_for('/pets/{id}/extra_info', 422)
         expect(response[:description]).to eq('Fleas were discovered on the pet')
@@ -568,6 +573,7 @@ describe "Swagger Responses" do
                                                       {:pet_measurements => [:weight, :height, :num_legs]}
                                                      ])
       end
+
       it 'should have the 200 response described in the swagger' do
         response = swagger_response_for('/pets_with_measurements_described_as_class/{id}', 200)
         expect(response[:description]).to eq('measurements of the pet')

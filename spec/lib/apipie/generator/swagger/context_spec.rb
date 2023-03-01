@@ -16,6 +16,7 @@ describe Apipie::Generator::Swagger::Context do
 
   describe '#in_schema?' do
     it { is_expected.to be_in_schema }
+
     context 'when in_schema is false' do
       let(:in_schema) { false }
 
