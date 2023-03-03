@@ -508,7 +508,7 @@ module Apipie
       end
 
       def _apipie_update_meta(method_desc, dsl_data)
-        return unless dsl_data[:meta] && dsl_data[:meta].is_a?(Hash)
+        return unless dsl_data[:meta].is_a?(Hash)
 
         method_desc.metadata ||= {}
         method_desc.metadata.merge!(dsl_data[:meta])

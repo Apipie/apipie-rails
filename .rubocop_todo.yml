@@ -2254,16 +2254,6 @@ Style/RescueStandardError:
   Exclude:
     - 'lib/apipie/dsl_definition.rb'
 
-# Offense count: 6
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: ConvertCodeThatCanStartToReturnNil, AllowedMethods, MaxChainLength.
-# AllowedMethods: present?, blank?, presence, try, try!
-Style/SafeNavigation:
-  Exclude:
-    - 'lib/apipie/application.rb'
-    - 'lib/apipie/dsl_definition.rb'
-    - 'lib/apipie/extractor.rb'
-    - 'lib/apipie/validator.rb'
 
 # Offense count: 1
 # This cop supports unsafe autocorrection (--autocorrect-all).
