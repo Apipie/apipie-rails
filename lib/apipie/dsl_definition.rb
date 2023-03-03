@@ -344,10 +344,11 @@ module Apipie
       #
       def param(param_name, validator, desc_or_options = nil, options = {}, &block) #:doc:
         return unless Apipie.active_dsl?
+        current_param_group = defined?(@_current_param_group) && @_current_param_group
         _apipie_dsl_data[:params] << [param_name,
                                       validator,
                                       desc_or_options,
-                                      options.merge(:param_group => @_current_param_group),
+                                      options.merge(:param_group => current_param_group),
                                       block]
       end
 

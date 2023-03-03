@@ -101,7 +101,7 @@ module Apipie
     end
 
     def from_concern?
-      method_description.from_concern? || @from_concern
+      method_description.from_concern? || (defined?(@from_concern) && @from_concern)
     end
 
     def normalized_value(value)
