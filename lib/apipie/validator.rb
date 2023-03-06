@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 module Apipie
 
   module Validator
