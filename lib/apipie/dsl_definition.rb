@@ -6,10 +6,10 @@ module Apipie
   module DSL
 
     module Base
-      attr_reader :apipie_resource_descriptions, :api_params
+      attr_reader :apipie_resource_descriptions, :api_params, :_apipie_dsl_data
 
       def _apipie_eval_dsl(*args, &block)
-        raise 'The Apipie DLS data need to be cleared before evaluating new block' if @_apipie_dsl_data
+        raise 'The Apipie DSL data need to be cleared before evaluating new block' if @_apipie_dsl_data
         instance_exec(*args, &block)
         return _apipie_dsl_data
       ensure
@@ -334,6 +334,8 @@ module Apipie
     # this describes the params, it's in separate module because it's
     # used in Validators as well
     module Param
+      attr_reader :_current_param_group
+
       # Describe method's parameter
       #
       # Example:

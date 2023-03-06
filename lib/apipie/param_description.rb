@@ -40,7 +40,7 @@ module Apipie
     end
 
     def initialize(method_description, name, validator, desc_or_options = nil, options = {}, &block)
-
+      @from_concern = nil
       if desc_or_options.is_a?(Hash)
         options = options.merge(desc_or_options)
       elsif desc_or_options.is_a?(String)

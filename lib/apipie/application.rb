@@ -17,6 +17,7 @@ module Apipie
     attr_reader :resource_descriptions
 
     def initialize
+      @recorded_examples = nil
       super
       init_env
     end
