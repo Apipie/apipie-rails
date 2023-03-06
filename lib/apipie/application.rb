@@ -181,9 +181,7 @@ module Apipie
       else
         raise ArgumentError.new("Resource #{resource_name} does not exists.")
       end
-      unless resource_description.nil?
-        resource_description.method_description(method_name.to_sym)
-      end
+      resource_description&.method_description(method_name.to_sym)
     end
     alias [] get_method_description
 
@@ -388,11 +386,11 @@ module Apipie
     end
 
     def locale
-      Apipie.configuration.locale.call(nil) if Apipie.configuration.locale
+      Apipie.configuration.locale&.call(nil)
     end
 
     def locale=(locale)
-      Apipie.configuration.locale.call(locale) if Apipie.configuration.locale
+      Apipie.configuration.locale&.call(locale)
     end
 
     def translate(str, locale)
