@@ -6,10 +6,10 @@ module Apipie
   module DSL
 
     module Base
-      attr_reader :apipie_resource_descriptions, :api_params, :_apipie_dsl_data
+      attr_reader :apipie_resource_descriptions, :api_params
 
       def _apipie_eval_dsl(*args, &block)
-        raise 'The Apipie DSL data need to be cleared before evaluating new block' if @_apipie_dsl_data
+        _apipie_dsl_data_clear
         instance_exec(*args, &block)
         return _apipie_dsl_data
       ensure

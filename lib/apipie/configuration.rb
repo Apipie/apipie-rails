@@ -131,7 +131,7 @@ module Apipie
     end
 
     def use_disqus?
-      !@disqus_shortname.blank?
+      @disqus_shortname.present?
     end
 
     # set app description for default version

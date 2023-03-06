@@ -177,7 +177,7 @@ module Apipie
 
             if Apipie.configuration.show_all_examples
               show_in_doc = 1
-            elsif call[:versions].any? { |v| ! showed_in_versions.include?(v) }
+            elsif call[:versions].any? { |v| showed_in_versions.exclude?(v) }
               call[:versions].each { |v| showed_in_versions << v }
               show_in_doc = 1
             else

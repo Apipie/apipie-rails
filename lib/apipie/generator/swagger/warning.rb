@@ -62,7 +62,7 @@ class Apipie::Generator::Swagger::Warning
   #
   # @return [Apipie::Generator::Swagger::Warning]
   def self.for_code(code, method_id, message_attributes = {})
-    if !CODES.values.include?(code)
+    if CODES.values.exclude?(code)
       raise ArgumentError, 'Unknown warning code'
     end
 
