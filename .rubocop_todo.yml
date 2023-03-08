@@ -2219,12 +2219,6 @@ Style/SelectByRegexp:
   Exclude:
     - 'lib/apipie/routes_formatter.rb'
 
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: AllowAsExpressionSeparator.
-Style/Semicolon:
-  Exclude:
-    - 'lib/apipie/method_description.rb'
 
 # Offense count: 2
 # This cop supports safe autocorrection (--autocorrect).

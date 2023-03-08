@@ -51,7 +51,10 @@ module Apipie
     end
 
     def params
-      params_ordered.reduce(ActiveSupport::OrderedHash.new) { |h,p| h[p.name] = p; h }
+      params_ordered.reduce(ActiveSupport::OrderedHash.new) do |h,p|
+        h[p.name] = p
+        h
+      end
     end
 
     def params_ordered_self
