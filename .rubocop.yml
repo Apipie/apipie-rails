@@ -119,3 +119,9 @@ Style/FrozenStringLiteralComment:
 Naming/BlockForwarding:
   EnforcedStyle: explicit
   BlockForwardingName: block
+
+Lint/MissingSuper:
+  Exclude:
+    - 'lib/apipie/errors.rb'
+    - 'lib/apipie/response_description_adapter.rb'
+    - 'lib/apipie/validator.rb'
