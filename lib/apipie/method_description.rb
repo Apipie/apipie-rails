@@ -79,7 +79,6 @@ module Apipie
     end
 
     def tag_list
-      all_tag_list = []
       parent = Apipie.get_resource_description(@resource.controller.superclass)
 
       # get tags from parent resource description

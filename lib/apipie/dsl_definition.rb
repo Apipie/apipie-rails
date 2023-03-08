@@ -334,8 +334,6 @@ module Apipie
     # this describes the params, it's in separate module because it's
     # used in Validators as well
     module Param
-      attr_reader :_current_param_group
-
       # Describe method's parameter
       #
       # Example:

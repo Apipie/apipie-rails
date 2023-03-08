@@ -1,5 +1,5 @@
 class Apipie::Generator::Swagger::ParamDescription::Name
-def initialize(param_description, prefixed_by: nil)
+  def initialize(param_description, prefixed_by: nil)
     @param_description = param_description
     @prefixed_by = prefixed_by
   end

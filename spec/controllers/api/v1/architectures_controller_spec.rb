@@ -12,7 +12,7 @@ describe Api::V1::ArchitecturesController do
     end
 
     context "there is another version" do
-      let(:v2) { archv2 = Apipie.get_resource_description(Api::V2::ArchitecturesController, "2.0") }
+      let(:v2) { Apipie.get_resource_description(Api::V2::ArchitecturesController, "2.0") }
 
       it "should have unique doc url" do
         expect(subject.doc_url).not_to eq(v2.doc_url)

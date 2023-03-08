@@ -323,7 +323,7 @@ module Apipie
     def reload_documentation
       # don't load translated strings, we'll translate them later
       old_locale = locale
-      locale = Apipie.configuration.default_locale
+      self.locale = Apipie.configuration.default_locale
 
       rails_mark_classes_for_reload
 
@@ -332,7 +332,7 @@ module Apipie
       end
       @checksum = nil if Apipie.configuration.update_checksum
 
-      locale = old_locale
+      self.locale = old_locale
     end
 
     def load_documentation

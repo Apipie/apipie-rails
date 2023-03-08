@@ -96,7 +96,6 @@ module Apipie
       end
 
       def add_routes_info(desc)
-        api_prefix = Apipie.api_base_url.sub(/\/$/,"")
         desc[:api] = Apipie::Extractor.apis_from_routes[[desc[:controller].name, desc[:action]]]
         if desc[:api]
           desc[:params].each do |name, param|

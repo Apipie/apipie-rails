@@ -1,6 +1,6 @@
 require 'rubygems'
 require 'bundler/setup'
-
+$VERBOSE=true
 require 'simplecov'
 SimpleCov.minimum_coverage 89
 SimpleCov.start
