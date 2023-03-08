@@ -55,6 +55,9 @@ Naming/PredicateName:
   AllowedMethods:
     - have_field?
 
+Style/IfUnlessModifier:
+  Enabled: false
+
 Style/NumericPredicate:
   Enabled: false
 
