@@ -268,7 +268,7 @@ module Apipie
       @swagger_generator.json_schema_for_self_describing_class(cls, allow_nulls)
     end
 
-    def to_swagger_json(version, resource_name, method_name, lang, clear_warnings = false)
+    def to_swagger_json(version, resource_name, method_name, language, clear_warnings = false)
       return unless valid_search_args?(version, resource_name, method_name)
 
       # if resource_name is blank, take just resources which have some methods because
@@ -283,7 +283,12 @@ module Apipie
          result
        end
 
-      @swagger_generator.generate_from_resources(version,_resources, method_name, lang, clear_warnings)
+      @swagger_generator.generate_from_resources(
+        _resources,
+        version: version,
+        language: language,
+        clear_warnings: clear_warnings
+      )
     end
 
     def to_json(version, resource_name, method_name, lang)
