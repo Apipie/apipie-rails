@@ -20,27 +20,22 @@ module Apipie
       Apipie.configuration.swagger_content_type_input == :json
     end
 
-    def params_in_body_use_reference?
-      Apipie.configuration.swagger_json_input_uses_refs
-    end
-
-    def responses_use_reference?
-      Apipie.configuration.swagger_responses_use_refs?
-    end
-
     def include_warning_tags?
       Apipie.configuration.swagger_include_warning_tags
     end
 
-
-    def generate_from_resources(version, resources, method_name, lang, clear_warnings = false)
+    def generate_from_resources(version, resources, method_name, lang, clear_warnings=false)
       init_swagger_vars(version, lang, clear_warnings)
 
       @only_method = method_name
       add_resources(resources)
 
       @swagger[:info]["x-computed-id"] = @computed_interface_id if Apipie.configuration.swagger_generate_x_computed_id_field?
-      return @swagger
+      @swagger[:definitions] = Apipie::Generator::Swagger::ReferencedDefinitions.
+        instance.
+        definitions
+
+      @swagger
     end
 
 
@@ -48,18 +43,7 @@ module Apipie
     # Initialization
     #--------------------------------------------------------------------------
 
-    def init_swagger_vars(version, lang, clear_warnings = false)
-
-      # docs = {
-      #     :name => Apipie.configuration.app_name,
-      #     :info => Apipie.app_info(version, lang),
-      #     :copyright => Apipie.configuration.copyright,
-      #     :doc_url => Apipie.full_url(url_args),
-      #     :api_url => Apipie.api_base_url(version),
-      #     :resources => _resources
-      # }
-
-
+    def init_swagger_vars(version, lang, clear_warnings=false)
       @swagger = {
           swagger: '2.0',
           info: {
@@ -91,7 +75,6 @@ module Apipie
       end
 
       @paths = @swagger[:paths]
-      @definitions = @swagger[:definitions]
       @tags = @swagger[:tags]
 
       @issued_warnings = [] if clear_warnings || @issued_warnings.nil?
@@ -122,11 +105,6 @@ module Apipie
     # Logging, debugging and regression-testing utilities
     #--------------------------------------------------------------------------
 
-    def ruby_name_for_method(method)
-      return "<no method>" if method.nil?
-      method.resource.controller.name + "#" + method.method
-    end
-
     def warn_missing_method_summary
       warn(Apipie::Generator::Swagger::Warning::MISSING_METHOD_SUMMARY_CODE)
     end
@@ -136,10 +114,6 @@ module Apipie
         Apipie::Generator::Swagger::Warning::ADDED_MISSING_SLASH_CODE,
         { path: path }
       )
-    end
-
-    def warn_no_return_codes_specified
-      warn(Apipie::Generator::Swagger::Warning::NO_RETURN_CODES_SPECIFIED_CODE)
     end
 
     def warn_optional_param_in_path(param_name)
@@ -152,13 +126,6 @@ module Apipie
     def warn_optional_without_default_value(param_name)
       warn(
         Apipie::Generator::Swagger::Warning::OPTIONAL_WITHOUT_DEFAULT_VALUE_CODE,
-        { parameter: param_name }
-      )
-    end
-
-    def warn_param_ignored_in_form_data(param_name)
-      warn(
-        Apipie::Generator::Swagger::Warning::PARAM_IGNORED_IN_FORM_DATA_CODE,
         { parameter: param_name }
       )
     end
@@ -182,7 +149,7 @@ module Apipie
     def warn(warning_code, message_attributes = {})
       Apipie::Generator::Swagger::Warning.for_code(
         warning_code,
-        ruby_name_for_method(@current_method),
+        @current_method.ruby_name,
         message_attributes
       ).warn_through_writer
 
@@ -192,7 +159,7 @@ module Apipie
     end
 
     def info(msg)
-      print "--- INFO: [#{ruby_name_for_method(@current_method)}] -- #{msg}\n"
+      print "--- INFO: [#{@current_method.ruby_name}] -- #{msg}\n"
     end
 
 
@@ -237,16 +204,25 @@ module Apipie
         return if !ruby_method.show
       end
 
-      for api in ruby_method.apis do
-        # controller: ruby_method.resource.controller.name,
+      ruby_method = Apipie::Generator::Swagger::MethodDescription::Decorator.
+        new(ruby_method)
 
+      for api in ruby_method.apis do
         path = swagger_path(api.path)
         paths[path] ||= {}
         methods = paths[path]
         @current_method = ruby_method
 
         @warnings_issued = false
-        responses = swagger_responses_hash_for_method(ruby_method)
+
+        responses = Apipie::Generator::Swagger::MethodDescription::ResponseService.
+          new(
+            ruby_method,
+            language: @current_lang,
+            http_method: api.http_method.downcase
+          ).
+          call
+
         if include_warning_tags?
           warning_tags = @warnings_issued ? ['warnings issued'] : []
         else
@@ -260,14 +236,21 @@ module Apipie
         method_key = api.http_method.downcase
         @current_http_method = method_key
 
+        parameters = Apipie::Generator::Swagger::MethodDescription::ParametersService.
+          new(
+            ruby_method,
+            path: Apipie::Generator::Swagger::PathDecorator.new(api.path),
+            http_method: method_key
+          ).call
+
         methods[method_key] = {
-            tags: [tag_name_for_resource(ruby_method.resource)] + warning_tags + ruby_method.tag_list.tags,
-            consumes: params_in_body? ? ['application/json'] : ['application/x-www-form-urlencoded', 'multipart/form-data'],
-            operationId: op_id,
-            summary: Apipie.app.translate(api.short_description, @current_lang),
-            parameters: swagger_params_array_for_method(ruby_method, api.path),
-            responses: responses,
-            description: Apipie.app.translate(ruby_method.full_description, @current_lang)
+          tags: [tag_name_for_resource(ruby_method.resource)] + warning_tags + ruby_method.tag_list.tags,
+          consumes: params_in_body? ? ['application/json'] : ['application/x-www-form-urlencoded', 'multipart/form-data'],
+          operationId: op_id,
+          summary: Apipie.app.translate(api.short_description, @current_lang),
+          parameters: parameters,
+          responses: responses,
+          description: ruby_method.full_description
         }
 
         if methods[method_key][:summary].nil?
@@ -293,20 +276,12 @@ module Apipie
       str
     end
 
-    def remove_colons(str)
-      str.gsub(":", "_")
-    end
-
-    def swagger_op_id_for_method(method)
-      remove_colons method.resource.controller.name + "::" + method.method
-    end
-
     def swagger_param_type(param_desc)
       if param_desc.blank?
         raise ArgumentError, 'param_desc is required'
       end
 
-      method_id = ruby_name_for_method(@current_method)
+      method_id = @current_method.ruby_name
 
       warning = Apipie::Generator::Swagger::Warning.for_code(
         Apipie::Generator::Swagger::Warning::INFERRING_BOOLEAN_CODE,
@@ -332,238 +307,27 @@ module Apipie
         return schema
       end
       nil
-    end
-
-    def json_schema_for_self_describing_class(cls, allow_nulls)
-      adapter = ResponseDescriptionAdapter.from_self_describing_class(cls)
-      response_schema(adapter, allow_nulls)
-    end
-
-    def response_schema(response, allow_nulls = false)
-      begin
-        # no need to warn about "missing default value for optional param" when processing response definitions
-        prev_value = @disable_default_value_warning
-        @disable_default_value_warning = true
-
-        if responses_use_reference? && response.typename
-          schema = {
-            "$ref" => gen_referenced_block_from_params_array(
-              response.typename,
-              response.params_ordered,
-              allow_nulls
-            )
-          }
-        else
-          schema = Apipie::Generator::Swagger::ParamDescription::Composite.new(
-            response.params_ordered,
-            Apipie::Generator::Swagger::Context.new(
-              allow_null: allow_nulls,
-              http_method: @current_http_method,
-              controller_method: @current_method
-            )
-          ).to_swagger
-        end
-
-      ensure
-        @disable_default_value_warning = prev_value
-      end
 
       if response.is_array? && schema
-        schema = {
-            type: allow_nulls ? ["array","null"] : "array",
-            items: schema
-        }
-      end
 
       if response.allow_additional_properties
-        schema[:additionalProperties] = true
-      end
-
-      schema
-    end
-
-    def swagger_responses_hash_for_method(method)
-      result = {}
-
-      for error in method.errors
-        error_block = {description: Apipie.app.translate(error.description, @current_lang)}
-        result[error.code] = error_block
-      end
-
-      for response in method.returns
-        swagger_response_block = {
-            description: Apipie.app.translate(response.description, @current_lang)
-        }
-
-        schema = response_schema(response)
-        swagger_response_block[:schema] = schema if schema
-
-        result[response.code] = swagger_response_block
-      end
-
-      if result.length == 0
-        warn_no_return_codes_specified
-        result[200] = {description: 'ok'}
-      end
-
-      result
-    end
 
 
 
     #--------------------------------------------------------------------------
     # Auto-insertion of parameters that are implicitly defined in the path
     #--------------------------------------------------------------------------
-
-    def param_names_from_path(path)
-      path.scan(/:(\w+)/).map do |ar|
-        ar[0].to_sym
-      end
-    end
-
-    def add_missing_params(method, path)
-      param_names_from_method = method.params.map {|name, desc| name}
-      missing = param_names_from_path(path) - param_names_from_method
-
-      result = method.params
-
-      missing.each do |name|
-        warn_path_parameter_not_described(name, path)
-
-        result[name.to_sym] = Apipie::Generator::Swagger::ParamDescription.
-          create_for_missing_param(method, name)
-      end
-
-      result
-    end
-
-    #--------------------------------------------------------------------------
-    # JSON schema and referenced-object generation
-    #--------------------------------------------------------------------------
-
-    def ref_to(name)
-      "#/definitions/#{name}"
-    end
-
-    def gen_referenced_block_from_params_array(name, params_array, allow_nulls = false)
-      return ref_to(:name) if @definitions.key(:name)
-
-      schema_obj = Apipie::Generator::Swagger::ParamDescription::Composite.new(
-        params_array,
-        Apipie::Generator::Swagger::Context.new(
-          allow_null: allow_nulls,
-          http_method: @current_http_method,
-          controller_method: @current_method
-        )
       ).to_swagger
 
       return nil if schema_obj.nil?
 
-      @definitions[name.to_sym] = schema_obj
-      ref_to(name.to_sym)
-    end
-
-    #--------------------------------------------------------------------------
-    # swagger "Params" block generation
-    #--------------------------------------------------------------------------
-
-    def body_allowed_for_current_method
-      !(['get', 'head'].include?(@current_http_method))
-    end
-
-    def swagger_params_array_for_method(method, path)
-
-      swagger_result = []
-      all_params_hash = add_missing_params(method, path)
-
-      body_param_defs_array = all_params_hash.map {|k, v| v if !param_names_from_path(path).include?(k)}.select{|v| !v.nil?}
-      body_param_defs_hash = all_params_hash.select {|k, v| v if !param_names_from_path(path).include?(k)}
-      path_param_defs_hash = all_params_hash.select {|k, v| v if param_names_from_path(path).include?(k)}
-
-      path_param_defs_hash.each{|name,desc| desc.required = true}
-      add_params_from_hash(swagger_result, path_param_defs_hash, nil, "path")
-
-      if params_in_body? && body_allowed_for_current_method
-        if params_in_body_use_reference?
-          swagger_schema_for_body = {"$ref" => gen_referenced_block_from_params_array("#{swagger_op_id_for_method(method)}_input", body_param_defs_array)}
-        else
-          swagger_schema_for_body =
-            Apipie::Generator::Swagger::ParamDescription::Composite.new(
-              body_param_defs_array,
-              Apipie::Generator::Swagger::Context.new(
-                allow_null: false,
-                http_method: @current_http_method,
-                controller_method: @current_method
-              )
-            ).to_swagger
-        end
-
-        swagger_body_param = {
-            name: 'body',
-            in: 'body',
-            schema: swagger_schema_for_body
-        }
-        swagger_result.push(swagger_body_param) if !swagger_schema_for_body.nil?
-
-      else
-        add_params_from_hash(swagger_result, body_param_defs_hash)
-      end
-
-      add_headers_from_hash(swagger_result, method.headers) if method.headers.present?
 
       swagger_result
     end
-
-
-    def add_headers_from_hash(swagger_params_array, headers)
-      swagger_headers = headers.map do |header|
-        header_hash = {
-          name: header[:name],
-          in: 'header',
-          required: header[:options][:required],
-          description: header[:description],
-          type:  header[:options][:type] || 'string'
-        }
-        header_hash[:default] = header[:options][:default] if header[:options][:default]
-        header_hash
       end
-      swagger_params_array.push(*swagger_headers)
-    end
-
-
-    def add_params_from_hash(swagger_params_array, param_defs, prefix = nil, default_value_for_in = nil)
-      param_defs.each do |name, desc|
-        if !prefix.nil?
-          name = "#{prefix}[#{name}]"
-        end
 
         if swagger_param_type(desc) == "object"
-          if desc.validator.params_ordered
-            params_hash = Hash[desc.validator.params_ordered.map {|desc| [desc.name, desc]}]
-            add_params_from_hash(swagger_params_array, params_hash, name)
-          else
-            warn_param_ignored_in_form_data(desc.name)
-          end
-        else
-          param_entry = Apipie::Generator::Swagger::ParamDescription::Builder.
-            new(desc, in_schema: false, controller_method: @current_method).
-            with_description(language: @current_lang).
-            with_name(prefix: prefix).
-            with_type(with_null: @allow_null).
-            with_in(
-              http_method: @current_http_method,
-              default_in_value: default_value_for_in
-            ).to_swagger
-
-          if param_entry[:required]
-            swagger_params_array.unshift(param_entry)
-          else
-            swagger_params_array.push(param_entry)
-          end
-        end
-      end
     end
-
   end
 
 end
