@@ -123,15 +123,15 @@ namespace :apipie do
   # Default output dir ('public/apipie_cache') can be changed with OUT=/some/dir
   desc "Generate cache to avoid production dependencies on markup languages"
   task :cache => :environment do
-    puts "#{Time.now} | Started"
+    puts "#{Time.zone.now} | Started"
     cache_part = ENV['cache_part']
     generate_index = (cache_part == 'resources' ? false : true)
     generate_resources = (cache_part == 'index' ? false : true)
     with_loaded_documentation do
-      puts "#{Time.now} | Documents loaded..."
+      puts "#{Time.zone.now} | Documents loaded..."
       ([nil] + Apipie.configuration.languages).each do |lang|
         I18n.locale = lang || Apipie.configuration.default_locale
-        puts "#{Time.now} | Processing docs for #{lang}"
+        puts "#{Time.zone.now} | Processing docs for #{lang}"
         cache_dir = ENV["OUT"] || Apipie.configuration.cache_dir
         subdir = Apipie.configuration.doc_base_url.sub(/\A\//,"")
         subdir_levels = subdir.split('/').length
@@ -159,7 +159,7 @@ namespace :apipie do
         end
       end
     end
-    puts "#{Time.now} | Finished"
+    puts "#{Time.zone.now} | Finished"
   end
 
   # Attempt to use the Rails application views, otherwise default to built in views

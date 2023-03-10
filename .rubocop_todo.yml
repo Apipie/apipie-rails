@@ -1479,13 +1479,6 @@ Rails/RootPathnameMethods:
     - 'spec/lib/rake_spec.rb'
     - 'spec/lib/swagger/rake_swagger_spec.rb'
 
-# Offense count: 4
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: strict, flexible
-Rails/TimeZone:
-  Exclude:
-    - 'lib/tasks/apipie.rake'
 
 # Offense count: 1
 # This cop supports unsafe autocorrection (--autocorrect-all).
