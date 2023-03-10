@@ -51,6 +51,9 @@ Metrics/BlockLength:
     - lib/tasks/apipie.rake
     - lib/apipie/swagger_generator.rb
 
+Metrics/ParameterLists:
+  Enabled: false
+
 Naming/PredicateName:
   AllowedMethods:
     - have_field?
