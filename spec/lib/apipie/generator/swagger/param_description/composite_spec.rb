@@ -57,23 +57,6 @@ describe Apipie::Generator::Swagger::ParamDescription::Composite do
     end
   end
 
-  xdescribe 'nested additionalProperties' do
-    context 'when param description has nested params' do
-      let(:validator) do
-
-      end
-
-      let(:params_description_one) do
-        Apipie::ParamDescription.new(
-          method_description,
-          :some_param,
-          validator,
-          { required: true }
-        )
-      end
-    end
-  end
-
   describe 'required' do
     subject { swagger[:required] }
 
