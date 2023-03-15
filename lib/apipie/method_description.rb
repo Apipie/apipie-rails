@@ -159,7 +159,7 @@ module Apipie
       @formats || @resource._formats
     end
 
-    def to_json(lang=nil)
+    def to_json(lang = nil)
       {
         :doc_url => doc_url,
         :name => @method,

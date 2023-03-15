@@ -118,7 +118,7 @@ module Apipie
     end
     alias allow_additional_properties additional_properties
 
-    def to_json(lang=nil)
+    def to_json(lang = nil)
       {
           :code => code,
           :description => Apipie.app.translate(description, lang),

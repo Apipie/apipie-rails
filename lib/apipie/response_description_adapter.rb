@@ -1,6 +1,6 @@
 module Apipie
 
-  def self.prop(name, expected_type, options={}, sub_properties=[])
+  def self.prop(name, expected_type, options = {}, sub_properties = [])
     Apipie::ResponseDescriptionAdapter::PropDesc.new(name, expected_type, options, sub_properties)
   end
 
@@ -60,7 +60,7 @@ module Apipie
           return self.send(key) if self.respond_to?(key.to_s)
         end
 
-        def initialize(expected_type, enum_values=nil, sub_properties=nil)
+        def initialize(expected_type, enum_values = nil, sub_properties = nil)
           @expected_type = expected_type
           @enum_values = enum_values
           @is_enum = !!enum_values
@@ -84,7 +84,7 @@ module Apipie
       #======================================================================
 
 
-      def initialize(name, expected_type, options={}, sub_properties=[])
+      def initialize(name, expected_type, options = {}, sub_properties = [])
         @name = name
         @required = true
         @required = false if options[:required] == false

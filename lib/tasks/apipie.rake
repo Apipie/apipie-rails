@@ -221,7 +221,7 @@ namespace :apipie do
     File.open("#{file_base}/#{filename}", 'w') { |file| file.write(JSON.pretty_generate(doc)) }
   end
 
-  def generate_swagger_json_page(file_base, doc, sfx="", lang = nil)
+  def generate_swagger_json_page(file_base, doc, sfx = "", lang = nil)
     FileUtils.mkdir_p(file_base) unless File.exist?(file_base)
 
     path = Pathname.new("#{file_base}/schema_swagger#{sfx}#{lang_ext(lang)}.json")

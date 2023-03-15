@@ -24,17 +24,17 @@ describe "Swagger Responses" do
     schema
   end
 
-  def swagger_response_for(path, code=200, method='get')
+  def swagger_response_for(path, code = 200, method = 'get')
     response = swagger[:paths][path][method][:responses][code]
     response[:schema] = resolve_refs(response[:schema])
     response
   end
 
-  def swagger_params_for(path, method='get')
+  def swagger_params_for(path, method = 'get')
     swagger[:paths][path][method][:parameters]
   end
 
-  def swagger_param_by_name(param_name, path, method='get')
+  def swagger_param_by_name(param_name, path, method = 'get')
     params = swagger_params_for(path, method)
     matching = params.select{|p| p[:name] == param_name }
     raise "multiple params named [#{param_name}] in swagger definition for [#{method} #{path}]" if matching.length > 1
@@ -72,7 +72,7 @@ describe "Swagger Responses" do
       deep_match?(actual, expected)
     end
 
-    def deep_match?(actual, expected, breadcrumb=[])
+    def deep_match?(actual, expected, breadcrumb = [])
       pending_params = actual.params_ordered.dup
       expected.each do |expected_param|
         expected_param_name = expected_param.is_a?(Hash) ? expected_param.keys.first : expected_param

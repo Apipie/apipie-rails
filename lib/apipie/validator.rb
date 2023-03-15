@@ -190,7 +190,7 @@ module Apipie
 
     # arguments value must be an array
     class ArrayValidator < Apipie::Validator::BaseValidator
-      def initialize(param_description, argument, options={})
+      def initialize(param_description, argument, options = {})
         super(param_description)
         @type = argument
         @items_type = options[:of]
