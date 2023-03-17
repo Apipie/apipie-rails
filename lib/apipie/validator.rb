@@ -495,7 +495,7 @@ module Apipie
 
       def initialize(param_description, argument, param_group)
         super(param_description)
-        @validator = Apipie::Validator:: HashValidator.new(param_description, argument, param_group)
+        @validator = Apipie::Validator::HashValidator.new(param_description, argument, param_group)
         @type = argument
       end
 
