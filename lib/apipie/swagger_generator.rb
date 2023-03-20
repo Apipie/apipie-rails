@@ -33,7 +33,7 @@ module Apipie
     end
 
 
-    def generate_from_resources(version, resources, method_name, lang, clear_warnings=false)
+    def generate_from_resources(version, resources, method_name, lang, clear_warnings = false)
       init_swagger_vars(version, lang, clear_warnings)
 
       @only_method = method_name
@@ -48,7 +48,7 @@ module Apipie
     # Initialization
     #--------------------------------------------------------------------------
 
-    def init_swagger_vars(version, lang, clear_warnings=false)
+    def init_swagger_vars(version, lang, clear_warnings = false)
 
       # docs = {
       #     :name => Apipie.configuration.app_name,
@@ -339,7 +339,7 @@ module Apipie
       response_schema(adapter, allow_nulls)
     end
 
-    def response_schema(response, allow_nulls=false)
+    def response_schema(response, allow_nulls = false)
       begin
         # no need to warn about "missing default value for optional param" when processing response definitions
         prev_value = @disable_default_value_warning
@@ -445,7 +445,7 @@ module Apipie
       "#/definitions/#{name}"
     end
 
-    def gen_referenced_block_from_params_array(name, params_array, allow_nulls=false)
+    def gen_referenced_block_from_params_array(name, params_array, allow_nulls = false)
       return ref_to(:name) if @definitions.key(:name)
 
       schema_obj = Apipie::Generator::Swagger::ParamDescription::Composite.new(
@@ -531,7 +531,7 @@ module Apipie
     end
 
 
-    def add_params_from_hash(swagger_params_array, param_defs, prefix=nil, default_value_for_in=nil)
+    def add_params_from_hash(swagger_params_array, param_defs, prefix = nil, default_value_for_in = nil)
       param_defs.each do |name, desc|
         if !prefix.nil?
           name = "#{prefix}[#{name}]"

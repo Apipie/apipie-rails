@@ -24,7 +24,7 @@ require 'test_engine'
 #
 # will verify that the selected response schema includes a required string field called 'pet_name'
 #
-RSpec::Matchers.define :have_field do |name, type, opts={}|
+RSpec::Matchers.define :have_field do |name, type, opts = {}|
   def fail(msg)
     @fail_message = msg
     false

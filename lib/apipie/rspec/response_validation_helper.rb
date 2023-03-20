@@ -112,7 +112,7 @@ class ActionController::Base
 end
 
 module Apipie
-  def self.print_validation_errors(validation_errors, schema, response, error_object=nil)
+  def self.print_validation_errors(validation_errors, schema, response, error_object = nil)
     Rails.logger.warn(validation_errors.to_s)
     if Rails.env.test?
       puts "schema validation errors:"

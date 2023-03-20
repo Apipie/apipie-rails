@@ -13,7 +13,7 @@ module Apipie
     app.to_json(version, resource_name, method_name, lang)
   end
 
-  def self.to_swagger_json(version = nil, resource_name = nil, method_name = nil, lang = nil, clear_warnings=true)
+  def self.to_swagger_json(version = nil, resource_name = nil, method_name = nil, lang = nil, clear_warnings = true)
     version ||= Apipie.configuration.default_version
     app.to_swagger_json(version, resource_name, method_name, lang, clear_warnings)
   end
@@ -24,7 +24,7 @@ module Apipie
     app.json_schema_for_method_response(version, controller_name, method_name, return_code, allow_nulls)
   end
 
-  def self.json_schema_for_self_describing_class(cls, allow_nulls=true)
+  def self.json_schema_for_self_describing_class(cls, allow_nulls = true)
     app.json_schema_for_self_describing_class(cls, allow_nulls)
   end
 

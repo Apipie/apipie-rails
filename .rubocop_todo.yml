@@ -521,27 +521,6 @@ Layout/SpaceAfterNot:
     - 'lib/apipie/extractor/collector.rb'
     - 'lib/apipie/extractor/writer.rb'
 
-# Offense count: 35
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: space, no_space
-Layout/SpaceAroundEqualsInParameterDefault:
-  Exclude:
-    - 'app/helpers/apipie_helper.rb'
-    - 'lib/apipie/apipie_module.rb'
-    - 'lib/apipie/application.rb'
-    - 'lib/apipie/dsl_definition.rb'
-    - 'lib/apipie/error_description.rb'
-    - 'lib/apipie/method_description.rb'
-    - 'lib/apipie/response_description.rb'
-    - 'lib/apipie/response_description_adapter.rb'
-    - 'lib/apipie/rspec/response_validation_helper.rb'
-    - 'lib/apipie/swagger_generator.rb'
-    - 'lib/apipie/validator.rb'
-    - 'lib/tasks/apipie.rake'
-    - 'spec/lib/swagger/swagger_dsl_spec.rb'
-    - 'spec/spec_helper.rb'
-
 # Offense count: 142
 # This cop supports safe autocorrection (--autocorrect).
 # Configuration parameters: AllowForAlignment, EnforcedStyleForExponentOperator.

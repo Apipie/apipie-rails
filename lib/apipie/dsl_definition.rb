@@ -96,7 +96,7 @@ module Apipie
       #   # load paths from routes and don't provide description
       #   api
       #
-      def api(method, path, desc = nil, options={}) #:doc:
+      def api(method, path, desc = nil, options = {}) #:doc:
         return unless Apipie.active_dsl?
         _apipie_dsl_data[:api] = true
         _apipie_dsl_data[:api_args] << [method, path, desc, options]
@@ -105,7 +105,7 @@ module Apipie
       #   # load paths from routes
       #   api! "short description",
       #
-      def api!(desc = nil, options={}) #:doc:
+      def api!(desc = nil, options = {}) #:doc:
         return unless Apipie.active_dsl?
         _apipie_dsl_data[:api] = true
         _apipie_dsl_data[:api_from_routes] = { :desc => desc, :options =>options }
@@ -218,7 +218,7 @@ module Apipie
       #     puts "hello world"
       #   end
       #
-      def error(code_or_options, desc=nil, options={}) #:doc:
+      def error(code_or_options, desc = nil, options = {}) #:doc:
         return unless Apipie.active_dsl?
         _apipie_dsl_data[:errors] << [code_or_options, desc, options]
       end
@@ -403,7 +403,7 @@ module Apipie
       #     render json: {user: {name: "Alfred"}}
       #   end
       #
-      def returns(pgroup_or_options, desc_or_options=nil, options={}, &block) #:doc:
+      def returns(pgroup_or_options, desc_or_options = nil, options = {}, &block) #:doc:
         return unless Apipie.active_dsl?
 
 
