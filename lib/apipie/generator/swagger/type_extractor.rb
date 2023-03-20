@@ -25,21 +25,10 @@ class Apipie::Generator::Swagger::TypeExtractor
     @validator = validator
   end
 
-  # @param [Hash<Symbol, Apipie::Generator::Swagger::Warning>] warnings
-  def extract_with_warnings(warnings = {})
-    if boolean? && warnings[:boolean].present?
-      Apipie::Generator::Swagger::WarningWriter.instance.warn(warnings[:boolean])
-    end
-
-    extract
-  end
-
   def extract
     expected_type =
       if string?
         :string
-      elsif boolean?
-        :boolean
       elsif enum?
         :enum
       else
@@ -58,13 +47,5 @@ class Apipie::Generator::Swagger::TypeExtractor
   def enum?
     @validator.is_a?(Apipie::Validator::EnumValidator) ||
       (@validator.respond_to?(:is_enum?) && @validator.is_enum?)
-  end
-
-  def boolean?
-    @_boolean ||= enum? && boolean_values?
-  end
-
-  def boolean_values?
-    @validator.values.to_set == Set.new([true, false])
   end
 end
