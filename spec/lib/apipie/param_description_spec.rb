@@ -151,20 +151,30 @@ describe Apipie::ParamDescription do
         end
       end
 
-      context 'when the parameter is a string' do
-        context 'when allow_blank is specified as true' do
-          it "should throw an exception when passed an empty value" do
-            expect { Apipie::ParamDescription.new(method_desc, :param, String, allow_blank: true).validate('') }.to_not raise_error
+      context 'when validation type is a boolean array' do
+        let(:validation_type) { [true, false] }
+
+        context 'when validation value is false' do
+          let(:validation_value) { false }
+
+          it 'should not raise an error' do
+            expect { subject }.not_to raise_error
           end
         end
-        context 'when allow_blank is specified as false' do
-          it "should throw an exception when passed an empty value" do
-            expect { Apipie::ParamDescription.new(method_desc, :param, String, allow_blank: false).validate('') }.to_not raise_error
+
+        context 'when validation value is true' do
+          let(:validation_value) { true }
+
+          it 'should not raise an error' do
+            expect { subject }.not_to raise_error
           end
         end
-        context 'when allow_blank is not specified' do
-          it "should throw an exception when passed an empty value" do
-            expect { Apipie::ParamDescription.new(method_desc, :param, String).validate('') }.to_not raise_error
+
+        context 'when validation value is an empty string' do
+          let(:validation_value) { '' }
+
+          it 'should raise an error' do
+            expect { subject }.to raise_error(Apipie::ParamInvalid)
           end
         end
       end
@@ -218,6 +228,34 @@ describe Apipie::ParamDescription do
       end
 
       context 'when validation value is empty string' do
+        let(:validation_value) { '' }
+
+        it 'should raise an error' do
+          expect { subject }.to raise_error(Apipie::ParamInvalid)
+        end
+      end
+    end
+
+    context 'when validation type is a boolean array' do
+      let(:validation_type) { [true, false] }
+
+      context 'when validation value is false' do
+        let(:validation_value) { false }
+
+        it 'should not raise an error' do
+          expect { subject }.not_to raise_error
+        end
+      end
+
+      context 'when validation value is true' do
+        let(:validation_value) { true }
+
+        it 'should not raise an error' do
+          expect { subject }.not_to raise_error
+        end
+      end
+
+      context 'when validation value is an empty string' do
         let(:validation_value) { '' }
 
         it 'should raise an error' do
