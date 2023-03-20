@@ -1992,20 +1992,6 @@ Style/RedundantStringEscape:
   Exclude:
     - 'spec/dummy/app/controllers/users_controller.rb'
 
-# Offense count: 12
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle, AllowInnerSlashes.
-# SupportedStyles: slashes, percent_r, mixed
-Style/RegexpLiteral:
-  Exclude:
-    - 'lib/apipie/extractor.rb'
-    - 'lib/apipie/extractor/collector.rb'
-    - 'lib/apipie/extractor/recorder.rb'
-    - 'lib/apipie/generator/swagger/operation_id.rb'
-    - 'lib/apipie/helpers.rb'
-    - 'lib/apipie/routing.rb'
-    - 'lib/apipie/swagger_generator.rb'
-    - 'lib/tasks/apipie.rake'
 
 # Offense count: 1
 # This cop supports safe autocorrection (--autocorrect).

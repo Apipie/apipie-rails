@@ -9,7 +9,7 @@ module Apipie
 
       def analyse_env(env)
         @verb = env["REQUEST_METHOD"].to_sym
-        @path = env["PATH_INFO"].sub(/^\/*/,"/")
+        @path = env["PATH_INFO"].sub(%r{^/*},"/")
         @query = env["QUERY_STRING"] unless env["QUERY_STRING"].blank?
         @params = Rack::Utils.parse_nested_query(@query)
         @params.merge!(env["action_dispatch.request.request_parameters"] || {})

@@ -284,7 +284,7 @@ module Apipie
 
     def swagger_path(str)
       str = str.gsub(/:(\w+)/, '{\1}')
-      str = str.gsub(/\/$/, '')
+      str = str.gsub(%r{/$}, '')
 
       if str[0] != '/'
         warn_added_missing_slash(str)
