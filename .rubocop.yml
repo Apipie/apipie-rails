@@ -116,6 +116,15 @@ Style/Documentation:
     - spec/lib/validators/array_validator_spec.rb
     - spec/dummy/**/*.rb
 
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
 Naming/BlockForwarding:
   EnforcedStyle: explicit
   BlockForwardingName: block
+
+Lint/MissingSuper:
+  Exclude:
+    - 'lib/apipie/errors.rb'
+    - 'lib/apipie/response_description_adapter.rb'
+    - 'lib/apipie/validator.rb'
