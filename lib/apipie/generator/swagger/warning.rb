@@ -7,7 +7,6 @@ class Apipie::Generator::Swagger::Warning
   OPTIONAL_WITHOUT_DEFAULT_VALUE_CODE = 105
   PARAM_IGNORED_IN_FORM_DATA_CODE = 106
   PATH_PARAM_NOT_DESCRIBED_CODE = 107
-  INFERRING_BOOLEAN_CODE = 108
 
   CODES = {
     missing_method_summary: MISSING_METHOD_SUMMARY_CODE,
@@ -17,8 +16,7 @@ class Apipie::Generator::Swagger::Warning
     optional_param_in_path: OPTIONAL_PARAM_IN_PATH_CODE,
     optional_without_default_value: OPTIONAL_WITHOUT_DEFAULT_VALUE_CODE,
     param_ignored_in_form_data: PARAM_IGNORED_IN_FORM_DATA_CODE,
-    path_param_not_described_code: PATH_PARAM_NOT_DESCRIBED_CODE,
-    inferring_boolean: INFERRING_BOOLEAN_CODE
+    path_param_not_described_code: PATH_PARAM_NOT_DESCRIBED_CODE
   }
 
   MESSAGES = {
@@ -29,8 +27,7 @@ class Apipie::Generator::Swagger::Warning
     OPTIONAL_PARAM_IN_PATH_CODE => "The parameter :%{parameter} is 'in-path'.  Ignoring 'not required' in DSL",
     OPTIONAL_WITHOUT_DEFAULT_VALUE_CODE => "The parameter :%{parameter} is optional but default value is not specified (use :default_value => ...)",
     PARAM_IGNORED_IN_FORM_DATA_CODE => "Ignoring param :%{parameter} -- cannot include Hash without fields in a formData specification",
-    PATH_PARAM_NOT_DESCRIBED_CODE => "The parameter :%{name} appears in the path %{path} but is not described",
-    INFERRING_BOOLEAN_CODE => "The parameter [%{parameter}] is Enum with [true, false] values. Inferring 'boolean'"
+    PATH_PARAM_NOT_DESCRIBED_CODE => "The parameter :%{name} appears in the path %{path} but is not described"
   }
 
   attr_reader :code
