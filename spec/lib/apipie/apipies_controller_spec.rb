@@ -209,6 +209,7 @@ describe Apipie::ApipiesController, type: :controller do
       get :index
       expect(test).to eq(true)
     end
+
     it "remove all resources" do
       Apipie.configuration.authorize = Proc.new do |&args|
         false
@@ -216,6 +217,7 @@ describe Apipie::ApipiesController, type: :controller do
       get :index
       expect(assigns(:doc)[:resources]).to eq({})
     end
+
     it "remove all methods" do
       Apipie.configuration.authorize = Proc.new do |controller, method, doc|
         !method
@@ -225,6 +227,7 @@ describe Apipie::ApipiesController, type: :controller do
       expect(assigns(:doc)[:resources]["twitter_example"][:methods]).to eq([])
       expect(assigns(:doc)[:resources]["users"][:methods]).to eq([])
     end
+
     it "remove specific method" do
       Apipie.configuration.authorize = nil
       get :index
@@ -241,6 +244,7 @@ describe Apipie::ApipiesController, type: :controller do
       expect(assigns(:doc)[:resources]["users"][:methods].size).to eq(users_methods - 1)
       expect(assigns(:doc)[:resources]["twitter_example"][:methods].size).to eq(twitter_example_methods)
     end
+
     it "does not allow access to swagger when authorization is set" do
       get :index, :params => { :format => "json", :type => "swagger"}
 
