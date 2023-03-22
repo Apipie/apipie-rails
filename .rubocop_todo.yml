@@ -980,11 +980,6 @@ Performance/StringIdentifierArgument:
     - 'spec/controllers/users_controller_spec.rb'
     - 'spec/lib/apipie/method_description_spec.rb'
 
-# Offense count: 2
-# This cop supports unsafe autocorrection (--autocorrect-all).
-Performance/StringInclude:
-  Exclude:
-    - 'app/controllers/apipie/apipies_controller.rb'
 
 # Offense count: 7
 # This cop supports safe autocorrection (--autocorrect).
