@@ -155,7 +155,7 @@ module Apipie
     def render_from_cache
       path = Apipie.configuration.doc_base_url.dup
       # some params can contain dot, but only one in row
-      if [:resource, :method, :format, :version].any? { |p| params[p].to_s.gsub(".", "") =~ /\W/ || params[p].to_s =~ /\.\./ }
+      if [:resource, :method, :format, :version].any? { |p| params[p].to_s.gsub(".", "") =~ /\W/ || params[p].to_s.include?('..') }
         head :bad_request and return
       end
 
@@ -171,7 +171,7 @@ module Apipie
       # we sanitize the params before so in ideal case, this condition
       # will be never satisfied. It's here for cases somebody adds new
       # param into the path later and forgets about sanitation.
-      if path =~ /\.\./
+      if path.include?('..')
         head :bad_request and return
       end
 
