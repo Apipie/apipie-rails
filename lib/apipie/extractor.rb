@@ -81,7 +81,7 @@ module Apipie
       def apis_from_routes
         return @apis_from_routes if @apis_from_routes
 
-        @api_prefix = Apipie.api_base_url.sub(/\/$/,"")
+        @api_prefix = Apipie.api_base_url.sub(%r{/$},"")
         populate_api_routes
         update_api_descriptions
 

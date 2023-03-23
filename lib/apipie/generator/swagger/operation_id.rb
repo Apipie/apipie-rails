@@ -37,7 +37,7 @@ class Apipie::Generator::Swagger::OperationId
   #
   # @return [String]
   def path
-    @path.gsub(/\//, '_').gsub(/:(\w+)/, '\1').gsub(/_$/, '')
+    @path.gsub(%r{/}, '_').gsub(/:(\w+)/, '\1').gsub(/_$/, '')
   end
 
   # Converts an http method like `GET` to `get` Using lowercase http method,

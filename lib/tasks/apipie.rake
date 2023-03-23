@@ -133,7 +133,7 @@ namespace :apipie do
         I18n.locale = lang || Apipie.configuration.default_locale
         puts "#{Time.zone.now} | Processing docs for #{lang}"
         cache_dir = ENV["OUT"] || Apipie.configuration.cache_dir
-        subdir = Apipie.configuration.doc_base_url.sub(/\A\//,"")
+        subdir = Apipie.configuration.doc_base_url.sub(%r{\A/},"")
         subdir_levels = subdir.split('/').length
         subdir_traversal_prefix = '../' * subdir_levels
         file_base = File.join(cache_dir, Apipie.configuration.doc_base_url)
