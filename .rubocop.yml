@@ -119,6 +119,9 @@ Style/Documentation:
 Style/FrozenStringLiteralComment:
   Enabled: false
 
+Style/InverseMethods:
+  Enabled: false
+
 Naming/BlockForwarding:
   EnforcedStyle: explicit
   BlockForwardingName: block
