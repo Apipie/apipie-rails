@@ -401,7 +401,7 @@ module Apipie
         result[response.code] = swagger_response_block
       end
 
-      if result.length == 0
+      if result.empty?
         warn_no_return_codes_specified
         result[200] = {description: 'ok'}
       end

@@ -39,7 +39,7 @@ describe "Swagger Responses" do
     matching = params.select{|p| p[:name] == param_name }
     raise "multiple params named [#{param_name}] in swagger definition for [#{method} #{path}]" if matching.length > 1
 
-    nil if matching.length == 0
+    nil if matching.empty?
 
     matching[0]
   end

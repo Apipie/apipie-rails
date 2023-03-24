@@ -78,7 +78,7 @@ class Apipie::Generator::Swagger::ParamDescription::Composite
       @schema[:additionalProperties] = false
     end
 
-    if @required_params.length > 0
+    if !@required_params.empty?
       @schema[:required] = @required_params
     end
 
