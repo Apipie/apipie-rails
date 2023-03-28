@@ -14,27 +14,25 @@ module Apipie
   class ResourceDescription
 
     attr_reader :controller, :_short_description, :_full_description, :_methods, :_id,
-      :_path, :_name, :_params_args, :_returns_args, :_tag_list_arg, :_errors_args,
+      :_path, :_params_args, :_returns_args, :_tag_list_arg, :_errors_args,
       :_formats, :_parent, :_metadata, :_headers, :_deprecated
 
-    def initialize(controller, resource_name, dsl_data = nil, version = nil)
-
+    def initialize(controller, id, dsl_data = nil, version = nil)
       @_methods = ActiveSupport::OrderedHash.new
       @_params_args = []
       @_errors_args = []
       @_returns_args = []
 
       @controller = controller
-      @_id = resource_name
+      @_id = id
       @_version = version || Apipie.configuration.default_version
-      @_name = @_id.humanize
       @_parent = Apipie.get_resource_description(controller.superclass, version)
 
       update_from_dsl_data(dsl_data) if dsl_data
     end
 
     def update_from_dsl_data(dsl_data)
-      @_name = dsl_data[:resource_name] if dsl_data[:resource_name]
+      @_resource_name = dsl_data[:resource_name] if dsl_data[:resource_name]
       @_full_description = dsl_data[:description]
       @_short_description = dsl_data[:short_description]
       @_path = dsl_data[:path] || ""
@@ -60,6 +58,11 @@ module Apipie
     def _api_base_url
       @_api_base_url || @_parent.try(:_api_base_url) || Apipie.api_base_url(_version)
     end
+
+    def name
+      @name ||= @_resource_name.presence || @_id.split('-').map(&:capitalize).join('::')
+    end
+    alias _name name
 
     def add_method_description(method_description)
       Apipie.debug "@resource_descriptions[#{self._version}][#{self._name}]._methods[#{method_description.method}] = #{method_description}"
@@ -108,7 +111,7 @@ module Apipie
         :doc_url => doc_url,
         :id => _id,
         :api_url => api_url,
-        :name => @_name,
+        :name => name,
         :short_description => Apipie.app.translate(@_short_description, lang),
         :full_description => Apipie.markup_to_html(Apipie.app.translate(@_full_description, lang)),
         :version => _version,

@@ -2,11 +2,11 @@ require "spec_helper"
 
 describe Apipie::ResourceDescription do
   let(:resource_description) do
-    Apipie::ResourceDescription.new(controller, name, dsl_data)
+    Apipie::ResourceDescription.new(controller, id, dsl_data)
   end
 
   let(:controller) { ApplicationController }
-  let(:name) { 'dummy' }
+  let(:id) { 'dummy' }
   let(:dsl_data) { ActionController::Base.send(:_apipie_dsl_data_init) }
 
   describe '#_methods' do
@@ -67,6 +67,25 @@ describe Apipie::ResourceDescription do
           expect(methods_as_json.map { |h| h[:name] }).to eq(['a', 'b', 'c'])
         end
       end
+    end
+  end
+
+  describe 'name' do
+    subject { resource_description.name }
+
+    it { is_expected.to eq('Dummy') }
+
+    context 'when given id contains dashes' do
+      let(:id) { 'some-nested-resource' }
+
+      it { is_expected.to eq('Some::Nested::Resource') }
+    end
+
+    context 'when resource_name is given' do
+      let(:resource_name) { 'Some-Resource' }
+      let(:dsl_data) { super().merge!(resource_name: 'Some-Resource') }
+
+      it { is_expected.to eq(resource_name) }
     end
   end
 end
