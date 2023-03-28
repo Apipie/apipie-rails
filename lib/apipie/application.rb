@@ -25,10 +25,6 @@ module Apipie
       @resource_descriptions.keys.sort
     end
 
-    def set_resource_id(controller, resource_id)
-      @controller_to_resource_id[controller] = resource_id
-    end
-
     def rails_routes(route_set = nil, base_url = "")
       if route_set.nil? && @rails_routes
         return @rails_routes
@@ -83,8 +79,8 @@ module Apipie
       versions = controller_versions(controller) if versions.empty?
 
       versions.each do |version|
-        resource_name_with_version = "#{version}##{get_resource_name(controller)}"
-        resource_description = get_resource_description(resource_name_with_version)
+        resource_id_with_version = "#{version}##{get_resource_id(controller)}"
+        resource_description = get_resource_description(resource_id_with_version)
 
         if resource_description.nil?
           resource_description = define_resource_description(controller, version)
@@ -100,24 +96,25 @@ module Apipie
         resource_description.add_method_description(method_description)
       end
 
-      return ret_method_description
+      ret_method_description
     end
 
     # create new resource api description
     def define_resource_description(controller, version, dsl_data = nil)
       return if ignored?(controller)
 
-      resource_name = get_resource_name(controller)
-      resource_description = @resource_descriptions[version][resource_name]
+      resource_id = get_resource_id(controller)
+      resource_description = @resource_descriptions[version][resource_id]
       if resource_description
         # we already defined the description somewhere (probably in
         # some method. Updating just meta data from dsl
         resource_description.update_from_dsl_data(dsl_data) if dsl_data
       else
-        resource_description = Apipie::ResourceDescription.new(controller, resource_name, dsl_data, version)
+        resource_description = Apipie::ResourceDescription.
+          new(controller, resource_id, dsl_data, version)
 
-        Apipie.debug("@resource_descriptions[#{version}][#{resource_name}] = #{resource_description}")
-        @resource_descriptions[version][resource_name] ||= resource_description
+        Apipie.debug("@resource_descriptions[#{version}][#{resource_id}] = #{resource_description}")
+        @resource_descriptions[version][resource_id] ||= resource_description
       end
 
       return resource_description
@@ -158,28 +155,28 @@ module Apipie
     #
     # There are two ways how this method can be used:
     # 1) Specify both parameters
-    #   resource_name:
+    #   resource_id:
     #       controller class - UsersController
     #       string with resource name (plural) and version - "v1#users"
     #   method_name: name of the method (string or symbol)
     #
     # 2) Specify only first parameter:
-    #   resource_name: string containing both resource and method name joined
+    #   resource_id: string containing both resource and method name joined
     #   with '#' symbol.
     #   - "users#create" get default version
     #   - "v2#users#create" get specific version
-    def get_method_description(resource_name, method_name = nil)
-      if resource_name.is_a?(String)
-        crumbs = resource_name.split('#')
+    def get_method_description(resource_id, method_name = nil)
+      if resource_id.is_a?(String)
+        crumbs = resource_id.split('#')
         if method_name.nil?
           method_name = crumbs.pop
         end
-        resource_name = crumbs.join("#")
-        resource_description = get_resource_description(resource_name)
-      elsif resource_name.respond_to? :apipie_resource_descriptions
-        resource_description = get_resource_description(resource_name)
+        resource_id = crumbs.join("#")
+        resource_description = get_resource_description(resource_id)
+      elsif resource_id.respond_to? :apipie_resource_descriptions
+        resource_description = get_resource_description(resource_id)
       else
-        raise ArgumentError.new("Resource #{resource_name} does not exists.")
+        raise ArgumentError.new("Resource #{resource_id} does not exists.")
       end
       resource_description&.method_description(method_name.to_sym)
     end
@@ -200,15 +197,15 @@ module Apipie
           return @resource_descriptions[version][crumbs.last]
         end
       else
-        resource_name = get_resource_name(resource)
+        resource_id = get_resource_id(resource)
         if version
-          resource_name = "#{version}##{resource_name}"
+          resource_id = "#{version}##{resource_id}"
         end
 
-        if resource_name.nil?
+        if resource_id.nil?
           return nil
         end
-        resource_description = get_resource_description(resource_name)
+        resource_description = get_resource_description(resource_id)
         if resource_description && resource_description.controller.to_s == resource.to_s
           return resource_description
         end
@@ -231,7 +228,7 @@ module Apipie
 
     def remove_method_description(resource, versions, method_name)
       versions.each do |version|
-        resource = get_resource_name(resource)
+        resource = resource_id(resource)
         if resource_description = get_resource_description("#{version}##{resource}")
           resource_description.remove_method_description(method_name)
         end
@@ -270,14 +267,14 @@ module Apipie
         .json_schema_for_self_describing_class(cls, allow_nulls)
     end
 
-    def to_swagger_json(version, resource_name, method_name, language, clear_warnings = false)
+    def to_swagger_json(version, resource_id, method_name, language, clear_warnings = false)
       return unless valid_search_args?(version, resource_name, method_name)
 
       resources =
         Apipie::Generator::Swagger::ResourceDescriptionsCollection
         .new(resource_descriptions)
         .filter(
-          resource_name: resource_name,
+          resource_name: resource_id,
           method_name: method_name,
           version: version
         )
@@ -290,11 +287,11 @@ module Apipie
       )
     end
 
-    def to_json(version, resource_name, method_name, lang)
+    def to_json(version, resource_id, method_name, lang)
 
-      return unless valid_search_args?(version, resource_name, method_name)
+      return unless valid_search_args?(version, resource_id, method_name)
 
-      _resources = if resource_name.blank?
+      _resources = if resource_id.blank?
         # take just resources which have some methods because
         # we dont want to show eg ApplicationController as resource
         resource_descriptions[version].inject({}) do |result, (k,v)|
@@ -302,7 +299,7 @@ module Apipie
           result
         end
       else
-        [@resource_descriptions[version][resource_name].to_json(method_name, lang)]
+        [@resource_descriptions[version][resource_id].to_json(method_name, lang)]
       end
 
       url_args = Apipie.configuration.version_in_url ? version : ''
@@ -372,7 +369,23 @@ module Apipie
       Apipie.configuration.validate? || ! Apipie.configuration.use_cache? || Apipie.configuration.force_dsl?
     end
 
+    # @deprecated Use {#get_resource_id} instead
     def get_resource_name(klass)
+      ActiveSupport::Deprecation.warn(
+        <<~HEREDOC
+          Apipie::Application.get_resource_name is deprecated.
+          Use `Apipie::Application.get_resource_id instead.
+        HEREDOC
+      )
+
+      get_resource_id(klass)
+    end
+
+    def set_resource_id(controller, resource_id)
+      @controller_to_resource_id[controller] = resource_id
+    end
+
+    def get_resource_id(klass)
       if klass.class == String
         klass
       elsif @controller_to_resource_id.key?(klass)
@@ -417,14 +430,14 @@ module Apipie
 
     private
 
-    # Make sure that the version/resource_name/method_name are valid combination
-    # resource_name and method_name can be nil
-    def valid_search_args?(version, resource_name, method_name)
+    # Make sure that the version/resource_id/method_name are valid combination
+    # resource_id and method_name can be nil
+    def valid_search_args?(version, resource_id, method_name)
       return false unless self.resource_descriptions.key?(version)
-      if resource_name
-        return false unless self.resource_descriptions[version].key?(resource_name)
+      if resource_id
+        return false unless self.resource_descriptions[version].key?(resource_id)
         if method_name
-          resource_description = self.resource_descriptions[version][resource_name]
+          resource_description = self.resource_descriptions[version][resource_id]
           return false unless resource_description.valid_method_name?(method_name)
         end
       end

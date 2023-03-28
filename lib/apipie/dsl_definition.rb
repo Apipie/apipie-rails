@@ -51,9 +51,6 @@ module Apipie
     end
 
     module Resource
-      # by default, the resource id is derived from controller_name
-      # it can be overwritten with.
-      #
       #    resource_id "my_own_resource_id"
       def resource_id(resource_id)
         Apipie.set_resource_id(@controller, resource_id)
@@ -529,8 +526,10 @@ module Apipie
       alias apipie_update_params apipie_update_methods
 
       def _apipie_concern_subst
-        @_apipie_concern_subst ||= {:controller_path => self.controller_path,
-                                    :resource_id => Apipie.get_resource_name(self)}
+        @_apipie_concern_subst ||= {
+          controller_path: self.controller_path,
+          resource_id: Apipie.get_resource_id(self)
+        }
       end
 
       def _apipie_perform_concern_subst(string)
