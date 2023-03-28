@@ -20,4 +20,19 @@ describe 'Apipie::Configuration' do
       end
     end
   end
+
+  describe 'generator configuration' do
+    let(:generator_config) { configuration.generator }
+
+    describe '#swagger' do
+      subject(:setter) { generator_config.swagger.include_warning_tags = true }
+
+      it 'assigns the correct value' do
+        expect { setter }
+          .to change(configuration.generator.swagger, :include_warning_tags?)
+          .from(false)
+          .to(true)
+      end
+    end
+  end
 end
