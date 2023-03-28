@@ -16,36 +16,37 @@ describe Apipie::Application do
 
   end
 
-  describe "get_resource_name" do
-    subject {Apipie.get_resource_name(Api::V2::Nested::ArchitecturesController)}
+  describe '.get_resource_name' do
+    subject(:get_resource_name) do
+      Apipie.get_resource_name(Api::V2::Nested::ArchitecturesController)
+    end
+
+    let(:base_url) { '/some-api' }
+
+    before { allow(Apipie.app).to receive(:get_base_url).and_return(base_url) }
 
     context "with namespaced_resources enabled" do
       before { Apipie.configuration.namespaced_resources = true }
-      context "with a defined base url" do
+      after { Apipie.configuration.namespaced_resources = false }
 
-        it "should not overwrite the parent resource" do
-          is_expected.not_to eq(Apipie.get_resource_name(Api::V2::ArchitecturesController))
-        end
-
+      it "returns the namespaces" do
+        is_expected.to eq('api-v2-nested-architectures')
       end
 
       context "with an undefined base url" do
-        before {allow(Apipie.app).to receive(:get_base_url).and_return(nil)}
+        let(:base_url) { nil }
 
         it "should not raise an error" do
-          expect { Apipie.get_resource_name(Api::V2::ArchitecturesController) }.
-            not_to raise_error
+          expect { get_resource_name }.not_to raise_error
         end
       end
-
-      after { Apipie.configuration.namespaced_resources = false }
     end
 
-    context "with namespaced_resources enabled" do
+    context "with namespaced_resources disabled" do
       before { Apipie.configuration.namespaced_resources = false }
 
-      it "should overwrite the the parent" do
-        is_expected.to eq(Apipie.get_resource_name(Api::V2::ArchitecturesController))
+      it "returns the controller name" do
+        is_expected.to eq('architectures')
       end
     end
   end

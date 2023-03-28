@@ -375,8 +375,18 @@ module Apipie
         @controller_to_resource_id[klass]
       elsif Apipie.configuration.namespaced_resources? && klass.respond_to?(:controller_path)
         return nil if klass == ActionController::Base
+
+        version_prefix = version_prefix(klass)
         path = klass.controller_path
-        path.gsub(version_prefix(klass), "").gsub("/", "-")
+
+        path =
+          if version_prefix == '/'
+            path
+          else
+            path.gsub(version_prefix, '')
+          end
+
+        path.gsub('/', '-')
       elsif klass.respond_to?(:controller_name)
         return nil if klass == ActionController::Base
         klass.controller_name
