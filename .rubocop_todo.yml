@@ -1529,15 +1529,6 @@ Style/CollectionCompact:
   Exclude:
     - 'lib/apipie/swagger_generator.rb'
 
-# Offense count: 20
-# This cop supports safe autocorrection (--autocorrect).
-Style/ColonMethodCall:
-  Exclude:
-    - 'lib/apipie/rspec/response_validation_helper.rb'
-    - 'lib/apipie/swagger_generator.rb'
-    - 'lib/apipie/validator.rb'
-    - 'spec/dummy/app/controllers/pets_using_auto_views_controller.rb'
-    - 'spec/dummy/app/controllers/pets_using_self_describing_classes_controller.rb'
 
 # Offense count: 4
 # This cop supports safe autocorrection (--autocorrect).

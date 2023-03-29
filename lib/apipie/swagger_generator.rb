@@ -204,7 +204,7 @@ module Apipie
     # note that at the moment, this only takes operation ids into account, and ignores parameter
     # definitions, so it's only partially useful.
     def include_op_id_in_computed_interface_id(op_id)
-      @computed_interface_id = Zlib::crc32("#{@computed_interface_id} #{op_id}") if Apipie.configuration.swagger_generate_x_computed_id_field?
+      @computed_interface_id = Zlib.crc32("#{@computed_interface_id} #{op_id}") if Apipie.configuration.swagger_generate_x_computed_id_field?
     end
 
     #--------------------------------------------------------------------------

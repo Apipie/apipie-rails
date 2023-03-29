@@ -59,7 +59,7 @@ module Apipie
       end
 
       def format_description_value(value)
-        "<code>#{CGI::escapeHTML(value.to_s)}</code>"
+        "<code>#{CGI.escapeHTML(value.to_s)}</code>"
       end
 
       def error

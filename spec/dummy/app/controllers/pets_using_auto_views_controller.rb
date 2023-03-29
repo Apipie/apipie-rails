@@ -24,7 +24,7 @@ class SelfDocumentingView
   def self.describe_own_properties
     (self.instance_methods - self.class.instance_methods).map{|m|
       if matchdata = /^v_(\w+)__(\w+)$/.match(m)
-        Apipie::prop(matchdata[1], matchdata[2])
+        Apipie.prop(matchdata[1], matchdata[2])
       end
     }.compact
   end

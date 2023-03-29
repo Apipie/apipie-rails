@@ -89,7 +89,7 @@ class ActionController::Base
     # this method is injected into ActionController::Base in order to
     # get access to the names of the current controller, current action, as well as to the response
     def schema_validation_errors_for_response
-      unprocessed_schema = Apipie::json_schema_for_method_response(controller_name, action_name, response.code, true)
+      unprocessed_schema = Apipie.json_schema_for_method_response(controller_name, action_name, response.code, true)
 
       if unprocessed_schema.nil?
         err = "no schema defined for #{controller_name}##{action_name}[#{response.code}]"
@@ -131,7 +131,7 @@ RSpec::Matchers.define :match_declared_responses do
   match do |actual|
     (schema, validation_errors) = subject.send(:schema_validation_errors_for_response)
     valid = (validation_errors == [])
-    Apipie::print_validation_errors(validation_errors, schema, response) unless valid
+    Apipie.print_validation_errors(validation_errors, schema, response) unless valid
 
     valid
   end
@@ -185,7 +185,7 @@ class ActionController::Base
 
       valid = (validation_errors == [])
       if !valid
-        Apipie::print_validation_errors(validation_errors, schema, response, error_object)
+        Apipie.print_validation_errors(validation_errors, schema, response, error_object)
       end
     end
   end
