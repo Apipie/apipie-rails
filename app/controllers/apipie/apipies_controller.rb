@@ -115,9 +115,9 @@ module Apipie
       new_doc = { :docs => @doc[:docs].clone }
 
       new_doc[:docs][:resources] = if @doc[:docs][:resources].kind_of?(Array)
-        @doc[:docs][:resources].select do |resource|
-          authorize_resource(resource)
-        end
+                                     @doc[:docs][:resources].select do |resource|
+                                       authorize_resource(resource)
+                                     end
       else
         @doc[:docs][:resources].select do |_resource_name, resource|
           authorize_resource(resource)

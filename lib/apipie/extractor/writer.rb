@@ -103,13 +103,13 @@ module Apipie
         call = call.stringify_keys
         ordered_call = OrderedHash.new
         %w[title verb path versions query request_data response_data code show_in_doc recorded].each do |k|
-          next unless call.key?(k)
-          ordered_call[k] = case call[k]
-                     when ActiveSupport::HashWithIndifferentAccess
-                       convert_file_value(call[k]).to_hash
-                     else
-                       call[k]
-                     end
+        next unless call.key?(k)
+        ordered_call[k] = case call[k]
+                   when ActiveSupport::HashWithIndifferentAccess
+                     convert_file_value(call[k]).to_hash
+                   else
+                     call[k]
+                   end
       end
         return ordered_call
       end

@@ -399,20 +399,6 @@ Layout/IndentationConsistency:
     - 'lib/apipie/generator/swagger/param_description/name.rb'
     - 'spec/lib/apipie/param_group_spec.rb'
 
-# Offense count: 10
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: Width, AllowedPatterns.
-Layout/IndentationWidth:
-  Exclude:
-    - 'app/controllers/apipie/apipies_controller.rb'
-    - 'lib/apipie/apipie_module.rb'
-    - 'lib/apipie/application.rb'
-    - 'lib/apipie/extractor/writer.rb'
-    - 'lib/apipie/generator/swagger/param_description/name.rb'
-    - 'lib/apipie/method_description.rb'
-    - 'lib/apipie/param_description.rb'
-    - 'lib/apipie/resource_description.rb'
-    - 'lib/tasks/apipie.rake'
 
 # Offense count: 2
 # This cop supports safe autocorrection (--autocorrect).

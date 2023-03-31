@@ -77,9 +77,9 @@ namespace :apipie do
 
         # reference filenames have the format <basename>.<counter>.swagger_ref
         reference_files = existing_files_in_dir.select{|f|
-              f.extname == '.swagger_ref' &&
-              f.basename.sub_ext("").extname.delete('.').to_i > 0 &&
-              f.basename.sub_ext("").sub_ext("") == path.basename.sub_ext("")
+          f.extname == '.swagger_ref' &&
+          f.basename.sub_ext("").extname.delete('.').to_i > 0 &&
+          f.basename.sub_ext("").sub_ext("") == path.basename.sub_ext("")
         }
         if reference_files.empty?
           print "Reference file does not exist for [#{path}]\n"

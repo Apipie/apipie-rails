@@ -72,7 +72,7 @@ module Apipie
       raise ArgumentError.new("'#{@options[:only_in]}' is not a valid value for :only_in") if (!@response_only && !@request_only) && @options[:only_in].present?
 
       @show = if @options.key? :show
-        @options[:show]
+                @options[:show]
       else
         true
       end

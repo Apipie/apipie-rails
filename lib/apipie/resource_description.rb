@@ -99,7 +99,7 @@ module Apipie
       end
 
       methods = if method_name.blank?
-        @_methods.collect { |key, method_description| method_description.to_json(lang) }
+                  @_methods.collect { |key, method_description| method_description.to_json(lang) }
       else
         [@_methods[method_name.to_sym].to_json(lang)]
       end

@@ -291,12 +291,12 @@ module Apipie
       return unless valid_search_args?(version, resource_name, method_name)
 
       _resources = if resource_name.blank?
-        # take just resources which have some methods because
-        # we dont want to show eg ApplicationController as resource
-        resource_descriptions[version].inject({}) do |result, (k,v)|
-          result[k] = v.to_json(nil, lang) unless v._methods.blank?
-          result
-        end
+                     # take just resources which have some methods because
+                     # we dont want to show eg ApplicationController as resource
+                     resource_descriptions[version].inject({}) do |result, (k,v)|
+                       result[k] = v.to_json(nil, lang) unless v._methods.blank?
+                       result
+                     end
       else
         [@resource_descriptions[version][resource_name].to_json(method_name, lang)]
       end
