@@ -370,7 +370,7 @@ module Apipie
 
       if response.is_array? && schema
         schema = {
-            type: allow_nulls ? ["array","null"] : "array",
+            type: allow_nulls ? %w[array null] : "array",
             items: schema
         }
       end
@@ -468,7 +468,7 @@ module Apipie
     #--------------------------------------------------------------------------
 
     def body_allowed_for_current_method
-      !(['get', 'head'].include?(@current_http_method))
+      !(%w[get head].include?(@current_http_method))
     end
 
     def swagger_params_array_for_method(method, path)

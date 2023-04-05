@@ -102,7 +102,7 @@ describe 'rake tasks' do
 
         expect_param_def("get", "/users/by_department", "department", "in", "query")
         expect_param_def("get", "/users/by_department", "department", "enum",
-                         ["finance", "operations", "sales", "marketing", "HR"])
+                         %w[finance operations sales marketing HR])
 
         expect_tags_def("get", "/twitter_example/{id}/followers", %w[twitter_example following index search])
       end
@@ -128,11 +128,11 @@ describe 'rake tasks' do
         expect_param_def("put", "/users/{id}", "oauth", "in", "formData")
         expect_param_def("get", "/users/by_department", "department", "in", "query")
         expect_param_def("get", "/users/by_department", "department", "enum",
-                         ["finance", "operations", "sales", "marketing", "HR"])
+                         %w[finance operations sales marketing HR])
 
         expect_param_def("get", "/users/in_departments", "departments", "in", "query")
         expect_array_param_def("get", "/users/in_departments", "departments",
-                         ["finance", "operations", "sales", "marketing", "HR"])
+                         %w[finance operations sales marketing HR])
 
         expect_tags_def("get", "/twitter_example/{id}/followers", %w[twitter_example following index search])
 

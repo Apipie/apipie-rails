@@ -141,7 +141,7 @@ describe "Swagger Responses" do
 
         a_schema = resolve_refs(schema[:items])
         expect(a_schema).to have_field(:pet_name, 'string', {:description => 'Name of pet', :required => false})
-        expect(a_schema).to have_field(:animal_type, 'string', {:description => 'Type of pet', :enum => ['dog','cat','iguana','kangaroo']})
+        expect(a_schema).to have_field(:animal_type, 'string', {:description => 'Type of pet', :enum => %w[dog cat iguana kangaroo]})
       end
 
 
@@ -210,7 +210,7 @@ describe "Swagger Responses" do
 
         schema = response[:schema]
         expect(schema).to have_field(:pet_name, 'string', {:description => 'Name of pet', :required => false})
-        expect(schema).to have_field(:animal_type, 'string', {:description => 'Type of pet', :enum => ['dog','cat','iguana','kangaroo']})
+        expect(schema).to have_field(:animal_type, 'string', {:description => 'Type of pet', :enum => %w[dog cat iguana kangaroo]})
       end
 
       it 'should have the 404 response description overridden' do
@@ -247,7 +247,7 @@ describe "Swagger Responses" do
 
         schema = response[:schema]
         expect(schema).to have_field(:pet_name, 'string', {:description => 'Name of pet', :required => false})
-        expect(schema).to have_field(:animal_type, 'string', {:description => 'Type of pet', :enum => ['dog','cat','iguana','kangaroo']})
+        expect(schema).to have_field(:animal_type, 'string', {:description => 'Type of pet', :enum => %w[dog cat iguana kangaroo]})
       end
     end
 
@@ -282,7 +282,7 @@ describe "Swagger Responses" do
         schema = response[:schema]
         expect(schema).to have_field(:pet_id, 'number', {:description => 'id of pet'})
         expect(schema).to have_field(:pet_name, 'string', {:description => 'Name of pet', :required => false})
-        expect(schema).to have_field(:animal_type, 'string', {:description => 'Type of pet', :enum => ['dog','cat','iguana','kangaroo']})
+        expect(schema).to have_field(:animal_type, 'string', {:description => 'Type of pet', :enum => %w[dog cat iguana kangaroo]})
         expect(schema).not_to have_field(:partial_match_allowed, 'boolean', {:required => false})
       end
 
@@ -433,7 +433,7 @@ describe "Swagger Responses" do
 
         schema = response[:schema]
         expect(schema).to have_field(:int_array, 'array', {items: {type: 'number'}})
-        expect(schema).to have_field(:enum_array, 'array', {items: {type: 'string', enum: ['v1','v2','v3']}})
+        expect(schema).to have_field(:enum_array, 'array', {items: {type: 'string', enum: %w[v1 v2 v3]}})
       end
 
 
@@ -551,7 +551,7 @@ describe "Swagger Responses" do
 
         a_schema = schema[:items]
         expect(a_schema).to have_field(:pet_name, 'string', {:description => 'Name of pet', :required => false})
-        expect(a_schema).to have_field(:animal_type, 'string', {:description => 'Type of pet', :enum => ['dog','cat','iguana','kangaroo']})
+        expect(a_schema).to have_field(:animal_type, 'string', {:description => 'Type of pet', :enum => %w[dog cat iguana kangaroo]})
       end
     end
 

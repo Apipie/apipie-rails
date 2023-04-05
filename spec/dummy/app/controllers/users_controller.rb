@@ -170,14 +170,14 @@ class UsersController < ApplicationController
   eos
   api :GET, "/users/:id", "Show user profile"
   show false
-  formats ['json', 'jsonp']
+  formats %w[json jsonp]
   error 401, "Unauthorized"
   error :code => 404, :description => "Not Found"
   param :id, Integer, :desc => "user id", :required => true
   param :session, String, :desc => "user is logged in", :required => true, :missing_message => lambda { "session_parameter_is_required" }
   param :regexp_param, /^[0-9]* years/, :desc => "regexp param"
   param :regexp2, /\b[A-Z0-9._%+-=]+@[A-Z0-9.-]+.[A-Z]{2,}\b/i, :desc => "email regexp"
-  param :array_param, ["100", "one", "two", "1", "2"], :desc => "array validator"
+  param :array_param, %w[100 one two 1 2], :desc => "array validator"
   param :boolean_param, [true, false], :desc => "array validator with boolean"
   param :proc_param, lambda { |val|
     val == "param value" ? true : "The only good value is 'param value'."
@@ -211,7 +211,7 @@ class UsersController < ApplicationController
   def_param_group :user do
     param :user, Hash, :desc => "User info", :required => true, :action_aware => true do
       param_group :credentials
-      param :membership, ["standard","premium"], :desc => "User membership", :allow_nil => false
+      param :membership, %w[standard premium], :desc => "User membership", :allow_nil => false
     end
   end
 
@@ -269,13 +269,13 @@ class UsersController < ApplicationController
   end
 
   api :GET, '/users/by_department', 'show users from a specific department'
-  param :department, ["finance", "operations", "sales", "marketing", "HR"], required: false, default_value: "sales"
+  param :department, %w[finance operations sales marketing HR], required: false, default_value: "sales"
   def get_by_department
     render :plain => 'nothing to see here'
   end
 
   api :GET, '/users/in_departments', 'show users from specific departments'
-  param :departments, Array, in: ["finance", "operations", "sales", "marketing", "HR"], default_value: ['sales']
+  param :departments, Array, in: %w[finance operations sales marketing HR], default_value: ['sales']
   def get_in_departments
     render :plain => 'nothing to see here'
   end

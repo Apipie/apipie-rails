@@ -31,7 +31,7 @@ class TwitterExampleController < ApplicationController
   
   api :GET, '/twitter_example/profile_image/:screen_name', 'Access the profile image in various sizes for the user with the indicated screen_name.'
   param :screen_name, String, :required => true, :desc => 'The screen name of the user for whom to return results for. Helpful for disambiguating when a valid screen name is also a user ID.'
-  param :size, ['bigger','normal','mini','original'], :desc => <<-EOS
+  param :size, %w[bigger normal mini original], :desc => <<-EOS
     Specifies the size of image to fetch. Not specifying a size will give the default, normal size of 48px by 48px. Valid options include:
 
     * bigger - 73px by 73px
@@ -166,7 +166,7 @@ class TwitterExampleController < ApplicationController
   param :user_id, Integer, :desc => 'The ID of the user for whom to return results for. Helpful for disambiguating when a valid user ID is also a valid screen name.'
   param :screen_name, String, :desc => 'The screen name of the user for whom to return results for. Helpful for disambiguating when a valid screen name is also a user ID.'
   param :include_entities, String
-  param :skip_status, ['t','true','1'],
+  param :skip_status, %w[t true 1],
     :description => 'When set to either true, t or 1 statuses will not be included in the returned user objects.'
 
   description "Look at examples."

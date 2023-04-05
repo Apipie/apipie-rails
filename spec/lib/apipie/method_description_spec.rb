@@ -58,12 +58,12 @@ describe Apipie::MethodDescription do
 
     it "should be ordered" do
       expect(@method.params.keys).to eq([:a, :b, :c])
-      expect(@method.to_json[:params].map { |h| h[:name] }).to eq(['a', 'b', 'c'])
+      expect(@method.to_json[:params].map { |h| h[:name] }).to eq(%w[a b c])
     end
 
     it "should be still ordered" do
       expect(@method.params.keys).to eq([:a, :b, :c])
-      expect(@method.to_json[:params].map { |h| h[:name] }).to eq(['a', 'b', 'c'])
+      expect(@method.to_json[:params].map { |h| h[:name] }).to eq(%w[a b c])
     end
 
   end
@@ -80,7 +80,7 @@ describe Apipie::MethodDescription do
 
     it "should ignore response-only parameters" do
       expect(@method.params.keys).to eq([:a, :c])
-      expect(@method.to_json[:params].map { |h| h[:name] }).to eq(['a', 'c'])
+      expect(@method.to_json[:params].map { |h| h[:name] }).to eq(%w[a c])
     end
   end
 
