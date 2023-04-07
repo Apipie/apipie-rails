@@ -110,16 +110,6 @@ Layout/DotPosition:
     - 'spec/lib/apipie/generator/swagger/operation_id_spec.rb'
     - 'spec/lib/apipie/generator/swagger/param_description/type_spec.rb'
 
-# Offense count: 7
-# This cop supports safe autocorrection (--autocorrect).
-Layout/ElseAlignment:
-  Exclude:
-    - 'app/controllers/apipie/apipies_controller.rb'
-    - 'lib/apipie/apipie_module.rb'
-    - 'lib/apipie/application.rb'
-    - 'lib/apipie/method_description.rb'
-    - 'lib/apipie/param_description.rb'
-    - 'lib/apipie/resource_description.rb'
 
 # Offense count: 64
 # This cop supports safe autocorrection (--autocorrect).

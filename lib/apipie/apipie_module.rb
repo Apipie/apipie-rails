@@ -50,9 +50,9 @@ module Apipie
   def self.app_info(version = nil, lang = nil)
     info = if app_info_version_valid? version
       translate(self.configuration.app_info[version], lang)
-    elsif app_info_version_valid? Apipie.configuration.default_version
+           elsif app_info_version_valid? Apipie.configuration.default_version
       translate(self.configuration.app_info[Apipie.configuration.default_version], lang)
-    else
+           else
       "Another API description"
     end
 

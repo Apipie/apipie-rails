@@ -118,7 +118,7 @@ module Apipie
         @doc[:docs][:resources].select do |resource|
           authorize_resource(resource)
         end
-      else
+                                   else
         @doc[:docs][:resources].select do |_resource_name, resource|
           authorize_resource(resource)
         end

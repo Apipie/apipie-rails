@@ -297,7 +297,7 @@ module Apipie
           result[k] = v.to_json(nil, lang) unless v._methods.blank?
           result
         end
-      else
+                   else
         [@resource_descriptions[version][resource_name].to_json(method_name, lang)]
       end
 

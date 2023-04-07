@@ -73,7 +73,7 @@ module Apipie
 
       @show = if @options.key? :show
         @options[:show]
-      else
+              else
         true
       end
 

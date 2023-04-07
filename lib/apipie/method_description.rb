@@ -41,7 +41,7 @@ module Apipie
 
       @show = if dsl_data.key? :show
         dsl_data[:show]
-      else
+              else
         true
       end
     end
