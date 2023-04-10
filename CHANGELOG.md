@@ -4,6 +4,12 @@
 Also deleted the `Gemfile` that was now a broken symlink.
 please use `export BUNDLE_GEMFILE='gemfiles/Gemfile.rails61'; bundle exec rspec` to run the test suite
 
+## [v0.9.4](https://github.com/Apipie/apipie-rails/tree/v0.9.4) (2023-04-11)
+[Full Changelog](https://github.com/Apipie/apipie-rails/compare/v0.9.3...v0.9.4)
+* [Fix] Separate nested resource name [#855](https://github.com/Apipie/apipie-rails/pull/855)[#455](https://github.com/Apipie/apipie-rails/issues/455) (Panos Dalitsouris)
+* [Rubocop] Disable a few Rubocop Rules, run Rubocop with ruby 3.2 [#851](https://github.com/Apipie/apipie-rails/pull/851)[#853](https://github.com/Apipie/apipie-rails/pull/853)[#840](https://github.com/Apipie/apipie-rails/pull/840)[#841](https://github.com/Apipie/apipie-rails/pull/841) (Panos Dalitsouris)
+* [Rubocop] More Rubocop Auto corrections [#858](https://github.com/Apipie/apipie-rails/pull/858)[#849](https://github.com/Apipie/apipie-rails/pull/849)[#850](https://github.com/Apipie/apipie-rails/pull/850)[#844](https://github.com/Apipie/apipie-rails/pull/844)[#846](https://github.com/Apipie/apipie-rails/pull/846)[#834](https://github.com/Apipie/apipie-rails/pull/834)[#847](https://github.com/Apipie/apipie-rails/pull/847) (Rubocop Challenger)
+
 ## [v0.9.3](https://github.com/Apipie/apipie-rails/tree/v0.9.3) (2023-03-08)
 [Full Changelog](https://github.com/Apipie/apipie-rails/compare/v0.9.2...v0.9.3)
 * [Feature] Allow Apipie::ParamDescription to be marked as deprecated [#819](https://github.com/Apipie/apipie-rails/pull/819)[#811](https://github.com/Apipie/apipie-rails/pull/811) (Panos Dalitsouris)
