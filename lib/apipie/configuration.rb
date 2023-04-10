@@ -190,7 +190,7 @@ module Apipie
       @swagger_content_type_input = :form_data  # this can be :json or :form_data
       @swagger_json_input_uses_refs = false
       @swagger_include_warning_tags = false
-      @swagger_suppress_warnings = false #[105,100,102]
+      @swagger_suppress_warnings = false # [105,100,102]
       @swagger_api_host = "localhost:3000"
       @swagger_generate_x_computed_id_field = false
       @swagger_allow_additional_properties_in_response = false

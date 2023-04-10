@@ -421,14 +421,6 @@ Layout/InitialIndentation:
     - 'spec/dummy/app/controllers/extending_concern.rb'
     - 'spec/dummy/app/controllers/sample_controller.rb'
 
-# Offense count: 16
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: AllowDoxygenCommentStyle, AllowGemfileRubyComment.
-Layout/LeadingCommentSpace:
-  Exclude:
-    - 'lib/apipie/configuration.rb'
-    - 'lib/apipie/dsl_definition.rb'
-    - 'lib/tasks/apipie.rake'
 
 # Offense count: 8
 # This cop supports safe autocorrection (--autocorrect).

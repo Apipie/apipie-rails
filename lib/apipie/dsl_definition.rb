@@ -96,7 +96,7 @@ module Apipie
       #   # load paths from routes and don't provide description
       #   api
       #
-      def api(method, path, desc = nil, options = {}) #:doc:
+      def api(method, path, desc = nil, options = {}) # :doc:
         return unless Apipie.active_dsl?
         _apipie_dsl_data[:api] = true
         _apipie_dsl_data[:api_args] << [method, path, desc, options]
@@ -105,7 +105,7 @@ module Apipie
       #   # load paths from routes
       #   api! "short description",
       #
-      def api!(desc = nil, options = {}) #:doc:
+      def api!(desc = nil, options = {}) # :doc:
         return unless Apipie.active_dsl?
         _apipie_dsl_data[:api] = true
         _apipie_dsl_data[:api_from_routes] = { :desc => desc, :options =>options }
@@ -123,7 +123,7 @@ module Apipie
 
       # Show some example of what does the described
       # method return.
-      def example(example) #:doc:
+      def example(example) # :doc:
         return unless Apipie.active_dsl?
         _apipie_dsl_data[:examples] << example.strip_heredoc
       end
@@ -143,7 +143,7 @@ module Apipie
       # desc <<-EOS
       #   Long description...
       # EOS
-      def resource_description(options = {}, &block) #:doc:
+      def resource_description(options = {}, &block) # :doc:
         return unless Apipie.active_dsl?
         raise ArgumentError, "Block expected" unless block
 
@@ -170,7 +170,7 @@ module Apipie
       #     puts "hello world"
       #   end
       #
-      def desc(description) #:doc:
+      def desc(description) # :doc:
         return unless Apipie.active_dsl?
         if _apipie_dsl_data[:description]
           raise "Double method description."
@@ -195,7 +195,7 @@ module Apipie
       # Describe available request/response formats
       #
       #   formats ['json', 'jsonp', 'xml']
-      def formats(formats) #:doc:
+      def formats(formats) # :doc:
         return unless Apipie.active_dsl?
         _apipie_dsl_data[:formats] = formats
       end
@@ -203,7 +203,7 @@ module Apipie
       # Describe additional metadata
       #
       #   meta :author => { :name => 'John', :surname => 'Doe' }
-      def meta(meta) #:doc:
+      def meta(meta) # :doc:
         _apipie_dsl_data[:meta] = meta
       end
 
@@ -218,7 +218,7 @@ module Apipie
       #     puts "hello world"
       #   end
       #
-      def error(code_or_options, desc = nil, options = {}) #:doc:
+      def error(code_or_options, desc = nil, options = {}) # :doc:
         return unless Apipie.active_dsl?
         _apipie_dsl_data[:errors] << [code_or_options, desc, options]
       end
@@ -320,7 +320,7 @@ module Apipie
       #     render :text => headers['HTTP_CLIENT_ID']
       #   end
       #
-      def header(header_name, description, options = {}) #:doc
+      def header(header_name, description, options = {}) # :doc
         return unless Apipie.active_dsl?
         _apipie_dsl_data[:headers] << {
           name: header_name,
@@ -342,7 +342,7 @@ module Apipie
       #     puts greeting
       #   end
       #
-      def param(param_name, validator, desc_or_options = nil, options = {}, &block) #:doc:
+      def param(param_name, validator, desc_or_options = nil, options = {}, &block) # :doc:
         return unless Apipie.active_dsl?
         _apipie_dsl_data[:params] << [param_name,
                                       validator,
@@ -351,7 +351,7 @@ module Apipie
                                       block]
       end
 
-      def property(param_name, validator, desc_or_options = nil, options = {}, &block) #:doc:
+      def property(param_name, validator, desc_or_options = nil, options = {}, &block) # :doc:
         return unless Apipie.active_dsl?
         options[:only_in] ||= :response
         options[:required] = true if options[:required].nil?
@@ -403,7 +403,7 @@ module Apipie
       #     render json: {user: {name: "Alfred"}}
       #   end
       #
-      def returns(pgroup_or_options, desc_or_options = nil, options = {}, &block) #:doc:
+      def returns(pgroup_or_options, desc_or_options = nil, options = {}, &block) # :doc:
         return unless Apipie.active_dsl?
 
 
@@ -544,7 +544,7 @@ module Apipie
       end
 
       # create method api and redefine newly added method
-      def method_added(method_name) #:doc:
+      def method_added(method_name) # :doc:
         super
         return if !Apipie.active_dsl? || !_apipie_dsl_data[:api]
 
@@ -593,7 +593,7 @@ module Apipie
       end
 
       # create method api and redefine newly added method
-      def method_added(method_name) #:doc:
+      def method_added(method_name) # :doc:
         super
 
         return if ! Apipie.active_dsl? || !_apipie_dsl_data[:api]

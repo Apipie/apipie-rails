@@ -335,7 +335,7 @@ MESSAGE
   task :convert_examples => :environment do
     yaml_examples_file = File.join(Rails.root, Apipie.configuration.doc_path, "apipie_examples.yml")
     if File.exist?(yaml_examples_file)
-      #if SafeYAML gem is enabled, it will load examples as an array of Hash, instead of hash
+      # if SafeYAML gem is enabled, it will load examples as an array of Hash, instead of hash
       if defined? SafeYAML
         examples = YAML.load_file(yaml_examples_file, :safe=>false)
       else
