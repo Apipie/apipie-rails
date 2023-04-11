@@ -18,6 +18,12 @@ class Apipie::Generator::Swagger::WarningWriter
     @issued_warnings.count > 0
   end
 
+  def clear!
+    @issued_warnings = []
+
+    self
+  end
+
   private
 
   # @param [Apipie::Generator::Swagger::Warning] warning
