@@ -268,13 +268,13 @@ module Apipie
     end
 
     def to_swagger_json(version, resource_id, method_name, language, clear_warnings = false)
-      return unless valid_search_args?(version, resource_name, method_name)
+      return unless valid_search_args?(version, resource_id, method_name)
 
       resources =
         Apipie::Generator::Swagger::ResourceDescriptionsCollection
         .new(resource_descriptions)
         .filter(
-          resource_name: resource_id,
+          resource_id: resource_id,
           method_name: method_name,
           version: version
         )

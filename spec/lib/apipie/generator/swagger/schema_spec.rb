@@ -5,11 +5,11 @@ describe Apipie::Generator::Swagger::Schema do
   let(:language) { :ok }
   let(:clear_warnings) { :ok }
   let(:dsl_data) { {} }
-  let(:resource_name) { 'pets' }
+  let(:resource_id) { 'pets' }
   let(:resource_descriptions) { [resource_description] }
 
   let(:resource_description) do
-    Apipie::ResourceDescription.new(PetsController, resource_name, dsl_data)
+    Apipie::ResourceDescription.new(PetsController, resource_id, dsl_data)
   end
 
   let(:schema_generator) do

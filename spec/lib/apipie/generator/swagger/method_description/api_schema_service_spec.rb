@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Apipie::Generator::Swagger::MethodDescription::ApiSchemaService do
   let(:path) { '/api' }
   let(:http_method) { 'get' }
-  let(:resource_name) { 'users' }
+  let(:resource_id) { 'users' }
   let(:method_description_description) { nil }
   let(:tags) { [] }
 
@@ -20,7 +20,7 @@ describe Apipie::Generator::Swagger::MethodDescription::ApiSchemaService do
   end
 
   let(:resource_desc) do
-    Apipie::ResourceDescription.new(UsersController, resource_name)
+    Apipie::ResourceDescription.new(UsersController, resource_id)
   end
 
   let(:method_description) do
@@ -56,7 +56,7 @@ describe Apipie::Generator::Swagger::MethodDescription::ApiSchemaService do
   describe 'tags' do
     subject { service.call[path][http_method][:tags] }
 
-    it { is_expected.to eq([resource_name]) }
+    it { is_expected.to eq([resource_id]) }
 
     context 'when tags are available' do
       let(:tags) { ['Tag 1', 'Tag 2'] }
