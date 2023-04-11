@@ -20,7 +20,7 @@ namespace :apipie do
   task :static, [:version] => :environment do |t, args|
     with_loaded_documentation do
       args.with_defaults(:version => Apipie.configuration.default_version)
-      out = ENV["OUT"] || File.join(::Rails.root, Apipie.configuration.doc_path, 'apidoc')
+      out = ENV["OUT"] || File.join(Rails.root, Apipie.configuration.doc_path, 'apidoc')
       subdir = File.basename(out)
       copy_jscss(out)
       Apipie.configuration.version_in_url = false
@@ -44,7 +44,7 @@ namespace :apipie do
   task :static_json, [:version] => :environment do |t, args|
     with_loaded_documentation do
       args.with_defaults(:version => Apipie.configuration.default_version)
-      out = ENV["OUT"] || File.join(::Rails.root, Apipie.configuration.doc_path, 'apidoc')
+      out = ENV["OUT"] || File.join(Rails.root, Apipie.configuration.doc_path, 'apidoc')
       ([nil] + Apipie.configuration.languages).each do |lang|
         doc = Apipie.to_json(args[:version], nil, nil, lang)
         generate_json_page(out, doc, lang)
@@ -55,7 +55,7 @@ namespace :apipie do
   desc "Generate static swagger json"
   task :static_swagger_json, [:version, :swagger_content_type_input, :filename_suffix] => :environment do |t, args|
     with_loaded_documentation do
-      out = ENV["OUT"] || File.join(::Rails.root, Apipie.configuration.doc_path, 'apidoc')
+      out = ENV["OUT"] || File.join(Rails.root, Apipie.configuration.doc_path, 'apidoc')
       generate_swagger_using_args(args, out)
     end
   end
@@ -68,7 +68,7 @@ namespace :apipie do
   desc "Did swagger output change since the last execution of this task?"
   task :did_swagger_change, [:version, :swagger_content_type_input, :filename_suffix] => :environment do |t, args|
     with_loaded_documentation do
-      out = ENV["OUT_REF"] || File.join(::Rails.root, Apipie.configuration.doc_path, 'apidoc_ref')
+      out = ENV["OUT_REF"] || File.join(Rails.root, Apipie.configuration.doc_path, 'apidoc_ref')
       paths = generate_swagger_using_args(args, out)
       paths.each {|path|
         existing_files_in_dir = Pathname(out).children(true)

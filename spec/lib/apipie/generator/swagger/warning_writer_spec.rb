@@ -56,4 +56,16 @@ describe Apipie::Generator::Swagger::WarningWriter do
       it { is_expected.to be_truthy }
     end
   end
+
+  describe '#clear!' do
+    subject { writer.clear! }
+
+    context 'when writer has issued warnings' do
+      before { writer.warn(warning) }
+
+      it 'removes issued warnings' do
+        expect { subject }.to change(writer, :issued_warnings?).from(true).to(false)
+      end
+    end
+  end
 end

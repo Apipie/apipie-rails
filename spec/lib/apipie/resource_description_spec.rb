@@ -1,48 +1,91 @@
 require "spec_helper"
 
 describe Apipie::ResourceDescription do
-
-  let(:dsl_data) { ActionController::Base.send(:_apipie_dsl_data_init) }
-
-  describe "metadata" do
-
-    it "should return nil when no metadata is provided" do
-      resource = Apipie::ResourceDescription.new(ApplicationController, "dummy", dsl_data)
-      expect(resource.to_json[:metadata]).to eq(nil)
-    end
-
-    it "should return the metadata" do
-      meta = {
-        :lenght => 32,
-        :weight => '830g'
-      }
-      resource = Apipie::ResourceDescription.new(ApplicationController, "dummy", dsl_data.update(:meta => meta))
-      expect(resource.to_json[:metadata]).to eq(meta)
-    end
-
+  let(:resource_description) do
+    Apipie::ResourceDescription.new(controller, id, dsl_data)
   end
 
-  describe "methods descriptions" do
+  let(:controller) { ApplicationController }
+  let(:id) { 'dummy' }
+  let(:dsl_data) { ActionController::Base.send(:_apipie_dsl_data_init) }
 
-    before(:each) do
-      @resource = Apipie::ResourceDescription.new(ApplicationController, "dummy")
-      a = Apipie::MethodDescription.new(:a, @resource, dsl_data)
-      b = Apipie::MethodDescription.new(:b, @resource, dsl_data)
-      c = Apipie::MethodDescription.new(:c, @resource, dsl_data)
-      @resource.add_method_description(a)
-      @resource.add_method_description(b)
-      @resource.add_method_description(c)
+  describe '#_methods' do
+    subject(:methods) { resource_description._methods }
+
+    context 'when has method descriptions' do
+      before do
+        resource_description.add_method_description(
+          Apipie::MethodDescription.new(:a, resource_description, dsl_data)
+        )
+        resource_description.add_method_description(
+          Apipie::MethodDescription.new(:b, resource_description, dsl_data)
+        )
+        resource_description.add_method_description(
+          Apipie::MethodDescription.new(:c, resource_description, dsl_data)
+        )
+      end
+
+      it 'should be ordered' do
+        expect(methods.keys).to eq([:a, :b, :c])
+      end
+    end
+  end
+
+  describe '#to_json' do
+    let(:json_data) { resource_description.to_json }
+
+    describe 'metadata' do
+      subject { json_data[:metadata] }
+
+      it { is_expected.to be_nil }
+
+      context 'when meta data are provided' do
+        let(:meta) { { length: 32, weight: '830g' } }
+        let(:dsl_data) { super().update({ meta: meta }) }
+
+        it { is_expected.to eq(meta) }
+      end
     end
 
-    it "should be ordered" do
-      expect(@resource._methods.keys).to eq([:a, :b, :c])
-      expect(@resource.to_json[:methods].map { |h| h[:name] }).to eq(%w[a b c])
+    describe 'methods' do
+      subject(:methods_as_json) { json_data[:methods] }
+
+      context 'when has method descriptions' do
+        before do
+          resource_description.add_method_description(
+            Apipie::MethodDescription.new(:a, resource_description, dsl_data)
+          )
+          resource_description.add_method_description(
+            Apipie::MethodDescription.new(:b, resource_description, dsl_data)
+          )
+          resource_description.add_method_description(
+            Apipie::MethodDescription.new(:c, resource_description, dsl_data)
+          )
+        end
+
+        it 'should be ordered' do
+          expect(methods_as_json.map { |h| h[:name] }).to eq(%w[a b c])
+        end
+      end
+    end
+  end
+
+  describe 'name' do
+    subject { resource_description.name }
+
+    it { is_expected.to eq('Dummy') }
+
+    context 'when given id contains dashes' do
+      let(:id) { 'some-nested-resource' }
+
+      it { is_expected.to eq('Some::Nested::Resource') }
     end
 
-    it "should be still ordered" do
-      expect(@resource._methods.keys).to eq([:a, :b, :c])
-      expect(@resource.to_json[:methods].map { |h| h[:name] }).to eq(%w[a b c])
-    end
+    context 'when resource_name is given' do
+      let(:resource_name) { 'Some-Resource' }
+      let(:dsl_data) { super().merge!(resource_name: 'Some-Resource') }
 
+      it { is_expected.to eq(resource_name) }
+    end
   end
 end

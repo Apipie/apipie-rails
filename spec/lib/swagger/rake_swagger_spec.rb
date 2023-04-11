@@ -37,11 +37,11 @@ describe 'rake tasks' do
     end
 
     let(:doc_output) do
-      File.join(::Rails.root, doc_path, 'apidoc')
+      File.join(Rails.root, doc_path, 'apidoc')
     end
 
     let(:ref_output) do
-      File.join(::Rails.root, doc_path, 'apidoc_ref')
+      File.join(Rails.root, doc_path, 'apidoc_ref')
     end
 
 
