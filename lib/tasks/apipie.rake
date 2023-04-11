@@ -195,10 +195,15 @@ namespace :apipie do
   end
 
   def generate_swagger_using_args(args, out)
-    args.with_defaults(:version => Apipie.configuration.default_version,
-                       :swagger_content_type_input => Apipie.configuration.swagger_content_type_input || :form_data,
-                       :filename_suffix => nil)
-    Apipie.configuration.swagger_content_type_input = args[:swagger_content_type_input].to_sym
+    args.with_defaults(
+      version: Apipie.configuration.default_version,
+      swagger_content_type_input: Apipie.configuration.generator.swagger.content_type_input,
+      filename_suffix: nil
+    )
+
+    Apipie.configuration.generator.swagger.content_type_input =
+      args[:swagger_content_type_input].to_sym
+
     count = 0
 
     sfx = args[:filename_suffix] || "_#{args[:swagger_content_type_input]}"

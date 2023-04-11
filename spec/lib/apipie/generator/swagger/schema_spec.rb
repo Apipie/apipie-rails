@@ -25,16 +25,16 @@ describe Apipie::Generator::Swagger::Schema do
     subject(:schema) { schema_generator.generate }
 
     describe 'host' do
-      before { Apipie.configuration.swagger_api_host = nil }
+      before { Apipie.configuration.generator.swagger.api_host = nil }
 
       it 'is not returned' do
         expect(schema.keys).not_to include(:host)
       end
 
-      context 'when swagger_api_host is set' do
+      context 'when api_host is set' do
         let(:host) { 'localhost:3000' }
 
-        before { Apipie.configuration.swagger_api_host = host }
+        before { Apipie.configuration.generator.swagger.api_host = host }
 
         it 'returns the host' do
           expect(schema[:host]).to eq(host)
@@ -45,12 +45,12 @@ describe Apipie::Generator::Swagger::Schema do
     describe 'consumes' do
       subject { schema_generator.generate[:consumes] }
 
-      before { Apipie.configuration.swagger_content_type_input = nil }
+      before { Apipie.configuration.generator.swagger.content_type_input = nil }
 
       it { is_expected.to eq(['application/x-www-form-urlencoded', 'multipart/form-data']) }
 
-      context 'when swagger_content_type_input is set to json' do
-        before { Apipie.configuration.swagger_content_type_input = :json }
+      context 'when swagger.content_type_input is set to json' do
+        before { Apipie.configuration.generator.swagger.content_type_input = :json }
 
         it { is_expected.to eq(['application/json']) }
       end
@@ -59,12 +59,12 @@ describe Apipie::Generator::Swagger::Schema do
     describe 'title' do
       subject { schema_generator.generate[:info][:title] }
 
-      before { Apipie.configuration.swagger_content_type_input = nil }
+      before { Apipie.configuration.generator.swagger.content_type_input = nil }
 
       it { is_expected.to include(' (params in:formData)') }
 
-      context 'when swagger_content_type_input is set to json' do
-        before { Apipie.configuration.swagger_content_type_input = :json }
+      context 'when swagger.content_type_input is set to json' do
+        before { Apipie.configuration.generator.swagger.content_type_input = :json }
 
         it { is_expected.to include(' (params in:body)') }
       end
@@ -73,14 +73,14 @@ describe Apipie::Generator::Swagger::Schema do
     describe 'x-computed-id' do
       subject(:schema) { schema_generator.generate[:info] }
 
-      before { Apipie.configuration.swagger_generate_x_computed_id_field = false }
+      before { Apipie.configuration.generator.swagger.generate_x_computed_id_field = false }
 
       it 'is not returned' do
         expect(schema.keys).not_to include('x-computed-id')
       end
 
-      context 'when swagger_content_type_input is set to json' do
-        before { Apipie.configuration.swagger_generate_x_computed_id_field = true }
+      context 'when swagger.content_type_input is set to json' do
+        before { Apipie.configuration.generator.swagger.generate_x_computed_id_field = true }
 
         it { is_expected.to include('x-computed-id') }
       end

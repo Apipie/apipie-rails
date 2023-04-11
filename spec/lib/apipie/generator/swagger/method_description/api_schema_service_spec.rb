@@ -64,8 +64,8 @@ describe Apipie::Generator::Swagger::MethodDescription::ApiSchemaService do
       it { is_expected.to include(*tags) }
     end
 
-    context 'when Apipie.configuration.swagger_include_warning_tags is enabled' do
-      before { Apipie.configuration.swagger_include_warning_tags = true }
+    context 'when Apipie.configuration.generator.swagger.include_warning_tags is enabled' do
+      before { Apipie.configuration.generator.swagger.include_warning_tags = true }
 
       context 'when warnings are issued' do
         before do
@@ -86,7 +86,7 @@ describe Apipie::Generator::Swagger::MethodDescription::ApiSchemaService do
     it { is_expected.to eq(['application/x-www-form-urlencoded', 'multipart/form-data']) }
 
     context 'when content type input is json' do
-      before { Apipie.configuration.swagger_content_type_input = :json }
+      before { Apipie.configuration.generator.swagger.content_type_input = :json }
 
       it { is_expected.to eq(['application/json']) }
     end

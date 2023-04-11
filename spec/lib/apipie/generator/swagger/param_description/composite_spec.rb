@@ -50,7 +50,7 @@ describe Apipie::Generator::Swagger::ParamDescription::Composite do
 
     context 'when additional properties in response allowed' do
       before do
-        Apipie.configuration.swagger_allow_additional_properties_in_response = true
+        Apipie.configuration.generator.swagger.allow_additional_properties_in_response = true
       end
 
       it { is_expected.to be_blank }

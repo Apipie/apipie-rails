@@ -74,7 +74,7 @@ class Apipie::Generator::Swagger::ParamDescription::Composite
       end
     end
 
-    if !Apipie.configuration.swagger_allow_additional_properties_in_response
+    if !Apipie.configuration.generator.swagger.allow_additional_properties_in_response
       @schema[:additionalProperties] = false
     end
 

@@ -12,7 +12,7 @@ describe 'rake tasks' do
 
   before do
     Apipie.configuration.doc_path = doc_path
-    Apipie.configuration.swagger_suppress_warnings = true
+    Apipie.configuration.generator.swagger.suppress_warnings = true
     allow(Apipie).to receive(:reload_documentation)
     subject.invoke(*task_args)
   end

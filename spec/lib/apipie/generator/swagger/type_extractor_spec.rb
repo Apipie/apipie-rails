@@ -46,7 +46,7 @@ describe Apipie::Generator::Swagger::TypeExtractor do
   end
 
   describe '#extarct_with_warnings' do
-    before { Apipie.configuration.swagger_suppress_warnings = false }
+    before { Apipie.configuration.generator.swagger.suppress_warnings = false }
 
     subject { extractor.extract_with_warnings(warnings) }
 

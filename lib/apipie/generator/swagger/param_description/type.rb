@@ -44,7 +44,7 @@ class Apipie::Generator::Swagger::ParamDescription::Type
   private
 
   def params_in_body_use_reference?
-    Apipie.configuration.swagger_json_input_uses_refs
+    Apipie.configuration.generator.swagger.json_input_uses_refs
   end
 
   # @return [Apipie::Generator::Swagger::Type, String]
