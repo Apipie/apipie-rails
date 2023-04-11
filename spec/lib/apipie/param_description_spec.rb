@@ -114,10 +114,22 @@ describe Apipie::ParamDescription do
   end
 
   describe 'validate' do
+    subject { param_description.validate(validation_value) }
+
+    let(:allow_blank) { nil }
+
+    let(:param_description) do
+      Apipie::ParamDescription.new(
+        method_desc,
+        :param,
+        validation_type,
+        allow_blank: allow_blank
+      )
+    end
+
     context 'when allow_blank is ignored, as it was before 0.7.0' do
-      before do
-        Apipie.configuration.ignore_allow_blank_false = true
-      end
+      before { Apipie.configuration.ignore_allow_blank_false = true }
+      after { Apipie.configuration.ignore_allow_blank_false = false }
 
       context 'when the parameter is a boolean' do
         it "should not throw an exception when passed false" do
@@ -127,32 +139,74 @@ describe Apipie::ParamDescription do
         it "should not throw an exception when passed false" do
           expect { Apipie::ParamDescription.new(method_desc, :param, :boolean).validate(false) }.to_not raise_error
         end
+      end
 
-        it "should throw an exception when passed an empty value" do
-          expect { Apipie::ParamDescription.new(method_desc, :param, :boolean).validate('') }.to raise_error(Apipie::ParamInvalid)
+      context 'when validation type is :boolean' do
+        let(:validation_type) { :boolean }
+
+        context 'when validation value is false' do
+          let(:validation_value) { false }
+
+          it 'should not raise an error' do
+            expect { subject }.not_to raise_error
+          end
+        end
+
+        context 'when validation value is an empty string' do
+          let(:validation_value) { '' }
+
+          it 'should raise an error' do
+            expect { subject }.to raise_error(Apipie::ParamInvalid)
+          end
         end
       end
 
-      context 'when the parameter is a string' do
-        context 'when allow_blank is specified as true' do
-          it "should throw an exception when passed an empty value" do
-            expect { Apipie::ParamDescription.new(method_desc, :param, String, allow_blank: true).validate('') }.to_not raise_error
+      context 'when validation type is a boolean array' do
+        let(:validation_type) { [true, false] }
+
+        context 'when validation value is false' do
+          let(:validation_value) { false }
+
+          it 'should not raise an error' do
+            expect { subject }.not_to raise_error
           end
         end
-        context 'when allow_blank is specified as false' do
-          it "should throw an exception when passed an empty value" do
-            expect { Apipie::ParamDescription.new(method_desc, :param, String, allow_blank: false).validate('') }.to_not raise_error
+
+        context 'when validation value is true' do
+          let(:validation_value) { true }
+
+          it 'should not raise an error' do
+            expect { subject }.not_to raise_error
           end
         end
-        context 'when allow_blank is not specified' do
-          it "should throw an exception when passed an empty value" do
-            expect { Apipie::ParamDescription.new(method_desc, :param, String).validate('') }.to_not raise_error
+
+        context 'when validation value is an empty string' do
+          let(:validation_value) { '' }
+
+          it 'should raise an error' do
+            expect { subject }.to raise_error(Apipie::ParamInvalid)
           end
         end
       end
 
-      after do
-        Apipie.configuration.ignore_allow_blank_false = false
+      context 'when validation type is String' do
+        let(:validation_type) { String }
+
+        context 'when validation value is empty string' do
+          let(:validation_value) { '' }
+
+          it 'should not raise an error' do
+            expect { subject }.not_to raise_error
+          end
+
+          context 'when allow_blank is specified as true' do
+            let(:allow_blank) { true }
+
+            it 'should not raise an error' do
+              expect { subject }.not_to raise_error
+            end
+          end
+        end
       end
     end
 
@@ -164,46 +218,126 @@ describe Apipie::ParamDescription do
       it "should not throw an exception when passed false" do
         expect { Apipie::ParamDescription.new(method_desc, :param, :boolean).validate(false) }.to_not raise_error
       end
+    end
 
-      it "should still not throw an exception when passed false with explicit allow_blank: false" do
-        expect { Apipie::ParamDescription.new(method_desc, :param, :boolean, allow_blank: false).validate(false) }.to_not raise_error
+    context 'when the validation type is :boolean' do
+      let(:validation_type) { :boolean }
+
+      context 'when validation value' do
+        let(:validation_value) { false }
+
+        it 'should not raise an error' do
+          expect { subject }.not_to raise_error
+        end
+
+        context 'when allow_blank is false' do
+          let(:allow_blank) { false }
+
+          it 'should not raise an error' do
+            expect { subject }.not_to raise_error
+          end
+        end
+
+        context 'when allow_blank is true' do
+          let(:allow_blank) { true }
+
+          it 'should not raise an error' do
+            expect { subject }.not_to raise_error
+          end
+        end
       end
 
-      it "should throw an exception when passed an empty value" do
-        expect { Apipie::ParamDescription.new(method_desc, :param, :boolean).validate('') }.to raise_error(Apipie::ParamInvalid)
+      context 'when validation value is empty string' do
+        let(:validation_value) { '' }
+
+        it 'should raise an error' do
+          expect { subject }.to raise_error(Apipie::ParamInvalid)
+        end
       end
     end
 
-    context "when the parameter is a custom type with ignore_allow_blank? returning true" do
-      it "should not throw an exception when passed a blank but valid value" do
-        expect { Apipie::ParamDescription.new(method_desc, :param, :custom_bool).validate(false) }.to_not raise_error
+    context 'when validation type is a boolean array' do
+      let(:validation_type) { [true, false] }
+
+      context 'when validation value is false' do
+        let(:validation_value) { false }
+
+        it 'should not raise an error' do
+          expect { subject }.not_to raise_error
+        end
       end
 
-      it "should still not throw an exception when passed false with explicit allow_blank: false" do
-        expect { Apipie::ParamDescription.new(method_desc, :param, :custom_bool, allow_blank: false).validate(false) }.to_not raise_error
+      context 'when validation value is true' do
+        let(:validation_value) { true }
+
+        it 'should not raise an error' do
+          expect { subject }.not_to raise_error
+        end
       end
 
-      it "should throw an exception when passed an invalid but blank value" do
-        expect { Apipie::ParamDescription.new(method_desc, :param, :custom_bool).validate("") }.to raise_error(Apipie::ParamInvalid)
+      context 'when validation value is an empty string' do
+        let(:validation_value) { '' }
+
+        it 'should raise an error' do
+          expect { subject }.to raise_error(Apipie::ParamInvalid)
+        end
       end
     end
 
-    context 'when the parameter is a string' do
+    context 'when the validation type is a custom one' do
+      let(:validation_type) { :custom_bool }
+
+      context 'when ignore_allow_blank? returning true' do
+        before do
+          allow(CustomBoolValidator).to receive(:ignore_allow_blank?).and_return(true)
+        end
+
+        context 'when a blank but valid value is passed' do
+          let(:validation_value) { false }
+
+          it 'should not raise an error' do
+            expect { subject }.not_to raise_error
+          end
+
+          context 'when allow_blank is false' do
+            let(:allow_blank) { false }
+
+            it 'should not raise an error' do
+              expect { subject }.not_to raise_error
+            end
+          end
+        end
+
+        context 'when a blank but invalid value is passed' do
+          let(:validation_value) { '' }
+
+          it 'should raise an error' do
+            expect { subject }.to raise_error(Apipie::ParamInvalid)
+          end
+        end
+      end
+    end
+
+    context 'when validation type is String' do
+      let(:validation_type) { String }
+
+      context 'when a blank but invalid value is passed' do
+        let(:validation_value) { '' }
+
+        it 'should raise an error' do
+          expect { subject }.to raise_error(Apipie::ParamInvalid)
+        end
+      end
+
       context 'when allow_blank is specified as true' do
-        it "should throw an exception when passed an empty value" do
-          expect { Apipie::ParamDescription.new(method_desc, :param, String, allow_blank: true).validate('') }.to_not raise_error
-        end
-      end
-      context 'when allow_blank is specified as false' do
-        it "should throw an exception when passed an empty value" do
-          expect do
-            Apipie::ParamDescription.new(method_desc, :param, String, allow_blank: false).validate('')
-          end.to raise_error(Apipie::ParamInvalid)
-        end
-      end
-      context 'when allow_blank is not specified' do
-        it "should throw an exception when passed an empty value" do
-          expect { Apipie::ParamDescription.new(method_desc, :param, String).validate('') }.to raise_error(Apipie::ParamInvalid)
+        let(:allow_blank) { true }
+
+        context 'when and empty string is given' do
+          let(:validation_value) { '' }
+
+          it 'should not raise an error' do
+            expect { subject }.not_to raise_error
+          end
         end
       end
     end

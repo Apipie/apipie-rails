@@ -306,16 +306,8 @@ module Apipie
         raise ArgumentError, 'param_desc is required'
       end
 
-      method_id = ruby_name_for_method(@current_method)
-
-      warning = Apipie::Generator::Swagger::Warning.for_code(
-        Apipie::Generator::Swagger::Warning::INFERRING_BOOLEAN_CODE,
-        method_id,
-        { parameter: param_desc.name }
-      )
-
       Apipie::Generator::Swagger::TypeExtractor.new(param_desc.validator).
-        extract_with_warnings({ boolean: warning })
+        extract
     end
 
 

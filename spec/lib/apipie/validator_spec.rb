@@ -51,19 +51,55 @@ describe Apipie::Validator do
   end
 
   describe 'BooleanValidator' do
-    it "should validate by object class" do
-      validator = Apipie::Validator::BooleanValidator.new(params_desc)
-      expect(validator.validate("1")).to be_truthy
-      expect(validator.validate(1)).to be_truthy
-      expect(validator.validate(true)).to be_truthy
-      expect(validator.validate(0)).to be_truthy
-      expect(validator.validate(false)).to be_truthy
-      expect(validator.validate({ 1 => 1 })).to be_falsey
+    let(:validator) do
+      Apipie::Validator::BooleanValidator
     end
 
-    it "should have a valid description" do
-      validator = Apipie::Validator::BooleanValidator.new(params_desc)
-      expect(validator.description).to eq('Must be one of: <code>true</code>, <code>false</code>, <code>1</code>, <code>0</code>.')
+    let(:validator_instance) { validator.new(params_desc) }
+
+    describe '.build' do
+      subject { validator.build(params_desc, argument, nil, nil) }
+
+      context 'when argument is [true, false]' do
+        let(:argument) { [true, false] }
+
+        it { is_expected.to be_an_instance_of(Apipie::Validator::BooleanValidator) }
+      end
+
+      context 'when argument is :bool' do
+        let(:argument) { :bool }
+
+        it { is_expected.to be_an_instance_of(Apipie::Validator::BooleanValidator) }
+      end
+
+      context 'when argument :boolean' do
+        let(:argument) { :boolean }
+
+        it { is_expected.to be_an_instance_of(Apipie::Validator::BooleanValidator) }
+      end
+
+      context 'when argument :booooooooolean' do
+        let(:argument) { :booooooooolean }
+
+        it { is_expected.to be_nil }
+      end
+    end
+
+    describe '#validate' do
+      it "should validate by object class" do
+        expect(validator_instance.validate("1")).to be_truthy
+        expect(validator_instance.validate(1)).to be_truthy
+        expect(validator_instance.validate(true)).to be_truthy
+        expect(validator_instance.validate(0)).to be_truthy
+        expect(validator_instance.validate(false)).to be_truthy
+        expect(validator_instance.validate({ 1 => 1 })).to be_falsey
+      end
+    end
+
+    describe '#description' do
+      subject { validator_instance.description }
+
+      it { is_expected.to eq('Must be one of: <code>true</code>, <code>false</code>, <code>1</code>, <code>0</code>.') }
     end
   end
 
