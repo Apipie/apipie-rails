@@ -75,7 +75,7 @@ describe Apipie::Generator::Swagger::ParamDescription::Type do
     it { is_expected.to eq(validator.to_s.downcase) }
 
     context 'when validator is enum' do
-      let(:validator) { ['name', 'enum'] }
+      let(:validator) { %w[name enum] }
 
       it { is_expected.to eq('string') }
     end
@@ -130,8 +130,8 @@ describe Apipie::Generator::Swagger::ParamDescription::Type do
           it { is_expected.to be_blank }
 
           context 'and an array of in values is given' do
-            let(:enum_values) { ['enum-value-1', 'enum-value-2'] }
-            let(:validator_options) { { in: ['enum-value-1', 'enum-value-2'] } }
+            let(:enum_values) { %w[enum-value-1 enum-value-2] }
+            let(:validator_options) { { in: %w[enum-value-1 enum-value-2] } }
 
             it { is_expected.to eq(enum_values) }
           end
@@ -144,7 +144,7 @@ describe Apipie::Generator::Swagger::ParamDescription::Type do
     subject { type_definition[:enum] }
 
     context 'and an array of in values is given' do
-      let(:validator) { ['enum-value-1', 'enum-value-2'] }
+      let(:validator) { %w[enum-value-1 enum-value-2] }
 
       it { is_expected.to eq(validator) }
     end

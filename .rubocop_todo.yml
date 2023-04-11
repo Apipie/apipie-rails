@@ -485,8 +485,6 @@ Layout/SpaceAfterComma:
     - 'lib/tasks/apipie.rake'
     - 'spec/controllers/users_controller_spec.rb'
     - 'spec/dummy/app/controllers/pets_controller.rb'
-    - 'spec/dummy/app/controllers/twitter_example_controller.rb'
-    - 'spec/dummy/app/controllers/users_controller.rb'
     - 'spec/dummy/config/initializers/apipie.rb'
     - 'spec/lib/apipie/apipies_controller_spec.rb'
     - 'spec/lib/apipie/application_spec.rb'
@@ -2106,25 +2104,6 @@ Style/UnlessElse:
     - 'lib/apipie/errors.rb'
     - 'lib/apipie/validator.rb'
     - 'spec/lib/swagger/swagger_dsl_spec.rb'
-
-# Offense count: 35
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle, MinSize, WordRegex.
-# SupportedStyles: percent, brackets
-Style/WordArray:
-  Exclude:
-    - 'lib/apipie/generator/swagger/param_description/in.rb'
-    - 'spec/controllers/users_controller_spec.rb'
-    - 'spec/dummy/app/controllers/pets_controller.rb'
-    - 'spec/dummy/app/controllers/pets_using_self_describing_classes_controller.rb'
-    - 'spec/dummy/app/controllers/twitter_example_controller.rb'
-    - 'spec/dummy/app/controllers/users_controller.rb'
-    - 'spec/lib/apipie/generator/swagger/param_description/type_spec.rb'
-    - 'spec/lib/apipie/method_description_spec.rb'
-    - 'spec/lib/apipie/resource_description_spec.rb'
-    - 'spec/lib/swagger/rake_swagger_spec.rb'
-    - 'spec/lib/swagger/swagger_dsl_spec.rb'
-    - 'spec/lib/validators/array_validator_spec.rb'
 
 # Offense count: 2
 # This cop supports unsafe autocorrection (--autocorrect-all).

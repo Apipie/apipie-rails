@@ -32,6 +32,6 @@ class Apipie::Generator::Swagger::ParamDescription::In
   end
 
   def body_allowed_for_current_method?
-    ['get', 'head'].exclude?(@http_method)
+    %w[get head].exclude?(@http_method)
   end
 end

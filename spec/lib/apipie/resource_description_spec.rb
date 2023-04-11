@@ -64,7 +64,7 @@ describe Apipie::ResourceDescription do
         end
 
         it 'should be ordered' do
-          expect(methods_as_json.map { |h| h[:name] }).to eq(['a', 'b', 'c'])
+          expect(methods_as_json.map { |h| h[:name] }).to eq(%w[a b c])
         end
       end
     end

@@ -412,7 +412,7 @@ describe UsersController do
       expect(b.resource._id).to eq('users')
 
       expect(b.apis.count).to eq(1)
-      expect(b.formats).to eq(['json', 'jsonp'])
+      expect(b.formats).to eq(%w[json jsonp])
       api = b.apis.first
       expect(api.short_description).to eq("Show user profile")
       expect(api.path).to eq("/users/:id")
@@ -708,7 +708,7 @@ EOS2
       param = a.params[:array_param]
       expect(param.desc).to eq("\n<p>array validator</p>\n")
       expect(param.validator.class).to be(Apipie::Validator::EnumValidator)
-      expect(param.validator.instance_variable_get("@array")).to eq(["100", "one", "two", "1", "2"])
+      expect(param.validator.instance_variable_get("@array")).to eq(%w[100 one two 1 2])
 
       param = a.params[:proc_param]
       expect(param.desc).to eq("\n<p>proc validator</p>\n")
