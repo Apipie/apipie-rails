@@ -1,6 +1,7 @@
 require "spec_helper"
 
 describe "param groups" do
+  before { Apipie.reload_documentation }
 
   it "lets reuse the params description in more actions" do
     user_create_desc = Apipie["users#create"].params[:user]
