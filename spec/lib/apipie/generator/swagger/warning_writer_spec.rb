@@ -5,7 +5,7 @@ describe Apipie::Generator::Swagger::WarningWriter do
 
   let(:warning) do
     Apipie::Generator::Swagger::Warning.for_code(
-      Apipie::Generator::Swagger::Warning::INFERRING_BOOLEAN_CODE,
+      Apipie::Generator::Swagger::Warning::PARAM_IGNORED_IN_FORM_DATA_CODE,
       'SampleController#action',
       { parameter: 'some-param' }
     )
@@ -32,7 +32,7 @@ describe Apipie::Generator::Swagger::WarningWriter do
     context 'when Apipie.configuration.generator.swagger.suppress_warnings includes warning code' do
       before do
         Apipie.configuration.generator.swagger.suppress_warnings =
-          Array(Apipie::Generator::Swagger::Warning::INFERRING_BOOLEAN_CODE)
+          Array(Apipie::Generator::Swagger::Warning::PARAM_IGNORED_IN_FORM_DATA_CODE)
       end
 
       it { is_expected.to be_falsey }

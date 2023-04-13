@@ -472,13 +472,13 @@ module Apipie
       end
 
       def self.build(param_description, argument, options, block)
-        if argument == :bool || argument == :boolean
+        if argument == :bool || argument == :boolean || boolean_array?(argument)
           self.new(param_description)
         end
       end
 
-      def expected_type
-        'boolean'
+      private_class_method def self.boolean_array?(argument)
+        argument.is_a?(Array) && (argument - [true, false]) == []
       end
 
       def description
@@ -488,6 +488,10 @@ module Apipie
 
       def ignore_allow_blank?
         true
+      end
+
+      def expected_type
+        'boolean'
       end
     end
 
