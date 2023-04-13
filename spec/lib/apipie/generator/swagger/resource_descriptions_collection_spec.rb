@@ -27,13 +27,13 @@ describe Apipie::Generator::Swagger::ResourceDescriptionsCollection do
     subject(:filtered_resource_descriptions) do
       collection.filter(
         version: version,
-        resource_name: resource_name,
+        resource_id: resource_id,
         method_name: method_name
       )
     end
 
     let(:version) { 'development' }
-    let(:resource_name) { users_resource_description._id }
+    let(:resource_id) { users_resource_description._id }
     let(:method_name) { nil }
 
     it 'filters resources for the given version and resource name' do

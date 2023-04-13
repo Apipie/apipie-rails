@@ -16,14 +16,11 @@ describe Apipie::Application do
 
   end
 
-  describe '.get_resource_name' do
-    subject(:get_resource_name) do
-      Apipie.get_resource_name(Api::V2::Nested::ArchitecturesController)
-    end
-
+  shared_examples 'resource id' do
+    let(:resource_class) { Api::V2::Nested::ArchitecturesController }
     let(:base_url) { '/some-api' }
 
-    before { allow(Apipie.app).to receive(:get_base_url).and_return(base_url) }
+    before { allow(described_class).to receive(:get_base_url).and_return(base_url) }
 
     context "with namespaced_resources enabled" do
       before { Apipie.configuration.namespaced_resources = true }
@@ -37,7 +34,7 @@ describe Apipie::Application do
         let(:base_url) { nil }
 
         it "should not raise an error" do
-          expect { get_resource_name }.not_to raise_error
+          expect { method_call }.not_to raise_error
         end
       end
     end
@@ -49,5 +46,17 @@ describe Apipie::Application do
         is_expected.to eq('architectures')
       end
     end
+  end
+
+  describe '.get_resource_id' do
+    subject(:method_call) { Apipie.get_resource_id(resource_class) }
+
+    it_behaves_like 'resource id'
+  end
+
+  describe '.get_resource_name' do
+    subject(:method_call) { Apipie.get_resource_name(resource_class) }
+
+    it_behaves_like 'resource id'
   end
 end
