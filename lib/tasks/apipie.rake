@@ -195,10 +195,15 @@ namespace :apipie do
   end
 
   def generate_swagger_using_args(args, out)
-    args.with_defaults(:version => Apipie.configuration.default_version,
-                       :swagger_content_type_input => Apipie.configuration.swagger_content_type_input || :form_data,
-                       :filename_suffix => nil)
-    Apipie.configuration.swagger_content_type_input = args[:swagger_content_type_input].to_sym
+    args.with_defaults(
+      version: Apipie.configuration.default_version,
+      swagger_content_type_input: Apipie.configuration.generator.swagger.content_type_input,
+      filename_suffix: nil
+    )
+
+    Apipie.configuration.generator.swagger.content_type_input =
+      args[:swagger_content_type_input].to_sym
+
     count = 0
 
     sfx = args[:filename_suffix] || "_#{args[:swagger_content_type_input]}"
@@ -254,11 +259,11 @@ namespace :apipie do
   end
 
   def generate_resource_pages(version, file_base, doc, include_json = false, lang = nil)
-    doc[:docs][:resources].each do |resource_name, _|
-      resource_file_base = File.join(file_base, resource_name.to_s)
+    doc[:docs][:resources].each do |resource_id, _|
+      resource_file_base = File.join(file_base, resource_id.to_s)
       FileUtils.mkdir_p(File.dirname(resource_file_base)) unless File.exist?(File.dirname(resource_file_base))
 
-      doc = Apipie.to_json(version, resource_name, nil, lang)
+      doc = Apipie.to_json(version, resource_id, nil, lang)
       doc[:docs][:link_extension] = (lang ? ".#{lang}.html" : ".html")
       render_page("#{resource_file_base}#{lang_ext(lang)}.html", "resource", {:doc => doc[:docs],
         :resource => doc[:docs][:resources].first, :language => lang, :languages => Apipie.configuration.languages})
@@ -267,12 +272,12 @@ namespace :apipie do
   end
 
   def generate_method_pages(version, file_base, doc, include_json = false, lang = nil)
-    doc[:docs][:resources].each do |resource_name, resource_params|
+    doc[:docs][:resources].each do |resource_id, resource_params|
       resource_params[:methods].each do |method|
-        method_file_base = File.join(file_base, resource_name.to_s, method[:name].to_s)
+        method_file_base = File.join(file_base, resource_id.to_s, method[:name].to_s)
         FileUtils.mkdir_p(File.dirname(method_file_base)) unless File.exist?(File.dirname(method_file_base))
 
-        doc = Apipie.to_json(version, resource_name, method[:name], lang)
+        doc = Apipie.to_json(version, resource_id, method[:name], lang)
         doc[:docs][:link_extension] = (lang ? ".#{lang}.html" : ".html")
         render_page("#{method_file_base}#{lang_ext(lang)}.html", "method", {:doc => doc[:docs],
                                                            :resource => doc[:docs][:resources].first,

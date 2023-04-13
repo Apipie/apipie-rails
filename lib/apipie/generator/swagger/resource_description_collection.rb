@@ -5,14 +5,14 @@ class Apipie::Generator::Swagger::ResourceDescriptionsCollection
   end
 
   # @return [Array<Apipie::ResourceDescription>]
-  def filter(version:, resource_name:, method_name: nil)
+  def filter(version:, resource_id:, method_name: nil)
     resources = []
 
-    # If resource_name is blank, take just resources which have some methods because
+    # If resource_id is blank, take just resources which have some methods because
     # we dont want to show eg ApplicationController as resource
     # otherwise, take only the specified resource
-    @resource_descriptions[version].each do |resource_description_name, resource_description|
-      if (resource_name.blank? && resource_description._methods.present?) || resource_description_name == resource_name
+    @resource_descriptions[version].each do |resource_description_id, resource_description|
+      if (resource_id.blank? && resource_description._methods.present?) || resource_description_id == resource_id
         resources << resource_description
       end
     end

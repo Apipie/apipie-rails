@@ -12,7 +12,7 @@ describe Apipie::Generator::Swagger::WarningWriter do
   end
 
   before do
-    Apipie.configuration.swagger_suppress_warnings = false
+    Apipie.configuration.generator.swagger.suppress_warnings = false
     Singleton.__init__(described_class)
   end
 
@@ -23,15 +23,15 @@ describe Apipie::Generator::Swagger::WarningWriter do
       expect { subject }.to output(warning.warning_message).to_stderr
     end
 
-    context 'when Apipie.configuration.swagger_suppress_warnings is true' do
-      before { Apipie.configuration.swagger_suppress_warnings = true }
+    context 'when Apipie.configuration.generator.swagger.suppress_warnings is true' do
+      before { Apipie.configuration.generator.swagger.suppress_warnings = true }
 
       it { is_expected.to be_falsey }
     end
 
-    context 'when Apipie.configuration.swagger_suppress_warnings includes warning code' do
+    context 'when Apipie.configuration.generator.swagger.suppress_warnings includes warning code' do
       before do
-        Apipie.configuration.swagger_suppress_warnings =
+        Apipie.configuration.generator.swagger.suppress_warnings =
           Array(Apipie::Generator::Swagger::Warning::PARAM_IGNORED_IN_FORM_DATA_CODE)
       end
 

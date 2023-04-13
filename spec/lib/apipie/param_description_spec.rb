@@ -361,7 +361,6 @@ describe Apipie::ParamDescription do
     end
   end
 
-
   describe "required_by_default config option" do
     context "parameters required by default" do
 
@@ -490,7 +489,6 @@ describe Apipie::ParamDescription do
       end
     end
   end
-
 
   describe 'sub params' do
 
@@ -630,4 +628,44 @@ describe Apipie::ParamDescription do
     end
   end
 
+  describe '#required' do
+    subject { param_description.required }
+
+    let(:param_description) do
+      Apipie::ParamDescription.new(method_desc, :param, validator, options)
+    end
+
+    context 'when is passed in options' do
+      let(:validator) { String }
+
+      context 'when is false' do
+        let(:options) { { required: false } }
+
+        it { is_expected.to eq(false) }
+      end
+
+      context 'when is true' do
+        let(:options) { { required: true } }
+
+        it { is_expected.to eq(true) }
+      end
+    end
+
+    context 'when validator options are passed' do
+      let(:options) { { only_in: :response } }
+      let(:validator) { { array_of: String, required: required } }
+
+      context 'when required is false' do
+        let(:required) { false }
+
+        it { is_expected.to eq(false) }
+      end
+
+      context 'when required is true' do
+        let(:required) { true }
+
+        it { is_expected.to eq(true) }
+      end
+    end
+  end
 end

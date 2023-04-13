@@ -17,7 +17,7 @@ class Apipie::Generator::Swagger::MethodDescription::ResponseSchemaService
       )
     )
 
-    if Apipie.configuration.swagger_responses_use_refs? && @response_description.typename.present?
+    if Apipie.configuration.generator.swagger.responses_use_refs? && @response_description.typename.present?
       composite = composite.referenced(@response_description.typename)
     end
 

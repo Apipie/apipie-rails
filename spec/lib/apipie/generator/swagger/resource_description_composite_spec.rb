@@ -2,9 +2,9 @@ require 'spec_helper'
 
 describe Apipie::Generator::Swagger::ResourceDescriptionComposite do
   let(:dsl_data) { {} }
-  let(:resource_name) { 'pets' }
+  let(:resource_id) { 'pets' }
   let(:resource_description) do
-    Apipie::ResourceDescription.new(PetsController, resource_name, dsl_data)
+    Apipie::ResourceDescription.new(PetsController, resource_id, dsl_data)
   end
 
   let(:resource_descriptions) { [resource_description] }
@@ -26,7 +26,7 @@ describe Apipie::Generator::Swagger::ResourceDescriptionComposite do
         it 'returns the name and description' do
           expect(tag).to eq(
             {
-              name: resource_name,
+              name: resource_id,
               description: resource_description._full_description
             }
           )

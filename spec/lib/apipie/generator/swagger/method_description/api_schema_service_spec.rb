@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Apipie::Generator::Swagger::MethodDescription::ApiSchemaService do
   let(:path) { '/api' }
   let(:http_method) { 'get' }
-  let(:resource_name) { 'users' }
+  let(:resource_id) { 'users' }
   let(:method_description_description) { nil }
   let(:tags) { [] }
 
@@ -20,7 +20,7 @@ describe Apipie::Generator::Swagger::MethodDescription::ApiSchemaService do
   end
 
   let(:resource_desc) do
-    Apipie::ResourceDescription.new(UsersController, resource_name)
+    Apipie::ResourceDescription.new(UsersController, resource_id)
   end
 
   let(:method_description) do
@@ -56,7 +56,7 @@ describe Apipie::Generator::Swagger::MethodDescription::ApiSchemaService do
   describe 'tags' do
     subject { service.call[path][http_method][:tags] }
 
-    it { is_expected.to eq([resource_name]) }
+    it { is_expected.to eq([resource_id]) }
 
     context 'when tags are available' do
       let(:tags) { ['Tag 1', 'Tag 2'] }
@@ -64,8 +64,8 @@ describe Apipie::Generator::Swagger::MethodDescription::ApiSchemaService do
       it { is_expected.to include(*tags) }
     end
 
-    context 'when Apipie.configuration.swagger_include_warning_tags is enabled' do
-      before { Apipie.configuration.swagger_include_warning_tags = true }
+    context 'when Apipie.configuration.generator.swagger.include_warning_tags is enabled' do
+      before { Apipie.configuration.generator.swagger.include_warning_tags = true }
 
       context 'when warnings are issued' do
         before do
@@ -86,7 +86,7 @@ describe Apipie::Generator::Swagger::MethodDescription::ApiSchemaService do
     it { is_expected.to eq(['application/x-www-form-urlencoded', 'multipart/form-data']) }
 
     context 'when content type input is json' do
-      before { Apipie.configuration.swagger_content_type_input = :json }
+      before { Apipie.configuration.generator.swagger.content_type_input = :json }
 
       it { is_expected.to eq(['application/json']) }
     end

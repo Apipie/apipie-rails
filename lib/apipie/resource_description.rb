@@ -65,7 +65,7 @@ module Apipie
     alias _name name
 
     def add_method_description(method_description)
-      Apipie.debug "@resource_descriptions[#{self._version}][#{self._name}]._methods[#{method_description.method}] = #{method_description}"
+      Apipie.debug "@resource_descriptions[#{self._version}][#{self._id}]._methods[#{method_description.method}] = #{method_description}"
       @_methods[method_description.method.to_sym] = method_description
     end
 
