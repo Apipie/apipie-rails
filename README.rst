@@ -1664,7 +1664,7 @@ Swagger-Specific Configuration Parameters
 
 There are several configuration parameters that determine the structure of the generated swagger file:
 
-``config.swagger_content_type_input``
+``config.generator.swagger.content_type_input``
     If the value is ``:form_data`` - the swagger file will indicate that the server consumes the content types
     ``application/x-www-form-urlencoded`` and ``multipart/form-data``.  Non-path parameters will have the
     value ``"in": "formData"``.  Note that parameters of type Hash that do not have any fields in them will *be ommitted*
@@ -1677,52 +1677,52 @@ There are several configuration parameters that determine the structure of the g
     You can specify the value of this configuration parameter as an additional input to the rake command (e.g.,
     ``rake apipie:static_swagger_json[2.0,form_data]``).
 
-``config.swagger_json_input_uses_refs``
-    This parameter is only relevant if ``swagger_content_type_input`` is ``:json``.
+``config.generator.swagger.json_input_uses_refs``
+    This parameter is only relevant if ``swagger.content_type_input`` is ``:json``.
 
     If ``true``: the schema of the ``"in": "body"`` parameter of each method is given its own entry in the ``definitions``
     section, and is referenced using ``$ref`` from the method definition.
 
     If ``false``: the body parameter definitions are inlined within the method definitions.
 
-``config.swagger_include_warning_tags``
+``config.generator.swagger.include_warning_tags``
     If ``true``: in addition to tagging methods with the name of the resource they belong to, methods for which warnings
     have been issued will be tagged with.
 
-``config.swagger_suppress_warnings``
+``config.generator.swagger.suppress_warnings``
     If ``false``: no warnings will be suppressed
 
     If ``true``: all warnings will be suppressed
 
     If an array of values (e.g., ``[100,102,107]``), only the warnings identified by the numbers in the array will be suppressed.
 
-``config.swagger_api_host``
+``config.generator.swagger.api_host``
     The value to place in the swagger host field.
 
     Default is ``localhost:3000``
 
     If ``nil`` then then host field will not be included.
 
-``config.swagger_allow_additional_properties_in_response``
+``config.generator.swagger.allow_additional_properties_in_response``
     If ``false`` (default):  response descriptions in the generated swagger will include an ``additional-properties: false``
     field
 
     If ``true``:  the ``additional-properties: false`` field will not be included in response object descriptions
 
-``config.swagger_schemes``
+``config.generator.swagger.schemes``
     An array of transport schemes that the API supports.
     This can include any combination of ``http``, ``https``, ``ws`` and ``wss``.
     By default to encourage good security practices, ``['https']`` is specified.
 
 
-``config:swagger_security_definitions``
+``config:swagger.security_definitions``
     If the API requires authentication, you can specify details of the authentication mechanisms supported as a (Hash) value here.
     See [https://swagger.io/docs/specification/2-0/authentication/] for details of what values can be specified
     By default, no security is defined.
 
-``config.swagger_global_security``
+``config.generator.swagger.global_security``
     If the API requires authentication, you can specify which of the authentication mechanisms are supported by all API operations as an Array of hashes here.
-    This should be used in conjunction with the mechanisms defined by ``swagger_security_definitions``.
+    This should be used in conjunction with the mechanisms defined by ``swagger.security_definitions``.
     See [https://swagger.io/docs/specification/2-0/authentication/] for details of what values can be specified
     By default, no security is defined.
 

@@ -83,11 +83,11 @@ describe Apipie::Generator::Swagger::MethodDescription::ResponseSchemaService do
       end
     end
 
-    context 'when swagger_responses_use_refs is set to true' do
+    context 'when responses_use_refs is set to true' do
       subject(:response) { swagger_response }
 
-      before { Apipie.configuration.swagger_responses_use_refs = true }
-      after { Apipie.configuration.swagger_responses_use_refs = false }
+      before { Apipie.configuration.generator.swagger.responses_use_refs = true }
+      after { Apipie.configuration.generator.swagger.responses_use_refs = false }
 
       context 'when typename is given' do
         let(:options) { { param_group: :some_param_group } }

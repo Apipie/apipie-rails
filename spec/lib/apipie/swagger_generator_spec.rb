@@ -84,7 +84,7 @@ describe Apipie::SwaggerGenerator do
     let(:self_describing_class) { PetWithMeasurements }
     let(:allow_null) { false }
 
-    before { Apipie.configuration.swagger_responses_use_refs = false }
+    before { Apipie.configuration.generator.swagger.responses_use_refs = false }
 
     it 'returns the self describing class schema' do
       expect(schema.keys).to include(:type, :properties, :required)

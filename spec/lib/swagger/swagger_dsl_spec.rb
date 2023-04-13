@@ -6,7 +6,7 @@ describe "Swagger Responses" do
   let(:desc) { Apipie.get_resource_description(controller_class, Apipie.configuration.default_version) }
 
   let(:swagger) {
-    Apipie.configuration.swagger_suppress_warnings = true
+    Apipie.configuration.generator.swagger.suppress_warnings = true
     Apipie.to_swagger_json(Apipie.configuration.default_version, controller_class.to_s.underscore.sub("_controller", ""))
   }
 

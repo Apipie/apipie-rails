@@ -108,9 +108,9 @@ describe Apipie::Generator::Swagger::ParamDescription::Type do
 
         it { is_expected.to eq({ type: 'string' }) }
 
-        context 'and swagger_json_input_uses_refs is set to true' do
-          before { Apipie.configuration.swagger_json_input_uses_refs = true }
-          after { Apipie.configuration.swagger_json_input_uses_refs = false }
+        context 'and swagger.json_input_uses_refs is set to true' do
+          before { Apipie.configuration.generator.swagger.json_input_uses_refs = true }
+          after { Apipie.configuration.generator.swagger.json_input_uses_refs = false }
 
           it 'returns the reference' do
             expect(subject).to eq({ '$ref' => reference })

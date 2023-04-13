@@ -16,19 +16,19 @@ class Apipie::Generator::Swagger::Schema
       consumes: [],
       paths: {},
       definitions: {},
-      schemes: Apipie.configuration.swagger_schemes,
+      schemes: Apipie.configuration.generator.swagger.schemes,
       tags: [],
-      securityDefinitions: Apipie.configuration.swagger_security_definitions,
-      security: Apipie.configuration.swagger_global_security
+      securityDefinitions: Apipie.configuration.generator.swagger.security_definitions,
+      security: Apipie.configuration.generator.swagger.global_security
     }
   end
 
   def generate
-    if Apipie.configuration.swagger_api_host.present?
-      @swagger[:host] = Apipie.configuration.swagger_api_host
+    if Apipie.configuration.generator.swagger.api_host.present?
+      @swagger[:host] = Apipie.configuration.generator.swagger.api_host
     end
 
-    if Apipie.configuration.swagger_content_type_input == :json
+    if Apipie.configuration.generator.swagger.content_type_input == :json
       @swagger[:consumes] = ['application/json']
       @swagger[:info][:title] += ' (params in:body)'
     else
@@ -42,7 +42,7 @@ class Apipie::Generator::Swagger::Schema
 
     @swagger.merge!(tags_and_paths)
 
-    if Apipie.configuration.swagger_generate_x_computed_id_field?
+    if Apipie.configuration.generator.swagger.generate_x_computed_id_field?
       @swagger[:info]['x-computed-id'] =
         Apipie::Generator::Swagger::ComputedInterfaceId.instance.id
     end

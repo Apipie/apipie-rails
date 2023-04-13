@@ -39,12 +39,12 @@ module Apipie
         I18n.locale = @language
 
         if should_render_swagger
-          prev_warning_value = Apipie.configuration.swagger_suppress_warnings
+          prev_warning_value = Apipie.configuration.generator.swagger.suppress_warnings
           begin
-            Apipie.configuration.swagger_suppress_warnings = true
+            Apipie.configuration.generator.swagger.suppress_warnings = true
             @doc = Apipie.to_swagger_json(params[:version], params[:resource], params[:method], @language)
           ensure
-            Apipie.configuration.swagger_suppress_warnings = prev_warning_value
+            Apipie.configuration.generator.swagger.suppress_warnings = prev_warning_value
           end
         else
           @doc = Apipie.to_json(params[:version], params[:resource], params[:method], @language)

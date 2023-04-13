@@ -49,6 +49,6 @@ class Apipie::Generator::Swagger::WarningWriter
 
   # @return [FalseClass, TrueClass, Array]
   def suppress_warnings_config
-    Apipie.configuration.swagger_suppress_warnings
+    Apipie.configuration.generator.swagger.suppress_warnings
   end
 end

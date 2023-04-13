@@ -12,7 +12,7 @@ class Apipie::Generator::Swagger::MethodDescription::ApiSchemaService
       path = Apipie::Generator::Swagger::PathDecorator.new(api.path)
       op_id = Apipie::Generator::Swagger::OperationId.from(api).to_s
 
-      if Apipie.configuration.swagger_generate_x_computed_id_field?
+      if Apipie.configuration.generator.swagger.generate_x_computed_id_field?
         Apipie::Generator::Swagger::ComputedInterfaceId.instance.add!(op_id)
       end
 
@@ -53,7 +53,7 @@ class Apipie::Generator::Swagger::MethodDescription::ApiSchemaService
   end
 
   def warning_tags
-    if Apipie.configuration.swagger_include_warning_tags? &&
+    if Apipie.configuration.generator.swagger.include_warning_tags? &&
        Apipie::Generator::Swagger::WarningWriter.instance.issued_warnings?
       ['warnings issued']
     else
@@ -70,7 +70,7 @@ class Apipie::Generator::Swagger::MethodDescription::ApiSchemaService
   end
 
   def params_in_body?
-    Apipie.configuration.swagger_content_type_input == :json
+    Apipie.configuration.generator.swagger.content_type_input == :json
   end
 
   # @param [Apipie::Generator::Swagger::MethodDescription::ApiDecorator] api

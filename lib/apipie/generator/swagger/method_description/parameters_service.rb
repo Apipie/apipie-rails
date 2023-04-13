@@ -38,7 +38,7 @@ class Apipie::Generator::Swagger::MethodDescription::ParametersService
         )
       )
 
-      if Apipie.configuration.swagger_json_input_uses_refs?
+      if Apipie.configuration.generator.swagger.json_input_uses_refs?
         composite = composite
                     .referenced("#{@method_description.operation_id}_input")
       end
@@ -122,7 +122,7 @@ class Apipie::Generator::Swagger::MethodDescription::ParametersService
   end
 
   def params_in_body?
-    Apipie.configuration.swagger_content_type_input == :json
+    Apipie.configuration.generator.swagger.content_type_input == :json
   end
 
   def body_allowed_for_current_method?

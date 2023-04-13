@@ -5,10 +5,6 @@ require 'apipie/rspec/response_validation_helper'
 require "json-schema"
 
 RSpec.describe PetsController, :type => :controller do
-  before :each do
-    Apipie.configuration.swagger_allow_additional_properties_in_response = false
-  end
-
   it "does not raise error when rendered output matches the described response" do
     response = get :return_and_validate_expected_response, format: :json
     expect(response).to match_declared_responses
@@ -39,7 +35,7 @@ RSpec.describe PetsController, :type => :controller do
     expect(response).not_to match_declared_responses
   end
 
-  it "raises error when a response has an extra property and 'swagger_allow_additional_properties_in_response' is false" do
+  it "raises error when a response has an extra property and 'swagger.allow_additional_properties_in_response' is false" do
     response = get :return_and_validate_extra_property, format: :json
     expect(response).not_to match_declared_responses
   end
@@ -50,26 +46,28 @@ RSpec.describe PetsController, :type => :controller do
     expect(response).not_to match_declared_responses
   end
 
-  it "does not raise error when a response has an extra property and 'swagger_allow_additional_properties_in_response' is true" do
-    Apipie.configuration.swagger_allow_additional_properties_in_response = true
-    response = get :return_and_validate_extra_property, format: :json
-    expect(response).to match_declared_responses
+  context "when allow_additional_properties_in_response is true'" do
+    before do
+      Apipie.configuration.generator.swagger.allow_additional_properties_in_response = true
+    end
+
+    it "does not raise error when a response has an extra property" do
+      response = get :return_and_validate_extra_property, format: :json
+      expect(response).to match_declared_responses
+    end
   end
 
   it "does not raise error when a response has an extra field and 'additional_properties' is specified in the response" do
-    Apipie.configuration.swagger_allow_additional_properties_in_response = false
     response = get :return_and_validate_allowed_extra_property, format: :json
     expect(response).to match_declared_responses
   end
 
   it "raises error when a response sub-object has an extra field and 'additional_properties' is not specified on it, but specified on the top level of the response" do
-    Apipie.configuration.swagger_allow_additional_properties_in_response = false
     response = get :sub_object_invalid_extra_property, format: :json
     expect(response).not_to match_declared_responses
   end
 
   it "does not raise error when a response sub-object has an extra field and 'additional_properties' is specified on it" do
-    Apipie.configuration.swagger_allow_additional_properties_in_response = false
     response = get :sub_object_allowed_extra_property, format: :json
     expect(response).to match_declared_responses
   end
@@ -86,7 +84,6 @@ RSpec.describe PetsController, :type => :controller do
 
   end
 
-
   describe "with array field" do
     it "no error for valid response" do
       response = get :returns_response_with_valid_array, format: :json
@@ -98,7 +95,4 @@ RSpec.describe PetsController, :type => :controller do
       expect(response).not_to match_declared_responses
     end
   end
-
-
-
 end
