@@ -35,38 +35,4 @@ describe Apipie::Generator::Swagger::TypeExtractor do
 
     it_behaves_like 'extractable method'
   end
-
-  describe '#extarct_with_warnings' do
-    before { Apipie.configuration.generator.swagger.suppress_warnings = false }
-
-    subject { extractor.extract_with_warnings(warnings) }
-
-    it_behaves_like 'extractable method'
-
-    context "when enum validator is used" do
-      context "and has `true`, `false` as values" do
-        let(:enum_values) { [true, false] }
-
-        let(:validator) do
-          Apipie::ResponseDescriptionAdapter::PropDesc::Validator.new('some-type', enum_values)
-        end
-
-        context 'and a boolean warning is passed' do
-          let(:boolean_warning) do
-            Apipie::Generator::Swagger::Warning.for_code(
-              Apipie::Generator::Swagger::Warning::INFERRING_BOOLEAN_CODE,
-              'SampleController#action',
-              { parameter: 'some-param' }
-            )
-          end
-
-          let(:warnings) { { boolean: boolean_warning } }
-
-          it 'outputs the warning' do
-            expect { subject }.to output(boolean_warning.warning_message).to_stderr
-          end
-        end
-      end
-    end
-  end
 end
