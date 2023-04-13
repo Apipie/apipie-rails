@@ -13,7 +13,7 @@ module Apipie
     app.to_json(version, resource_id, method_name, lang)
   end
 
-  def self.to_swagger_json(version = nil, resource_id = nil, method_name = nil, lang = nil, clear_warnings=true)
+  def self.to_swagger_json(version = nil, resource_id = nil, method_name = nil, lang = nil, clear_warnings = true)
     version ||= Apipie.configuration.default_version
     app.to_swagger_json(version, resource_id, method_name, lang, clear_warnings)
   end

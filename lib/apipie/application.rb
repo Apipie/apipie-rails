@@ -110,8 +110,7 @@ module Apipie
         # some method. Updating just meta data from dsl
         resource_description.update_from_dsl_data(dsl_data) if dsl_data
       else
-        resource_description = Apipie::ResourceDescription.
-          new(controller, resource_id, dsl_data, version)
+        resource_description = Apipie::ResourceDescription.new(controller, resource_id, dsl_data, version)
 
         Apipie.debug("@resource_descriptions[#{version}][#{resource_id}] = #{resource_description}")
         @resource_descriptions[version][resource_id] ||= resource_description
