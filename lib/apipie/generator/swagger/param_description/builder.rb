@@ -1,7 +1,7 @@
 class Apipie::Generator::Swagger::ParamDescription::Builder
   # @param [Apipie::ParamDescription] param_description
   # @param [TrueClass, FalseClass] in_schema
-  # @param [String] controller_method
+  # @param [Apipie::MethodDescription] controller_method
   def initialize(param_description, in_schema:, controller_method:)
     @param_description = param_description
     @in_schema = in_schema
@@ -88,16 +88,16 @@ class Apipie::Generator::Swagger::ParamDescription::Builder
 
   def warn_optional_without_default_value(definition)
     if !required? && !definition.key?(:default)
-      method =
+      method_id =
         if @param_description.is_a?(Apipie::ResponseDescriptionAdapter::PropDesc)
           @controller_method
         else
-          @param_description.method_description.method
+          Apipie::Generator::Swagger::MethodDescription::Decorator.new(@controller_method).ruby_name
         end
 
       Apipie::Generator::Swagger::Warning.for_code(
         Apipie::Generator::Swagger::Warning::OPTIONAL_WITHOUT_DEFAULT_VALUE_CODE,
-        method,
+        method_id,
         { parameter: @param_description.name }
       ).warn_through_writer
     end

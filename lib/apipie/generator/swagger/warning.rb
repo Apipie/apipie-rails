@@ -43,7 +43,7 @@ class Apipie::Generator::Swagger::Warning
   end
 
   def warning_message
-    "WARNING (#{@code}): [#{@method_id}] -- #{@info_message}"
+    "WARNING (#{@code}): [#{@method_id}] -- #{@info_message}\n"
   end
 
   def warn

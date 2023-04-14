@@ -16,7 +16,7 @@ describe Apipie::Generator::Swagger::Warning do
   describe '#warning_message' do
     subject { warning.warning_message }
 
-    it { is_expected.to eq("WARNING (#{code}): [#{method_id}] -- #{info_message}") }
+    it { is_expected.to eq("WARNING (#{code}): [#{method_id}] -- #{info_message}\n") }
   end
 
   describe '#warn' do

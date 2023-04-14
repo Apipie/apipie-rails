@@ -1,5 +1,4 @@
 module Apipie
-
   class MethodDescription
     attr_reader :full_description, :method, :resource, :apis, :examples, :see, :formats, :headers, :show
     attr_accessor :metadata
@@ -182,6 +181,10 @@ module Apipie
       @from_concern
     end
 
+    def method_name
+      @method
+    end
+
     private
 
     def merge_params(params, new_params)
@@ -224,5 +227,4 @@ module Apipie
       example
     end
   end
-
 end

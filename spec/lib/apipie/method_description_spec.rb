@@ -124,4 +124,10 @@ describe Apipie::MethodDescription do
       end
     end
   end
+
+  describe '#method_name' do
+    subject { method_description.method_name }
+
+    it { is_expected.to eq(method_description_method.to_s) }
+  end
 end
