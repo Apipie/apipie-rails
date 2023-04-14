@@ -13,7 +13,7 @@ describe Apipie::Generator::Swagger::ParamDescription::Composite do
     Apipie::Generator::Swagger::Context.new(
       allow_null: true,
       http_method: 'get',
-      controller_method: 'show'
+      controller_method: method_description
     )
   end
 

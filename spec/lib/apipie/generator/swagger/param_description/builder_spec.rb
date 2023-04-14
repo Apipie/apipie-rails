@@ -10,7 +10,7 @@ describe Apipie::Generator::Swagger::ParamDescription::Builder do
     described_class.new(
       param_description,
       in_schema: in_schema,
-      controller_method: 'show'
+      controller_method: method_desc
     )
   end
   let(:generated_block) { builder.to_swagger }

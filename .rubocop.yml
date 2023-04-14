@@ -38,6 +38,7 @@ Metrics/ClassLength:
     - lib/apipie/extractor/writer.rb
     - lib/apipie/application.rb
     - lib/apipie/param_description.rb
+    - lib/apipie/method_description.rb
     - lib/apipie/swagger_generator.rb
     - spec/dummy/app/controllers/pets_controller.rb
     - spec/dummy/app/controllers/twitter_example_controller.rb

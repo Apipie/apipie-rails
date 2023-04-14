@@ -99,9 +99,16 @@ class Apipie::Generator::Swagger::ParamDescription::Type
   end
 
   def warn_hash_without_internal_typespec
+    method_id =
+      if @param_description.is_a?(Apipie::ResponseDescriptionAdapter::PropDesc)
+        @controller_method.method
+      else
+        Apipie::Generator::Swagger::MethodDescription::Decorator.new(@param_description.method_description).ruby_name
+      end
+
     Apipie::Generator::Swagger::Warning.for_code(
       Apipie::Generator::Swagger::Warning::HASH_WITHOUT_INTERNAL_TYPESPEC_CODE,
-      @controller_method,
+      method_id,
       { parameter: @param_description.name }
     ).warn_through_writer
   end
