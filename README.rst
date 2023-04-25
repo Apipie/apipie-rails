@@ -1205,7 +1205,7 @@ after the ``apipie_validations`` before_action.
 
 TypeValidator
 -------------
-Check the parameter type. Only String, Hash and Array are supported
+Check the parameter type. Only String, Integer, Hash and Array are supported
 for the sake of simplicity. Read more to find out how to add
 your own validator.
 
