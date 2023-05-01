@@ -30,6 +30,7 @@ en:
     headers: Headers
     header_name: Header name
     code: Code
+    returns: Returns
     deprecated: Deprecated
     deprecation_details: Deprecation details
     deprecation:
