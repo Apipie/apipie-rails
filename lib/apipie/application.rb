@@ -26,14 +26,13 @@ module Apipie
     end
 
     def rails_routes(route_set = nil, base_url = "")
-      if route_set.nil? && @rails_routes
-        return @rails_routes
-      end
+      return @_rails_routes if route_set.nil? && @_rails_routes
+
       route_set ||= Rails.application.routes
       # ensure routes are loaded
       Rails.application.reload_routes! unless Rails.application.routes.routes.any?
 
-      flatten_routes = []
+      flattened_routes = []
 
       route_set.routes.each do |route|
         # route is_a ActionDispatch::Journey::Route
@@ -42,30 +41,30 @@ module Apipie
         route_app = route.app.app
         if route_app.respond_to?(:routes) && route_app.routes.is_a?(ActionDispatch::Routing::RouteSet)
           # recursively go though the mounted engines
-          flatten_routes.concat(rails_routes(route_app.routes, File.join(base_url, route.path.spec.to_s)))
+          flattened_routes.concat(rails_routes(route_app.routes, File.join(base_url, route.path.spec.to_s)))
         else
           route.base_url = base_url
-          flatten_routes << route
+          flattened_routes << route
         end
       end
 
-      @rails_routes = flatten_routes
+      @_rails_routes = flattened_routes
     end
 
-    # the app might be nested when using contraints, namespaces etc.
-    # this method does in depth search for the route controller
-    def route_app_controller(app, route, visited_apps = [])
-      if route.defaults[:controller]
-        controller_name = "#{route.defaults[:controller]}_controller".camelize
-        controller_name.safe_constantize
+    def rails_routes_by_controller_and_action
+      @_rails_routes_by_controller_and_action = rails_routes.group_by do |route|
+        requirements = route.requirements
+        [requirements[:controller], requirements[:action]]
       end
+    end
+
+    def clear_cached_routes!
+      @_rails_routes = nil
+      @_rails_routes_by_controller_and_action = nil
     end
 
     def routes_for_action(controller, method, args)
-      routes = rails_routes.select do |route|
-        controller == route_app_controller(route.app, route) &&
-            method.to_s == route.defaults[:action]
-      end
+      routes = rails_routes_by_controller_and_action[[controller.name.underscore.chomp('_controller'), method.to_s]] || []
 
       Apipie.configuration.routes_formatter.format_routes(routes, args)
     end
@@ -482,6 +481,7 @@ module Apipie
     # as this would break loading of the controllers.
     def rails_mark_classes_for_reload
       unless Rails.application.config.cache_classes
+        clear_cached_routes!
         Rails.application.reloader.reload!
         init_env
         reload_examples
