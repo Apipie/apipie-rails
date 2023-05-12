@@ -227,7 +227,7 @@ module Apipie
 
     def remove_method_description(resource, versions, method_name)
       versions.each do |version|
-        resource = resource_id(resource)
+        resource = get_resource_id(resource)
         if resource_description = get_resource_description("#{version}##{resource}")
           resource_description.remove_method_description(method_name)
         end
