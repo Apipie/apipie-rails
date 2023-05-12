@@ -45,6 +45,12 @@ Dummy::Application.routes.draw do
       get "/pets/returns_response_with_valid_array" => "pets#returns_response_with_valid_array"
       get "/pets/returns_response_with_invalid_array" => "pets#returns_response_with_invalid_array"
       get "/pets/undocumented_method" => "pets#undocumented_method"
+
+      # generate 1000 routes for testing performance of route matching used by api! method
+      # it's okay that these don't go anywhere real
+      1000.times do |i|
+        get "/api/v1/pets/#{i}" => "pets#{i}#show"
+      end
     end
 
     apipie
