@@ -122,13 +122,24 @@ module Apipie
     # resource_description? It's used to derivate the default value of
     # versions for methods.
     def controller_versions(controller)
-      ret = @controller_versions[controller.to_s]
-      return ret unless ret.empty?
-      if controller == ActionController::Base || controller.nil?
-        return [Apipie.configuration.default_version]
-      else
-        return controller_versions(controller.to_s.constantize.superclass)
+      value_from_parents(controller, default: [Apipie.configuration.default_version]) do |c|
+        ret = @controller_versions[c.to_s]
+        ret unless ret.empty?
       end
+    end
+
+    # Recursively walks up the controller hierarchy looking for a value
+    # from the block.
+    # Stops at ActionController::Base.
+    # @param [Class] controller controller to start from
+    # @param [Array] args arguments passed to the block
+    # @param [Object] default default value to return if no value is found
+    # @param [Proc] block block to call with controller and args
+    def value_from_parents(controller, *args, default: nil, &block)
+      return default if controller == ActionController::Base || controller == AbstractController::Base || controller.nil?
+
+      thing = yield(controller, *args)
+      thing || value_from_parents(controller.superclass, *args, default: default, &block)
     end
 
     def set_controller_versions(controller, versions)

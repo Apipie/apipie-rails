@@ -26,7 +26,9 @@ module Apipie
       @controller = controller
       @_id = id
       @_version = version || Apipie.configuration.default_version
-      @_parent = Apipie.get_resource_description(controller.superclass, version)
+      @_parent = Apipie.value_from_parents(controller.superclass, version) do |parent, ver|
+        Apipie.get_resource_description(parent, ver)
+      end
 
       update_from_dsl_data(dsl_data) if dsl_data
     end
@@ -60,7 +62,16 @@ module Apipie
     end
 
     def name
-      @name ||= @_resource_name.presence || @_id.split('-').map(&:capitalize).join('::')
+      @name ||= case resource_name
+                when Proc
+          resource_name.call(controller)
+                when Symbol
+          controller.public_send(resource_name)
+                when String
+          resource_name
+        else
+          default_name
+        end
     end
     alias _name name
 
@@ -121,6 +132,18 @@ module Apipie
         :headers => _headers,
         :deprecated => @_deprecated
       }
+    end
+
+    protected
+
+    def resource_name
+      @_resource_name.presence || @_parent&.resource_name
+    end
+
+    private
+
+    def default_name
+      @_id.split('-').map(&:capitalize).join('::')
     end
 
   end

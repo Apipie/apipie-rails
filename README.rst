@@ -108,6 +108,10 @@ resource_id
 name
   Human readable name of resource. By default ``class.name.humanize`` is used.
 
+  - Can be specified as a proc, which will receive the controller class as an argument.
+  - Can be a symbol, which will be sent to the controller class to get the name.
+  - Can be a string, which will be used as is.
+
 short (also short_description)
   Short description of the resource (it's shown on both the list of resources, and resource details)
 
