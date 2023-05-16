@@ -108,6 +108,10 @@ resource_id
 name
   Human readable name of resource. By default ``class.name.humanize`` is used.
 
+  - Can be specified as a proc, which will receive the controller class as an argument.
+  - Can be a symbol, which will be sent to the controller class to get the name.
+  - Can be a string, which will be used as is.
+
 short (also short_description)
   Short description of the resource (it's shown on both the list of resources, and resource details)
 
@@ -1180,7 +1184,7 @@ Here is an example of how to rescue and process a +ParamMissing+ or
 +ParamInvalid+ error from within the ApplicationController.
 
 .. code:: ruby
-  
+
   class ApplicationController < ActionController::Base
 
     # ParamError is superclass of ParamMissing, ParamInvalid
@@ -1928,11 +1932,13 @@ And if you write one on your own, don't hesitate to share it with us!
 Since this gem does not have a Gemfile, you need to specify it in your shell with:
 
 .. code:: shell
+
    BUNDLE_GEMFILE='gemfiles/Gemfile.rails61'
 
 Then, you can install dependencies and run the test suite:
 
 .. code:: shell
+
    > bundle install
    > bundle exec rspec
 
