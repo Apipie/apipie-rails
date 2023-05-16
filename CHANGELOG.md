@@ -4,6 +4,13 @@
 Also deleted the `Gemfile` that was now a broken symlink.
 please use `export BUNDLE_GEMFILE='gemfiles/Gemfile.rails61'; bundle exec rspec` to run the test suite
 
+## [v1.1.0](https://github.com/Apipie/apipie-rails/tree/v1.1.0) (2023-05-16)
+[Full Changelog](https://github.com/Apipie/apipie-rails/compare/v1.0.0...v1.1.0)
+* Improve performance of route detection [#870](https://github.com/Apipie/apipie-rails/pull/870) (Eric Hankins)
+* Fix startup crash due to typo [#869](https://github.com/Apipie/apipie-rails/pull/869) (Eric Hankins)
+* Skip parse body for pdf responses [#871](https://github.com/Apipie/apipie-rails/pull/871) (Juan Gomez)
+* add missing 'returns' translation [#868](https://github.com/Apipie/apipie-rails/pull/868) (Anthony Robertson)
+
 ## [v1.0.0](https://github.com/Apipie/apipie-rails/tree/v1.0.0) (2023-04-26)
 [Full Changelog](https://github.com/Apipie/apipie-rails/compare/v0.9.4...v1.0.0)
 * Refactor Swagger generator [#816](https://github.com/Apipie/apipie-rails/pull/816) (Panos Dalitsouris)
