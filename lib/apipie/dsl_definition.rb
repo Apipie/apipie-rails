@@ -243,7 +243,7 @@ module Apipie
               if Apipie.configuration.validate_presence?
                 method_params.each do |_, param|
                   # check if required parameters are present
-                  raise ParamMissing.new(param) if param.required && !params.key?(param.name)
+                  raise ParamMissing, param if param.required && !params.key?(param.name)
                 end
               end
 

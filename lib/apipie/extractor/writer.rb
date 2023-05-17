@@ -296,7 +296,7 @@ module Apipie
       end
 
       def controller_content
-        raise ControllerNotFound.new unless controller_path && File.exist?(controller_path)
+        raise ControllerNotFound unless controller_path && File.exist?(controller_path)
         @controller_content ||= File.read(controller_path)
       end
 

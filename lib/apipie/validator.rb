@@ -347,7 +347,7 @@ module Apipie
         return false if !value.is_a? Hash
         @hash_params&.each do |k, p|
           if Apipie.configuration.validate_presence?
-            raise ParamMissing.new(p) if p.required && !value.key?(k)
+            raise ParamMissing, p if p.required && !value.key?(k)
           end
           if Apipie.configuration.validate_value?
             p.validate(value[k]) if value.key?(k)

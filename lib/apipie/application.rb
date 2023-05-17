@@ -185,7 +185,7 @@ module Apipie
       elsif resource_id.respond_to? :apipie_resource_descriptions
         resource_description = get_resource_description(resource_id)
       else
-        raise ArgumentError.new("Resource #{resource_id} does not exists.")
+        raise ArgumentError, "Resource #{resource_id} does not exists."
       end
       resource_description&.method_description(method_name.to_sym)
     end

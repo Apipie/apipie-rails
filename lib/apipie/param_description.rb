@@ -46,7 +46,7 @@ module Apipie
       elsif desc_or_options.is_a?(String)
         options[:desc] = desc_or_options
       elsif !desc_or_options.nil?
-        raise ArgumentError.new("param description: expected description or options as 3rd parameter")
+        raise ArgumentError, "param description: expected description or options as 3rd parameter"
       end
 
       options.symbolize_keys!
@@ -73,7 +73,7 @@ module Apipie
 
       @response_only = (@options[:only_in] == :response)
       @request_only = (@options[:only_in] == :request)
-      raise ArgumentError.new("'#{@options[:only_in]}' is not a valid value for :only_in") if (!@response_only && !@request_only) && @options[:only_in].present?
+      raise ArgumentError, "'#{@options[:only_in]}' is not a valid value for :only_in" if (!@response_only && !@request_only) && @options[:only_in].present?
 
       @show = if @options.key? :show
         @options[:show]

@@ -1767,18 +1767,6 @@ Style/Proc:
   Exclude:
     - 'spec/lib/apipie/apipies_controller_spec.rb'
 
-# Offense count: 7
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle, AllowedCompactTypes.
-# SupportedStyles: compact, exploded
-Style/RaiseArgs:
-  Exclude:
-    - 'lib/apipie/application.rb'
-    - 'lib/apipie/dsl_definition.rb'
-    - 'lib/apipie/extractor/writer.rb'
-    - 'lib/apipie/param_description.rb'
-    - 'lib/apipie/see_description.rb'
-    - 'lib/apipie/validator.rb'
 
 # Offense count: 1
 # This cop supports unsafe autocorrection (--autocorrect-all).
