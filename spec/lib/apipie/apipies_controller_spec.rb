@@ -258,12 +258,12 @@ describe Apipie::ApipiesController, type: :controller do
 
     before do
       FileUtils.rm_r(cache_dir) if File.exist?(cache_dir)
-      FileUtils.mkdir_p(File.join(cache_dir, "apidoc", "v1", "resource"))
+      FileUtils.mkdir_p(File.join(cache_dir, "apidoc", "v1", "resource-with-namespace"))
       File.open(File.join(cache_dir, "apidoc", "v1.html"), "w") { |f| f << "apidoc.html cache v1" }
       File.open(File.join(cache_dir, "apidoc", "v2.html"), "w") { |f| f << "apidoc.html cache v2" }
       File.open(File.join(cache_dir, "apidoc", "v1.json"), "w") { |f| f << "apidoc.json cache" }
-      File.open(File.join(cache_dir, "apidoc", "v1", "resource.html"), "w") { |f| f << "resource.html cache" }
-      File.open(File.join(cache_dir, "apidoc", "v1", "resource", "method.html"), "w") { |f| f << "method.html cache" }
+      File.open(File.join(cache_dir, "apidoc", "v1", "resource-with-namespace.html"), "w") { |f| f << "resource-with-namespace.html cache" }
+      File.open(File.join(cache_dir, "apidoc", "v1", "resource-with-namespace", "method.html"), "w") { |f| f << "method.html cache" }
 
       Apipie.configuration.use_cache = true
       @orig_cache_dir = Apipie.configuration.cache_dir
@@ -279,24 +279,68 @@ describe Apipie::ApipiesController, type: :controller do
       # FileUtils.rm_r(cache_dir) if File.exist?(cache_dir)
     end
 
-    it "uses the file in cache dir instead of generating the content on runtime" do
-      get :index
-      expect(response.body).to eq("apidoc.html cache v1")
-      get :index, :params => { :version => 'v1' }
-      expect(response.body).to eq("apidoc.html cache v1")
-      get :index, :params => { :version => 'v2' }
-      expect(response.body).to eq("apidoc.html cache v2")
-      get :index, :params => { :version => 'v1', :format => "html" }
-      expect(response.body).to eq("apidoc.html cache v1")
-      get :index, :params => { :version => 'v1', :format => "json" }
-      expect(response.body).to eq("apidoc.json cache")
-      get :index, :params => { :version => 'v1', :format => "html", :resource => "resource" }
-      expect(response.body).to eq("resource.html cache")
-      get :index, :params => { :version => 'v1', :format => "html", :resource => "resource", :method => "method" }
-      expect(response.body).to eq("method.html cache")
+    context 'when the file exists' do
+      it "uses the file in cache dir instead of generating the content on runtime" do
+        get :index
+        expect(response.body).to eq("apidoc.html cache v1")
+
+        get :index, :params => { :version => 'v1' }
+        expect(response.body).to eq("apidoc.html cache v1")
+
+        get :index, :params => { :version => 'v2' }
+        expect(response.body).to eq("apidoc.html cache v2")
+
+        get :index, :params => { :version => 'v1', :format => "html" }
+        expect(response.body).to eq("apidoc.html cache v1")
+
+        get :index, :params => { :version => 'v1', :format => "json" }
+        expect(response.body).to eq("apidoc.json cache")
+
+        get :index, :params => { :version => 'v1', :format => "html", :resource => "resource-with-namespace" }
+        expect(response.body).to eq("resource-with-namespace.html cache")
+
+        get :index, :params => { :version => 'v1', :format => "html", :resource => "resource-with-namespace", :method => "method" }
+        expect(response.body).to eq("method.html cache")
+      end
+    end
+
+    context 'when the file does not exist' do
+      it 'returns a not found' do
+        get :index, :params => { :version => 'v3-does-not-exist' }
+        expect(response).to have_http_status(:not_found)
+      end
+    end
+
+    context 'preventing path traversal' do
+      context 'when resource contains ..' do
+        it "returns a not found" do
+          get :index, :params => { :version => 'v1', :format => "html", :resource => "../resource-with-namespace", :method => "method" }
+          expect(response).to have_http_status(:not_found)
+        end
+      end
+
+      context 'when method contains ..' do
+        it "returns a not found" do
+          get :index, :params => { :version => 'v1', :format => "html", :resource => "resource-with-namespace", :method => "../method" }
+          expect(response).to have_http_status(:not_found)
+        end
+      end
+
+      context 'when version contains ..' do
+        it "returns a not found" do
+          get :index, :params => { :version => '../v1', :format => "html", :resource => "resource-with-namespace", :method => "method" }
+          expect(response).to have_http_status(:not_found)
+        end
+      end
+
+      context 'when format contains ..' do
+        it "returns a not found" do
+          get :index, :params => { :version => 'v1', :format => "../html", :resource => "resource-with-namespace", :method => "method" }
+          expect(response).to have_http_status(:not_found)
+        end
+      end
     end
 
   end
-
 
 end
