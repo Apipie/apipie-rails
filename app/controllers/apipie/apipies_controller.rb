@@ -154,26 +154,12 @@ module Apipie
 
     def render_from_cache
       path = Apipie.configuration.doc_base_url.dup
-      # some params can contain dot, but only one in row
-      if [:resource, :method, :format, :version].any? { |p| params[p].to_s.gsub(".", "") =~ /\W/ || params[p].to_s.include?('..') }
-        head :bad_request and return
-      end
-
       path << "/" << params[:version] if params[:version].present?
       path << "/" << params[:resource] if params[:resource].present?
       path << "/" << params[:method] if params[:method].present?
-      if params[:format].present?
-        path << ".#{params[:format]}"
-      else
-        path << ".html"
-      end
-
-      # we sanitize the params before so in ideal case, this condition
-      # will be never satisfied. It's here for cases somebody adds new
-      # param into the path later and forgets about sanitation.
-      if path.include?('..')
-        head :bad_request and return
-      end
+      # Sanitize path against directory traversal attacks (e.g. ../../foo)
+      # by turning path into an absolute path before appending it to the cache dir
+      path = File.expand_path("#{path}.#{request.format.symbol}", '/')
 
       cache_file = File.join(Apipie.configuration.cache_dir, path)
       if File.exist?(cache_file)
