@@ -101,7 +101,9 @@ module Apipie
       Apipie.full_url crumbs.join('/')
     end
 
-    def api_url; "#{Apipie.api_base_url(_version)}#{@_path}"; end
+    def api_url
+      "#{Apipie.api_base_url(_version)}#{@_path}"
+    end
 
     def valid_method_name?(method_name)
       @_methods.keys.map(&:to_s).include?(method_name.to_s)

@@ -454,7 +454,7 @@ module Apipie
     end
 
     def version_prefix(klass)
-      version = controller_versions(klass.to_s).first
+      version = controller_versions(klass).first
       base_url = get_base_url(version)
       return "/" if base_url.blank?
       base_url[1..-1] + "/"
