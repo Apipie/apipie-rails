@@ -48,7 +48,7 @@ module Apipie
         else
           @query = request.query_string
         end
-        if response.content_type != 'application/pdf'
+        if response.media_type != 'application/pdf'
           @response_data = parse_data(response.body)
         end
         @code = response.code
