@@ -1,0 +1,9 @@
+# This Gemfile is used for IDEs like VS Code that need specific gems installed
+# for their tools to work properly. It is not used for the application itself.
+
+source 'https://rubygems.org'
+
+gem 'rubocop-rails'
+gem 'rubocop-rspec'
+gem 'rubocop-performance'
+gem 'ruby-lsp', '~> 0.5.1'
