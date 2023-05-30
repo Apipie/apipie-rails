@@ -1730,6 +1730,9 @@ There are several configuration parameters that determine the structure of the g
     See [https://swagger.io/docs/specification/2-0/authentication/] for details of what values can be specified
     By default, no security is defined.
 
+``config.generator.swagger.skip_default_tags``
+    By setting ``false`` (default): The resource name for e.g. ``/pets/{petId}`` will automatically be added as a tag ``pets``.
+    By setting ``true``: The tags needs to be explicitly added to the resource using the DSL.
 
 Known limitations of the current implementation
 -------------------------------------------------
