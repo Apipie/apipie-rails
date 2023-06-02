@@ -24,7 +24,7 @@ class PetsController < ApplicationController
   api :GET, "/pets/:id/as_properties", "Get a pet record"
   returns :code => 200 do
     property :pet_name, String, :desc => "Name of pet", :required => false
-    property :animal_type, ['dog','cat','iguana','kangaroo'], :desc => "Type of pet"   # required by default, because this is a 'property'
+    property :animal_type, %w[dog cat iguana kangaroo], :desc => "Type of pet"   # required by default, because this is a 'property'
   end
   returns :code => 404 do
     property :another_error_message, String, :desc => "Overriding the response description from the Pets resource"
@@ -40,7 +40,7 @@ class PetsController < ApplicationController
   #-----------------------------------------------------------
   def_param_group :pet do
     property :pet_name, String, :desc => "Name of pet", :required => false
-    property :animal_type, ['dog','cat','iguana','kangaroo'], :desc => "Type of pet"   # required by default, because this is a 'property'
+    property :animal_type, %w[dog cat iguana kangaroo], :desc => "Type of pet"   # required by default, because this is a 'property'
   end
 
   api :GET, "/pets/:id/as_param_group_of_properties", "Get a pet record"
@@ -70,7 +70,7 @@ class PetsController < ApplicationController
     param :pet_id, Integer, :desc => "id of pet", :required => true
     param :pet_name, String, :desc => "Name of pet", :required => false, :only_in => :response
     param :partial_match_allowed, [true, false], :desc => "Partial match allowed?", :required => false, :only_in => :request
-    property :animal_type, ['dog','cat','iguana','kangaroo'], :desc => "Type of pet"   # this is implicitly :only_in => :response
+    property :animal_type, %w[dog cat iguana kangaroo], :desc => "Type of pet"   # this is implicitly :only_in => :response
   end
 
   api :GET, "/pets/pet_by_id", "Get a pet record with the pet id in the body of the request"
@@ -142,7 +142,7 @@ class PetsController < ApplicationController
   end
   returns :code => 204 do
     property :int_array, :array_of => Integer
-    property :enum_array, :array_of => ['v1','v2','v3']
+    property :enum_array, :array_of => %w[v1 v2 v3]
   end
   returns :code => :unprocessable_entity, :desc => "Fleas were discovered on the pet" do
     param_group :pet

@@ -10,7 +10,7 @@ module Apipie
                                    options)
     end
 
-    def initialize(code_or_options, desc=nil, options={})
+    def initialize(code_or_options, desc = nil, options = {})
       if code_or_options.is_a? Hash
         code_or_options.symbolize_keys!
         @code = code_or_options[:code]
@@ -31,10 +31,10 @@ module Apipie
       end
     end
 
-    def to_json
+    def to_json(lang)
       {
         :code => code,
-        :description => description,
+        :description => Apipie.app.translate(description, lang),
         :metadata => metadata
       }
     end

@@ -1,8 +1,8 @@
 module Api
   module V2
     class Nested::ResourcesController < V2::BaseController
-      resource_description do 
-        name 'Resources'
+      resource_description do
+        name ->(controller) { controller.controller_name.delete('aeiou').capitalize }
         resource_id "resource"
       end
       api :GET, "/nested/resources/", "List all nested resources."

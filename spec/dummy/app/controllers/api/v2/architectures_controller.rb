@@ -22,7 +22,8 @@ module Api
       def update
       end
 
-      api :DELETE, "/architecturess/:id/", "Delete an architecture."
+      api! "Delete an architecture."
+      api_version "2.0" # forces removal of the method description
       def destroy
       end
     end

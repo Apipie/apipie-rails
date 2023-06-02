@@ -1,0 +1,20 @@
+name: RuboCop
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      BUNDLE_GEMFILE: gemfiles/Gemfile.rails70
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Ruby 3.2.1
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.2.1
+          bundler-cache: true
+
+      - name: Run rubocop
+        run: bundle exec rubocop --config .rubocop.yml

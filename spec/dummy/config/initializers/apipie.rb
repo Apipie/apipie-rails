@@ -23,7 +23,7 @@ Apipie.configure do |config|
   #     rake apipie:cache
   #
   config.use_cache = Rails.env.production?
-  # config.cache_dir = File.join(Rails.root, "public", "apipie-cache") # optional
+  config.cache_dir = File.join(Rails.root, "tmp", "apipie-cache") # optional
 
   # set to enable/disable reloading controllers (and the documentation with it),
   # by default enabled in development
@@ -89,7 +89,7 @@ class Apipie::Validator::IntegerValidator < Apipie::Validator::BaseValidator
   end
 
   def self.build(param_description, argument, options, block)
-    if argument == Integer || argument == Fixnum
+    if argument == Integer
       self.new(param_description, argument)
     end
   end

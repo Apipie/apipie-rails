@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'rake tasks' do
   include_context "rake"
 
-  let(:doc_path)  { "user_specified_doc_path" }
+  let(:doc_path)  { 'tmp/user_specified_doc_path' }
 
   before do
     Apipie.configuration.doc_path = doc_path
@@ -18,7 +18,7 @@ describe 'rake tasks' do
     end
 
     let(:doc_output) do
-      File.join(::Rails.root, doc_path, 'apidoc')
+      File.join(Rails.root, doc_path, 'apidoc')
     end
 
     after do
@@ -49,9 +49,7 @@ describe 'rake tasks' do
   end
 
   describe 'apipie:cache' do
-    let(:cache_output) do
-      File.join(::Rails.root, 'public', 'apipie-cache')
-    end
+    let(:cache_output) { Apipie.configuration.cache_dir }
 
     let(:apidoc_html) do
       File.read("#{cache_output}.html")

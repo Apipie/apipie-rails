@@ -9,21 +9,22 @@ module Apipie
 
       def analyse_env(env)
         @verb = env["REQUEST_METHOD"].to_sym
-        @path = env["PATH_INFO"].sub(/^\/*/,"/")
+        @path = env["PATH_INFO"].sub(%r{^/*},"/")
         @query = env["QUERY_STRING"] unless env["QUERY_STRING"].blank?
         @params = Rack::Utils.parse_nested_query(@query)
         @params.merge!(env["action_dispatch.request.request_parameters"] || {})
-        if data = parse_data(env["rack.input"].read)
+        rack_input = env["rack.input"]
+        if data = parse_data(rack_input.read)
           @request_data = data
-          env["rack.input"].rewind
         elsif form_hash = env["rack.request.form_hash"]
           @request_data = reformat_multipart_data(form_hash)
         end
+        rack_input.rewind
       end
 
       def analyse_controller(controller)
         @controller = controller.class
-        @action = controller.params[:action]
+        @action = Apipie.configuration.api_action_matcher.call(controller)
       end
 
       def analyse_response(response)
@@ -47,7 +48,9 @@ module Apipie
         else
           @query = request.query_string
         end
-        @response_data = parse_data(response.body)
+        if response.media_type != 'application/pdf'
+          @response_data = parse_data(response.body)
+        end
         @code = response.code
       end
 
@@ -149,8 +152,8 @@ module Apipie
       end
 
       module FunctionalTestRecording
-        def process(*args) # action, parameters = nil, session = nil, flash = nil, http_method = 'GET')
-          ret = super(*args)
+        def process(*) # action, parameters = nil, session = nil, flash = nil, http_method = 'GET')
+          ret = super
           if Apipie.configuration.record
             Apipie::Extractor.call_recorder.analyze_functional_test(self)
             Apipie::Extractor.call_finished
@@ -159,6 +162,7 @@ module Apipie
         ensure
           Apipie::Extractor.clean_call_recorder
         end
+        ruby2_keywords :process if respond_to?(:ruby2_keywords, true)
       end
     end
   end

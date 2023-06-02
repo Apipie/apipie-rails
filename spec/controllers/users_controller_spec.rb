@@ -5,9 +5,10 @@ def compare_hashes(h1, h2)
     expect(h1).to eq(h2)
   else
     h1.each do |key, val|
-      if val.is_a? Hash
+      case val
+      when Hash
         compare_hashes val, h2[key]
-      elsif val.is_a? Array
+      when Array
         val.each_with_index do |v, i|
           compare_hashes val[i], h2[key][i]
         end
@@ -51,7 +52,7 @@ describe UsersController do
       expect(subject._params_args.count).to eq(2)
       name, type, options = subject._params_args.first
       expect(name).to eq(:id)
-      expect(type).to eq(Fixnum)
+      expect(type).to eq(Integer)
       expect(options).to eq({:required=>false, :desc=>"User ID"})
     end
   end
@@ -121,6 +122,29 @@ describe UsersController do
 
           it "should fail if extra parameter is passed in" do
             expect { get :show, :params => { :id => 5 , :badparam => 'badfoo', :session => "secret_hash" }}.to raise_error(Apipie::UnknownParam, /\bbadparam\b/)
+          end
+        end
+
+        context "key validations are enabled and skip on non-validated keys" do
+          before do
+            Apipie.configuration.validate_value = false
+            Apipie.configuration.validate_presence = true
+            Apipie.configuration.validate_key = true
+            Apipie.configuration.action_on_non_validated_keys = :skip
+          end
+
+          it "should reply to valid request" do
+            expect { get :show, :params => { :id => 5, :session => 'secret_hash' }}.not_to raise_error
+            assert_response :success
+          end
+
+          it "should delete the param and not fail if an extra parameter is passed." do
+            expect { get :show, :params => { :id => 5 , :badparam => 'badfoo', :session => "secret_hash" }}.not_to raise_error
+            expect(controller.params.as_json).to eq({"session"=>"secret_hash", "id"=>"5", "controller"=>"users", "action"=>"show"})
+          end
+
+          after do
+            Apipie.configuration.action_on_non_validated_keys = :raise
           end
         end
 
@@ -245,6 +269,7 @@ describe UsersController do
                                   :allow_blank => false,
                                   :metadata => nil,
                                   :show => true,
+                                  :deprecated => false,
                                   :expected_type => "hash",
                                   :validations => [])
           end
@@ -387,7 +412,7 @@ describe UsersController do
       expect(b.resource._id).to eq('users')
 
       expect(b.apis.count).to eq(1)
-      expect(b.formats).to eq(['json', 'jsonp'])
+      expect(b.formats).to eq(%w[json jsonp])
       api = b.apis.first
       expect(api.short_description).to eq("Show user profile")
       expect(api.path).to eq("/users/:id")
@@ -488,12 +513,24 @@ describe UsersController do
           }
         end
 
+        let(:expected_header_with_default) do
+          {
+            name: :HeaderNameWithDefaultValue,
+            description: 'Header with default value',
+            options: {
+              required: true,
+              default: 'default value'
+            }
+          }
+        end
+
         it 'contains all headers description in method doc' do
           headers = Apipie.get_method_description(UsersController, :action_with_headers).headers
           expect(headers).to be_an(Array)
 
           compare_hashes headers[0], expected_required_header
           compare_hashes headers[1], expected_optional_header
+          compare_hashes headers[2], expected_header_with_default
         end
       end
 
@@ -549,6 +586,7 @@ describe UsersController do
                      :description=>"\n<p>Authorization</p>\n",
                      :name=>"oauth",
                      :show=>true,
+                     :deprecated=>false,
                      :expected_type=>"string"},
                     {:validator=>"Must be a Hash",
                      :description=>"\n<p>Deprecated parameter not documented</p>\n",
@@ -559,15 +597,17 @@ describe UsersController do
                      :required=>false,
                      :full_name=>"legacy_param",
                      :show=>false,
+                     :deprecated=>false,
                      :params=>
                       [{:validator=>"Must be a Hash",
                         :description=>"\n<p>Param description for all methods</p>\n",
                         :expected_type=>"hash",
                         :allow_nil=>false,
-                       :allow_blank => false,
+                        :allow_blank => false,
                         :name=>"resource_param",
                         :required=>false,
                         :full_name=>"resource_param",
+                        :deprecated=>false,
                         :show=>true,
                         :params=>
                         [{:required=>true,
@@ -577,6 +617,7 @@ describe UsersController do
                           :description=>"\n<p>Username for login</p>\n",
                           :name=>"ausername", :full_name=>"resource_param[ausername]",
                           :show=>true,
+                          :deprecated=>false,
                           :expected_type=>"string"},
                          {:required=>true,
                           :allow_nil => false,
@@ -585,6 +626,7 @@ describe UsersController do
                           :description=>"\n<p>Password for login</p>\n",
                           :name=>"apassword", :full_name=>"resource_param[apassword]",
                           :show=>true,
+                          :deprecated=>false,
                           :expected_type=>"string"}
                         ]}
                       ]
@@ -595,6 +637,7 @@ describe UsersController do
                      :description=>"\n<p>Company ID</p>\n",
                      :name=>"id", :full_name=>"id",
                      :show=>true,
+                     :deprecated=>false,
                      :expected_type=>"numeric"},
        ],
         :name => 'two_urls',
@@ -665,7 +708,7 @@ EOS2
       param = a.params[:array_param]
       expect(param.desc).to eq("\n<p>array validator</p>\n")
       expect(param.validator.class).to be(Apipie::Validator::EnumValidator)
-      expect(param.validator.instance_variable_get("@array")).to eq(["100", "one", "two", "1", "2"])
+      expect(param.validator.instance_variable_get("@array")).to eq(%w[100 one two 1 2])
 
       param = a.params[:proc_param]
       expect(param.desc).to eq("\n<p>proc validator</p>\n")

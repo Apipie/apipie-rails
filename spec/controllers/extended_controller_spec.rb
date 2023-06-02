@@ -7,5 +7,8 @@ describe ExtendedController do
     user_param = Apipie["extended#create"].params[:user]
     expect(user_param.validator.params_ordered.map(&:name)).to eq [:name, :password, :from_concern]
   end
-end
 
+  it 'should include updated metadata' do
+    expect(Apipie['extended#create'].metadata).to eq metadata: 'data'
+  end
+end

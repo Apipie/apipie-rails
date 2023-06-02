@@ -6,7 +6,7 @@ describe "Swagger Responses" do
   let(:desc) { Apipie.get_resource_description(controller_class, Apipie.configuration.default_version) }
 
   let(:swagger) {
-    Apipie.configuration.swagger_suppress_warnings = true
+    Apipie.configuration.generator.swagger.suppress_warnings = true
     Apipie.to_swagger_json(Apipie.configuration.default_version, controller_class.to_s.underscore.sub("_controller", ""))
   }
 
@@ -24,20 +24,20 @@ describe "Swagger Responses" do
     schema
   end
 
-  def swagger_response_for(path, code=200, method='get')
+  def swagger_response_for(path, code = 200, method = 'get')
     response = swagger[:paths][path][method][:responses][code]
     response[:schema] = resolve_refs(response[:schema])
     response
   end
 
-  def swagger_params_for(path, method='get')
+  def swagger_params_for(path, method = 'get')
     swagger[:paths][path][method][:parameters]
   end
 
-  def swagger_param_by_name(param_name, path, method='get')
+  def swagger_param_by_name(param_name, path, method = 'get')
     params = swagger_params_for(path, method)
     matching = params.select{|p| p[:name] == param_name }
-    raise "multiple params named [#{param_name}] in swagger definition for [#{method } #{path}]" if matching.length > 1
+    raise "multiple params named [#{param_name}] in swagger definition for [#{method} #{path}]" if matching.length > 1
 
     nil if matching.length == 0
 
@@ -72,7 +72,7 @@ describe "Swagger Responses" do
       deep_match?(actual, expected)
     end
 
-    def deep_match?(actual, expected, breadcrumb=[])
+    def deep_match?(actual, expected, breadcrumb = [])
       pending_params = actual.params_ordered.dup
       expected.each do |expected_param|
         expected_param_name = expected_param.is_a?(Hash) ? expected_param.keys.first : expected_param
@@ -141,7 +141,7 @@ describe "Swagger Responses" do
 
         a_schema = resolve_refs(schema[:items])
         expect(a_schema).to have_field(:pet_name, 'string', {:description => 'Name of pet', :required => false})
-        expect(a_schema).to have_field(:animal_type, 'string', {:description => 'Type of pet', :enum => ['dog','cat','iguana','kangaroo']})
+        expect(a_schema).to have_field(:animal_type, 'string', {:description => 'Type of pet', :enum => %w[dog cat iguana kangaroo]})
       end
 
 
@@ -210,7 +210,7 @@ describe "Swagger Responses" do
 
         schema = response[:schema]
         expect(schema).to have_field(:pet_name, 'string', {:description => 'Name of pet', :required => false})
-        expect(schema).to have_field(:animal_type, 'string', {:description => 'Type of pet', :enum => ['dog','cat','iguana','kangaroo']})
+        expect(schema).to have_field(:animal_type, 'string', {:description => 'Type of pet', :enum => %w[dog cat iguana kangaroo]})
       end
 
       it 'should have the 404 response description overridden' do
@@ -247,7 +247,7 @@ describe "Swagger Responses" do
 
         schema = response[:schema]
         expect(schema).to have_field(:pet_name, 'string', {:description => 'Name of pet', :required => false})
-        expect(schema).to have_field(:animal_type, 'string', {:description => 'Type of pet', :enum => ['dog','cat','iguana','kangaroo']})
+        expect(schema).to have_field(:animal_type, 'string', {:description => 'Type of pet', :enum => %w[dog cat iguana kangaroo]})
       end
     end
 
@@ -282,7 +282,7 @@ describe "Swagger Responses" do
         schema = response[:schema]
         expect(schema).to have_field(:pet_id, 'number', {:description => 'id of pet'})
         expect(schema).to have_field(:pet_name, 'string', {:description => 'Name of pet', :required => false})
-        expect(schema).to have_field(:animal_type, 'string', {:description => 'Type of pet', :enum => ['dog','cat','iguana','kangaroo']})
+        expect(schema).to have_field(:animal_type, 'string', {:description => 'Type of pet', :enum => %w[dog cat iguana kangaroo]})
         expect(schema).not_to have_field(:partial_match_allowed, 'boolean', {:required => false})
       end
 
@@ -338,6 +338,7 @@ describe "Swagger Responses" do
 
         expect(returns_obj).to match_field_structure([:pet_name, :animal_type])
       end
+
       it 'should have the 201 response described in the swagger' do
         response = swagger_response_for('/pets/{id}/extra_info', 201)
         expect(response[:description]).to eq("Found a pet")
@@ -359,6 +360,7 @@ describe "Swagger Responses" do
                                                       {:pet_measurements => [:weight, :height, :num_legs]}
                                                      ])
       end
+
       it 'should have the 202 response described in the swagger' do
         response = swagger_response_for('/pets/{id}/extra_info', 202)
         expect(response[:description]).to eq('Accepted')
@@ -388,6 +390,7 @@ describe "Swagger Responses" do
                                                       {:additional_histories => [:did_visit_vet, :avg_meals_per_day]}
                                                      ])
       end
+
       it 'should have the 203 response described in the swagger' do
         response = swagger_response_for('/pets/{id}/extra_info', 203)
         expect(response[:description]).to eq('Non-Authoritative Information')
@@ -424,12 +427,13 @@ describe "Swagger Responses" do
 
         expect(returns_obj).to match_field_structure([:int_array, :enum_array])
       end
+
       it 'should have the 204 response described in the swagger' do
         response = swagger_response_for('/pets/{id}/extra_info', 204)
 
         schema = response[:schema]
         expect(schema).to have_field(:int_array, 'array', {items: {type: 'number'}})
-        expect(schema).to have_field(:enum_array, 'array', {items: {type: 'string', enum: ['v1','v2','v3']}})
+        expect(schema).to have_field(:enum_array, 'array', {items: {type: 'string', enum: %w[v1 v2 v3]}})
       end
 
 
@@ -444,6 +448,7 @@ describe "Swagger Responses" do
                                                       :num_fleas
                                                      ])
       end
+
       it 'should have the 422 response described in the swagger' do
         response = swagger_response_for('/pets/{id}/extra_info', 422)
         expect(response[:description]).to eq('Fleas were discovered on the pet')
@@ -546,7 +551,7 @@ describe "Swagger Responses" do
 
         a_schema = schema[:items]
         expect(a_schema).to have_field(:pet_name, 'string', {:description => 'Name of pet', :required => false})
-        expect(a_schema).to have_field(:animal_type, 'string', {:description => 'Type of pet', :enum => ['dog','cat','iguana','kangaroo']})
+        expect(a_schema).to have_field(:animal_type, 'string', {:description => 'Type of pet', :enum => %w[dog cat iguana kangaroo]})
       end
     end
 
@@ -568,6 +573,7 @@ describe "Swagger Responses" do
                                                       {:pet_measurements => [:weight, :height, :num_legs]}
                                                      ])
       end
+
       it 'should have the 200 response described in the swagger' do
         response = swagger_response_for('/pets_with_measurements_described_as_class/{id}', 200)
         expect(response[:description]).to eq('measurements of the pet')
