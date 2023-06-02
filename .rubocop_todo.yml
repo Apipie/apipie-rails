@@ -899,11 +899,6 @@ Performance/Detect:
   Exclude:
     - 'spec/lib/swagger/rake_swagger_spec.rb'
 
-# Offense count: 1
-# This cop supports unsafe autocorrection (--autocorrect-all).
-Performance/InefficientHashSearch:
-  Exclude:
-    - 'lib/apipie/generator/swagger/warning.rb'
 
 # Offense count: 1
 # This cop supports safe autocorrection (--autocorrect).
