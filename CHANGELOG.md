@@ -1,8 +1,6 @@
  Changelog
 ===========
 
-Also deleted the `Gemfile` that was now a broken symlink.
-please use `export BUNDLE_GEMFILE='gemfiles/Gemfile.rails61'; bundle exec rspec` to run the test suite
 
 ## [v1.1.0](https://github.com/Apipie/apipie-rails/tree/v1.1.0) (2023-05-16)
 [Full Changelog](https://github.com/Apipie/apipie-rails/compare/v1.0.0...v1.1.0)
