@@ -56,7 +56,7 @@ Run your application and see the result at
 use ``http://localhost:3000/apipie.json``.
 
 For a more comprehensive getting started guide, see
-`this demo <https://github.com/iNecas/apipie-demo>`_, which includes
+`this demo <https://github.com/Apipie/apipie-demo>`_, which includes
 features such as generating documentation from tests, recording examples etc.
 
 Screenshots
@@ -78,7 +78,7 @@ See `Contributors page  <https://github.com/Apipie/apipie-rails/graphs/contribut
 License
 -------
 
-Apipie-rails is released under the `MIT License <http://opensource.org/licenses/MIT>`_
+Apipie-rails is released under the `MIT License <https://opensource.org/licenses/MIT>`_
 
 ===============
  Documentation
@@ -1940,7 +1940,7 @@ Then, you can install dependencies and run the test suite:
  Disqus Integration
 ====================
 
-You can setup `Disqus <http://www.disqus.com>`_ discussion within
+You can setup `Disqus <https://disqus.com/>`_ discussion within
 your documentation. Just set the credentials in the Apipie
 configuration:
 
