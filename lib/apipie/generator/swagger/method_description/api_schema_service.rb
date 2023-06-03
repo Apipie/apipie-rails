@@ -48,10 +48,10 @@ class Apipie::Generator::Swagger::MethodDescription::ApiSchemaService
 
   def tags
     tags = if Apipie.configuration.generator.swagger.skip_default_tags?
-      []
-    else
-      [@method_description.resource._id]
-    end
+             []
+           else
+             [@method_description.resource._id]
+           end
     tags + warning_tags + @method_description.tag_list.tags
   end
 
