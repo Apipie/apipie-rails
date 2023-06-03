@@ -1,8 +1,17 @@
  Changelog
 ===========
 
-Also deleted the `Gemfile` that was now a broken symlink.
-please use `export BUNDLE_GEMFILE='gemfiles/Gemfile.rails61'; bundle exec rspec` to run the test suite
+## [v1.2.0](https://github.com/Apipie/apipie-rails/tree/v1.2.0) (2023-06-03)
+[Full Changelog](https://github.com/Apipie/apipie-rails/compare/v1.1.0...v1.2.0)
+* Allow resource_name to be inherited ([#872](https://github.com/Apipie/apipie-rails/pull/872)) (Eric Hankins)
+* Fix cache rendering with namespaced resources ([#874](https://github.com/Apipie/apipie-rails/pull/874)) (Eric Hankins)
+* Fix deprecated content_type on Rails >= 6 ([#879](https://github.com/Apipie/apipie-rails/pull/879)) (Eric Hankins)
+* Fix typo in Collector ([#877](https://github.com/Apipie/apipie-rails/pull/877)) (Eric Hankins)
+* Fix error climbing controller hierarchy ([#875](https://github.com/Apipie/apipie-rails/pull/875)) (Eric Hankins)
+* Add Gemfile.tools for IDE usage ([#876](https://github.com/Apipie/apipie-rails/pull/876)) (Eric Hankins)
+* Fix rubocop ([#883](https://github.com/Apipie/apipie-rails/pull/883)) (Mathieu Jobin)
+* Performance/InefficientHashSearch-20230602233137 ([#884](https://github.com/Apipie/apipie-rails/pull/884)) (RuboCop challenger)
+* Redo Github action script to not need individual gemfiles ([#885](https://github.com/Apipie/apipie-rails/pull/885)) (Mathieu Jobin)
 
 ## [v1.1.0](https://github.com/Apipie/apipie-rails/tree/v1.1.0) (2023-05-16)
 [Full Changelog](https://github.com/Apipie/apipie-rails/compare/v1.0.0...v1.1.0)
