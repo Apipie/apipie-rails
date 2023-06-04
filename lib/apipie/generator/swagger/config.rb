@@ -10,7 +10,7 @@ module Apipie
                              :json_input_uses_refs, :suppress_warnings, :api_host,
                              :generate_x_computed_id_field, :allow_additional_properties_in_response,
                              :responses_use_refs, :schemes, :security_definitions,
-                             :global_security].freeze
+                             :global_security, :skip_default_tags].freeze
 
         attr_accessor(*CONFIG_ATTRIBUTES)
 
@@ -43,6 +43,7 @@ module Apipie
         alias include_warning_tags? include_warning_tags
         alias json_input_uses_refs? json_input_uses_refs
         alias responses_use_refs? responses_use_refs
+        alias skip_default_tags? skip_default_tags
         alias generate_x_computed_id_field? generate_x_computed_id_field
         alias swagger_include_warning_tags? swagger_include_warning_tags
         alias swagger_json_input_uses_refs? swagger_json_input_uses_refs
@@ -61,6 +62,7 @@ module Apipie
           @schemes = [:https]
           @security_definitions = {}
           @global_security = []
+          @skip_default_tags = false
         end
 
         def self.deprecated_methods

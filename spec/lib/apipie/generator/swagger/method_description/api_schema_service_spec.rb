@@ -64,6 +64,19 @@ describe Apipie::Generator::Swagger::MethodDescription::ApiSchemaService do
       it { is_expected.to include(*tags) }
     end
 
+    context 'when Apipie.configuration.generator.swagger.skip_default_tags is enabled' do
+      before { Apipie.configuration.generator.swagger.skip_default_tags = true }
+      after { Apipie.configuration.generator.swagger.skip_default_tags = false }
+
+      it { is_expected.to be_empty }
+
+      context 'when tags are available' do
+        let(:tags) { ['Tag 1', 'Tag 2'] }
+
+        it { is_expected.to eq(tags) }
+      end
+    end
+
     context 'when Apipie.configuration.generator.swagger.include_warning_tags is enabled' do
       before { Apipie.configuration.generator.swagger.include_warning_tags = true }
 

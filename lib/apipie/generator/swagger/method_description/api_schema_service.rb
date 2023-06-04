@@ -47,9 +47,12 @@ class Apipie::Generator::Swagger::MethodDescription::ApiSchemaService
   end
 
   def tags
-    [@method_description.resource._id] +
-      warning_tags +
-      @method_description.tag_list.tags
+    tags = if Apipie.configuration.generator.swagger.skip_default_tags?
+             []
+           else
+             [@method_description.resource._id]
+           end
+    tags + warning_tags + @method_description.tag_list.tags
   end
 
   def warning_tags
