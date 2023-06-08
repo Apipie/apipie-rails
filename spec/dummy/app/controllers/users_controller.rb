@@ -301,4 +301,10 @@ class UsersController < ApplicationController
   header :HeaderNameWithDefaultValue, 'Header with default value', required: true, default: 'default value'
   def action_with_headers
   end
+
+  api :GET, '/users/multiple_required_params'
+  param :required_param1, String, required: true
+  param :required_param2, String, required: true
+  def multiple_required_params
+  end
 end

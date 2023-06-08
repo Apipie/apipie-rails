@@ -38,6 +38,16 @@ module Apipie
         return nil
       end
 
+      def self.raise_if_missing_params
+        missing_params = []
+        yield missing_params
+        if missing_params.size > 1
+          raise ParamMultipleMissing.new(missing_params)
+        elsif missing_params.size == 1
+          raise ParamMissing.new(missing_params.first)
+        end
+      end
+
       # check if value is valid
       def valid?(value)
         if self.validate(value)
@@ -345,14 +355,18 @@ module Apipie
 
       def validate(value)
         return false if !value.is_a? Hash
-        @hash_params&.each do |k, p|
-          if Apipie.configuration.validate_presence?
-            raise ParamMissing.new(p) if p.required && !value.key?(k)
-          end
-          if Apipie.configuration.validate_value?
-            p.validate(value[k]) if value.key?(k)
+
+        BaseValidator.raise_if_missing_params do |missing|
+          @hash_params&.each do |k, p|
+            if Apipie.configuration.validate_presence?
+              missing << p if p.required && !value.key?(k)
+            end
+            if Apipie.configuration.validate_value?
+              p.validate(value[k]) if value.key?(k)
+            end
           end
         end
+
         return true
       end
 

@@ -24,6 +24,20 @@ module Apipie
     end
   end
 
+  class ParamMultipleMissing < ParamError
+    attr_accessor :params
+
+    def initialize(params)
+      @params = params
+    end
+
+    def to_s
+      params.map do |param|
+        ParamMissing.new(param).to_s
+      end.join("\n")
+    end
+  end
+
   class ParamMissing < DefinedParamError
     def to_s
       unless @param.options[:missing_message].nil?
