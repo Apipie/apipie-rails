@@ -1,6 +1,14 @@
  Changelog
 ===========
 
+## [v1.2.1](https://github.com/Apipie/apipie-rails/tree/v1.2.1) (2023-06-09)
+[Full Changelog](https://github.com/Apipie/apipie-rails/compare/v1.2.0...v1.2.1)
+* rspec: Fixes deprecated matcher ([#882](https://github.com/Apipie/apipie-rails/pull/882)) (David Wessman)
+* Fix streaming bug ([#677](https://github.com/Apipie/apipie-rails/pull/677)) (Hunter Braun)
+* Update README URLs based on HTTP redirects ([#448](https://github.com/Apipie/apipie-rails/pull/448)) (ReadmeCritic)
+* Swagger: Adds option to skip default tags ([#881](https://github.com/Apipie/apipie-rails/pull/881)) (David Wessman)
+* Parameter validation: Raises error for all missing ([#886](https://github.com/Apipie/apipie-rails/pull/886)) (David Wessman)
+
 ## [v1.2.0](https://github.com/Apipie/apipie-rails/tree/v1.2.0) (2023-06-03)
 [Full Changelog](https://github.com/Apipie/apipie-rails/compare/v1.1.0...v1.2.0)
 * Allow resource_name to be inherited ([#872](https://github.com/Apipie/apipie-rails/pull/872)) (Eric Hankins)
