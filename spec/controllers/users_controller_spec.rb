@@ -37,6 +37,7 @@ describe UsersController do
       expect(methods.keys).to include(:update)
       expect(methods.keys).to include(:two_urls)
       expect(methods.keys).to include(:action_with_headers)
+      expect(methods.keys).to include(:multiple_required_params)
     end
 
     it "should contain info about resource" do
@@ -99,6 +100,10 @@ describe UsersController do
 
           it "should fail if required parameter is missing" do
             expect { get :show, :params => { :id => 5 }}.to raise_error(Apipie::ParamMissing, /session_parameter_is_required/)
+          end
+
+          it "should fail if multiple required parameters are missing" do
+            expect { get :multiple_required_params }.to raise_error(Apipie::ParamMultipleMissing, /required_param1.*\n.*required_param2|required_param2.*\n.*required_parameter1/)
           end
 
           it "should pass if required parameter has wrong type" do
@@ -245,6 +250,11 @@ describe UsersController do
             expect {
               post :create, :params => { :user => { :name => "root", :pass => "12345", :membership => "____" } }
             }.to raise_error(Apipie::ParamInvalid, /membership/)
+
+            # Should include both pass and name
+            expect {
+              post :create, :params => { :user => { :membership => "standard" } }
+            }.to raise_error(Apipie::ParamMultipleMissing, /pass.*\n.*name|name.*\n.*pass/)
 
             expect {
               post :create, :params => { :user => { :name => "root" } }

@@ -8,6 +8,7 @@ Dummy::Application.routes.draw do
       resources :users do
         collection do
           post :create_route
+          get :multiple_required_params
         end
       end
       resources :concerns, :only => [:index, :show]

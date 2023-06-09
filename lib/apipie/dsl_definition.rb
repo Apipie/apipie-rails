@@ -241,9 +241,11 @@ module Apipie
               method_params = self.class._apipie_get_method_params(action_name)
 
               if Apipie.configuration.validate_presence?
-                method_params.each do |_, param|
-                  # check if required parameters are present
-                  raise ParamMissing.new(param) if param.required && !params.key?(param.name)
+                Validator::BaseValidator.raise_if_missing_params do |missing|
+                  method_params.each do |_, param|
+                    # check if required parameters are present
+                    missing << param if param.required && !params.key?(param.name)
+                  end
                 end
               end
 
@@ -285,7 +287,6 @@ module Apipie
               old_method.bind(self).call(*args)
             end
           end
-
         end
       end
 
