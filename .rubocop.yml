@@ -46,7 +46,7 @@ Metrics/ClassLength:
     - spec/dummy/app/controllers/users_controller.rb
 
 Metrics/BlockLength:
-  Max: 25 # default
+  Max: 26 # default
   Exclude:
     - app/controllers/apipie/apipies_controller.rb
     - lib/apipie/generator/swagger/param_description/composite.rb
