@@ -44,7 +44,11 @@ module Apipie
         @path = request.path
         @params = request.request_parameters
         if [:POST, :PUT, :PATCH, :DELETE].include?(@verb)
-          @request_data = @params
+          if request.content_type == "multipart/form-data"
+            @request_data = reformat_multipart_data(@params)
+          else
+            @request_data = @params
+          end
         else
           @query = request.query_string
         end
@@ -68,6 +72,12 @@ module Apipie
         form.each do |key, attrs|
           if attrs.is_a?(String)
             lines << boundary << content_disposition(key) << "Content-Length: #{attrs.size}" << '' << attrs
+          elsif attrs.is_a?(Rack::Test::UploadedFile) || attrs.is_a?(ActionDispatch::Http::UploadedFile)
+            reformat_uploaded_file(boundary, attrs, key, lines)
+          elsif attrs.is_a?(Array)
+            reformat_array(boundary, attrs, key, lines)
+          elsif attrs.is_a?(TrueClass) || attrs.is_a?(FalseClass)
+            reformat_boolean(boundary, attrs, key, lines)
           else
             reformat_hash(boundary, attrs, lines)
           end
@@ -86,6 +96,24 @@ module Apipie
           # Look for subelements that contain a part.
           attrs.each { |k,v| v.is_a?(Hash) and reformat_hash(boundary, v, lines) }
         end
+      end
+
+      def reformat_boolean(boundary, attrs, key, lines)
+        lines << boundary << content_disposition(key)
+        lines << '' << attrs.to_s
+      end
+
+      def reformat_array(boundary, attrs, key, lines)
+        attrs.each do |item|
+          lines << boundary << content_disposition("#{key}[]")
+          lines << '' << item
+        end
+      end
+
+      def reformat_uploaded_file(boundary, file, key, lines)
+        lines << boundary << %{#{content_disposition(key)}; filename="#{file.original_filename}"}
+        lines << "Content-Length: #{file.size}" << "Content-Type: #{file.content_type}" << "Content-Transfer-Encoding: binary"
+        lines << '' << %{... contents of "#{key}" ...}
       end
 
       def content_disposition(name)
