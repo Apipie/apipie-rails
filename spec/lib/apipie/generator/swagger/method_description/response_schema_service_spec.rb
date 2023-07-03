@@ -56,7 +56,7 @@ describe Apipie::Generator::Swagger::MethodDescription::ResponseSchemaService do
         expect(properties).to eq(
           {
             a_number: {
-              type: 'number'
+              type: 'number', required: true
             },
             an_optional_number: {
               type: 'number'
@@ -72,7 +72,7 @@ describe Apipie::Generator::Swagger::MethodDescription::ResponseSchemaService do
           expect(properties).to eq(
             {
               a_number: {
-                type: %w[number null]
+                type: %w[number null], required: true
               },
               an_optional_number: {
                 type: %w[number null]
