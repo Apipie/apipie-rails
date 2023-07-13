@@ -40,7 +40,7 @@ describe 'Apipie::Extractor::Recorder' do
   describe '#analyse_functional_test' do
     context 'with multipart-form data' do
       let(:test_context) do
-        double(controller:, request:, response: ActionDispatch::Response.new(200))
+        double(controller: controller, request: request, response: ActionDispatch::Response.new(200))
       end
 
       let(:file) do
