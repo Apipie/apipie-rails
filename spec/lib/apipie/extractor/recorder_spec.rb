@@ -39,8 +39,14 @@ describe 'Apipie::Extractor::Recorder' do
 
   describe '#analyse_functional_test' do
     context 'with multipart-form data' do
+      subject do
+        recorder.analyse_controller(controller)
+        recorder.analyze_functional_test(test_context)
+        recorder.record[:request_data]
+      end
+
       let(:test_context) do
-        double(controller: controller, request: request, response: ActionDispatch::Response.new(200))
+        instance_double(controller: controller, request: request, response: ActionDispatch::Response.new(200))
       end
 
       let(:file) do
@@ -55,15 +61,9 @@ describe 'Apipie::Extractor::Recorder' do
       let(:request) do
         request = ActionDispatch::Request.new({})
         request.request_method = 'POST'
-        request.headers['Content-Type'] = "multipart/form-data"
+        request.headers['Content-Type'] = 'multipart/form-data'
         request.request_parameters = { file: file }
         request
-      end
-
-      subject do
-        recorder.analyse_controller(controller)
-        recorder.analyze_functional_test(test_context)
-        recorder.record[:request_data]
       end
 
       before do
