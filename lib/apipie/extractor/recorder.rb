@@ -44,11 +44,7 @@ module Apipie
         @path = request.path
         @params = request.request_parameters
         if [:POST, :PUT, :PATCH, :DELETE].include?(@verb)
-          if request.content_type == "multipart/form-data"
-            @request_data = reformat_multipart_data(@params)
-          else
-            @request_data = @params
-          end
+          @request_data = request.content_type == "multipart/form-data" ? reformat_multipart_data(@params) : @params
         else
           @query = request.query_string
         end
@@ -70,13 +66,14 @@ module Apipie
         lines = ["Content-Type: multipart/form-data; boundary=#{MULTIPART_BOUNDARY}",'']
         boundary = "--#{MULTIPART_BOUNDARY}"
         form.each do |key, attrs|
-          if attrs.is_a?(String)
+          case attrs
+          when String
             lines << boundary << content_disposition(key) << "Content-Length: #{attrs.size}" << '' << attrs
-          elsif attrs.is_a?(Rack::Test::UploadedFile) || attrs.is_a?(ActionDispatch::Http::UploadedFile)
+          when Rack::Test::UploadedFile, ActionDispatch::Http::UploadedFile
             reformat_uploaded_file(boundary, attrs, key, lines)
-          elsif attrs.is_a?(Array)
+          when Array
             reformat_array(boundary, attrs, key, lines)
-          elsif attrs.is_a?(TrueClass) || attrs.is_a?(FalseClass)
+          when TrueClass, FalseClass
             reformat_boolean(boundary, attrs, key, lines)
           else
             reformat_hash(boundary, attrs, lines)
