@@ -56,7 +56,7 @@ describe 'Apipie::Extractor::Recorder' do
         request = ActionDispatch::Request.new({})
         request.request_method = 'POST'
         request.headers['Content-Type'] = "multipart/form-data"
-        request.request_parameters = { file: }
+        request.request_parameters = { file: file }
         request
       end
 
