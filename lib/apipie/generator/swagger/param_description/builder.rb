@@ -79,7 +79,7 @@ class Apipie::Generator::Swagger::ParamDescription::Builder
   end
 
   def required?
-    required_from_path? || (!@in_schema && @param_description.required)
+    required_from_path? || @param_description.required
   end
 
   def required_from_path?

@@ -61,7 +61,7 @@ describe Apipie::SwaggerGenerator do
           expect(properties).to eq(
             {
               a_number: {
-                type: 'number'
+                type: 'number', required: true
               },
               an_optional_number: {
                 type: 'number'

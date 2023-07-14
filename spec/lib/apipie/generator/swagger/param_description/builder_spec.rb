@@ -78,6 +78,12 @@ describe Apipie::Generator::Swagger::ParamDescription::Builder do
 
     it { is_expected.to be_blank }
 
+    context 'when is required' do
+      let(:base_param_description_options) { { required: true } }
+
+      it { is_expected.to eq(true) }
+    end
+
     context 'when in_schema is false' do
       let(:in_schema) { false }
 
@@ -105,6 +111,14 @@ describe Apipie::Generator::Swagger::ParamDescription::Builder do
         it 'outputs an option without default warning' do
           expect { subject }.to output(/is optional but default value is not specified/).to_stderr
         end
+      end
+    end
+
+    context 'when is required' do
+      let(:base_param_description_options) { { required: true } }
+
+      it 'does not output an option without default warning' do
+        expect { subject }.not_to output(/is optional but default value is not specified/).to_stderr
       end
     end
   end
