@@ -61,19 +61,18 @@ module Apipie
         data
       end
 
-      def reformat_multipart_data(form)
+      def reformat_multipart_data(form) # rubocop:disable Style/CaseLikeIf
         form.empty? and return ''
         lines = ["Content-Type: multipart/form-data; boundary=#{MULTIPART_BOUNDARY}",'']
         boundary = "--#{MULTIPART_BOUNDARY}"
         form.each do |key, attrs|
-          case attrs
-          when String
+          if attrs.is_a?(String)
             lines << boundary << content_disposition(key) << "Content-Length: #{attrs.size}" << '' << attrs
-          when Rack::Test::UploadedFile, ActionDispatch::Http::UploadedFile
+          elsif attrs.is_a?(Rack::Test::UploadedFile) || attrs.is_a?(ActionDispatch::Http::UploadedFile)
             reformat_uploaded_file(boundary, attrs, key, lines)
-          when Array
+          elsif attrs.is_a?(Array)
             reformat_array(boundary, attrs, key, lines)
-          when TrueClass, FalseClass
+          elsif attrs.is_a?(TrueClass) || attrs.is_a?(FalseClass)
             reformat_boolean(boundary, attrs, key, lines)
           else
             reformat_hash(boundary, attrs, lines)
