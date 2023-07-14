@@ -46,7 +46,7 @@ describe 'Apipie::Extractor::Recorder' do
       end
 
       let(:test_context) do
-        instance_double(controller: controller, request: request, response: ActionDispatch::Response.new(200))
+        double(controller: controller, request: request, response: ActionDispatch::Response.new(200))
       end
 
       let(:file) do
