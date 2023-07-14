@@ -1242,6 +1242,7 @@ RSpec/VerifiedDoubles:
     - 'spec/lib/apipie/apipies_controller_spec.rb'
     - 'spec/lib/apipie/extractor/writer_spec.rb'
     - 'spec/lib/validators/array_validator_spec.rb'
+    - 'spec/lib/apipie/extractor/recorder_spec.rb'
 
 # Offense count: 1
 RSpec/VoidExpect:
