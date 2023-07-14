@@ -12,9 +12,9 @@ module Apipie
     attr_reader :additional_properties, :is_array
     attr_accessor :parent, :required
 
-    alias_method :response_only?, :response_only
-    alias_method :request_only?, :request_only
-    alias_method :is_array?, :is_array
+    alias response_only? response_only
+    alias request_only? request_only
+    alias is_array? is_array
 
     def self.from_dsl_data(method_description, args)
       param_name, validator, desc_or_options, options, block = args
@@ -57,6 +57,10 @@ module Apipie
         @from_concern = @options[:param_group][:from_concern]
       end
 
+      if validator.is_a?(Hash)
+        @options.merge!(validator.select{|k,v| k != :array_of })
+      end
+
       @method_description = method_description
       @name = concern_subst(name)
       @as = options[:as] || @name
@@ -71,7 +75,7 @@ module Apipie
       @request_only = (@options[:only_in] == :request)
       raise ArgumentError.new("'#{@options[:only_in]}' is not a valid value for :only_in") if (!@response_only && !@request_only) && @options[:only_in].present?
 
-      @show = if @options.has_key? :show
+      @show = if @options.key? :show
         @options[:show]
       else
         true
@@ -85,9 +89,7 @@ module Apipie
       if validator
         if (validator != Hash) && (validator.is_a? Hash) && (validator[:array_of])
           @is_array = true
-          rest_of_options = validator
           validator = validator[:array_of]
-          options.merge!(rest_of_options.select{|k,v| k != :array_of })
           raise "an ':array_of =>' validator is allowed exclusively on response-only fields" unless @response_only
         end
         @validator = Validator::BaseValidator.find(self, validator, @options, block)
@@ -97,6 +99,7 @@ module Apipie
       @validations = Array(options[:validations]).map {|v| concern_subst(Apipie.markup_to_html(v)) }
 
       @additional_properties = @options[:additional_properties]
+      @deprecated = @options[:deprecated] || false
     end
 
     def from_concern?
@@ -114,14 +117,18 @@ module Apipie
     end
 
     def validate(value)
-      return true if @allow_nil && value.nil?
-      return true if @allow_blank && value.blank?
+      return true if allow_nil && value.nil?
+      return true if allow_blank && value.blank?
       value = normalized_value(value)
-      if (!@allow_nil && value.nil?) || !@validator.valid?(value)
-        error = @validator.error
+      if (!allow_nil && value.nil?) || (blank_forbidden? && value.blank?) || !validator.valid?(value)
+        error = validator.error
         error = ParamError.new(error) unless error.is_a? StandardError
         raise error
       end
+    end
+
+    def blank_forbidden?
+      !Apipie.configuration.ignore_allow_blank_false && !allow_blank && !validator.ignore_allow_blank?
     end
 
     def process_value(value)
@@ -151,18 +158,26 @@ module Apipie
     end
 
     def to_json(lang = nil)
-      hash = { :name => name.to_s,
-               :full_name => full_name,
-               :description => preformat_text(Apipie.app.translate(@options[:desc], lang)),
-               :required => required,
-               :allow_nil => allow_nil,
-               :allow_blank => allow_blank,
-               :is_array => is_array,
-               :validator => validator.to_s,
-               :expected_type => validator.expected_type,
-               :metadata => metadata,
-               :show => show,
-               :validations => validations }
+      hash = {
+        name: name.to_s,
+        full_name: full_name,
+        description: preformat_text(Apipie.app.translate(@options[:desc], lang)),
+        required: required,
+        allow_nil: allow_nil,
+        allow_blank: allow_blank,
+        is_array: is_array,
+        validator: validator.to_s,
+        expected_type: validator.expected_type,
+        metadata: metadata,
+        show: show,
+        validations: validations,
+        deprecated: deprecated?
+      }
+
+      if deprecation.present?
+        hash[:deprecation] = deprecation.to_json
+      end
+
       if sub_params = validator.params_ordered
         hash[:params] = sub_params.map { |p| p.to_json(lang)}
       end
@@ -209,7 +224,7 @@ module Apipie
     # action awareness is being inherited from ancestors (in terms of
     # nested params)
     def action_aware?
-      if @options.has_key?(:action_aware)
+      if @options.key?(:action_aware)
         return @options[:action_aware]
       elsif @parent
         @parent.action_aware?
@@ -234,7 +249,7 @@ module Apipie
     # crate/update actions.
     def action_awareness
       if action_aware?
-        if !@options.has_key?(:allow_nil)
+        if !@options.key?(:allow_nil)
           if @required
             @allow_nil = false
           else
@@ -265,7 +280,7 @@ module Apipie
     end
 
     def is_required?
-      if @options.has_key?(:required)
+      if @options.key?(:required)
         if (@options[:required] == true) || (@options[:required] == false)
           @options[:required]
         else
@@ -276,6 +291,24 @@ module Apipie
       end
     end
 
+    def deprecated?
+      @deprecated.present?
+    end
+
+    def deprecation
+      return if @deprecated.blank? || @deprecated == true
+
+      case @deprecated
+      when Hash
+        Apipie::ParamDescription::Deprecation.new(
+          info: @deprecated[:info],
+          deprecated_in: @deprecated[:in],
+          sunset_at: @deprecated[:sunset]
+        )
+      when String
+        Apipie::ParamDescription::Deprecation.new(info: @deprecated)
+      end
+    end
   end
 
 end

@@ -1,12 +1,19 @@
 require 'spec_helper'
 
 describe Api::V2::ArchitecturesController do
-  describe "resource description" do
-    subject { Apipie.get_resource_description(Api::V2::ArchitecturesController, "2.0") }
+  let(:resource_description) { Apipie.get_resource_description(described_class, "2.0") }
 
-    it "should be version 2.0" do
-      expect(subject._version).to eq('2.0')
+  describe "resource description" do
+    describe 'version' do
+      subject { resource_description._version }
+
+      it { is_expected.to eq('2.0') }
     end
 
+    describe 'name' do
+      subject { resource_description.name }
+
+      it { is_expected.to eq('Architectures') }
+    end
   end
 end

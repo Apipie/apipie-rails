@@ -16,7 +16,7 @@
     optional: opcional
     nil_allowed: nulo permitido
     param_name: Nome parâmetro
-    params: Parâmentros
+    params: Parâmetros
     examples: Exemplos
     metadata: Metadado
     errors: Erros

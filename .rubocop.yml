@@ -1,0 +1,128 @@
+require:
+  - rubocop-rails
+  - rubocop-rspec
+  - rubocop-performance
+
+inherit_from: .rubocop_todo.yml
+
+Rails:
+  Enabled: true
+
+AllCops:
+  NewCops: enable
+  TargetRubyVersion: 2.6
+
+Layout/LineLength:
+  Max: 140
+  Exclude:
+    - app/controllers/apipie/apipies_controller.rb
+    - lib/apipie/extractor/writer.rb
+    - lib/apipie/param_description.rb
+    - lib/apipie/response_description_adapter.rb
+    - lib/apipie/swagger_generator.rb
+    - lib/apipie/errors.rb
+    - lib/apipie/generator/swagger/warning.rb
+    - lib/apipie/rspec/response_validation_helper.rb
+    - spec/controllers/pets_controller_spec.rb
+    - spec/controllers/users_controller_spec.rb
+    - spec/dummy/app/controllers/twitter_example_controller.rb
+    - spec/dummy/config/initializers/secret_token.rb
+    - spec/lib/application_spec.rb
+    - spec/lib/param_description_spec.rb
+    - spec/lib/param_description_deprecation_spec.rb
+    - spec/lib/swagger/response_validation_spec.rb
+    - spec/spec_helper.rb
+
+Metrics/ClassLength:
+  Max: 180
+  Exclude:
+    - lib/apipie/extractor/writer.rb
+    - lib/apipie/application.rb
+    - lib/apipie/param_description.rb
+    - lib/apipie/method_description.rb
+    - lib/apipie/swagger_generator.rb
+    - spec/dummy/app/controllers/pets_controller.rb
+    - spec/dummy/app/controllers/twitter_example_controller.rb
+    - spec/dummy/app/controllers/users_controller.rb
+
+Metrics/BlockLength:
+  Max: 26 # default
+  Exclude:
+    - app/controllers/apipie/apipies_controller.rb
+    - lib/apipie/generator/swagger/param_description/composite.rb
+    - lib/apipie/generator/swagger/param_description/path_params_composite.rb
+    - lib/tasks/apipie.rake
+    - lib/apipie/swagger_generator.rb
+
+Naming/PredicateName:
+  AllowedMethods:
+    - have_field?
+
+Style/IfUnlessModifier:
+  Enabled: false
+
+Style/NumericPredicate:
+  Enabled: false
+
+Style/HashSyntax:
+  EnforcedStyle: no_mixed_keys
+  EnforcedShorthandSyntax: never # consistent
+
+Metrics/ParameterLists:
+  Exclude:
+    - "lib/apipie/generator/swagger/context.rb"
+
+Style/Documentation:
+  Exclude:
+    - "app/controllers/apipie/apipies_controller.rb"
+    - "app/helpers/apipie_helper.rb"
+    - "lib/apipie/apipie_module.rb"
+    - "lib/apipie/application.rb"
+    - "lib/apipie/configuration.rb"
+    - "lib/apipie/core_ext/route.rb"
+    - "lib/apipie/dsl_definition.rb"
+    - "lib/apipie/error_description.rb"
+    - "lib/apipie/errors.rb"
+    - "lib/apipie/extractor.rb"
+    - "lib/apipie/extractor/collector.rb"
+    - "lib/apipie/extractor/recorder.rb"
+    - "lib/apipie/extractor/writer.rb"
+    - "lib/apipie/generator/generator.rb"
+    - "lib/apipie/generator/swagger/**/*"
+    - "lib/apipie/helpers.rb"
+    - "lib/apipie/markup.rb"
+    - "lib/apipie/method_description.rb"
+    - "lib/apipie/method_description/api.rb"
+    - "lib/apipie/middleware/checksum_in_headers.rb"
+    - "lib/apipie/railtie.rb"
+    - "lib/apipie/response_description.rb"
+    - "lib/apipie/response_description_adapter.rb"
+    - "lib/apipie/routes_formatter.rb"
+    - "lib/apipie/routing.rb"
+    - "lib/apipie/rspec/response_validation_helper.rb"
+    - "lib/apipie/swagger_generator.rb"
+    - "lib/apipie/see_description.rb"
+    - "lib/apipie/static_dispatcher.rb"
+    - "lib/apipie/tag_list_description.rb"
+    - "lib/apipie/validator.rb"
+    - "lib/generators/apipie/install/install_generator.rb"
+    - "lib/generators/apipie/views_generator.rb"
+    - spec/support/custom_bool_validator.rb
+    - spec/lib/validators/array_validator_spec.rb
+    - spec/dummy/**/*.rb
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/InverseMethods:
+  Enabled: false
+
+Naming/BlockForwarding:
+  EnforcedStyle: explicit
+  BlockForwardingName: block
+
+Lint/MissingSuper:
+  Exclude:
+    - "lib/apipie/errors.rb"
+    - "lib/apipie/response_description_adapter.rb"
+    - "lib/apipie/validator.rb"

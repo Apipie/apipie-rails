@@ -9,7 +9,9 @@ module Apipie
 
     def match?(path)
       # Replace all null bytes
-      path = ::Rack::Utils.unescape(path || '').gsub(/\x0/, '')
+      path = ::Rack::Utils.unescape(path || '')
+                          .encode(Encoding::UTF_8, invalid: :replace, replace: '')
+                          .gsub("\x0", '')
 
       full_path = path.empty? ? @root : File.join(@root, path)
       paths = "#{full_path}#{ext}"

@@ -1,3 +1,3 @@
 module Apipie
-  VERSION = '0.5.18'
+  VERSION = "1.2.1"
 end

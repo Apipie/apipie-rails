@@ -1,4 +1,4 @@
-$:.push File.expand_path('../lib', __FILE__)
+$:.push File.expand_path('lib', __dir__)
 
 # Describe your gem and declare its dependencies:
 Gem::Specification.new do |s|

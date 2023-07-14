@@ -1,0 +1,31 @@
+name: build
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false
+      matrix:
+        rails: ["7.0", "6.1", "6.0"]
+        ruby: ["3.2.2", "3.1.4", "3.0.6", "2.7.8"]
+        include:
+          - rails: "5.2"
+            ruby: "2.7.8"
+          - rails: "5.1"
+            ruby: "2.6.10"
+          - rails: "5.0"
+            ruby: "2.6.10"
+
+    env:
+      RUBY_VERSION: ${{ matrix.ruby }}
+      RAILS_VERSION: ${{ matrix.rails }}
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: ${{ matrix.ruby }}
+        bundler-cache: true
+    - run: bundle exec rspec

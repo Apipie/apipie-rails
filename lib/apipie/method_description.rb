@@ -1,22 +1,5 @@
-require 'set'
 module Apipie
-
   class MethodDescription
-
-    class Api
-
-      attr_accessor :short_description, :path, :http_method, :from_routes, :options, :returns
-
-      def initialize(method, path, desc, options)
-        @http_method = method.to_s
-        @path = path
-        @short_description = desc
-        @from_routes = options[:from_routes]
-        @options = options
-      end
-
-    end
-
     attr_reader :full_description, :method, :resource, :apis, :examples, :see, :formats, :headers, :show
     attr_accessor :metadata
 
@@ -24,12 +7,9 @@ module Apipie
       @method = method.to_s
       @resource = resource
       @from_concern = dsl_data[:from_concern]
-      @apis = api_data(dsl_data).map do |mthd, path, desc, opts|
-        MethodDescription::Api.new(mthd, concern_subst(path), concern_subst(desc), opts)
-      end
+      @apis = ApisService.new(resource, method, dsl_data).call
 
-      desc = dsl_data[:description] || ''
-      @full_description = Apipie.markup_to_html(desc)
+      @full_description = dsl_data[:description] || ''
 
       @errors = dsl_data[:errors].map do |args|
         Apipie::ErrorDescription.from_dsl_data(args)
@@ -53,12 +33,12 @@ module Apipie
 
       @params_ordered = dsl_data[:params].map do |args|
         Apipie::ParamDescription.from_dsl_data(self, args)
-      end.reject{|p| p.response_only? }
+      end.reject(&:response_only?)
 
       @params_ordered = ParamDescription.unify(@params_ordered)
       @headers = dsl_data[:headers]
 
-      @show = if dsl_data.has_key? :show
+      @show = if dsl_data.key? :show
         dsl_data[:show]
       else
         true
@@ -102,7 +82,7 @@ module Apipie
       parent = Apipie.get_resource_description(@resource.controller.superclass)
 
       # get tags from parent resource description
-      parent_tags = [parent, @resource].compact.flat_map { |resource| resource._tag_list_arg }
+      parent_tags = [parent, @resource].compact.flat_map(&:_tag_list_arg)
       Apipie::TagListDescription.new((parent_tags + @tag_list).uniq.compact)
     end
 
@@ -178,14 +158,14 @@ module Apipie
       @formats || @resource._formats
     end
 
-    def to_json(lang=nil)
+    def to_json(lang = nil)
       {
         :doc_url => doc_url,
         :name => @method,
         :apis => method_apis_to_json(lang),
         :formats => formats,
-        :full_description => Apipie.app.translate(@full_description, lang),
-        :errors => errors.map(&:to_json),
+        :full_description => Apipie.markup_to_html(Apipie.app.translate(@full_description, lang)),
+        :errors => errors.map{ |error| error.to_json(lang) }.flatten,
         :params => params_ordered.map{ |param| param.to_json(lang) }.flatten,
         :returns => @returns.map{ |return_item| return_item.to_json(lang) }.flatten,
         :examples => @examples,
@@ -201,24 +181,11 @@ module Apipie
       @from_concern
     end
 
-    private
-
-    def api_data(dsl_data)
-      ret = dsl_data[:api_args].dup
-      if dsl_data[:api_from_routes]
-        desc = dsl_data[:api_from_routes][:desc]
-        options = dsl_data[:api_from_routes][:options]
-
-        api_from_routes = Apipie.routes_for_action(resource.controller, method, {:desc => desc, :options => options}).map do |route_info|
-          [route_info[:verb],
-           route_info[:path],
-           route_info[:desc],
-           (route_info[:options] || {}).merge(:from_routes => true)]
-        end
-        ret.concat(api_from_routes)
-      end
-      ret
+    def method_name
+      @method
     end
+
+    private
 
     def merge_params(params, new_params)
       new_param_names = Set.new(new_params.map(&:name))
@@ -259,16 +226,5 @@ module Apipie
       example << "\n" << format_example_data(ex[:response_data]).to_s if ex[:response_data]
       example
     end
-
-    def concern_subst(string)
-      return if string.nil?
-      if from_concern?
-        resource.controller._apipie_perform_concern_subst(string)
-      else
-        string
-      end
-    end
-
   end
-
 end

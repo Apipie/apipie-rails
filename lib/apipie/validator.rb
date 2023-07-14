@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
+
 module Apipie
 
   module Validator
 
-    # to create new validator, inherit from Apipie::Validator::Base
+    # to create new validator, inherit from Apipie::Validator::BaseValidator
     # and implement class method build and instance method validate
     class BaseValidator
 
@@ -35,6 +36,16 @@ module Apipie
           return validator if validator
         end
         return nil
+      end
+
+      def self.raise_if_missing_params
+        missing_params = []
+        yield missing_params
+        if missing_params.size > 1
+          raise ParamMultipleMissing.new(missing_params)
+        elsif missing_params.size == 1
+          raise ParamMissing.new(missing_params.first)
+        end
       end
 
       # check if value is valid
@@ -78,6 +89,10 @@ module Apipie
       # thor supported types :string, :hash, :array, :numeric, or :boolean
       def expected_type
         'string'
+      end
+
+      def ignore_allow_blank?
+        false
       end
 
       def merge_with(other_validator)
@@ -185,7 +200,7 @@ module Apipie
 
     # arguments value must be an array
     class ArrayValidator < Apipie::Validator::BaseValidator
-      def initialize(param_description, argument, options={})
+      def initialize(param_description, argument, options = {})
         super(param_description)
         @type = argument
         @items_type = options[:of]
@@ -333,29 +348,32 @@ module Apipie
         @params_ordered ||= _apipie_dsl_data[:params].map do |args|
           options = args.find { |arg| arg.is_a? Hash }
           options[:parent] = self.param_description
+          options[:param_group] = @param_group
           Apipie::ParamDescription.from_dsl_data(param_description.method_description, args)
         end
       end
 
       def validate(value)
         return false if !value.is_a? Hash
-        if @hash_params
-          @hash_params.each do |k, p|
+
+        BaseValidator.raise_if_missing_params do |missing|
+          @hash_params&.each do |k, p|
             if Apipie.configuration.validate_presence?
-              raise ParamMissing.new(p) if p.required && !value.has_key?(k)
+              missing << p if p.required && !value.key?(k)
             end
             if Apipie.configuration.validate_value?
-              p.validate(value[k]) if value.has_key?(k)
+              p.validate(value[k]) if value.key?(k)
             end
           end
         end
+
         return true
       end
 
       def process_value(value)
         if @hash_params && value
           return @hash_params.each_with_object({}) do |(key, param), api_params|
-            if value.has_key?(key)
+            if value.key?(key)
               api_params[param.as] = param.process_value(value[key])
             end
           end
@@ -427,6 +445,10 @@ module Apipie
         "Must be a decimal number."
       end
 
+      def expected_type
+        'numeric'
+      end
+
       def self.validate(value)
         value.to_s =~ /\A^[-+]?[0-9]+([,.][0-9]+)?\Z$/
       end
@@ -464,18 +486,26 @@ module Apipie
       end
 
       def self.build(param_description, argument, options, block)
-        if argument == :bool || argument == :boolean
+        if argument == :bool || argument == :boolean || boolean_array?(argument)
           self.new(param_description)
         end
       end
 
-      def expected_type
-        'boolean'
+      private_class_method def self.boolean_array?(argument)
+        argument.is_a?(Array) && (argument - [true, false]) == []
       end
 
       def description
         string = %w(true false 1 0).map { |value| format_description_value(value) }.join(', ')
         "Must be one of: #{string}."
+      end
+
+      def ignore_allow_blank?
+        true
+      end
+
+      def expected_type
+        'boolean'
       end
     end
 
@@ -483,7 +513,7 @@ module Apipie
 
       def initialize(param_description, argument, param_group)
         super(param_description)
-        @validator = Apipie::Validator:: HashValidator.new(param_description, argument, param_group)
+        @validator = Apipie::Validator::HashValidator.new(param_description, argument, param_group)
         @type = argument
       end
 

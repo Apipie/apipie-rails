@@ -103,7 +103,7 @@ module Apipie
         call = call.stringify_keys
         ordered_call = OrderedHash.new
         %w[title verb path versions query request_data response_data code show_in_doc recorded].each do |k|
-          next unless call.has_key?(k)
+          next unless call.key?(k)
           ordered_call[k] = case call[k]
                      when ActiveSupport::HashWithIndifferentAccess
                        convert_file_value(call[k]).to_hash
@@ -116,9 +116,10 @@ module Apipie
 
       def convert_file_value hash
         hash.each do |k, v|
-          if (v.is_a?(Rack::Test::UploadedFile) || v.is_a?(ActionDispatch::Http::UploadedFile))
+          case v
+          when Rack::Test::UploadedFile, ActionDispatch::Http::UploadedFile
             hash[k] = "<FILE CONTENT '#{v.original_filename}'>"
-          elsif v.is_a?(Hash)
+          when Hash
             hash[k] = convert_file_value(v)
           end
         end
@@ -134,8 +135,8 @@ module Apipie
         old_examples = self.load_recorded_examples
         merged_examples = []
         (new_examples.keys + old_examples.keys).uniq.each do |key|
-          if new_examples.has_key?(key)
-            if old_examples.has_key?(key)
+          if new_examples.key?(key)
+            if old_examples.key?(key)
               records = deep_merge_examples(new_examples[key], old_examples[key])
             else
               records = new_examples[key]
@@ -190,7 +191,7 @@ module Apipie
       end
 
       def load_old_examples
-        if File.exists?(@examples_file)
+        if File.exist?(@examples_file)
           if defined? SafeYAML
             return YAML.load_file(@examples_file, :safe=>false)
           else
@@ -295,7 +296,7 @@ module Apipie
       end
 
       def controller_content
-        raise ControllerNotFound.new unless controller_path && File.exists?(controller_path)
+        raise ControllerNotFound.new unless controller_path && File.exist?(controller_path)
         @controller_content ||= File.read(controller_path)
       end
 
@@ -323,7 +324,7 @@ module Apipie
           desc ||= case @action.to_s
                    when "show", "create", "update", "destroy"
                      name = name.singularize
-                     "#{@action.capitalize} #{name =~ /^[aeiou]/ ? "an" : "a"} #{name}"
+                     "#{@action.capitalize} #{name =~ /^[aeiou]/ ? 'an' : 'a'} #{name}"
                    when "index"
                      "List #{name}"
                    end
@@ -407,12 +408,11 @@ module Apipie
           if line =~ /\s*\b(module|class|def)\b /
             break
           end
-          if line =~ /do\s*(\|.*?\|)?\s*$/
-            block_level -= 1
-            if block_level == 0
-              added_lines.concat(lines_to_add)
-              lines_to_add = []
-            end
+          next unless line =~ /do\s*(\|.*?\|)?\s*$/
+          block_level -= 1
+          if block_level == 0
+            added_lines.concat(lines_to_add)
+            lines_to_add = []
           end
         end
         return added_lines.reverse.join

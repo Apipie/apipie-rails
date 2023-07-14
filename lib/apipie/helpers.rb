@@ -25,10 +25,10 @@ module Apipie
         @url_prefix << request_script_name
         @url_prefix << Apipie.configuration.doc_base_url
       end
-      path = path.sub(/^\//,"")
+      path = path.sub(%r{^/},"")
       ret = "#{@url_prefix}/#{path}"
-      ret.insert(0,"/") unless ret =~ /\A[.\/]/
-      ret.sub!(/\/*\Z/,"")
+      ret.insert(0,"/") unless ret =~ %r{\A[./]}
+      ret.sub!(%r{/*\Z},"")
       ret
     end
 

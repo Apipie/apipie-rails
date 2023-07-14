@@ -24,6 +24,20 @@ module Apipie
     end
   end
 
+  class ParamMultipleMissing < ParamError
+    attr_accessor :params
+
+    def initialize(params)
+      @params = params
+    end
+
+    def to_s
+      params.map do |param|
+        ParamMissing.new(param).to_s
+      end.join("\n")
+    end
+  end
+
   class ParamMissing < DefinedParamError
     def to_s
       unless @param.options[:missing_message].nil?
@@ -60,27 +74,13 @@ module Apipie
 
   class ResponseDoesNotMatchSwaggerSchema < Error
     def initialize(controller_name, method_name, response_code, error_messages, schema, returned_object)
-      @controller_name = controller_name
-      @method_name = method_name
-      @response_code = response_code
-      @error_messages = error_messages
-      @schema = schema
-      @returned_object = returned_object
-    end
-
-    def to_s
-      "Response does not match swagger schema (#{@controller_name}##{@method_name} #{@response_code}): #{@error_messages}\nSchema: #{JSON(@schema)}\nReturned object: #{@returned_object}"
+      super("Response does not match swagger schema (#{controller_name}##{method_name} #{response_code}): #{error_messages}\nSchema: #{JSON(schema)}\nReturned object: #{returned_object}")
     end
   end
 
   class NoDocumentedMethod < Error
     def initialize(controller_name, method_name)
-      @method_name = method_name
-      @controller_name = controller_name
-    end
-
-    def to_s
-      "There is no documented method #{@controller_name}##{@method_name}"
+      super("There is no documented method #{controller_name}##{method_name}")
     end
   end
 end

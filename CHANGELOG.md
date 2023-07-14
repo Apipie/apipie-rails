@@ -1,7 +1,157 @@
  Changelog
 ===========
 
-[v0.5.17](https://github.com/Apipie/apipie-rails/tree/v0.5.18) (2020-05-20)
+## [v1.2.1](https://github.com/Apipie/apipie-rails/tree/v1.2.1) (2023-06-09)
+[Full Changelog](https://github.com/Apipie/apipie-rails/compare/v1.2.0...v1.2.1)
+* rspec: Fixes deprecated matcher ([#882](https://github.com/Apipie/apipie-rails/pull/882)) (David Wessman)
+* Fix streaming bug ([#677](https://github.com/Apipie/apipie-rails/pull/677)) (Hunter Braun)
+* Update README URLs based on HTTP redirects ([#448](https://github.com/Apipie/apipie-rails/pull/448)) (ReadmeCritic)
+* Swagger: Adds option to skip default tags ([#881](https://github.com/Apipie/apipie-rails/pull/881)) (David Wessman)
+* Parameter validation: Raises error for all missing ([#886](https://github.com/Apipie/apipie-rails/pull/886)) (David Wessman)
+
+## [v1.2.0](https://github.com/Apipie/apipie-rails/tree/v1.2.0) (2023-06-03)
+[Full Changelog](https://github.com/Apipie/apipie-rails/compare/v1.1.0...v1.2.0)
+* Allow resource_name to be inherited ([#872](https://github.com/Apipie/apipie-rails/pull/872)) (Eric Hankins)
+* Fix cache rendering with namespaced resources ([#874](https://github.com/Apipie/apipie-rails/pull/874)) (Eric Hankins)
+* Fix deprecated content_type on Rails >= 6 ([#879](https://github.com/Apipie/apipie-rails/pull/879)) (Eric Hankins)
+* Fix typo in Collector ([#877](https://github.com/Apipie/apipie-rails/pull/877)) (Eric Hankins)
+* Fix error climbing controller hierarchy ([#875](https://github.com/Apipie/apipie-rails/pull/875)) (Eric Hankins)
+* Add Gemfile.tools for IDE usage ([#876](https://github.com/Apipie/apipie-rails/pull/876)) (Eric Hankins)
+* Fix rubocop ([#883](https://github.com/Apipie/apipie-rails/pull/883)) (Mathieu Jobin)
+* Performance/InefficientHashSearch-20230602233137 ([#884](https://github.com/Apipie/apipie-rails/pull/884)) (RuboCop challenger)
+* Redo Github action script to not need individual gemfiles ([#885](https://github.com/Apipie/apipie-rails/pull/885)) (Mathieu Jobin)
+
+## [v1.1.0](https://github.com/Apipie/apipie-rails/tree/v1.1.0) (2023-05-16)
+[Full Changelog](https://github.com/Apipie/apipie-rails/compare/v1.0.0...v1.1.0)
+* Improve performance of route detection [#870](https://github.com/Apipie/apipie-rails/pull/870) (Eric Hankins)
+* Fix startup crash due to typo [#869](https://github.com/Apipie/apipie-rails/pull/869) (Eric Hankins)
+* Skip parse body for pdf responses [#871](https://github.com/Apipie/apipie-rails/pull/871) (Juan Gomez)
+* add missing 'returns' translation [#868](https://github.com/Apipie/apipie-rails/pull/868) (Anthony Robertson)
+
+## [v1.0.0](https://github.com/Apipie/apipie-rails/tree/v1.0.0) (2023-04-26)
+[Full Changelog](https://github.com/Apipie/apipie-rails/compare/v0.9.4...v1.0.0)
+* Refactor Swagger generator [#816](https://github.com/Apipie/apipie-rails/pull/816) (Panos Dalitsouris)
+* Take into account validator options for `required` ParamDescription [#863](https://github.com/Apipie/apipie-rails/pull/863) (Panos Dalitsouris)
+* Replace `get_resource_name` with `get_resource_id` [#864](https://github.com/Apipie/apipie-rails/pull/864) (Panos Dalitsouris)
+* Namespace swagger configuration [#862](https://github.com/Apipie/apipie-rails/pull/862) (Panos Dalitsouris)
+* Allow boolean array `[true, false]` to be a valid argument for BooleanValidator [#848](https://github.com/Apipie/apipie-rails/pull/848) (Panos Dalitsouris)
+* Fix swagger warnings [#865](https://github.com/Apipie/apipie-rails/pull/865) (Panos Dalitsouris)
+* Update README - Adds the new Integer option you added recently to the documentation here. [#866](https://github.com/Apipie/apipie-rails/pull/866) (Jeremy Lupoli)
+* [Rubocop] More Rubocop Auto corrections [#859](https://github.com/Apipie/apipie-rails/pull/859)
+
+## [v0.9.4](https://github.com/Apipie/apipie-rails/tree/v0.9.4) (2023-04-11)
+[Full Changelog](https://github.com/Apipie/apipie-rails/compare/v0.9.3...v0.9.4)
+* [Fix] Separate nested resource name [#855](https://github.com/Apipie/apipie-rails/pull/855), [#455](https://github.com/Apipie/apipie-rails/issues/455) (Panos Dalitsouris)
+* [Rubocop] Disable a few Rubocop Rules, run Rubocop with ruby 3.2 [#851](https://github.com/Apipie/apipie-rails/pull/851), [#853](https://github.com/Apipie/apipie-rails/pull/853), [#840](https://github.com/Apipie/apipie-rails/pull/840), [#841](https://github.com/Apipie/apipie-rails/pull/841) (Panos Dalitsouris)
+* [Rubocop] More Rubocop Auto corrections [#858](https://github.com/Apipie/apipie-rails/pull/858), [#849](https://github.com/Apipie/apipie-rails/pull/849), [#850](https://github.com/Apipie/apipie-rails/pull/850), [#844](https://github.com/Apipie/apipie-rails/pull/844), [#846](https://github.com/Apipie/apipie-rails/pull/846), [#834](https://github.com/Apipie/apipie-rails/pull/834), [#847](https://github.com/Apipie/apipie-rails/pull/847) (Rubocop Challenger)
+
+## [v0.9.3](https://github.com/Apipie/apipie-rails/tree/v0.9.3) (2023-03-08)
+[Full Changelog](https://github.com/Apipie/apipie-rails/compare/v0.9.2...v0.9.3)
+* [Feature] Allow Apipie::ParamDescription to be marked as deprecated [#819](https://github.com/Apipie/apipie-rails/pull/819), [#811](https://github.com/Apipie/apipie-rails/pull/811) (Panos Dalitsouris)
+* [Fix] Make html markup thread safe ([#822](https://github.com/Apipie/apipie-rails/issues/822)) (Adam Růžička)
+* [Feature] Allow action matcher strategy to be configured [#821](https://github.com/Apipie/apipie-rails/pull/821) (Panos Dalitsouris)
+* [CI] Run Rubocop when opening PR [#826](https://github.com/Apipie/apipie-rails/pull/826) (Panos Dalitsouris)
+* [CI] Green rubocop - Fix after rubocop challenger upgrade [#829](https://github.com/Apipie/apipie-rails/pull/829) (Mathieu Jobin)
+* [Rubocop] More Rubocop Auto corrections [#818](https://github.com/Apipie/apipie-rails/pull/818), [#825](https://github.com/Apipie/apipie-rails/pull/825), [#827](https://github.com/Apipie/apipie-rails/pull/827), [#837](https://github.com/Apipie/apipie-rails/pull/837), [#839](https://github.com/Apipie/apipie-rails/pull/839) (Rubocop Challenger)
+
+## [v0.9.2](https://github.com/Apipie/apipie-rails/tree/v0.9.2) (2023-02-07)
+[Full Changelog](https://github.com/Apipie/apipie-rails/compare/v0.9.1...v0.9.2)
+* [Rubocop] More Rubocop Auto corrections [#795](https://github.com/Apipie/apipie-rails/pull/795), [#781](https://github.com/Apipie/apipie-rails/pull/781), [#791](https://github.com/Apipie/apipie-rails/pull/791), [#788](https://github.com/Apipie/apipie-rails/pull/788) (Rubocop Challenger)
+* [Fix] Can't include translation in full description ([#446](https://github.com/Apipie/apipie-rails/issues/446)) [#808](https://github.com/Apipie/apipie-rails/pull/808) (Peter Nagy)
+* [Refactor] Move swagger param description creation [#810](https://github.com/Apipie/apipie-rails/pull/810) (Panos Dalitsouris)
+* [Rubocop] Redo rubocop TODOs, set HashSyntax config to most used style [#814](https://github.com/Apipie/apipie-rails/pull/814) (Mathieu Jobin)
+* [Fix] Swagger missing i18n [#815](https://github.com/Apipie/apipie-rails/pull/815) (@jirubio)
+
+## [v0.9.1](https://github.com/Apipie/apipie-rails/tree/v0.9.1) (2023-01-16)
+[Full Changelog](https://github.com/Apipie/apipie-rails/compare/v0.9.0...v0.9.1)
+* [Refactor] Create test cache files under a not version controlled directory [#809](https://github.com/Apipie/apipie-rails/pull/809) (Panos Dalitsouris)
+* [Ruby] Support for Ruby 3.2 [#807](https://github.com/Apipie/apipie-rails/pull/807) (Mathieu Jobin)
+* [Fix] Reverted conditional assignment operators that caused #559 [#806](https://github.com/Apipie/apipie-rails/pull/806) (Nick L. Deltik)
+* [Rubocop] Autocorrect Style/SymbolProc [#793](https://github.com/Apipie/apipie-rails/pull/793) (Rubocop Challenger)
+
+## [v0.9.0](https://github.com/Apipie/apipie-rails/tree/v0.9.0) (2023-01-03)
+[Full Changelog](https://github.com/Apipie/apipie-rails/compare/v0.8.2...v0.9.0)
+* [Refactor] Move Swagger types and warnings under `/generator` namespace [#803](https://github.com/Apipie/apipie-rails/pull/803) (Panos Dalitsouris)
+* [Refactor] Creates `Apipie::MethodDescription::ApisService` [#805](https://github.com/Apipie/apipie-rails/pull/805) (Panos Dalitsouris)
+* [Refactor] Change output folder to `spec/dummy/tmp/` [#804](https://github.com/Apipie/apipie-rails/pull/804) (Panos Dalitsouris)
+* Fix tiny typo in docs [#798](https://github.com/Apipie/apipie-rails/pull/798) (Erik-B. Ernst)
+* Fix Generated docs.json output [#787](https://github.com/Apipie/apipie-rails/pull/787) (Jeremy Liberman)
+* Rubocop Fixes [#775](https://github.com/Apipie/apipie-rails/pull/775), [#778](https://github.com/Apipie/apipie-rails/pull/778), [#780](https://github.com/Apipie/apipie-rails/pull/780), [#790](https://github.com/Apipie/apipie-rails/pull/790), [#783](https://github.com/Apipie/apipie-rails/pull/783), [#785](https://github.com/Apipie/apipie-rails/pull/785) (RuboCop)
+* Remove/clean up dev dependencies and unused rake tasks [#777](https://github.com/Apipie/apipie-rails/pull/777) (Mathieu Jobin)
+    - remove unused rake task
+* Setup Rubocop Challenger [#776](https://github.com/Apipie/apipie-rails/pull/776) (Mathieu Jobin)
+
+## [v0.8.2](https://github.com/Apipie/apipie-rails/tree/v0.8.2) (2022-09-03)
+[Full Changelog](https://github.com/Apipie/apipie-rails/compare/v0.8.1...v0.8.2)
+* Allow custom validators to opt out of allow_blank behavior [#762](https://github.com/Apipie/apipie-rails/pull/762).  (Stephen Hanson)
+* Enforce test coverage, set current 89% as minimum [#764](https://github.com/Apipie/apipie-rails/pull/764). (Mathieu Jobin)
+* Add contributing instructions to readme [#763](https://github.com/Apipie/apipie-rails/pull/763).  (Stephen Hanson)
+* Fix readme formatting [#765](https://github.com/Apipie/apipie-rails/pull/765).  (Stephen Hanson)
+* Adds expected_type to IntegerValidator example [#769](https://github.com/Apipie/apipie-rails/pull/769).  (Jeremy Liberman)
+* Update readme with error handling example [#768](https://github.com/Apipie/apipie-rails/pull/768).  (Jesse Eisenberg)
+* Fix scope incorrectly set to nil when a param_group is used inside an array_of_hash and the param_group is in a different module / controller. [#693](https://github.com/Apipie/apipie-rails/pull/693) [#774](https://github.com/Apipie/apipie-rails/pull/774).  (Omkar Joshi / Oliver Iyer)
+
+## [v0.8.1](https://github.com/Apipie/apipie-rails/tree/v0.8.1) (2022-05-26)
+[Full Changelog](https://github.com/Apipie/apipie-rails/compare/v0.8.0...v0.8.1)
+* Remove warning that came back as of [#752](https://github.com/Apipie/apipie-rails/pull/752). [#761](https://github.com/Apipie/apipie-rails/pull/761) (Jorge Santos / Mathieu Jobin)
+
+## [v0.8.0](https://github.com/Apipie/apipie-rails/tree/v0.8.0) (2022-05-24)
+[Full Changelog](https://github.com/Apipie/apipie-rails/compare/v0.7.2...v0.8.0)
+* Add support for scheme definition in Swagger docs. [#710](https://github.com/Apipie/apipie-rails/pull/710) (Dan Leyden)
+* Add support for Rails 7 [#760](https://github.com/Apipie/apipie-rails/pull/760) (Mathieu Jobin)
+* Clean up code base, removing all trace of unsupported Rails 4.x [#752](https://github.com/Apipie/apipie-rails/pull/752) (Mathieu Jobin)
+* fix: Controller resource set before version [#744](https://github.com/Apipie/apipie-rails/pull/744) (LuukvH)
+* fix: enable swagger generator to add referenced schema for an array of hashes param [#689](https://github.com/Apipie/apipie-rails/pull/689) (Francis San Juan)
+
+## [v0.7.2](https://github.com/Apipie/apipie-rails/tree/v0.7.2) (2022-04-19)
+[Full Changelog](https://github.com/Apipie/apipie-rails/compare/v0.7.1...v0.7.2)
+* Added Korean locale. [#480](https://github.com/Apipie/apipie-rails/pull/480) (Jaehyun Shin ) [#757](https://github.com/Apipie/apipie-rails/pull/757) (Jorge Santos)
+* `Security` Upgraded Bootstrap from 2.0.2 to 2.3.2, JQuery from 1.11.3 to 1.12.4 [#708](https://github.com/Apipie/apipie-rails/pull/708) (Nicolas Waissbluth)
+* Fix ruby2 keyword argument warning [#756](https://github.com/Apipie/apipie-rails/pull/756) (Jorge Santos)
+
+## [v0.7.1](https://github.com/Apipie/apipie-rails/tree/v0.7.1) (2022-04-06)
+[Full Changelog](https://github.com/Apipie/apipie-rails/compare/v0.7.0...v0.7.1)
+* Skip extra parameters while validating the keys. [#690](https://github.com/Apipie/apipie-rails/pull/690) (Omkar Joshi)
+* Support defining security mechanisms for Swagger [#711](https://github.com/Apipie/apipie-rails/pull/711) (Dan Leyden)
+* Update boolean handling of false [#749](https://github.com/Apipie/apipie-rails/pull/749) (Colin Bruce)
+
+Note: Up until and including v0.6.x, apipie-rails was silently ignoring allow_blank == false on String validation.
+when allow_blank is not specified, it default to false. to allow blank strings, you must specify it as a parameter.
+
+Alternatively, if you want to revert to the previous behavior, you can set this configuration option:
+`Apipie.configuration.ignore_allow_blank_false = true`.
+
+## [v0.7.0](https://github.com/Apipie/apipie-rails/tree/v0.7.0) (2022-03-30)
+[Full Changelog](https://github.com/Apipie/apipie-rails/compare/v0.6.0...v0.7.0)
+* ArgumentError (invalid byte sequence in UTF-8) [#746](https://github.com/Apipie/apipie-rails/pull/746) (David Milanese)
+* Fix allow_blank does not work [#733](https://github.com/Apipie/apipie-rails/pull/733) (CHEN Song)
+* Fix schema generation for param descriptions using the array validator in option [#732](https://github.com/Apipie/apipie-rails/pull/732) (Frank Hock)
+* Remove support for Rails 4 and Ruby <= 2.5 [#747](https://github.com/Apipie/apipie-rails/pull/747) (Mathieu Jobin)
+
+## [v0.6.0](https://github.com/Apipie/apipie-rails/tree/v0.6.0) (2022-03-29)
+[Full Changelog](https://github.com/Apipie/apipie-rails/compare/v0.5.20...v0.6.0)
+* Ruby 3.0 fixes [#716](https://github.com/Apipie/apipie-rails/pull/716) (hank-spokeo)
+* only depends on actionpack and activesupport [#741](https://github.com/Apipie/apipie-rails/pull/741) (Mathieu Jobin)
+* language fix, fallback to default locale [#726](https://github.com/Apipie/apipie-rails/pull/726) (Alex Coomans)
+
+## [v0.5.20](https://github.com/Apipie/apipie-rails/tree/v0.5.20) (2022-03-16)
+[Full Changelog](https://github.com/Apipie/apipie-rails/compare/v0.5.19...v0.5.20)
+* Update rel-eng (Oleh Fedorenko)
+* Deprecate travis, run tests on github actions [#740](https://github.com/Apipie/apipie-rails/pull/740) (Mathieu Jobin)
+* Update validator.rb [#739](https://github.com/Apipie/apipie-rails/pull/739) (Dmytro Budnyk)
+* Fix wrong number of arguments for recorder#process [#725](https://github.com/Apipie/apipie-rails/pull/725) (rob mathews)
+* Change "an" to "a" [#723](https://github.com/Apipie/apipie-rails/pull/723) (Naokimi)
+
+## [v0.5.19](https://github.com/Apipie/apipie-rails/tree/v0.5.19) (2021-07-25)
+[Full Changelog](https://github.com/Apipie/apipie-rails/compare/v0.5.18...v0.5.19)
+* Add rel-eng notebook (Oleh Fedorenko)
+* Correct the word parâmentros for brazilian portuguese [#687](https://github.com/Apipie/apipie-rails/pull/687) (Diego Noronha)
+* Fix depreciated file.exists. [#721](https://github.com/Apipie/apipie-rails/pull/721) (Diane Delallée)
+* Fix typo in changelog [#703](https://github.com/Apipie/apipie-rails/pull/703) (Pavel Rodionov)
+* Add rails 6.1 support in doc generation [#702](https://github.com/Apipie/apipie-rails/pull/702) (andrew-newell)
+
+
+[v0.5.18](https://github.com/Apipie/apipie-rails/tree/v0.5.18) (2020-05-20)
 --------
 
 [Full Changelog](https://github.com/Apipie/apipie-rails/compare/v0.5.17...v0.5.18)

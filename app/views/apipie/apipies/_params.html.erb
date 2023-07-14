@@ -7,7 +7,11 @@
   <% end %>
   <tr id="<%= param[:full_name] %>" style='background-color:rgb(<%= "#{col},#{col},#{col}" %>);'>
     <td>
-      <strong><%= param[:full_name] %> </strong><br>
+      <strong><%= param[:full_name] %></strong>
+      <% if param[:deprecated].present? %>
+        <code><%= t('apipie.deprecated').upcase %></code>
+      <% end %>
+      <br>
       <small>
         <%= param[:required] ? t('apipie.required') : t('apipie.optional') %>
         <%= param[:allow_nil] ? ', '+t('apipie.nil_allowed') : '' %>
@@ -28,6 +32,8 @@
           <%- end %>
         </ul>
       <%- end %>
+
+      <%= render partial: 'deprecation', locals: { deprecation: param[:deprecation] } %>
 
       <% unless param[:metadata].blank? %>
         <br>

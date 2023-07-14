@@ -2,8 +2,8 @@
  API Documentation Tool
 ========================
 
-.. image:: https://travis-ci.org/Apipie/apipie-rails.svg?branch=master
-    :target: https://travis-ci.org/Apipie/apipie-rails
+.. image:: https://github.com/Apipie/apipie-rails/actions/workflows/build.yml/badge.svg
+    :target: https://github.com/Apipie/apipie-rails/actions/workflows/build.yml
 .. image:: https://codeclimate.com/github/Apipie/apipie-rails.svg
     :target: https://codeclimate.com/github/Apipie/apipie-rails
 .. image:: https://badges.gitter.im/Apipie/apipie-rails.svg
@@ -56,7 +56,7 @@ Run your application and see the result at
 use ``http://localhost:3000/apipie.json``.
 
 For a more comprehensive getting started guide, see
-`this demo <https://github.com/iNecas/apipie-demo>`_, which includes
+`this demo <https://github.com/Apipie/apipie-demo>`_, which includes
 features such as generating documentation from tests, recording examples etc.
 
 Screenshots
@@ -78,7 +78,7 @@ See `Contributors page  <https://github.com/Apipie/apipie-rails/graphs/contribut
 License
 -------
 
-Apipie-rails is released under the `MIT License <http://opensource.org/licenses/MIT>`_
+Apipie-rails is released under the `MIT License <https://opensource.org/licenses/MIT>`_
 
 ===============
  Documentation
@@ -107,6 +107,10 @@ resource_id
 
 name
   Human readable name of resource. By default ``class.name.humanize`` is used.
+
+  - Can be specified as a proc, which will receive the controller class as an argument.
+  - Can be a symbol, which will be sent to the controller class to get the name.
+  - Can be a string, which will be used as is.
 
 short (also short_description)
   Short description of the resource (it's shown on both the list of resources, and resource details)
@@ -150,7 +154,7 @@ Example:
    resource_description do
      short 'Site members'
      formats ['json']
-     param :id, Fixnum, :desc => "User ID", :required => false
+     param :id, Integer, :desc => "User ID", :required => false
      param :resource_param, Hash, :desc => 'Param description for all methods' do
        param :ausername, String, :desc => "Username for login", :required => true
        param :apassword, String, :desc => "Password for login", :required => true
@@ -355,6 +359,22 @@ Example:
      #...
    end
 
+deprecated
+  Indicates if the parameter is marked as deprecated.
+
+Example
+~~~~~~~~
+
+.. code:: ruby
+
+   param :pet_name, String, desc: "Name of pet", deprecated: true
+   param :pet_name, String, desc: "Name of pet", deprecated: 'Some deprecation info'
+   param :pet_name, String, desc: "Name of pet", deprecated: { in: "2.3", info: "Something", sunset: "3.0" }
+   def create
+     #...
+   end
+
+
 DRY with param_group
 --------------------
 
@@ -387,20 +407,20 @@ Example:
      end
    end
 
-   api :POST, "/users", "Create an user"
+   api :POST, "/users", "Create a user"
    param_group :user
    def create
      # ...
    end
 
-   api :PUT, "/users/:id", "Update an user"
+   api :PUT, "/users/:id", "Update a user"
    param_group :user
    def update
      # ...
    end
 
    # v2/users_controller.rb
-   api :POST, "/users", "Create an user"
+   api :POST, "/users", "Create a user"
    param_group :user, V1::UsersController
    def create
      # ...
@@ -434,7 +454,7 @@ Example
      end
    end
 
-   api :POST, "/users", "Create an user"
+   api :POST, "/users", "Create a user"
    param_group :user
    def create
      # ...
@@ -446,7 +466,7 @@ Example
      # ...
    end
 
-   api :PUT, "/users/:id", "Update an user"
+   api :PUT, "/users/:id", "Update a user"
    param_group :user
    def update
      # ...
@@ -966,6 +986,9 @@ validate_presence
 validate_key
   Check the received params to ensure they are defined in the API. (false by default)
 
+action_on_non_validated_keys
+  Either `:raise` or `:skip`. If `validate_key` fails, raise error or delete the non-validated key from the params and log the key (`:raise` by default)
+
 process_params
   Process and extract the parameter defined from the params of the request
   to the api_params variable
@@ -978,6 +1001,9 @@ reload_controllers
 
 api_controllers_matcher
   For reloading to work properly you need to specify where your API controllers are. Can be an array if multiple paths are needed
+
+api_action_matcher
+  Determines the strategy to identity the correct controller action. Needs to be a class that implements a `.call(controller)` method
 
 api_routes
   Set if your application uses a custom API router, different from the Rails
@@ -1021,6 +1047,10 @@ authorize
 show_all_examples
   Set this to true to set show_in_doc=1 in all recorded examples
 
+ignore_allow_blank_false
+  `allow_blank: false` was incorrectly ignored up until version 0.6.0, this bug was fixed in 0.7.0
+  if you need the old behavior, set this to true
+
 link_extension
   The extension to use for API pages ('.html' by default). Link extensions
   in static API docs cannot be changed from '.html'.
@@ -1056,6 +1086,7 @@ Example:
      config.markup = Apipie::Markup::Markdown.new
      config.reload_controllers = Rails.env.development?
      config.api_controllers_matcher = File.join(Rails.root, "app", "controllers", "**","*.rb")
+     config.api_action_matcher = proc { |controller| controller.params[:action] }
      config.api_routes = Rails.application.routes
      config.app_info["1.0"] = "
        This is where you can inform user about your application and API
@@ -1149,6 +1180,21 @@ is raised and can be rescued and processed. It contains a description
 of the parameter value expectations. Validations can be turned off
 in the configuration file.
 
+Here is an example of how to rescue and process a +ParamMissing+ or
++ParamInvalid+ error from within the ApplicationController.
+
+.. code:: ruby
+
+  class ApplicationController < ActionController::Base
+
+    # ParamError is superclass of ParamMissing, ParamInvalid
+    rescue_from Apipie::ParamError do |e|
+      render text: e.message, status: :unprocessable_entity
+    end
+
+    # ...
+  end
+
 Parameter validation normally happens after before_actions, just before
 your controller method is invoked. If you prefer to control when parameter
 validation occurs, set the configuration parameter ``validate`` to ``:explicitly``.
@@ -1163,7 +1209,7 @@ after the ``apipie_validations`` before_action.
 
 TypeValidator
 -------------
-Check the parameter type. Only String, Hash and Array are supported
+Check the parameter type. Only String, Integer, Hash and Array are supported
 for the sake of simplicity. Read more to find out how to add
 your own validator.
 
@@ -1353,13 +1399,17 @@ So we create apipie_validators.rb initializer with this content:
      end
 
      def self.build(param_description, argument, options, block)
-       if argument == Integer || argument == Fixnum
+       if argument == Integer
          self.new(param_description, argument)
        end
      end
 
      def description
        "Must be #{@type}."
+     end
+
+     def expected_type
+       'numeric'
      end
    end
 
@@ -1378,6 +1428,16 @@ options
 block
   Block converted into Proc, use it as you desire. In this example nil.
 
+If your validator includes valid values that respond true to `.blank?`, you
+should also define:
+
+.. code:: ruby
+
+   def ignore_allow_blank?
+     true
+   end
+
+so that the validation does not fail for valid values.
 
 ============
  Versioning
@@ -1608,7 +1668,7 @@ Swagger-Specific Configuration Parameters
 
 There are several configuration parameters that determine the structure of the generated swagger file:
 
-``config.swagger_content_type_input``
+``config.generator.swagger.content_type_input``
     If the value is ``:form_data`` - the swagger file will indicate that the server consumes the content types
     ``application/x-www-form-urlencoded`` and ``multipart/form-data``.  Non-path parameters will have the
     value ``"in": "formData"``.  Note that parameters of type Hash that do not have any fields in them will *be ommitted*
@@ -1621,38 +1681,58 @@ There are several configuration parameters that determine the structure of the g
     You can specify the value of this configuration parameter as an additional input to the rake command (e.g.,
     ``rake apipie:static_swagger_json[2.0,form_data]``).
 
-``config.swagger_json_input_uses_refs``
-    This parameter is only relevant if ``swagger_content_type_input`` is ``:json``.
+``config.generator.swagger.json_input_uses_refs``
+    This parameter is only relevant if ``swagger.content_type_input`` is ``:json``.
 
     If ``true``: the schema of the ``"in": "body"`` parameter of each method is given its own entry in the ``definitions``
     section, and is referenced using ``$ref`` from the method definition.
 
     If ``false``: the body parameter definitions are inlined within the method definitions.
 
-``config.swagger_include_warning_tags``
+``config.generator.swagger.include_warning_tags``
     If ``true``: in addition to tagging methods with the name of the resource they belong to, methods for which warnings
     have been issued will be tagged with.
 
-``config.swagger_suppress_warnings``
+``config.generator.swagger.suppress_warnings``
     If ``false``: no warnings will be suppressed
 
     If ``true``: all warnings will be suppressed
 
     If an array of values (e.g., ``[100,102,107]``), only the warnings identified by the numbers in the array will be suppressed.
 
-``config.swagger_api_host``
+``config.generator.swagger.api_host``
     The value to place in the swagger host field.
 
     Default is ``localhost:3000``
 
     If ``nil`` then then host field will not be included.
 
-``config.swagger_allow_additional_properties_in_response``
+``config.generator.swagger.allow_additional_properties_in_response``
     If ``false`` (default):  response descriptions in the generated swagger will include an ``additional-properties: false``
     field
 
     If ``true``:  the ``additional-properties: false`` field will not be included in response object descriptions
 
+``config.generator.swagger.schemes``
+    An array of transport schemes that the API supports.
+    This can include any combination of ``http``, ``https``, ``ws`` and ``wss``.
+    By default to encourage good security practices, ``['https']`` is specified.
+
+
+``config:swagger.security_definitions``
+    If the API requires authentication, you can specify details of the authentication mechanisms supported as a (Hash) value here.
+    See [https://swagger.io/docs/specification/2-0/authentication/] for details of what values can be specified
+    By default, no security is defined.
+
+``config.generator.swagger.global_security``
+    If the API requires authentication, you can specify which of the authentication mechanisms are supported by all API operations as an Array of hashes here.
+    This should be used in conjunction with the mechanisms defined by ``swagger.security_definitions``.
+    See [https://swagger.io/docs/specification/2-0/authentication/] for details of what values can be specified
+    By default, no security is defined.
+
+``config.generator.swagger.skip_default_tags``
+    By setting ``false`` (default): The resource name for e.g. ``/pets/{petId}`` will automatically be added as a tag ``pets``.
+    By setting ``true``: The tags needs to be explicitly added to the resource using the DSL.
 
 Known limitations of the current implementation
 -------------------------------------------------
@@ -1663,6 +1743,7 @@ Known limitations of the current implementation
 * It is not possible to leverage all of the parameter type/format capabilities of swagger
 * Only OpenAPI 2.0 is supported
 * Responses are defined inline and not as a $ref
+* It is not possible to specify per-operation security requirements (only global)
 
 ====================================
  Dynamic Swagger generation
@@ -1847,12 +1928,22 @@ provided it uses Apipie as a backend.
 
 And if you write one on your own, don't hesitate to share it with us!
 
+====================
+ Contributing
+====================
+
+Then, you can install dependencies and run the test suite:
+
+.. code:: shell
+
+   > bundle install
+   > bundle exec rspec
 
 ====================
  Disqus Integration
 ====================
 
-You can setup `Disqus <http://www.disqus.com>`_ discussion within
+You can setup `Disqus <https://disqus.com/>`_ discussion within
 your documentation. Just set the credentials in the Apipie
 configuration:
 
