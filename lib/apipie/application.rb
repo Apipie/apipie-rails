@@ -405,12 +405,10 @@ module Apipie
         version_prefix = version_prefix(klass)
         path = klass.controller_path
 
-        path =
-          if version_prefix == '/'
-            path
-          else
+        unless version_prefix == '/'
+          path =
             path.gsub(version_prefix, '')
-          end
+        end
 
         path.gsub('/', '-')
       elsif klass.respond_to?(:controller_name)
