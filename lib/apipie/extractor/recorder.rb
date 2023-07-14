@@ -61,12 +61,12 @@ module Apipie
         data
       end
 
-      def reformat_multipart_data(form) # rubocop:disable Style/CaseLikeIf
+      def reformat_multipart_data(form)
         form.empty? and return ''
         lines = ["Content-Type: multipart/form-data; boundary=#{MULTIPART_BOUNDARY}",'']
         boundary = "--#{MULTIPART_BOUNDARY}"
         form.each do |key, attrs|
-          if attrs.is_a?(String)
+          if attrs.is_a?(String) # rubocop:disable Style/CaseLikeIf
             lines << boundary << content_disposition(key) << "Content-Length: #{attrs.size}" << '' << attrs
           elsif attrs.is_a?(Rack::Test::UploadedFile) || attrs.is_a?(ActionDispatch::Http::UploadedFile)
             reformat_uploaded_file(boundary, attrs, key, lines)
