@@ -1,6 +1,12 @@
  Changelog
 ===========
 
+## [v1.2.2](https://github.com/Apipie/apipie-rails/tree/v1.2.2) (2023-07-18)
+[Full Changelog](https://github.com/Apipie/apipie-rails/compare/v1.2.1...v1.2.2)
+* Fixed Swagger warnings for properties ([#892](https://github.com/Apipie/apipie-rails/pull/892)) (shev-vadim-net)
+* Improved support for multipart/form-data example recording ([#891](https://github.com/Apipie/apipie-rails/pull/891)) (Butiri Cristian & hossenlopp)
+* rubocop (1.54.2) fixes required with latest version ([#893](https://github.com/Apipie/apipie-rails/pull/893)) (Mathieu Jobin)
+
 ## [v1.2.1](https://github.com/Apipie/apipie-rails/tree/v1.2.1) (2023-06-09)
 [Full Changelog](https://github.com/Apipie/apipie-rails/compare/v1.2.0...v1.2.1)
 * rspec: Fixes deprecated matcher ([#882](https://github.com/Apipie/apipie-rails/pull/882)) (David Wessman)
