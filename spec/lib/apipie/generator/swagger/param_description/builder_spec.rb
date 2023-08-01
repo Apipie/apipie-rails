@@ -102,7 +102,7 @@ describe Apipie::Generator::Swagger::ParamDescription::Builder do
 
     subject { generated_block }
 
-    context 'required: true' do
+    context 'when required is true' do
       let(:base_param_description_options) { { required: true } }
 
       it 'does not output an option without default warning' do
@@ -112,8 +112,8 @@ describe Apipie::Generator::Swagger::ParamDescription::Builder do
       end
     end
 
-    context 'required: false' do
-      context 'no warning if default_value: nil' do
+    context 'when required is false' do
+      context 'when default_value is nil' do
         let(:base_param_description_options) do
           { required: false, default_value: nil }
         end
@@ -125,7 +125,7 @@ describe Apipie::Generator::Swagger::ParamDescription::Builder do
         end
       end
 
-      context 'no warning if default_value: 123' do
+      context 'when default_value is 123' do
         let(:base_param_description_options) do
           { required: false, default_value: 123 }
         end
