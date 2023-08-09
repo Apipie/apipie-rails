@@ -102,23 +102,49 @@ describe Apipie::Generator::Swagger::ParamDescription::Builder do
 
     subject { generated_block }
 
-    context 'when is not required' do
-      let(:base_param_description_options) { { required: false } }
-
-      context 'and no default is given' do
-        before { param_description_options.delete(:default) }
-
-        it 'outputs an option without default warning' do
-          expect { subject }.to output(/is optional but default value is not specified/).to_stderr
-        end
-      end
-    end
-
-    context 'when is required' do
+    context 'when required is true' do
       let(:base_param_description_options) { { required: true } }
 
       it 'does not output an option without default warning' do
-        expect { subject }.not_to output(/is optional but default value is not specified/).to_stderr
+        expect { subject }.not_to output(
+          /is optional but default value is not specified/
+        ).to_stderr
+      end
+    end
+
+    context 'when required is false' do
+      context 'when default_value is nil' do
+        let(:base_param_description_options) do
+          { required: false, default_value: nil }
+        end
+
+        it 'will not warn' do
+          expect { subject }.not_to output(
+            /is optional but default value is not specified/
+          ).to_stderr
+        end
+      end
+
+      context 'when default_value is 123' do
+        let(:base_param_description_options) do
+          { required: false, default_value: 123 }
+        end
+
+        it 'will not warn' do
+          expect { subject }.not_to output(
+            /is optional but default value is not specified/
+          ).to_stderr
+        end
+      end
+
+      context 'default_value not given' do
+        let(:base_param_description_options) { { required: false } }
+
+        it 'warns' do
+          expect { subject }.to output(
+            /is optional but default value is not specified/
+          ).to_stderr
+        end
       end
     end
   end

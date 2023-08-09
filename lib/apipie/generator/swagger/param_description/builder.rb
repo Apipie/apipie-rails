@@ -71,7 +71,7 @@ class Apipie::Generator::Swagger::ParamDescription::Builder
   end
 
   def for_default
-    return {} if @param_description.options[:default_value].blank?
+    return {} unless @param_description.options.key?(:default_value)
 
     {
       default: @param_description.options[:default_value],
