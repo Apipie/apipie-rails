@@ -57,7 +57,7 @@ module Apipie
         attr_reader :expected_type
 
         def [](key)
-          return self.send(key) if self.respond_to?(key.to_s)
+          self.send(key) if self.respond_to?(key.to_s)
         end
 
         def initialize(expected_type, enum_values = nil, sub_properties = nil)
@@ -102,7 +102,7 @@ module Apipie
       end
 
       def [](key)
-        return self.send(key) if self.respond_to?(key.to_s)
+        self.send(key) if self.respond_to?(key.to_s)
       end
 
       def add_sub_property(prop_desc)
