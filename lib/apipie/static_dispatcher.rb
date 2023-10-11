@@ -4,7 +4,13 @@ module Apipie
     def initialize(root)
       @root          = root.chomp('/')
       @compiled_root = /^#{Regexp.escape(root)}/
-      @file_server   = ::Rack::File.new(@root)
+      @file_server   = if defined?(::Rack::Files)
+                         ::Rack::Files.new(@root)
+                       else
+                         # Deprecated in Rack 3.0, kept
+                         # for backward compatibility
+                         ::Rack::File.new(@root)
+                       end
     end
 
     def match?(path)
