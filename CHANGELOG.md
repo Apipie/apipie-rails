@@ -1,6 +1,10 @@
  Changelog
 ===========
 
+## [v1.2.3](https://github.com/Apipie/apipie-rails/tree/v1.2.3) (2023-10-11)
+[Full Changelog](https://github.com/Apipie/apipie-rails/compare/v1.2.2...v1.2.3)
+* Fix param: Consider default_value: nil as valid config ([#894](https://github.com/Apipie/apipie-rails/pull/894)) (davidwessman)
+
 ## [v1.2.2](https://github.com/Apipie/apipie-rails/tree/v1.2.2) (2023-07-18)
 [Full Changelog](https://github.com/Apipie/apipie-rails/compare/v1.2.1...v1.2.2)
 * Fixed Swagger warnings for properties ([#892](https://github.com/Apipie/apipie-rails/pull/892)) (shev-vadim-net)
