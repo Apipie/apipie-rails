@@ -482,13 +482,17 @@ module Apipie
     class BooleanValidator < BaseValidator
 
       def validate(value)
-        %w[true false 1 0].include?(value.to_s)
+        %w[true false 1 0].include?(value.to_s.downcase)
       end
 
       def self.build(param_description, argument, options, block)
         if argument == :bool || argument == :boolean || boolean_array?(argument)
           self.new(param_description)
         end
+      end
+      
+      def process_value(value)
+        %w[true 1].include?(value.to_s.downcase)
       end
 
       private_class_method def self.boolean_array?(argument)
