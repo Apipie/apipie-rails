@@ -200,4 +200,16 @@ describe Apipie::Generator::Swagger::ParamDescription::Builder do
       it { is_expected.to be_present }
     end
   end
+
+  describe 'example' do
+    subject { generated_block[:example] }
+
+    it { is_expected.to be_blank }
+
+    context 'when example is assigned' do
+      let(:base_param_description_options) { { ex: 'example'} }
+
+      it { is_expected.to be_present }
+    end
+  end
 end

@@ -53,6 +53,7 @@ class Apipie::Generator::Swagger::ParamDescription::Builder
 
     definition.merge!(for_default)
     definition.merge!(for_required)
+    definition.merge!(for_example)
     definition.merge!(@description.to_hash) if @description.present?
 
     warn_optional_without_default_value(definition)
@@ -75,6 +76,14 @@ class Apipie::Generator::Swagger::ParamDescription::Builder
 
     {
       default: @param_description.options[:default_value],
+    }
+  end
+
+  def for_example
+    return {} unless @param_description.options.key?(:ex)
+
+    {
+      example: @param_description.options[:ex],
     }
   end
 
