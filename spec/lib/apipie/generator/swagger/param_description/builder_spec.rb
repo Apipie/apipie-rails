@@ -209,7 +209,7 @@ describe Apipie::Generator::Swagger::ParamDescription::Builder do
     context 'when example is assigned' do
       let(:base_param_description_options) { { ex: 'example'} }
 
-      it { is_expected.to be_present }
+      it { is_expected.to eq('example') }
     end
   end
 end
