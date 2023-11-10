@@ -80,7 +80,7 @@ class Apipie::Generator::Swagger::ParamDescription::Builder
   end
 
   def for_example
-    return {} unless @param_description.options.key?(:ex)
+    return {} unless @param_description.options.key?(:example)
 
     {
       example: @param_description.options[:example],

@@ -19,8 +19,8 @@ describe Apipie::Generator::Swagger::MethodDescription::ResponseSchemaService do
 
   let(:response_description_dsl) do
     proc do
-      property :a_number, Integer, ex: 1
-      property :an_optional_number, Integer, required: false, ex: 2
+      property :a_number, Integer, example: 1
+      property :an_optional_number, Integer, required: false, example: 2
     end
   end
 

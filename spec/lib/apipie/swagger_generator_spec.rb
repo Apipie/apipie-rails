@@ -7,7 +7,7 @@ describe Apipie::SwaggerGenerator do
 
     let(:response_description_dsl) do
       proc do
-        property :a_number, Integer, ex: 1
+        property :a_number, Integer, example: 1
         property :an_optional_number, Integer, required: false
       end
     end

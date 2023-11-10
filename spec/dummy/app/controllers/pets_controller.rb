@@ -23,7 +23,7 @@ class PetsController < ApplicationController
   #-----------------------------------------------------------
   api :GET, "/pets/:id/as_properties", "Get a pet record"
   returns :code => 200 do
-    property :pet_name, String, :desc => "Name of pet", :required => false, ex: 'mypet'
+    property :pet_name, String, :desc => "Name of pet", :required => false, example: 'mypet'
     property :animal_type, %w[dog cat iguana kangaroo], :desc => "Type of pet"   # required by default, because this is a 'property'
   end
   returns :code => 404 do
