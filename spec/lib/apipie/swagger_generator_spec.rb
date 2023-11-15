@@ -7,7 +7,7 @@ describe Apipie::SwaggerGenerator do
 
     let(:response_description_dsl) do
       proc do
-        property :a_number, Integer
+        property :a_number, Integer, example: 1
         property :an_optional_number, Integer, required: false
       end
     end
@@ -61,7 +61,7 @@ describe Apipie::SwaggerGenerator do
           expect(properties).to eq(
             {
               a_number: {
-                type: 'number', required: true
+                type: 'number', required: true, example: 1
               },
               an_optional_number: {
                 type: 'number'

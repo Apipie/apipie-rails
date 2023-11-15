@@ -82,6 +82,10 @@ describe 'rake tasks' do
       expect(param[field]).to eq(value)
     end
 
+    def expect_response_params_def(http_method, path, response_code, param_name, field, value)
+      param = apidoc_swagger["paths"][path][http_method]["responses"][response_code.to_s]["schema"]["properties"][param_name]
+      expect(param[field]).to eq(value)
+    end
 
     describe 'apipie:static_swagger_json[development,json,_tmp]' do
       it "generates static swagger files for the default version of apipie docs" do
@@ -105,6 +109,7 @@ describe 'rake tasks' do
                          %w[finance operations sales marketing HR])
 
         expect_tags_def("get", "/twitter_example/{id}/followers", %w[twitter_example following index search])
+        expect_response_params_def("get", "/pets/{id}/as_properties", 200, "pet_name", "example", "mypet")
       end
 
       it "generates a valid swagger file" do

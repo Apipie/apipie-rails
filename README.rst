@@ -317,6 +317,9 @@ desc
 required
   Set this true/false to make it required/optional. Default is optional
 
+example
+  Provide the example for this parameter.
+
 allow_nil
   Setting this to true means that ``nil`` can be passed.
 
@@ -349,8 +352,8 @@ Example:
 .. code:: ruby
 
    param :user, Hash, :desc => "User info" do
-     param :username, String, :desc => "Username for login", :required => true
-     param :password, String, :desc => "Password for login", :required => true
+     param :username, String, :desc => "Username for login", :required => true, :example => 'John'
+     param :password, String, :desc => "Password for login", :required => true, :example => '1234567'
      param :membership, ["standard","premium"], :desc => "User membership"
      param :admin_override, String, :desc => "Not shown in documentation", :show => false
      param :ip_address, String, :desc => "IP address", :required => true, :missing_message => lambda { I18n.t("ip_address.required") }
