@@ -1033,7 +1033,7 @@ layout
 
 ignored
   An array of controller names (strings) (might include actions as well)
-  to be ignored when generationg the documentation
+  to be ignored when generating the documentation
   e.g. ``%w[Api::CommentsController Api::PostsController#post]``
 
 namespaced_resources
