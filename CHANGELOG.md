@@ -1,6 +1,15 @@
  Changelog
 ===========
 
+## [v1.3.0](https://github.com/Apipie/apipie-rails/tree/v1.3.0) (2023-12-19)
+[Full Changelog](https://github.com/Apipie/apipie-rails/compare/v1.2.3...v1.3.0)
+* rubocop fixes ([#897](https://github.com/Apipie/apipie-rails/pull/897)) (Mathieu Jobin)
+* Fix usage of deprecated Rack::File in Rack 3.0 ([#896](https://github.com/Apipie/apipie-rails/pull/896)) (James Dean Shepherd)
+* add rails 7.1 to the build matrix ([#898](https://github.com/Apipie/apipie-rails/pull/898)) (Mathieu Jobin)
+* super small typo fix ([#900](https://github.com/Apipie/apipie-rails/pull/900)) (Eric Pugh)
+* support for property example ([#901](https://github.com/Apipie/apipie-rails/pull/901)) (Chien-Wei Huang (Michael))
+* Use array items type from validator ([#904](https://github.com/Apipie/apipie-rails/pull/)) (Panos Dalitsouris)
+
 ## [v1.2.3](https://github.com/Apipie/apipie-rails/tree/v1.2.3) (2023-10-11)
 [Full Changelog](https://github.com/Apipie/apipie-rails/compare/v1.2.2...v1.2.3)
 * Fix param: Consider default_value: nil as valid config ([#894](https://github.com/Apipie/apipie-rails/pull/894)) (davidwessman)
