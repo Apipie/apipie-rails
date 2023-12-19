@@ -80,7 +80,7 @@ module Apipie
 
       def write_docs
         descriptions = @collector.finalize_descriptions
-        descriptions.each do |_, desc|
+        descriptions.each_value do |desc|
           if desc[:api].empty?
             logger.warn("REST_API: Couldn't find any path for #{desc_to_s(desc)}")
             next

@@ -62,7 +62,7 @@ module Apipie
     attr_accessor :value, :error
 
     def initialize(param, value, error)
-      super param
+      super(param)
       @value = value
       @error = error
     end

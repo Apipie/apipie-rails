@@ -151,7 +151,7 @@ describe 'rake tasks' do
 
     describe 'apipie:did_swagger_change[development,form_data,_tmp]' do
       it "keeps a reference file" do
-        expect(Pathname(ref_output).children.count).to eq(2)  # one file for each language
+        expect(Pathname(ref_output).children.count).to eq(2) # one file for each language
       end
     end
   end

@@ -90,7 +90,7 @@ module Apipie
           lines << '' << %{... contents of "#{attrs[:name]}" ...}
         else
           # Look for subelements that contain a part.
-          attrs.each { |k,v| v.is_a?(Hash) and reformat_hash(boundary, v, lines) }
+          attrs.each_value { |v| v.is_a?(Hash) and reformat_hash(boundary, v, lines) }
         end
       end
 

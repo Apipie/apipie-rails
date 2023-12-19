@@ -96,7 +96,7 @@ class Apipie::Generator::Swagger::MethodDescription::ParametersService
   def path_param_descriptions
     @path_param_descriptions ||= all_params
                                  .select { |k, _| @path.param?(k) }
-                                 .each { |_, desc| desc.required = true }
+                                 .each_value { |desc| desc.required = true }
                                  .values
   end
 
