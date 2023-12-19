@@ -242,7 +242,7 @@ module Apipie
 
               if Apipie.configuration.validate_presence?
                 Validator::BaseValidator.raise_if_missing_params do |missing|
-                  method_params.each do |_, param|
+                  method_params.each_value do |param|
                     # check if required parameters are present
                     missing << param if param.required && !params.key?(param.name)
                   end
@@ -250,7 +250,7 @@ module Apipie
               end
 
               if Apipie.configuration.validate_value?
-                method_params.each do |_, param|
+                method_params.each_value do |param|
                   # params validations
                   param.validate(params[:"#{param.name}"]) if params.key?(param.name)
                 end
@@ -269,7 +269,7 @@ module Apipie
 
               return unless Apipie.configuration.process_value?
               @api_params ||= {}
-              method_params.each do |_, param|
+              method_params.each_value do |param|
                 # params processing
                 @api_params[param.as] = param.process_value(params[:"#{param.name}"]) if params.key?(param.name)
               end

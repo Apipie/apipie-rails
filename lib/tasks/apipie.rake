@@ -186,11 +186,11 @@ namespace :apipie do
     av = renderer
     File.open(file_name, "w") do |f|
       variables.each do |var, val|
-        av.instance_variable_set("@#{var}", val)
+        av.instance_variable_set(:"@#{var}", val)
       end
       f.write av.render(
         :template => "#{template}",
-        :layout => (layout && "apipie/#{layout}"))
+        :layout => layout && "apipie/#{layout}")
     end
   end
 
@@ -259,7 +259,7 @@ namespace :apipie do
   end
 
   def generate_resource_pages(version, file_base, doc, include_json = false, lang = nil)
-    doc[:docs][:resources].each do |resource_id, _|
+    doc[:docs][:resources].each_key do |resource_id|
       resource_file_base = File.join(file_base, resource_id.to_s)
       FileUtils.mkdir_p(File.dirname(resource_file_base)) unless File.exist?(File.dirname(resource_file_base))
 

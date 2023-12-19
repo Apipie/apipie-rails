@@ -89,7 +89,7 @@ module Apipie
       end
 
       def finalize_descriptions
-        @descriptions.each do |method, desc|
+        @descriptions.each_value do |desc|
           add_routes_info(desc)
         end
         return @descriptions

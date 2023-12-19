@@ -24,7 +24,7 @@ module Apipie
               HEREDOC
             )
 
-            send("#{attribute}=", value)
+            send(:"#{attribute}=", value)
           end
 
           old_setter_method = "swagger_#{attribute}"

@@ -56,7 +56,7 @@ class Apipie::Generator::Swagger::ParamDescription::Type
 
   def for_array_type
     validator_opts = validator.param_description.options
-    items_type = validator_opts[:of].to_s || validator_opts[:array_of].to_s
+    items_type = (validator_opts[:of] || validator_opts[:array_of]).to_s
 
     if items_type == 'Hash' && params_in_body_use_reference?
       reference_name = Apipie::Generator::Swagger::OperationId.
@@ -67,7 +67,7 @@ class Apipie::Generator::Swagger::ParamDescription::Type
         '$ref' => reference_name
       }
     else
-      items = { type: 'string' }
+      items = { type: array_items_type(items_type).to_s }
     end
 
     enum = @param_description.options[:in]
@@ -78,6 +78,19 @@ class Apipie::Generator::Swagger::ParamDescription::Type
       type: 'array',
       items: items
     }
+  end
+
+  # @param [String] items_type
+  #
+  # @return [Apipie::Generator::Swagger::Type]
+  def array_items_type(items_type)
+    type = Apipie::Generator::Swagger::TypeExtractor::TYPES[items_type.downcase.to_sym]
+
+    if type == 'object' || type.blank?
+      Apipie::Generator::Swagger::TypeExtractor::TYPES[:string]
+    else
+      type
+    end
   end
 
   def for_enum_type

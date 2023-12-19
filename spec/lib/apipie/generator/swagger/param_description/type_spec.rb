@@ -115,8 +115,13 @@ describe Apipie::Generator::Swagger::ParamDescription::Type do
           it 'returns the reference' do
             expect(subject).to eq({ '$ref' => reference })
           end
-
         end
+      end
+
+      context 'of a Swagger type' do
+        let(:validator_options) { { of: Integer } }
+
+        it { is_expected.to eq({ type: 'integer' }) }
       end
 
       describe 'enum' do
