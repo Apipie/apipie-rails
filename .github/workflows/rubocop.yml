@@ -5,6 +5,8 @@ on: [push, pull_request]
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      RUBY_VERSION: 3.2.3
     steps:
       - uses: actions/checkout@v3
 
