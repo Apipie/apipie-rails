@@ -118,7 +118,7 @@ describe Apipie::Generator::Swagger::ParamDescription::Builder do
           { required: false, default_value: nil }
         end
 
-        it 'will not warn' do
+        it 'does not warn' do
           expect { subject }.not_to output(
             /is optional but default value is not specified/
           ).to_stderr
@@ -130,7 +130,7 @@ describe Apipie::Generator::Swagger::ParamDescription::Builder do
           { required: false, default_value: 123 }
         end
 
-        it 'will not warn' do
+        it 'does not warn' do
           expect { subject }.not_to output(
             /is optional but default value is not specified/
           ).to_stderr
