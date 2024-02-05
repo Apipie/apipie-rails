@@ -9,7 +9,7 @@ jobs:
     name: Create Pull Request
     runs-on: ubuntu-latest
     env:
-      BUNDLE_GEMFILE: gemfiles/Gemfile.rails50
+      RUBY_VERSION: 3.2.3
     steps:
       - uses: actions/checkout@v2
       - name: Set up Ruby 3.2
