@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.version     = Apipie::VERSION
   s.authors     = ["Pavel Pokorny","Ivan Necas"]
   s.email       = ["pajkycz@gmail.com", "inecas@redhat.com"]
-  s.homepage    = "http://github.com/Apipie/apipie-rails"
+  s.homepage    = "https://github.com/Apipie/apipie-rails"
   s.summary     = %q{Rails REST API documentation tool}
   s.description = %q{Rails REST API documentation tool}
   s.required_ruby_version = '>= 2.6.0'
@@ -16,6 +16,12 @@ Gem::Specification.new do |s|
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.require_paths = ["lib"]
+
+  s.metadata = {
+    "bug_tracker_uri" => "https://github.com/Apipie/apipie-rails/issues",
+    "changelog_uri" => "https://github.com/Apipie/apipie-rails/blob/master/CHANGELOG.md",
+    "source_code_uri" => "https://github.com/Apipie/apipie-rails"
+  }
 
   s.add_dependency "actionpack", ">= 5.0"
   s.add_dependency "activesupport", ">= 5.0"
