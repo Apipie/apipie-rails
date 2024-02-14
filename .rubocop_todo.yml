@@ -1674,18 +1674,6 @@ Style/MultilineBlockChain:
   Exclude:
     - 'lib/apipie/param_description.rb'
 
-# Offense count: 7
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: literals, strict
-Style/MutableConstant:
-  Exclude:
-    - 'lib/apipie/extractor/recorder.rb'
-    - 'lib/apipie/generator/swagger/param_description/in.rb'
-    - 'lib/apipie/generator/swagger/type_extractor.rb'
-    - 'lib/apipie/generator/swagger/warning.rb'
-    - 'lib/apipie/routes_formatter.rb'
-    - 'lib/apipie/version.rb'
 
 # Offense count: 8
 # This cop supports safe autocorrection (--autocorrect).
