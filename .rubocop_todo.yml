@@ -1368,20 +1368,6 @@ Style/AndOr:
   Exclude:
     - 'lib/apipie/param_description.rb'
 
-# Offense count: 18
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle, ProceduralMethods, FunctionalMethods, AllowedMethods, AllowedPatterns, AllowBracesOnProceduralOneLiners, BracesRequiredMethods.
-# SupportedStyles: line_count_based, semantic, braces_for_chaining, always_braces
-# ProceduralMethods: benchmark, bm, bmbm, create, each_with_object, measure, new, realtime, tap, with_object
-# FunctionalMethods: let, let!, subject, watch
-# AllowedMethods: lambda, proc, it
-Style/BlockDelimiters:
-  Exclude:
-    - 'lib/tasks/apipie.rake'
-    - 'spec/controllers/users_controller_spec.rb'
-    - 'spec/dummy/app/controllers/pets_using_auto_views_controller.rb'
-    - 'spec/lib/apipie/extractor/writer_spec.rb'
-    - 'spec/lib/swagger/swagger_dsl_spec.rb'
 
 # Offense count: 1
 # This cop supports safe autocorrection (--autocorrect).

@@ -5,10 +5,10 @@ require 'rspec/expectations'
 describe "Swagger Responses" do
   let(:desc) { Apipie.get_resource_description(controller_class, Apipie.configuration.default_version) }
 
-  let(:swagger) {
+  let(:swagger) do
     Apipie.configuration.generator.swagger.suppress_warnings = true
     Apipie.to_swagger_json(Apipie.configuration.default_version, controller_class.to_s.underscore.sub("_controller", ""))
-  }
+  end
 
   let(:controller_class ) { described_class }
 
