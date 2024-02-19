@@ -914,12 +914,6 @@ Performance/RedundantMerge:
     - 'lib/apipie/generator/swagger/param_description/type.rb'
     - 'lib/apipie/middleware/checksum_in_headers.rb'
 
-# Offense count: 7
-# This cop supports safe autocorrection (--autocorrect).
-Performance/RegexpMatch:
-  Exclude:
-    - 'lib/apipie/extractor/writer.rb'
-    - 'lib/apipie/helpers.rb'
 
 # Offense count: 7
 # This cop supports safe autocorrection (--autocorrect).
