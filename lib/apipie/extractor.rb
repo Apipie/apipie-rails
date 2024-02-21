@@ -129,7 +129,7 @@ module Apipie
           controller = "#{controller_path}Controller"
 
           path = if /^#{Regexp.escape(@api_prefix)}(.*)$/ =~ route[:path]
-                   $1.sub(/\(\.:format\)$/,'')
+                   ::Regexp.last_match(1).sub(/\(\.:format\)$/,'')
                  else
                    nil
                  end

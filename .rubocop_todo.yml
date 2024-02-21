@@ -1748,11 +1748,6 @@ Style/PercentLiteralDelimiters:
     - 'lib/apipie/routes_formatter.rb'
     - 'lib/apipie/validator.rb'
 
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-Style/PerlBackrefs:
-  Exclude:
-    - 'lib/apipie/extractor.rb'
 
 # Offense count: 5
 # This cop supports safe autocorrection (--autocorrect).
