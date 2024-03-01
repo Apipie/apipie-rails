@@ -1,11 +1,8 @@
 # API Documentation Tool
 
 [![image](https://github.com/Apipie/apipie-rails/actions/workflows/build.yml/badge.svg)](https://github.com/Apipie/apipie-rails/actions/workflows/build.yml)
-
 [![image](https://codeclimate.com/github/Apipie/apipie-rails.svg)](https://codeclimate.com/github/Apipie/apipie-rails)
-
 [![Join the chat at https://gitter.im/Apipie/apipie-rails](https://badges.gitter.im/Apipie/apipie-rails.svg)](https://gitter.im/Apipie/apipie-rails?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
 [![Latest release](https://img.shields.io/gem/v/apipie-rails.svg)](https://rubygems.org/gems/apipie-rails)
 
 Apipie-rails is a DSL and Rails engine for documenting your RESTful API.
