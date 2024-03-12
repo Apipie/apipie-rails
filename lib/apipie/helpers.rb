@@ -27,7 +27,7 @@ module Apipie
       end
       path = path.sub(%r{^/},"")
       ret = "#{@url_prefix}/#{path}"
-      ret.insert(0,"/") unless ret =~ %r{\A[./]}
+      ret.insert(0,"/") unless %r{\A[./]}.match?(ret)
       ret.sub!(%r{/*\Z},"")
       ret
     end
