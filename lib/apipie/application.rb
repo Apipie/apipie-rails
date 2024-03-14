@@ -89,7 +89,7 @@ module Apipie
 
         # we create separate method description for each version in
         # case the method belongs to more versions. We return just one
-        # becuase the version doesn't matter for the purpose it's used
+        # because the version doesn't matter for the purpose it's used
         # (to wrap the original version with validators)
         ret_method_description ||= method_description
         resource_description.add_method_description(method_description)

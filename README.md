@@ -517,7 +517,7 @@ to be set are:
 -   for create action: `required => true` and `allow_nil => false`
 -   for update action: `required => false` and `allow_nil => false`
 
-This makes it hard to share the param definitions across theses actions.
+This makes it hard to share the param definitions across these actions.
 Therefore, you can make the description a bit smarter by setting
 `:action_aware => true`.
 
@@ -584,7 +584,7 @@ end
 returns :array_of => <param-group-name> [, :code => <number>|<http-response-code-symbol>] [, :desc => <human-readable description>]
 ```
 
-If the `:code` argument is ommitted, `200` is used.
+If the `:code` argument is omitted, `200` is used.
 
 ### Example
 
@@ -1573,7 +1573,7 @@ You can specify the versions for the examples, with the
 used for. When not specified, it\'s shown in all versions with the given
 method.
 
-When referencing or quering the resource/method descripion, this format
+When referencing or querying the resource/method descripion, this format
 should be used: \"version#resource#method\". When not specified, the
 default version is used instead.
 
@@ -1761,7 +1761,7 @@ the server consumes the content types
 `application/x-www-form-urlencoded` and `multipart/form-data`.
 Non-path parameters will have the value `"in": "formData"`. Note
 that parameters of type Hash that do not have any fields in them
-will *be ommitted* from the resulting files, as there is no way to
+will *be omitted* from the resulting files, as there is no way to
 describe them in swagger.
 
 - If the value is `:json` - the swagger file will indicate that the
