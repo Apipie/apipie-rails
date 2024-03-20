@@ -22,11 +22,11 @@ class SelfDocumentingView
   # self.describe_own_properties (a class method) generates the meta-data
   # (i.e., the type description) for the subclass.
   def self.describe_own_properties
-    (self.instance_methods - self.class.instance_methods).map{|m|
+    (self.instance_methods - self.class.instance_methods).map do |m|
       if matchdata = /^v_(\w+)__(\w+)$/.match(m)
         Apipie::prop(matchdata[1], matchdata[2])
       end
-    }.compact
+    end.compact
   end
 
   # to_json (an instance method) generates the actual view

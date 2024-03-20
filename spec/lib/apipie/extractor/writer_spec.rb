@@ -6,7 +6,7 @@ describe Apipie::Extractor::Writer do
   let(:writer_class) { Apipie::Extractor::Writer }
   let(:writer) { writer_class.new(collector) }
   let(:test_examples_file) { File.join(Rails.root, "doc", "apipie_examples_test.json") }
-  let(:records) {
+  let(:records) do
     {
     "concern_resources#show" =>
       [{
@@ -31,8 +31,8 @@ describe Apipie::Extractor::Writer do
         :code=>"200"
       }]
     }
-  }
-  let(:loaded_records) {
+  end
+  let(:loaded_records) do
     {
     "concern_resources#show" =>
       [{
@@ -57,7 +57,7 @@ describe Apipie::Extractor::Writer do
         "recorded"=>true
       }]
     }
-  }
+  end
 
   context 'with doc_path overridden in configuration' do
     around(:each) do |example|
