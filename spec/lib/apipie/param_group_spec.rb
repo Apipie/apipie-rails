@@ -20,7 +20,7 @@ describe "param groups" do
     expect(user_create_params.map(&:to_s).sort).to eq(%w[membership name pass])
   end
 
-  it "should allow adding additional params to group" do
+  it "allows adding additional params to group" do
     user_create_desc = Apipie["users#create"].params[:user]
     user_create_params = user_create_desc.validator.params_ordered.map(&:name)
     expect(user_create_params.map(&:to_s).sort).to eq(%w[membership name pass permalink])
@@ -43,16 +43,16 @@ describe "param groups" do
     expect(arch_v1_params.sort_by(&:to_s)).to eq(arch_v2_params.sort_by(&:to_s))
   end
 
-  it "should replace parameter name in a group when it comes from concern" do
+  it "replaces parameter name in a group when it comes from concern" do
     expect(Apipie["overridden_concern_resources#update"].params.key?(:user)).to eq(true)
   end
 
-  it "shouldn't replace parameter name in a group redefined in the controller" do
+  it "does not replace parameter name in a group redefined in the controller" do
     expect(Apipie["overridden_concern_resources#create"].params.key?(:concern)).to eq(true)
     expect(Apipie["overridden_concern_resources#create"].params.key?(:user)).to eq(false)
   end
 
-it "shouldn't replace name of a parameter defined in the controller" do
+it "does not replace name of a parameter defined in the controller" do
     expect(Apipie["overridden_concern_resources#custom"].params.key?(:concern)).to eq(true)
     expect(Apipie["overridden_concern_resources#custom"].params.key?(:user)).to eq(false)
   end
