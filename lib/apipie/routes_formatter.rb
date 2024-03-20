@@ -1,6 +1,6 @@
 module Apipie
   class RoutesFormatter
-    API_METHODS = %w{GET POST PUT PATCH OPTIONS DELETE}
+    API_METHODS = %w{GET POST PUT PATCH OPTIONS DELETE}.freeze
 
     # The entry method called by Apipie to extract the array
     # representing the api dsl from the routes definition.
