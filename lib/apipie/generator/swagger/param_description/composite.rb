@@ -22,8 +22,8 @@ class Apipie::Generator::Swagger::ParamDescription::Composite
       end
 
       param_type = Apipie::Generator::Swagger::TypeExtractor.
-        new(param_description.validator).
-        extract
+                   new(param_description.validator).
+                   extract
 
       has_nested_params = param_type == 'object' &&
         param_description.validator.params_ordered.present?
@@ -57,18 +57,18 @@ class Apipie::Generator::Swagger::ParamDescription::Composite
         end
       else
         param_entry = Apipie::Generator::Swagger::ParamDescription::Builder.
-          new(
-            param_description,
-            in_schema: @context.in_schema?,
-            controller_method: @context.controller_method
-          ).
-          with_description(language: @context.language).
-          with_type(with_null: @context.allow_null?).
-          with_in(
-            default_in_value: @context.default_in_value,
-            http_method: @context.http_method
-          ).
-          to_swagger
+                      new(
+                        param_description,
+                        in_schema: @context.in_schema?,
+                        controller_method: @context.controller_method
+                      ).
+                      with_description(language: @context.language).
+                      with_type(with_null: @context.allow_null?).
+                      with_in(
+                        default_in_value: @context.default_in_value,
+                        http_method: @context.http_method
+                      ).
+                      to_swagger
 
         @schema[:properties][param_description.name.to_sym] = param_entry
       end

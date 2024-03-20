@@ -50,8 +50,8 @@ class Apipie::Generator::Swagger::ParamDescription::Type
   # @return [Apipie::Generator::Swagger::Type, String]
   def type
     @_type ||= Apipie::Generator::Swagger::TypeExtractor.
-      new(validator).
-      extract
+               new(validator).
+               extract
   end
 
   def for_array_type
@@ -60,8 +60,8 @@ class Apipie::Generator::Swagger::ParamDescription::Type
 
     if items_type == 'Hash' && params_in_body_use_reference?
       reference_name = Apipie::Generator::Swagger::OperationId.
-        from(@param_description.method_description, param: @param_description.name).
-        to_s
+                       from(@param_description.method_description, param: @param_description.name).
+                       to_s
 
       items = {
         '$ref' => reference_name
