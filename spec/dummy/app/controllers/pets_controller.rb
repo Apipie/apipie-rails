@@ -364,8 +364,8 @@ class PetsController < ApplicationController
     result =  {
         a_number: 3,
         array_of_objects: [
-            {number1: 1, number2: 2},
-            {number1: 10, number2: 20}
+          {number1: 1, number2: 2},
+          {number1: 10, number2: 20}
         ]
     }
     render :json => result
@@ -387,8 +387,8 @@ class PetsController < ApplicationController
     result =  {
         a_number: 3,
         array_of_objects: [
-            {number1: 1, number2: 2},
-            {number1: 10, number2: "this should have been a number"}
+          {number1: 1, number2: 2},
+          {number1: 10, number2: "this should have been a number"}
         ]
     }
     render :json => result
