@@ -15,7 +15,7 @@ describe Apipie::FileHandler do
       it { expect { file_handler.match? path }.to_not raise_error }
     end
 
-    context 'when the path contans an invalid byte sequence in UTF-8' do
+    context 'when the path contains an invalid byte sequence in UTF-8' do
       let(:path) { "%B6" }
 
       it { expect(file_handler.match? path).to be_falsy }

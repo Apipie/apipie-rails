@@ -178,7 +178,7 @@ module Apipie
       alias full_description desc
 
       # describe next method with document in given path
-      # in convension, these doc located under "#{Rails.root}/doc"
+      # in convention, these doc located under "#{Rails.root}/doc"
       # Example:
       # document "hello_world.md"
       # def hello_world
@@ -452,7 +452,7 @@ module Apipie
       include Apipie::DSL::Action
       include Apipie::DSL::Param
 
-      # defines the substitutions to be made in the API paths deifned
+      # defines the substitutions to be made in the API paths defined
       # in concerns included. For example:
       #
       # There is this method defined in concern:
@@ -472,7 +472,7 @@ module Apipie
       #
       # It has to be specified before the concern is included.
       #
-      # If not specified, the default predefined substitions are
+      # If not specified, the default predefined substitutions are
       #
       #    {:conroller_path => controller.controller_path,
       #     :resource_id  => `resource_id_from_apipie` }

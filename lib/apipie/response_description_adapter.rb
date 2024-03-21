@@ -11,7 +11,7 @@ module Apipie
   class ResponseDescriptionAdapter
     class Modifier
       def apply(adapter)
-        raise "Modifer subclass must implement 'apply' method"
+        raise "Modifier subclass must implement 'apply' method"
       end
     end
 
