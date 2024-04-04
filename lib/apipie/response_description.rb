@@ -78,15 +78,6 @@ module Apipie
                                       adapter)
     end
 
-    def is_array?
-      @is_array_of != false
-    end
-
-    def typename
-      @response_object.typename
-    end
-
-
     def initialize(method_description, code, options, scope, block, adapter)
 
       @type_ref = options[:param_group]
@@ -117,6 +108,14 @@ module Apipie
       end
 
       @response_object.additional_properties ||= options[:additional_properties]
+    end
+
+    def is_array?
+      @is_array_of != false
+    end
+
+    def typename
+      @response_object.typename
     end
 
     def param_description
