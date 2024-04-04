@@ -630,6 +630,25 @@ end
 Note the use of the `property` keyword rather than `param`. This is the
 preferred mechanism for documenting response-only fields.
 
+#### Specify response headers
+
+We can specify the response headers using the `header` keyword within the `returns` block.
+
+##### Example
+```ruby
+api :GET, "/pets/:id/with-extra-details", "Get a detailed pet record"
+returns code: 200, desc: "Detailed info about the pet" do
+  param_group :pet
+  property :num_legs, Integer, :desc => "How many legs the pet has"
+  header 'Link', String, 'Relative links'
+  header 'Current-Page', Integer, 'The current page', required: true
+end
+
+def show
+  render JSON({ :pet_name => "Barkie", :animal_type => "iguana", :legs => 4 })
+end
+```
+
 #### The Property keyword
 
 `property` is very similar to `param` with the following differences:

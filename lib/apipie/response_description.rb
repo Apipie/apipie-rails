@@ -6,6 +6,7 @@ module Apipie
       include Apipie::DSL::Param
 
       attr_accessor :additional_properties, :typename
+      attr_reader :headers
 
       def initialize(method_description, scope, block, typename)
         @method_description = method_description
@@ -13,6 +14,7 @@ module Apipie
         @param_group = {scope: scope}
         @additional_properties = false
         @typename = typename
+        @headers = []
 
         self.instance_exec(&block) if block
 
@@ -43,6 +45,18 @@ module Apipie
         end
       end
 
+      # @param [String] header_name
+      # @param [String, symbol, Class] validator
+      # @param [String] description
+      # @param [Hash] options
+      def header(header_name, validator, description, options = {})
+        @headers << {
+          name: header_name,
+          validator: validator.to_s.downcase,
+          description: description,
+          options: options
+        }
+      end
     end
   end
 
@@ -118,6 +132,17 @@ module Apipie
     end
     alias allow_additional_properties additional_properties
 
+    # @return [Array<Hash>]
+    def headers
+      # TODO: Support headers for Apipie::ResponseDescriptionAdapter
+      if @response_object.is_a?(Apipie::ResponseDescriptionAdapter)
+        return []
+      end
+
+      @response_object.headers
+    end
+
+    # @return [Hash{Symbol->TrueClass | FalseClass}]
     def to_json(lang = nil)
       {
           :code => code,
@@ -125,6 +150,7 @@ module Apipie
           :is_array => is_array?,
           :returns_object => params_ordered.map{ |param| param.to_json(lang).tap{|h| h.delete(:validations) }}.flatten,
           :additional_properties => additional_properties,
+          :headers => headers
       }
     end
   end
