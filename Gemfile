@@ -5,7 +5,6 @@ source 'https://rubygems.org'
 gemspec path: '.'
 
 # use ENV vars, with default value as fallback for local setup
-ruby(ENV['RUBY_VERSION'] || '3.2.2')
 gem 'actionpack', "~> #{ENV['RAILS_VERSION'] || '7.0'}.0"
 gem 'activesupport', "~> #{ENV['RAILS_VERSION'] || '7.0'}.0"
 
