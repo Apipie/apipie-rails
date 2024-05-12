@@ -19,7 +19,6 @@ jobs:
             ruby: "2.6.10"
 
     env:
-      RUBY_VERSION: ${{ matrix.ruby }}
       RAILS_VERSION: ${{ matrix.rails }}
 
     steps:
