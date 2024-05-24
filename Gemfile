@@ -5,8 +5,8 @@ source 'https://rubygems.org'
 gemspec path: '.'
 
 # use ENV vars, with default value as fallback for local setup
-gem 'actionpack', "~> #{ENV['RAILS_VERSION'] || '7.0'}.0"
-gem 'activesupport', "~> #{ENV['RAILS_VERSION'] || '7.0'}.0"
+gem 'actionpack', "~> #{ENV['RAILS_VERSION'] || RUBY_VERSION >= '3.4' ? '7.1' : '7.0'}.0"
+gem 'activesupport', "~> #{ENV['RAILS_VERSION'] || RUBY_VERSION >= '3.4' ? '7.1' : '7.0'}.0"
 
 gem 'mime-types' # , '~> 3.0'
 gem 'rails-controller-testing'
