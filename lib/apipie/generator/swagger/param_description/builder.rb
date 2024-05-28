@@ -11,7 +11,7 @@ class Apipie::Generator::Swagger::ParamDescription::Builder
   # @param [String, nil] prefix
   def with_name(prefix: nil)
     @name = Apipie::Generator::Swagger::ParamDescription::Name.
-      new(@param_description, prefixed_by: prefix)
+            new(@param_description, prefixed_by: prefix)
 
     self
   end
@@ -19,7 +19,7 @@ class Apipie::Generator::Swagger::ParamDescription::Builder
   # @param [String] language
   def with_description(language:)
     @description = Apipie::Generator::Swagger::ParamDescription::Description.
-      new(@param_description, language: language)
+                   new(@param_description, language: language)
 
     self
   end
@@ -27,7 +27,7 @@ class Apipie::Generator::Swagger::ParamDescription::Builder
   # @param [TrueClass, FalseClass] with_null
   def with_type(with_null:)
     @type = Apipie::Generator::Swagger::ParamDescription::Type.
-      new(@param_description, with_null: with_null, controller_method: @controller_method)
+            new(@param_description, with_null: with_null, controller_method: @controller_method)
 
     self
   end
