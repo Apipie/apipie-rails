@@ -15,6 +15,7 @@ ko:
     required: 필수
     optional: 옵션
     nil_allowed: nil 허용
+    blank_allowed: blank 허용
     param_name: Param 이름
     params: Params
     examples: 예시
