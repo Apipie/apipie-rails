@@ -419,7 +419,7 @@ module Apipie
       end
 
       # this method would be totally useless unless some clever guy
-      # desided that it would be great idea to change a behavior of
+      # decided that it would be great idea to change a behavior of
       # "".lines method to not include end of lines.
       #
       # For more details:
