@@ -15,6 +15,7 @@
       <small>
         <%= param[:required] ? t('apipie.required') : t('apipie.optional') %>
         <%= param[:allow_nil] ? ', '+t('apipie.nil_allowed') : '' %>
+        <%= param[:allow_blank] ? ', '+t('apipie.blank_allowed') : '' %>
       </small>
     </td>
     <td>

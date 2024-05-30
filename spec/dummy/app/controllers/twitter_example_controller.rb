@@ -10,7 +10,7 @@ class TwitterExampleController < ApplicationController
   api :GET, '/twitter_example/lookup', 'Return up to 100 users worth of extended information, specified by either ID, screen name, or combination of the two.'
   param :screen_name, String, :desc => 'A comma separated list of screen names, up to 100 are allowed in a single request. You are strongly encouraged to use a POST for larger (up to 100 screen names) requests.'
   param :user_id, Integer, :desc => 'A comma separated list of user IDs, up to 100 are allowed in a single request. You are strongly encouraged to use a POST for larger requests.'
-  param :include_entities, String, :desc => 'When set to either <code>true</code>, <code>t</code> or <code>1</code>, each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags. While entities are opt-in on timelines at present, they will be made a default component of output in the future. See Tweet Entities for more detail on entities.'
+  param :include_entities, String, :desc => 'When set to either <code>true</code>, <code>t</code> or <code>1</code>, each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discrete structure, including: user_mentions, urls, and hashtags. While entities are opt-in on timelines at present, they will be made a default component of output in the future. See Tweet Entities for more detail on entities.'
   
   description <<-EOS
     Return up to 100 users worth of extended information, specified by either ID, screen name, or combination of the two. The author's most recent status (if the authenticating user has permission) will be returned inline.
@@ -53,8 +53,8 @@ class TwitterExampleController < ApplicationController
   api :GET, '/twitter_example/search', 'Runs a search for users similar to Find People button on Twitter.com.'
   param :q, String, :desc => 'The search query to run against people search.', :required => true
   param :page, Integer, :desc => 'Specifies the page of results to retrieve.'
-  param :per_page, Integer, :desc => 'The number of people to retrieve. Maxiumum of 20 allowed per page.'
-  param :include_entities, String, :desc => 'When set to either true, t or 1, each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags. While entities are opt-in on timelines at present, they will be made a default component of output in the future. See Tweet Entities for more detail on entities.'
+  param :per_page, Integer, :desc => 'The number of people to retrieve. Maximum of 20 allowed per page.'
+  param :include_entities, String, :desc => 'When set to either true, t or 1, each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discrete structure, including: user_mentions, urls, and hashtags. While entities are opt-in on timelines at present, they will be made a default component of output in the future. See Tweet Entities for more detail on entities.'
   description <<-EOS
     Runs a search for users similar to Find People button on Twitter.com. The results returned by people search on Twitter.com are the same as those returned by this API request. Note that unlike GET search, this method does not support any operators.
 

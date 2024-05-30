@@ -39,7 +39,8 @@ class Apipie::Generator::Swagger::MethodDescription::ResponseService
             allow_null: false,
             http_method: @http_method,
             controller_method: @method_description
-          ).to_swagger
+          ).to_swagger,
+          headers: response_headers(response.headers)
         }.compact
       end
   end
@@ -54,5 +55,17 @@ class Apipie::Generator::Swagger::MethodDescription::ResponseService
     ).warn_through_writer
 
     { 200 => { description: 'ok' } }
+  end
+
+  # @param [Array<Hash>] headers
+  #
+  # https://swagger.io/specification/v2/#header-object
+  def response_headers(headers)
+    headers.each_with_object({}) do |header, result|
+      result[header[:name].to_s] = {
+        description: header[:description],
+        type: header[:validator]
+      }
+    end
   end
 end

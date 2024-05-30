@@ -63,7 +63,7 @@ class PetsController < ApplicationController
   # mixing request/response and response-only parameters
   #
   # the param_group :pet_with_id has several parameters which are
-  # not expectd in the request, but would show up in the response
+  # not expected in the request, but would show up in the response
   # and vice versa
   #-----------------------------------------------------------
   def_param_group :pet_with_id do
