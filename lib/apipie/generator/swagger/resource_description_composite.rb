@@ -41,11 +41,11 @@ class Apipie::Generator::Swagger::ResourceDescriptionComposite
         next unless method_description.show
 
         result = Apipie::Generator::Swagger::MethodDescription::ApiSchemaService
-                 .new(
-                   Apipie::Generator::Swagger::MethodDescription::Decorator.new(method_description),
-                   language: @language
-                 )
-                 .call
+          .new(
+            Apipie::Generator::Swagger::MethodDescription::Decorator.new(method_description),
+            language: @language
+          )
+          .call
 
         results.deep_merge!(result)
       end

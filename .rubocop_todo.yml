@@ -415,16 +415,6 @@ Layout/MultilineMethodCallBraceLayout:
   Exclude:
     - 'lib/tasks/apipie.rake'
 
-# Offense count: 14
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle, IndentationWidth.
-# SupportedStyles: aligned, indented, indented_relative_to_receiver
-Layout/MultilineMethodCallIndentation:
-  Exclude:
-    - 'lib/apipie/generator/swagger/param_description/builder.rb'
-    - 'lib/apipie/generator/swagger/param_description/composite.rb'
-    - 'lib/apipie/generator/swagger/param_description/type.rb'
-
 # Offense count: 4
 # This cop supports safe autocorrection (--autocorrect).
 # Configuration parameters: EnforcedStyle, IndentationWidth.
