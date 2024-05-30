@@ -313,15 +313,6 @@ Layout/ExtraSpacing:
     - 'spec/lib/apipie/generator/swagger/param_description/type_spec.rb'
     - 'spec/lib/swagger/swagger_dsl_spec.rb'
 
-# Offense count: 9
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle, IndentationWidth.
-# SupportedStyles: special_inside_parentheses, consistent, align_brackets
-Layout/FirstArrayElementIndentation:
-  Exclude:
-    - 'spec/dummy/app/controllers/pets_controller.rb'
-    - 'spec/dummy/app/controllers/pets_using_self_describing_classes_controller.rb'
-
 # Offense count: 38
 # This cop supports safe autocorrection (--autocorrect).
 # Configuration parameters: EnforcedStyle, IndentationWidth.
