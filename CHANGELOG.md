@@ -1,6 +1,19 @@
  Changelog
 ===========
 
+## [v1.4.0](https://github.com/Apipie/apipie-rails/tree/v1.4.0) (2024-05-30)
+[Full Changelog](https://github.com/Apipie/apipie-rails/compare/v1.3.0...v1.4.0)
+* Add Ruby 3.3.0 to CI build matrix (#906) Masato Nakamura
+* Fix rubocop CI (#910) (Masato Nakamura)
+* Add metadata for rubygems.org and use https URLs (#909) (Masato Nakamura)
+* Bump GHA actions/checkout to be on node20 by default (#911) (Masato Nakamura)
+* Convert readme to markdown (#920) (Panos Dalitsouris)
+* Fix typos, Found via `codespell` (#921) (Kian-Meng Ang)
+* Bump ruby versions on test jobs (#927) (Masato Nakamura)
+* Support for Ruby 3.4.0-preview1 (#929) (Masato Nakamura)
+* Add "blank allowed" message to api doc (#926) (Peko)
+* Custom headers responses (#924) (Panos Dalitsouris)
+
 ## [v1.3.0](https://github.com/Apipie/apipie-rails/tree/v1.3.0) (2023-12-19)
 [Full Changelog](https://github.com/Apipie/apipie-rails/compare/v1.2.3...v1.3.0)
 * rubocop fixes ([#897](https://github.com/Apipie/apipie-rails/pull/897)) (Mathieu Jobin)

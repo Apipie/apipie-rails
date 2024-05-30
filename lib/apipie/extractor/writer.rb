@@ -324,7 +324,7 @@ module Apipie
           desc ||= case @action.to_s
                    when "show", "create", "update", "destroy"
                      name = name.singularize
-                     "#{@action.capitalize} #{name =~ /^[aeiou]/ ? 'an' : 'a'} #{name}"
+                     "#{@action.capitalize} #{/^[aeiou]/.match?(name) ? 'an' : 'a'} #{name}"
                    when "index"
                      "List #{name}"
                    end
@@ -341,7 +341,7 @@ module Apipie
         params.sort_by {|n,_| n }.each do |(name, desc)|
           desc[:type] = (desc[:type] && desc[:type].first) || Object
           code << "#{indent}param"
-          if name =~ /\W/
+          if /\W/.match?(name)
             code << " :'#{name}'"
           else
             code << " :#{name}"
@@ -397,7 +397,7 @@ module Apipie
         lines_to_add = []
         block_level = 0
         ensure_line_breaks(controller_content.lines).first(action_line).reverse_each do |line|
-          if line =~ /\s*\bend\b\s*/
+          if /\s*\bend\b\s*/.match?(line)
             block_level += 1
           end
           if block_level > 0
@@ -405,10 +405,10 @@ module Apipie
           else
             added_lines << line
           end
-          if line =~ /\s*\b(module|class|def)\b /
+          if /\s*\b(module|class|def)\b /.match?(line)
             break
           end
-          next unless line =~ /do\s*(\|.*?\|)?\s*$/
+          next unless /do\s*(\|.*?\|)?\s*$/.match?(line)
           block_level -= 1
           if block_level == 0
             added_lines.concat(lines_to_add)
@@ -419,14 +419,14 @@ module Apipie
       end
 
       # this method would be totally useless unless some clever guy
-      # desided that it would be great idea to change a behavior of
+      # decided that it would be great idea to change a behavior of
       # "".lines method to not include end of lines.
       #
       # For more details:
       #   https://github.com/puppetlabs/puppet/blob/0dc44695/lib/puppet/util/monkey_patches.rb
       def ensure_line_breaks(lines)
         if lines.to_a.size > 1 && lines.first !~ /\n\Z/
-          lines.map { |l| l !~ /\n\Z/ ? (l << "\n") : l }.to_enum
+          lines.map { |l| !/\n\Z/.match?(l) ? (l << "\n") : l }.to_enum
         else
           lines
         end

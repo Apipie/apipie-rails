@@ -55,6 +55,8 @@
         <%= render(:partial => "params", :locals => {:params => item[:returns_object]}) %>
       </tbody>
     </table>
+
+    <%= render(:partial => "headers", :locals => {:headers => item[:headers], :h_level => h_level+2 }) %>
   <% end %>
 <% end %>
 

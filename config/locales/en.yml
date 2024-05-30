@@ -15,6 +15,7 @@ en:
     required: required
     optional: optional
     nil_allowed: nil allowed
+    blank_allowed: blank allowed
     param_name: Param name
     params: Params
     examples: Examples

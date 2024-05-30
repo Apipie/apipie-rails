@@ -188,7 +188,7 @@ describe Apipie::ApipiesController, type: :controller do
 
 
   describe "authenticate user" do
-    it "authenticate user if an authentication method is setted" do
+    it "authenticate user if an authentication method is set" do
       test = false
       Apipie.configuration.authenticate = Proc.new do
         test = true

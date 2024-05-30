@@ -9,6 +9,7 @@
       <small>
         <%= param[:required] ? t('apipie.required') : t('apipie.optional') %>
         <%= param[:allow_nil] ? ', '+t('apipie.nil_allowed') : '' %>
+        <%= param[:allow_blank] ? ', '+t('apipie.blank_allowed') : '' %>
         <% if param[:validator] %>
           [ <%= Apipie.markup_to_html(param[:validator]).html_safe %> ]
         <% end %>
