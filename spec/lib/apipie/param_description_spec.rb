@@ -21,7 +21,7 @@ describe Apipie::ParamDescription do
 
     it "returns the metadata" do
       meta = {
-        :lenght => 32,
+        :length => 32,
         :weight => '830g'
       }
       param = Apipie::ParamDescription.new(method_desc, :some_param, String, :meta => meta)
