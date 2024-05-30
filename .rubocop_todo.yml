@@ -1021,28 +1021,6 @@ RSpec/EmptyLineAfterHook:
 RSpec/ExampleLength:
   Max: 85
 
-# Offense count: 159
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: CustomTransform, IgnoredWords, DisallowedExamples.
-# DisallowedExamples: works
-RSpec/ExampleWording:
-  Exclude:
-    - 'spec/controllers/api/v1/architectures_controller_spec.rb'
-    - 'spec/controllers/api/v2/nested/resources_controller_spec.rb'
-    - 'spec/controllers/concerns_controller_spec.rb'
-    - 'spec/controllers/extended_controller_spec.rb'
-    - 'spec/controllers/included_param_group_controller_spec.rb'
-    - 'spec/controllers/users_controller_spec.rb'
-    - 'spec/lib/apipie/application_spec.rb'
-    - 'spec/lib/apipie/extractor/writer_spec.rb'
-    - 'spec/lib/apipie/method_description_spec.rb'
-    - 'spec/lib/apipie/param_description_spec.rb'
-    - 'spec/lib/apipie/param_group_spec.rb'
-    - 'spec/lib/apipie/resource_description_spec.rb'
-    - 'spec/lib/apipie/validator_spec.rb'
-    - 'spec/lib/swagger/swagger_dsl_spec.rb'
-    - 'spec/test_engine/memes_controller_spec.rb'
-
 # Offense count: 1
 # This cop supports safe autocorrection (--autocorrect).
 RSpec/ExcessiveDocstringSpacing:
