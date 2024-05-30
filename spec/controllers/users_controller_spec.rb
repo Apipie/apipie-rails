@@ -431,7 +431,7 @@ describe UsersController do
       expect(b.full_description.length).to be > 400
     end
 
-    context "Usign routes.rb" do
+    context "Using routes.rb" do
       it "should contain basic info about method" do
         a = Apipie[UsersController, :create_route]
         expect(a.apis.count).to eq(1)
