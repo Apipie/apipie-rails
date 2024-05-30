@@ -313,15 +313,6 @@ Layout/ExtraSpacing:
     - 'spec/lib/apipie/generator/swagger/param_description/type_spec.rb'
     - 'spec/lib/swagger/swagger_dsl_spec.rb'
 
-# Offense count: 9
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle, IndentationWidth.
-# SupportedStyles: special_inside_parentheses, consistent, align_brackets
-Layout/FirstArrayElementIndentation:
-  Exclude:
-    - 'spec/dummy/app/controllers/pets_controller.rb'
-    - 'spec/dummy/app/controllers/pets_using_self_describing_classes_controller.rb'
-
 # Offense count: 38
 # This cop supports safe autocorrection (--autocorrect).
 # Configuration parameters: EnforcedStyle, IndentationWidth.
@@ -498,7 +489,7 @@ Layout/SpaceAroundOperators:
     - 'spec/lib/swagger/rake_swagger_spec.rb'
     - 'spec/lib/swagger/swagger_dsl_spec.rb'
 
-# Offense count: 32
+# Offense count: 29
 # This cop supports safe autocorrection (--autocorrect).
 # Configuration parameters: EnforcedStyle, EnforcedStyleForEmptyBraces.
 # SupportedStyles: space, no_space
@@ -511,9 +502,6 @@ Layout/SpaceBeforeBlockBraces:
     - 'lib/apipie/param_description.rb'
     - 'lib/apipie/response_description.rb'
     - 'lib/apipie/routes_formatter.rb'
-    - 'lib/tasks/apipie.rake'
-    - 'spec/controllers/users_controller_spec.rb'
-    - 'spec/dummy/app/controllers/pets_using_auto_views_controller.rb'
     - 'spec/lib/swagger/swagger_dsl_spec.rb'
 
 # Offense count: 4
@@ -533,7 +521,7 @@ Layout/SpaceInsideArrayLiteralBrackets:
     - 'lib/apipie/generator/swagger/param_description/composite.rb'
     - 'spec/controllers/users_controller_spec.rb'
 
-# Offense count: 63
+# Offense count: 60
 # This cop supports safe autocorrection (--autocorrect).
 # Configuration parameters: EnforcedStyle, EnforcedStyleForEmptyBraces, SpaceBeforeBlockParameters.
 # SupportedStyles: space, no_space
@@ -546,9 +534,7 @@ Layout/SpaceInsideBlockBraces:
     - 'lib/apipie/response_description.rb'
     - 'lib/apipie/routes_formatter.rb'
     - 'lib/apipie/validator.rb'
-    - 'lib/tasks/apipie.rake'
     - 'spec/controllers/users_controller_spec.rb'
-    - 'spec/dummy/app/controllers/pets_using_auto_views_controller.rb'
     - 'spec/lib/apipie/application_spec.rb'
     - 'spec/lib/apipie/generator/swagger/operation_id_spec.rb'
     - 'spec/lib/apipie/generator/swagger/warning_spec.rb'
@@ -1332,21 +1318,6 @@ Style/AndOr:
   Exclude:
     - 'lib/apipie/param_description.rb'
 
-# Offense count: 18
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle, ProceduralMethods, FunctionalMethods, AllowedMethods, AllowedPatterns, AllowBracesOnProceduralOneLiners, BracesRequiredMethods.
-# SupportedStyles: line_count_based, semantic, braces_for_chaining, always_braces
-# ProceduralMethods: benchmark, bm, bmbm, create, each_with_object, measure, new, realtime, tap, with_object
-# FunctionalMethods: let, let!, subject, watch
-# AllowedMethods: lambda, proc, it
-Style/BlockDelimiters:
-  Exclude:
-    - 'lib/tasks/apipie.rake'
-    - 'spec/controllers/users_controller_spec.rb'
-    - 'spec/dummy/app/controllers/pets_using_auto_views_controller.rb'
-    - 'spec/lib/apipie/extractor/writer_spec.rb'
-    - 'spec/lib/swagger/swagger_dsl_spec.rb'
-
 # Offense count: 1
 # This cop supports safe autocorrection (--autocorrect).
 # Configuration parameters: AllowOnConstant, AllowOnSelfClass.
@@ -1637,19 +1608,6 @@ Style/MissingRespondToMissing:
 Style/MultilineBlockChain:
   Exclude:
     - 'lib/apipie/param_description.rb'
-
-# Offense count: 7
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: literals, strict
-Style/MutableConstant:
-  Exclude:
-    - 'lib/apipie/extractor/recorder.rb'
-    - 'lib/apipie/generator/swagger/param_description/in.rb'
-    - 'lib/apipie/generator/swagger/type_extractor.rb'
-    - 'lib/apipie/generator/swagger/warning.rb'
-    - 'lib/apipie/routes_formatter.rb'
-    - 'lib/apipie/version.rb'
 
 # Offense count: 8
 # This cop supports safe autocorrection (--autocorrect).
