@@ -17,7 +17,7 @@ class Apipie::Generator::Swagger::Warning
     optional_without_default_value: OPTIONAL_WITHOUT_DEFAULT_VALUE_CODE,
     param_ignored_in_form_data: PARAM_IGNORED_IN_FORM_DATA_CODE,
     path_param_not_described_code: PATH_PARAM_NOT_DESCRIBED_CODE
-  }
+  }.freeze
 
   MESSAGES = {
     MISSING_METHOD_SUMMARY_CODE => "Missing short description for method",
@@ -28,7 +28,7 @@ class Apipie::Generator::Swagger::Warning
     OPTIONAL_WITHOUT_DEFAULT_VALUE_CODE => "The parameter :%{parameter} is optional but default value is not specified (use :default_value => ...)",
     PARAM_IGNORED_IN_FORM_DATA_CODE => "Ignoring param :%{parameter} -- cannot include Hash without fields in a formData specification",
     PATH_PARAM_NOT_DESCRIBED_CODE => "The parameter :%{name} appears in the path %{path} but is not described"
-  }
+  }.freeze
 
   attr_reader :code
 

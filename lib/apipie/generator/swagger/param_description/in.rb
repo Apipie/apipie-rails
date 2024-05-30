@@ -2,7 +2,7 @@ class Apipie::Generator::Swagger::ParamDescription::In
   IN_KEYWORD_DEFAULT_VALUES = {
     form_data: 'formData',
     query: 'query'
-  }
+  }.freeze
 
   def initialize(param_description, in_schema:, default_in_value:, http_method:)
     @param_description = param_description
