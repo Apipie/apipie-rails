@@ -386,13 +386,6 @@ Layout/IndentationWidth:
     - 'lib/apipie/resource_description.rb'
     - 'lib/tasks/apipie.rake'
 
-# Offense count: 2
-# This cop supports safe autocorrection (--autocorrect).
-Layout/InitialIndentation:
-  Exclude:
-    - 'spec/dummy/app/controllers/extending_concern.rb'
-    - 'spec/dummy/app/controllers/sample_controller.rb'
-
 # Offense count: 15
 # This cop supports safe autocorrection (--autocorrect).
 # Configuration parameters: AllowDoxygenCommentStyle, AllowGemfileRubyComment.
