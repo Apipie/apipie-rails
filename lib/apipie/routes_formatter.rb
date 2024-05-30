@@ -24,7 +24,7 @@ module Apipie
       if verb.count != 1
         verb = API_METHODS.select{|defined_verb| defined_verb == rails_route.constraints[:method]}
         if verb.blank?
-          raise "Unknow verb #{rails_route.path.spec.to_s}"
+          raise "Unknown verb #{rails_route.path.spec.to_s}"
         end
       end
       verb.first
