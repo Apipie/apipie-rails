@@ -34,7 +34,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency "json-schema", "~> 2.8"
   s.add_development_dependency "rspec-rails", "~> 3.0"
   s.add_development_dependency "rake"
-  s.add_development_dependency 'rubocop_challenger'
   s.add_development_dependency 'rubocop-rails'
   s.add_development_dependency 'rubocop-rspec'
   s.add_development_dependency 'rubocop-performance'
