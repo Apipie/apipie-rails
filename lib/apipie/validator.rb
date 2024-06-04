@@ -50,6 +50,14 @@ module Apipie
 
       # check if value is valid
       def valid?(value)
+        if !param_description.allow_nil && value.nil?
+          @error_value = nil
+          return false
+        elsif !param_description.allow_blank && value.blank?
+          @error_value = 'blank'
+          return false
+        end
+
         if self.validate(value)
           @error_value = nil
           true
