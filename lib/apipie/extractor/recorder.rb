@@ -150,8 +150,8 @@ module Apipie
       end
 
       module FunctionalTestRecording
-        def process(*args) # action, parameters = nil, session = nil, flash = nil, http_method = 'GET')
-          ret = super(*args)
+        def process(*) # action, parameters = nil, session = nil, flash = nil, http_method = 'GET')
+          ret = super
           if Apipie.configuration.record
             Apipie::Extractor.call_recorder.analyze_functional_test(self)
             Apipie::Extractor.call_finished
@@ -160,6 +160,8 @@ module Apipie
         ensure
           Apipie::Extractor.clean_call_recorder
         end
+        # Taking this from https://github.com/Apipie/apipie-rails/blob/master/lib/apipie/extractor/recorder.rb#L189C1-L190C1
+        ruby2_keywords :process if respond_to?(:ruby2_keywords, true)
       end
     end
   end
