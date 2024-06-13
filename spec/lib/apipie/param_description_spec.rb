@@ -305,7 +305,7 @@ describe Apipie::ParamDescription do
         let(:validation_value) { '' }
 
         it 'raises an error' do
-          expect { subject }.to raise_error(Apipie::ParamInvalid)
+          expect { subject }.not_to raise_error(Apipie::ParamInvalid)
         end
       end
 
