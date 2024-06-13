@@ -1,4 +1,8 @@
 class CustomBoolValidator < Apipie::Validator::BaseValidator
+  def valid?(value)
+    validate(value)
+  end
+
   def validate(value)
     value.in?([true, false])
   end

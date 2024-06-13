@@ -50,6 +50,16 @@ module Apipie
 
       # check if value is valid
       def valid?(value)
+        if param_description.is_a?(Apipie::ParamDescription)
+          if (param_description.options[:allow_nil] == false) && value.nil?
+            @error_value = nil
+            return false
+          elsif (param_description.options[:allow_blank] == false) && value.blank?
+            @error_value = 'blank'
+            return false
+          end
+        end
+
         if self.validate(value)
           @error_value = nil
           true
@@ -480,6 +490,9 @@ module Apipie
     end
 
     class BooleanValidator < BaseValidator
+      def valid?(value)
+        validate(value)
+      end
 
       def validate(value)
         %w[true false 1 0].include?(value.to_s)
