@@ -122,7 +122,7 @@ describe "Swagger Responses" do
         desc._methods[:index]
       end
 
-      it "should return code 200 with array of entries of the format {'pet_name', 'animal_type'}" do
+      it "returns code 200 with array of entries of the format {'pet_name', 'animal_type'}" do
         returns_obj = subject.returns.detect{|e| e.code == 200 }
 
         puts returns_obj.to_json
@@ -132,7 +132,7 @@ describe "Swagger Responses" do
         expect(returns_obj).to match_field_structure([:pet_name, :animal_type])
       end
 
-      it 'should have the response described in the swagger' do
+      it 'has the response described in the swagger' do
         response = swagger_response_for('/pets')
         expect(response[:description]).to eq("list of pets")
 
@@ -145,7 +145,7 @@ describe "Swagger Responses" do
       end
 
 
-      it "should return code 401 with a String description field" do
+      it "returns code 401 with a String description field" do
         returns_obj = subject.returns.detect{|e| e.code == 404 }
 
         expect(returns_obj.code).to eq(404)
@@ -155,7 +155,7 @@ describe "Swagger Responses" do
       end
 
 
-      it "should return code 401 with a :reason field (defined in the superclass)" do
+      it "returns code 401 with a :reason field (defined in the superclass)" do
         returns_obj = subject.returns.detect{|e| e.code == 401 }
 
         expect(returns_obj.code).to eq(401)
@@ -164,7 +164,7 @@ describe "Swagger Responses" do
         expect(returns_obj).to match_field_structure([:reason])
       end
 
-      it 'should have the 404 response described in the swagger' do
+      it 'has the 404 response described in the swagger' do
         response = swagger_response_for('/pets', 404)
         expect(response[:description]).to eq("Not Found")
 
@@ -181,7 +181,7 @@ describe "Swagger Responses" do
         desc._methods[:show_plain_response_with_tags]
       end
 
-      it "should return tags with 'Dogs', 'Cats', and 'LivingBeings'" do
+      it "returns tags with 'Dogs', 'Cats', and 'LivingBeings'" do
         returns_obj = subject.tag_list
         puts returns_obj.inspect
 
@@ -194,7 +194,7 @@ describe "Swagger Responses" do
         desc._methods[:show_as_properties]
       end
 
-      it "should return code 200 with 'pet_name' and 'animal_type'" do
+      it "returns code 200 with 'pet_name' and 'animal_type'" do
         returns_obj = subject.returns.detect{|e| e.code == 200 }
 
         puts returns_obj.to_json
@@ -204,7 +204,7 @@ describe "Swagger Responses" do
         expect(returns_obj).to match_field_structure([:pet_name, :animal_type])
       end
 
-      it 'should have the response described in the swagger' do
+      it 'has the response described in the swagger' do
         response = swagger_response_for('/pets/{id}/as_properties')
         expect(response[:description]).to eq("OK")
 
@@ -213,7 +213,7 @@ describe "Swagger Responses" do
         expect(schema).to have_field(:animal_type, 'string', {:description => 'Type of pet', :enum => %w[dog cat iguana kangaroo]})
       end
 
-      it 'should have the 404 response description overridden' do
+      it 'has the 404 response description overridden' do
         returns_obj = subject.returns.detect{|e| e.code == 404 }
 
         # puts returns_obj.to_json
@@ -229,7 +229,7 @@ describe "Swagger Responses" do
         desc._methods[:show_as_param_group_of_properties]
       end
 
-      it "should return code 200 with 'pet_name' and 'animal_type'" do
+      it "returns code 200 with 'pet_name' and 'animal_type'" do
         returns_obj = subject.returns.detect{|e| e.code == 200 }
 
         puts returns_obj.to_json
@@ -241,7 +241,7 @@ describe "Swagger Responses" do
         expect(returns_obj.params_ordered[1].is_required?).to be_truthy
       end
 
-      it 'should have the response described in the swagger' do
+      it 'has the response described in the swagger' do
         response = swagger_response_for('/pets/{id}/as_param_group_of_properties')
         expect(response[:description]).to eq("The pet")
 
@@ -256,7 +256,7 @@ describe "Swagger Responses" do
         desc._methods[:show_pet_by_id]
       end
 
-      it "should have only oauth (from ApplicationController), common_param (from resource) and pet_id as an input parameters" do
+      it "has only oauth (from ApplicationController), common_param (from resource) and pet_id as an input parameters" do
         params_obj = subject.params_ordered
 
         expect(params_obj[0].name).to eq(:oauth)
@@ -264,7 +264,7 @@ describe "Swagger Responses" do
         expect(params_obj[2].name).to eq(:pet_id)
       end
 
-      it "should return code 200 with 'pet_id', pet_name' and 'animal_type'" do
+      it "returns code 200 with 'pet_id', pet_name' and 'animal_type'" do
         returns_obj = subject.returns.detect{|e| e.code == 200 }
 
         puts returns_obj.to_json
@@ -275,7 +275,7 @@ describe "Swagger Responses" do
         expect(returns_obj).to match_field_structure([:pet_id, :pet_name, :animal_type])
       end
 
-      it 'should have the response described in the swagger' do
+      it 'has the response described in the swagger' do
         response = swagger_response_for('/pets/pet_by_id')
         expect(response[:description]).to eq("OK")
 
@@ -304,7 +304,7 @@ describe "Swagger Responses" do
         desc._methods[:get_vote_by_owner_name]
       end
 
-      it "should return code 200 with 'owner_name' and 'vote'" do
+      it "returns code 200 with 'owner_name' and 'vote'" do
         returns_obj = subject.returns.detect{|e| e.code == 200 }
 
         puts returns_obj.to_json
@@ -314,7 +314,7 @@ describe "Swagger Responses" do
         expect(returns_obj).to match_field_structure([:owner_name, :vote])
       end
 
-      it 'should have the response described in the swagger' do
+      it 'has the response described in the swagger' do
         response = swagger_response_for('/pets/by_owner_name/did_vote')
         expect(response[:description]).to eq("OK")
 
@@ -329,7 +329,7 @@ describe "Swagger Responses" do
         desc._methods[:show_extra_info]
       end
 
-      it "should return code 201 with 'pet_name' and 'animal_type'" do
+      it "returns code 201 with 'pet_name' and 'animal_type'" do
         returns_obj = subject.returns.detect{|e| e.code == 201 }
 
         puts returns_obj.to_json
@@ -339,7 +339,7 @@ describe "Swagger Responses" do
         expect(returns_obj).to match_field_structure([:pet_name, :animal_type])
       end
 
-      it 'should have the 201 response described in the swagger' do
+      it 'has the 201 response described in the swagger' do
         response = swagger_response_for('/pets/{id}/extra_info', 201)
         expect(response[:description]).to eq("Found a pet")
 
@@ -348,7 +348,7 @@ describe "Swagger Responses" do
         expect(schema).to have_field(:animal_type, 'string')
       end
 
-      it "should return code 202 with spread out 'pet' and encapsulated 'pet_measurements'" do
+      it "returns code 202 with spread out 'pet' and encapsulated 'pet_measurements'" do
         returns_obj = subject.returns.detect{|e| e.code == 202 }
 
         puts returns_obj.to_json
@@ -361,7 +361,7 @@ describe "Swagger Responses" do
                                                      ])
       end
 
-      it 'should have the 202 response described in the swagger' do
+      it 'has the 202 response described in the swagger' do
         response = swagger_response_for('/pets/{id}/extra_info', 202)
         expect(response[:description]).to eq('Accepted')
 
@@ -376,7 +376,7 @@ describe "Swagger Responses" do
         expect(pm_schema).to have_field(:num_legs, 'number', {:description => "Number of legs", :required => false})
       end
 
-      it "should return code 203 with spread out 'pet', encapsulated 'pet_measurements' and encapsulated 'pet_history'" do
+      it "returns code 203 with spread out 'pet', encapsulated 'pet_measurements' and encapsulated 'pet_history'" do
         returns_obj = subject.returns.detect{|e| e.code == 203 }
 
         puts returns_obj.to_json
@@ -391,7 +391,7 @@ describe "Swagger Responses" do
                                                      ])
       end
 
-      it 'should have the 203 response described in the swagger' do
+      it 'has the 203 response described in the swagger' do
         response = swagger_response_for('/pets/{id}/extra_info', 203)
         expect(response[:description]).to eq('Non-Authoritative Information')
 
@@ -418,7 +418,7 @@ describe "Swagger Responses" do
         expect(pai_schema).to have_field(:avg_meals_per_day, 'number')
       end
 
-      it "should return code 204 with array of integer" do
+      it "returns code 204 with array of integer" do
         returns_obj = subject.returns.detect{|e| e.code == 204 }
 
         puts returns_obj.to_json
@@ -428,7 +428,7 @@ describe "Swagger Responses" do
         expect(returns_obj).to match_field_structure([:int_array, :enum_array])
       end
 
-      it 'should have the 204 response described in the swagger' do
+      it 'has the 204 response described in the swagger' do
         response = swagger_response_for('/pets/{id}/extra_info', 204)
 
         schema = response[:schema]
@@ -437,7 +437,7 @@ describe "Swagger Responses" do
       end
 
 
-      it "should return code matching :unprocessable_entity (422) with spread out 'pet' and 'num_fleas'" do
+      it "returns code matching :unprocessable_entity (422) with spread out 'pet' and 'num_fleas'" do
         returns_obj = subject.returns.detect{|e| e.code == 422 }
 
         puts returns_obj.to_json
@@ -449,7 +449,7 @@ describe "Swagger Responses" do
                                                      ])
       end
 
-      it 'should have the 422 response described in the swagger' do
+      it 'has the 422 response described in the swagger' do
         response = swagger_response_for('/pets/{id}/extra_info', 422)
         expect(response[:description]).to eq('Fleas were discovered on the pet')
 
@@ -475,7 +475,7 @@ describe "Swagger Responses" do
         desc._methods[:show_as_properties]
       end
 
-      it "should return tags with 'Dogs', and 'Wolves'" do
+      it "returns tags with 'Dogs', and 'Wolves'" do
         returns_obj = subject.tag_list
         puts returns_obj.inspect
 
@@ -496,7 +496,7 @@ describe "Swagger Responses" do
         desc._methods[:show_as_properties]
       end
 
-      it "should return tags with 'Dogs', 'Pets', and 'Animals'" do
+      it "returns tags with 'Dogs', 'Pets', and 'Animals'" do
         returns_obj = subject.tag_list
         puts returns_obj.inspect
 
@@ -509,7 +509,7 @@ describe "Swagger Responses" do
         desc._methods[:show_as_same_properties]
       end
 
-      it "should return tags with 'Dogs', 'Pets', 'Puma', and 'Animals'" do
+      it "returns tags with 'Dogs', 'Pets', 'Puma', and 'Animals'" do
         returns_obj = subject.tag_list
         puts returns_obj.inspect
 
@@ -532,7 +532,7 @@ describe "Swagger Responses" do
         desc._methods[:pets_described_as_class]
       end
 
-      it "should return code 200 with array of entries of the format {'pet_name', 'animal_type'}" do
+      it "returns code 200 with array of entries of the format {'pet_name', 'animal_type'}" do
         returns_obj = subject.returns.detect{|e| e.code == 200 }
 
         puts returns_obj.to_json
@@ -542,7 +542,7 @@ describe "Swagger Responses" do
         expect(returns_obj).to match_field_structure([:pet_name, :animal_type])
       end
 
-      it 'should have the response described in the swagger' do
+      it 'has the response described in the swagger' do
         response = swagger_response_for('/pets_described_as_class')
         expect(response[:description]).to eq("list of pets")
 
@@ -561,7 +561,7 @@ describe "Swagger Responses" do
         desc._methods[:pets_with_measurements_described_as_class]
       end
 
-      it "should return code 200 with spread out 'pet' and encapsulated 'pet_measurements'" do
+      it "returns code 200 with spread out 'pet' and encapsulated 'pet_measurements'" do
         returns_obj = subject.returns.detect{|e| e.code == 200 }
 
         puts returns_obj.to_json
@@ -574,7 +574,7 @@ describe "Swagger Responses" do
                                                      ])
       end
 
-      it 'should have the 200 response described in the swagger' do
+      it 'has the 200 response described in the swagger' do
         response = swagger_response_for('/pets_with_measurements_described_as_class/{id}', 200)
         expect(response[:description]).to eq('measurements of the pet')
 
@@ -595,7 +595,7 @@ describe "Swagger Responses" do
         desc._methods[:pets_with_many_measurements_as_class]
       end
 
-      it "should return code 200 with pet_name (string) and many_pet_measurements (array of objects)" do
+      it "returns code 200 with pet_name (string) and many_pet_measurements (array of objects)" do
         returns_obj = subject.returns.detect{|e| e.code == 200 }
 
         puts returns_obj.to_json
@@ -608,7 +608,7 @@ describe "Swagger Responses" do
       end
 
 
-      it 'should have the 200 response described in the swagger' do
+      it 'has the 200 response described in the swagger' do
         response = swagger_response_for('/pets_with_many_measurements_as_class/{id}', 200)
         expect(response[:description]).to eq('measurements of the pet')
 
@@ -637,7 +637,7 @@ describe "Swagger Responses" do
         desc._methods[:pet_described_using_automated_view]
       end
 
-      it "should return code 200 with array of entries of the format {'pet_name', 'animal_type'}" do
+      it "returns code 200 with array of entries of the format {'pet_name', 'animal_type'}" do
         returns_obj = subject.returns.detect{|e| e.code == 200 }
 
         expect(returns_obj.code).to eq(200)
@@ -646,7 +646,7 @@ describe "Swagger Responses" do
         expect(returns_obj).to match_field_structure([:pet_name, :animal_type, :age])
       end
 
-      it 'should have the response described in the swagger' do
+      it 'has the response described in the swagger' do
         response = swagger_response_for('/pet_described_using_automated_view/{id}')
         expect(response[:description]).to eq("like Pet, but different")
 

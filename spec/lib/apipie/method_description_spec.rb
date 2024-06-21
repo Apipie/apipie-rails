@@ -58,7 +58,7 @@ describe Apipie::MethodDescription do
         )
       end
 
-      it 'should be ordered' do
+      it 'is ordered' do
         expect(json_params).to eq(%w[a b c])
       end
 
@@ -75,7 +75,7 @@ describe Apipie::MethodDescription do
           )
         end
 
-        it 'should ignore response-only parameters' do
+        it 'ignores response-only parameters' do
           expect(json_params).to eq(%w[a c])
         end
       end

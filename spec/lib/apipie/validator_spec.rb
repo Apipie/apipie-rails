@@ -20,22 +20,22 @@ describe Apipie::Validator do
 
     context "expected type" do
 
-      it "should return hash for type Hash" do
+      it "returns hash for type Hash" do
         validator = Apipie::Validator::TypeValidator.new(params_desc, Hash)
         expect(validator.expected_type).to eq('hash')
       end
 
-      it "should return array for type Array" do
+      it "returns array for type Array" do
         validator = Apipie::Validator::TypeValidator.new(params_desc, Array)
         expect(validator.expected_type).to eq('array')
       end
 
-      it "should return numeric for type Numeric" do
+      it "returns numeric for type Numeric" do
         validator = Apipie::Validator::TypeValidator.new(params_desc, Numeric)
         expect(validator.expected_type).to eq('numeric')
       end
 
-      it "should return string by default" do
+      it "returns string by default" do
         validator = Apipie::Validator::TypeValidator.new(params_desc, Symbol)
         expect(validator.expected_type).to eq('string')
       end
@@ -43,7 +43,7 @@ describe Apipie::Validator do
     end
 
     describe 'NumberValidator' do
-      it 'should expect a Numeric type' do
+      it 'expects a Numeric type' do
         validator = Apipie::Validator::BaseValidator.find(params_desc, :number, nil, nil)
         expect(validator.expected_type).to eq('numeric')
       end
@@ -86,7 +86,7 @@ describe Apipie::Validator do
     end
 
     describe '#validate' do
-      it "should validate by object class" do
+      it "validates by object class" do
         expect(validator_instance.validate("1")).to be_truthy
         expect(validator_instance.validate(1)).to be_truthy
         expect(validator_instance.validate(true)).to be_truthy
@@ -104,21 +104,21 @@ describe Apipie::Validator do
   end
 
   describe 'ArrayClassValidator' do
-    it "should validate by object class" do
+    it "validates by object class" do
       validator = Apipie::Validator::ArrayClassValidator.new(params_desc, [Integer, String])
       expect(validator.validate("1")).to be_truthy
       expect(validator.validate(1)).to be_truthy
       expect(validator.validate({ 1 => 1 })).to be_falsey
     end
 
-    it "should have a valid description" do
+    it "has a valid description" do
       validator = Apipie::Validator::ArrayClassValidator.new(params_desc, [Float, String])
       expect(validator.description).to eq('Must be one of: <code>Float</code>, <code>String</code>.')
     end
   end
 
   describe 'RegexpValidator' do
-    it "should validate by object class" do
+    it "validates by object class" do
       validator = Apipie::Validator::RegexpValidator.new(params_desc, /^valid( extra)*$/)
       expect(validator.validate("valid")).to be_truthy
       expect(validator.validate("valid extra")).to be_truthy
@@ -126,14 +126,14 @@ describe Apipie::Validator do
       expect(validator.validate("invalid")).to be_falsey
     end
 
-    it "should have a valid description" do
+    it "has a valid description" do
       validator = Apipie::Validator::RegexpValidator.new(params_desc, /^valid( extra)*$/)
       expect(validator.description).to eq('Must match regular expression <code>/^valid( extra)*$/</code>.')
     end
   end
 
   describe 'EnumValidator' do
-    it "should validate by object class" do
+    it "validates by object class" do
       validator = Apipie::Validator::EnumValidator.new(params_desc, ['first', 'second & third'])
       expect(validator.validate("first")).to be_truthy
       expect(validator.validate("second & third")).to be_truthy
@@ -141,7 +141,7 @@ describe Apipie::Validator do
       expect(validator.validate({ 1 => 1 })).to be_falsey
     end
 
-    it "should have a valid description" do
+    it "has a valid description" do
       validator = Apipie::Validator::EnumValidator.new(params_desc, ['first', 'second & third'])
       expect(validator.description).to eq('Must be one of: <code>first</code>, <code>second &amp; third</code>.')
     end

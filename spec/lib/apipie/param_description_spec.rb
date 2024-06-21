@@ -14,12 +14,12 @@ describe Apipie::ParamDescription do
 
   describe "metadata" do
 
-    it "should return nil when no metadata is provided" do
+    it "returns nil when no metadata is provided" do
       param = Apipie::ParamDescription.new(method_desc, :some_param, String)
       expect(param.to_json[:metadata]).to eq(nil)
     end
 
-    it "should return the metadata" do
+    it "returns the metadata" do
       meta = {
         :length => 32,
         :weight => '830g'
@@ -32,12 +32,12 @@ describe Apipie::ParamDescription do
 
   describe "show option" do
 
-    it "should return true when show option is not provided" do
+    it "returns true when show option is not provided" do
       param = Apipie::ParamDescription.new(method_desc, :some_param, String)
       expect(param.to_json[:show]).to eq(true)
     end
 
-    it "should return the show option" do
+    it "returns the show option" do
       param = Apipie::ParamDescription.new(method_desc, :some_param, String, :show => true)
       expect(param.to_json[:show]).to eq(true)
 
@@ -50,7 +50,7 @@ describe Apipie::ParamDescription do
   describe "full_name" do
     context "with no nested parameters" do
 
-      it "should return name" do
+      it "returns name" do
         param = Apipie::ParamDescription.new(method_desc, :some_param, String)
         expect(param.to_json[:full_name]).to eq('some_param')
       end
@@ -59,7 +59,7 @@ describe Apipie::ParamDescription do
 
     context "with nested parameters" do
 
-      it "should return the parameter's name nested in the parents name" do
+      it "returns the parameter's name nested in the parents name" do
         parent_param = Apipie::ParamDescription.new(method_desc, :parent, String)
         nested_param = Apipie::ParamDescription.new(method_desc, :nested, String, :parent => parent_param)
 
@@ -68,7 +68,7 @@ describe Apipie::ParamDescription do
 
       context "with the parent parameter set to not show" do
 
-        it "should return just the parameter's name" do
+        it "returns just the parameter's name" do
           parent_param = Apipie::ParamDescription.new(method_desc, :parent, String, :show => false)
           nested_param = Apipie::ParamDescription.new(method_desc, :nested, String, :parent => parent_param)
 
@@ -80,13 +80,13 @@ describe Apipie::ParamDescription do
   end
 
   describe "manual validation text" do
-    it "should allow manual text" do
+    it "allows manual text" do
       param = Apipie::ParamDescription.new(method_desc, :hidden_param, nil, :validations => "must be foo")
 
       expect(param.validations).to include("\n<p>must be foo</p>\n")
     end
 
-    it "should allow multiple items" do
+    it "allows multiple items" do
       param = Apipie::ParamDescription.new(method_desc, :hidden_param, nil, :validations => ["> 0", "< 5"])
 
       expect(param.validations).to include("\n<p>&gt; 0</p>\n")
@@ -96,16 +96,16 @@ describe Apipie::ParamDescription do
 
   describe "validator selection" do
 
-    it "should allow nil validator" do
+    it "allows nil validator" do
       param = Apipie::ParamDescription.new(method_desc, :hidden_param, nil)
       expect(param.validator).to be_nil
     end
 
-    it "should throw exception on unknown validator" do
+    it "throws exception on unknown validator" do
       expect { Apipie::ParamDescription.new(method_desc, :param, :unknown) }.to raise_error(RuntimeError, /Validator.*not found/)
     end
 
-    it "should pick type validator" do
+    it "picks type validator" do
       expect(Apipie::Validator::BaseValidator).to receive(:find).and_return(:validator_instance)
       param = Apipie::ParamDescription.new(method_desc, :param, String)
       expect(param.validator).to eq(:validator_instance)
@@ -137,7 +137,7 @@ describe Apipie::ParamDescription do
         context 'when validation value is false' do
           let(:validation_value) { false }
 
-          it 'should not raise an error' do
+          it 'does not raise an error' do
             expect { subject }.not_to raise_error
           end
         end
@@ -145,7 +145,7 @@ describe Apipie::ParamDescription do
         context 'when validation value is an empty string' do
           let(:validation_value) { '' }
 
-          it 'should raise an error' do
+          it 'raises an error' do
             expect { subject }.to raise_error(Apipie::ParamInvalid)
           end
         end
@@ -157,7 +157,7 @@ describe Apipie::ParamDescription do
         context 'when validation value is false' do
           let(:validation_value) { false }
 
-          it 'should not raise an error' do
+          it 'does not raise an error' do
             expect { subject }.not_to raise_error
           end
         end
@@ -165,7 +165,7 @@ describe Apipie::ParamDescription do
         context 'when validation value is true' do
           let(:validation_value) { true }
 
-          it 'should not raise an error' do
+          it 'does not raise an error' do
             expect { subject }.not_to raise_error
           end
         end
@@ -173,7 +173,7 @@ describe Apipie::ParamDescription do
         context 'when validation value is an empty string' do
           let(:validation_value) { '' }
 
-          it 'should raise an error' do
+          it 'raises an error' do
             expect { subject }.to raise_error(Apipie::ParamInvalid)
           end
         end
@@ -185,14 +185,14 @@ describe Apipie::ParamDescription do
         context 'when validation value is empty string' do
           let(:validation_value) { '' }
 
-          it 'should not raise an error' do
+          it 'does not raise an error' do
             expect { subject }.not_to raise_error
           end
 
           context 'when allow_blank is specified as true' do
             let(:allow_blank) { true }
 
-            it 'should not raise an error' do
+            it 'does not raise an error' do
               expect { subject }.not_to raise_error
             end
           end
@@ -206,14 +206,14 @@ describe Apipie::ParamDescription do
       context 'when validation value' do
         let(:validation_value) { false }
 
-        it 'should not raise an error' do
+        it 'does not raise an error' do
           expect { subject }.not_to raise_error
         end
 
         context 'when allow_blank is false' do
           let(:allow_blank) { false }
 
-          it 'should not raise an error' do
+          it 'does not raise an error' do
             expect { subject }.not_to raise_error
           end
         end
@@ -221,7 +221,7 @@ describe Apipie::ParamDescription do
         context 'when allow_blank is true' do
           let(:allow_blank) { true }
 
-          it 'should not raise an error' do
+          it 'does not raise an error' do
             expect { subject }.not_to raise_error
           end
         end
@@ -230,7 +230,7 @@ describe Apipie::ParamDescription do
       context 'when validation value is empty string' do
         let(:validation_value) { '' }
 
-        it 'should raise an error' do
+        it 'raises an error' do
           expect { subject }.to raise_error(Apipie::ParamInvalid)
         end
       end
@@ -242,7 +242,7 @@ describe Apipie::ParamDescription do
       context 'when validation value is false' do
         let(:validation_value) { false }
 
-        it 'should not raise an error' do
+        it 'does not raise an error' do
           expect { subject }.not_to raise_error
         end
       end
@@ -250,7 +250,7 @@ describe Apipie::ParamDescription do
       context 'when validation value is true' do
         let(:validation_value) { true }
 
-        it 'should not raise an error' do
+        it 'does not raise an error' do
           expect { subject }.not_to raise_error
         end
       end
@@ -258,7 +258,7 @@ describe Apipie::ParamDescription do
       context 'when validation value is an empty string' do
         let(:validation_value) { '' }
 
-        it 'should raise an error' do
+        it 'raises an error' do
           expect { subject }.to raise_error(Apipie::ParamInvalid)
         end
       end
@@ -275,14 +275,14 @@ describe Apipie::ParamDescription do
         context 'when a blank but valid value is passed' do
           let(:validation_value) { false }
 
-          it 'should not raise an error' do
+          it 'does not raise an error' do
             expect { subject }.not_to raise_error
           end
 
           context 'when allow_blank is false' do
             let(:allow_blank) { false }
 
-            it 'should not raise an error' do
+            it 'does not raise an error' do
               expect { subject }.not_to raise_error
             end
           end
@@ -291,7 +291,7 @@ describe Apipie::ParamDescription do
         context 'when a blank but invalid value is passed' do
           let(:validation_value) { '' }
 
-          it 'should raise an error' do
+          it 'raises an error' do
             expect { subject }.to raise_error(Apipie::ParamInvalid)
           end
         end
@@ -304,7 +304,7 @@ describe Apipie::ParamDescription do
       context 'when a blank but invalid value is passed' do
         let(:validation_value) { '' }
 
-        it 'should raise an error' do
+        it 'raises an error' do
           expect { subject }.to raise_error(Apipie::ParamInvalid)
         end
       end
@@ -315,7 +315,7 @@ describe Apipie::ParamDescription do
         context 'when and empty string is given' do
           let(:validation_value) { '' }
 
-          it 'should not raise an error' do
+          it 'does not raise an error' do
             expect { subject }.not_to raise_error
           end
         end
@@ -335,27 +335,27 @@ describe Apipie::ParamDescription do
       Apipie::MethodDescription.new(:show, concern_resource_desc, concern_dsl_data)
     end
 
-    it "should replace string parameter name with colon prefix" do
+    it "replaces string parameter name with colon prefix" do
       param = Apipie::ParamDescription.new(concern_method_desc, ":string_subst", String)
       expect(param.name).to eq("string")
     end
 
-    it "should replace symbol parameter name" do
+    it "replaces symbol parameter name" do
       param = Apipie::ParamDescription.new(concern_method_desc, :concern, String)
       expect(param.name).to eq(:user)
     end
 
-    it "should keep original value for strings without colon prefixes" do
+    it "keeps original value for strings without colon prefixes" do
       param = Apipie::ParamDescription.new(concern_method_desc, "string_subst", String)
       expect(param.name).to eq("string_subst")
     end
 
-    it "should keep the original value when a string can't be replaced" do
+    it "keeps the original value when a string can't be replaced" do
       param = Apipie::ParamDescription.new(concern_method_desc, ":param", String)
       expect(param.name).to eq(":param")
     end
 
-    it "should keep the original value when a symbol can't be replaced" do
+    it "keeps the original value when a symbol can't be replaced" do
       param = Apipie::ParamDescription.new(concern_method_desc, :param, String)
       expect(param.name).to eq(:param)
     end
@@ -366,12 +366,12 @@ describe Apipie::ParamDescription do
 
       before { Apipie.configuration.required_by_default = true }
 
-      it "should set param as required by default" do
+      it "sets param as required by default" do
         param = Apipie::ParamDescription.new(method_desc, :required_by_default, String)
         expect(param.required).to be true
       end
 
-      it "should be possible to set param as optional" do
+      it "is possible to set param as optional" do
         param = Apipie::ParamDescription.new(method_desc, :optional, String, :required => false)
         expect(param.required).to be false
       end
@@ -382,12 +382,12 @@ describe Apipie::ParamDescription do
 
       before { Apipie.configuration.required_by_default = false }
 
-      it "should set param as optional by default" do
+      it "sets param as optional by default" do
         param = Apipie::ParamDescription.new(method_desc, :optional_by_default, String)
         expect(param.required).to be false
       end
 
-      it "should be possible to set param as required" do
+      it "is possible to set param as required" do
         param = Apipie::ParamDescription.new(method_desc, :required, String, 'description','required' => true)
         expect(param.required).to be true
       end
@@ -402,21 +402,21 @@ describe Apipie::ParamDescription do
     end
 
     context "when the param is required for current action" do
-      it "should set param as required" do
+      it "sets param as required" do
         param = Apipie::ParamDescription.new(method_desc, :required, String, 'description','required' => :create)
         expect(param.required).to be true
       end
     end
 
     context "when the param is required for multiple actions" do
-      it "should set param as required if it match current action" do
+      it "sets param as required if it match current action" do
         param = Apipie::ParamDescription.new(method_desc, :required, String, 'description','required' => [:update, :create])
         expect(param.required).to be true
       end
     end
 
     context "when the param is not required for current action" do
-      it "should set param as not required" do
+      it "sets param as not required" do
         param = Apipie::ParamDescription.new(method_desc, :required, String, 'description','required' => :update)
         expect(param.required).to be false
       end
@@ -500,7 +500,7 @@ describe Apipie::ParamDescription do
         end
       end
 
-      it "should include the nested params in the json" do
+      it "includes the nested params in the json" do
         sub_params = subject.to_json[:params]
         expect(sub_params.size).to eq(1)
         sub_param = sub_params.first
@@ -518,7 +518,7 @@ describe Apipie::ParamDescription do
         end
       end
 
-      it "should include the nested params in the json" do
+      it "includes the nested params in the json" do
         sub_params = subject.to_json[:params]
         expect(sub_params.size).to eq(1)
         sub_param = sub_params.first
@@ -534,7 +534,7 @@ describe Apipie::ParamDescription do
         Apipie::ParamDescription.new(method_desc, :param, String)
       end
 
-      it "should include the nested params in the json" do
+      it "includes the nested params in the json" do
         expect(subject.to_json[:params]).to be_nil
       end
 
@@ -543,7 +543,7 @@ describe Apipie::ParamDescription do
   end
 
   describe "Array with classes" do
-    it "should be valid for objects included in class array" do
+    it "is valid for objects included in class array" do
       param = Apipie::ParamDescription.new(method_desc, :param, [Integer, String])
       expect { param.validate("1") }.not_to raise_error
       expect { param.validate(Integer) }.to raise_error(Apipie::ParamInvalid)
