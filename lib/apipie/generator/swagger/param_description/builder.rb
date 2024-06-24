@@ -99,7 +99,7 @@ class Apipie::Generator::Swagger::ParamDescription::Builder
     if !required? && !definition.key?(:default)
       method_id =
         if @param_description.is_a?(Apipie::ResponseDescriptionAdapter::PropDesc)
-          @controller_method
+          @controller_method.method_name
         else
           Apipie::Generator::Swagger::MethodDescription::Decorator.new(@controller_method).ruby_name
         end
