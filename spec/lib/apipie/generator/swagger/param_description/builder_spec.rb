@@ -145,6 +145,24 @@ describe Apipie::Generator::Swagger::ParamDescription::Builder do
             /is optional but default value is not specified/
           ).to_stderr
         end
+
+        context 'and param is a prop desc with a delegated controller method' do
+          let(:param_description) do
+            Apipie.prop(:param, 'object', param_description_options, [])
+          end
+
+          let(:method_desc) do
+            Apipie::Generator::Swagger::MethodDescription::Decorator.new(
+              Apipie::MethodDescription.new(:show, resource_desc, dsl_data)
+            )
+          end
+
+          it 'warns' do
+            expect { subject }.to output(
+              /is optional but default value is not specified/
+            ).to_stderr
+          end
+        end
       end
     end
   end
