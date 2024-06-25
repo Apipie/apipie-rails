@@ -88,11 +88,16 @@ module Apipie
 
       @method_description = method_description
 
-      if code.is_a? Symbol
-        @code = Rack::Utils::SYMBOL_TO_STATUS_CODE[code]
-      else
-        @code = code
-      end
+      @code =
+        if code.is_a? Symbol
+          begin
+            Rack::Utils.status_code(code)
+          rescue ArgumentError
+            nil
+          end
+        else
+          code
+        end
 
       @description = options[:desc]
       if @description.nil?
