@@ -3,7 +3,6 @@ require 'spec_helper'
 describe Apipie::Generator::Swagger::ParamDescription::Type do
   let(:validator_options) { {} }
   let(:param_description_options) { {}.merge(validator_options) }
-  let(:with_null) { false }
   let(:http_method) { :GET }
   let(:path) { '/api' }
   let(:validator) { String }
@@ -67,7 +66,7 @@ describe Apipie::Generator::Swagger::ParamDescription::Type do
 
   let(:type_definition) do
     described_class.
-      new(param_description, with_null: with_null, controller_method: controller_method).
+      new(param_description, with_null: false, controller_method: controller_method).
       to_hash
   end
 
