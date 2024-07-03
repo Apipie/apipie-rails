@@ -1155,7 +1155,7 @@ RSpec/PredicateMatcher:
 # Offense count: 1
 # This cop supports unsafe autocorrection (--autocorrect-all).
 # Configuration parameters: Inferences.
-RSpec/Rails/InferredSpecType:
+RSpecRails/InferredSpecType:
   Exclude:
     - 'spec/controllers/pets_controller_spec.rb'
 

@@ -283,7 +283,7 @@ describe "Swagger Responses" do
         expect(schema).to have_field(:pet_id, 'number', {:description => 'id of pet'})
         expect(schema).to have_field(:pet_name, 'string', {:description => 'Name of pet', :required => false})
         expect(schema).to have_field(:animal_type, 'string', {:description => 'Type of pet', :enum => %w[dog cat iguana kangaroo]})
-        expect(schema).not_to have_field(:partial_match_allowed, 'boolean', {:required => false}) # rubocop:disable Capybara/NegationMatcher
+        expect(schema).not_to have_field(:partial_match_allowed, 'boolean', {:required => false})
       end
 
       it "creates a swagger definition with all input parameters" do
