@@ -1,6 +1,17 @@
  Changelog
 ===========
 
+## [v1.4.1](https://github.com/Apipie/apipie-rails/tree/v1.4.1) (2024-07-09)
+[Full Changelog](https://github.com/Apipie/apipie-rails/compare/v1.4.0...v1.4.1)
+* Fix multiple rubocop offenses via rubocop_challenger.
+  * RSpec/ExampleWording (#913)
+  * Layout/FirstArrayElementIndentation (#914)
+  * Style/BlockDelimiters (#917)
+  * Style/MutableConstant (#916)
+  * Layout/InitialIndentation (#915)
+  * Performance/RegexpMatch (#918)
+* Drop support for Ruby 2.6 (#9YY) Mathieu Jobin
+
 ## [v1.4.0](https://github.com/Apipie/apipie-rails/tree/v1.4.0) (2024-05-30)
 [Full Changelog](https://github.com/Apipie/apipie-rails/compare/v1.3.0...v1.4.0)
 * Add Ruby 3.3.0 to CI build matrix (#906) Masato Nakamura
