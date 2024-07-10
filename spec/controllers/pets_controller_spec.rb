@@ -4,7 +4,7 @@ require 'rspec/expectations'
 require 'apipie/rspec/response_validation_helper'
 require "json-schema"
 
-RSpec.describe PetsController, :type => :controller do
+RSpec.describe PetsController do
   it "does not raise error when rendered output matches the described response" do
     response = get :return_and_validate_expected_response, format: :json
     expect(response).to match_declared_responses
