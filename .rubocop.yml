@@ -13,6 +13,9 @@ AllCops:
   NewCops: enable
   TargetRubyVersion: 2.6
 
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+
 Layout/LineLength:
   Max: 140
   Exclude:

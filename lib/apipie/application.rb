@@ -281,12 +281,12 @@ module Apipie
 
       resources =
         Apipie::Generator::Swagger::ResourceDescriptionsCollection
-        .new(resource_descriptions)
-        .filter(
-          resource_id: resource_id,
-          method_name: method_name,
-          version: version
-        )
+          .new(resource_descriptions)
+          .filter(
+            resource_id: resource_id,
+            method_name: method_name,
+            version: version
+          )
 
       Apipie::SwaggerGenerator.generate_from_resources(
         resources,
