@@ -61,8 +61,11 @@ RSpec.configure do |config|
 
   config.mock_with :rspec
 
-  # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
-  config.fixture_path = "#{Rails.root}/spec/fixtures"
+  if Rails.version >= "7.1"
+    config.fixture_paths = ["#{Rails.root}/spec/fixtures"]
+  else
+    config.fixture_path = "#{Rails.root}/spec/fixtures"
+  end
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
