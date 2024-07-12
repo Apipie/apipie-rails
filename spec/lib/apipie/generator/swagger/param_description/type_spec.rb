@@ -180,19 +180,29 @@ describe Apipie::Generator::Swagger::ParamDescription::Type do
         expect { subject }.to output(/is a generic Hash without an internal type specification/).to_stderr
       end
 
-      context 'and param is a prop desc with a delegated controller method' do
+      context 'and param is a prop desc' do
         let(:param_description) do
           Apipie.prop(param_description_name, 'object', {}, [])
         end
 
-        let(:controller_method) do
-          Apipie::Generator::Swagger::MethodDescription::Decorator.new(
-            method_desc
-          )
+        context 'with a delegated controller method' do
+          let(:controller_method) do
+            Apipie::Generator::Swagger::MethodDescription::Decorator.new(
+              method_desc
+            )
+          end
+
+          it 'outputs a hash without internal typespec warning' do
+            expect { subject }.to output(/is a generic Hash without an internal type specification/).to_stderr
+          end
         end
 
-        it 'outputs a hash without internal typespec warning' do
-          expect { subject }.to output(/is a generic Hash without an internal type specification/).to_stderr
+        context 'and controller method is nil' do
+          let(:controller_method) { nil }
+
+          it 'outputs a hash without internal typespec warning' do
+            expect { subject }.to output(/is a generic Hash without an internal type specification/).to_stderr
+          end
         end
       end
     end

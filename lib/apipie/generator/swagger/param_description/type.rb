@@ -114,7 +114,11 @@ class Apipie::Generator::Swagger::ParamDescription::Type
   def warn_hash_without_internal_typespec
     method_id =
       if @param_description.is_a?(Apipie::ResponseDescriptionAdapter::PropDesc)
-        @controller_method.method_name
+        if @controller_method.present?
+          @controller_method.method_name
+        else
+          Apipie::Generator::Swagger::MethodDescription::Decorator.new(nil).ruby_name
+        end
       else
         Apipie::Generator::Swagger::MethodDescription::Decorator.new(@param_description.method_description).ruby_name
       end
