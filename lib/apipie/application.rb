@@ -89,7 +89,7 @@ module Apipie
 
         # we create separate method description for each version in
         # case the method belongs to more versions. We return just one
-        # becuase the version doesn't matter for the purpose it's used
+        # because the version doesn't matter for the purpose it's used
         # (to wrap the original version with validators)
         ret_method_description ||= method_description
         resource_description.add_method_description(method_description)
@@ -281,12 +281,12 @@ module Apipie
 
       resources =
         Apipie::Generator::Swagger::ResourceDescriptionsCollection
-        .new(resource_descriptions)
-        .filter(
-          resource_id: resource_id,
-          method_name: method_name,
-          version: version
-        )
+          .new(resource_descriptions)
+          .filter(
+            resource_id: resource_id,
+            method_name: method_name,
+            version: version
+          )
 
       Apipie::SwaggerGenerator.generate_from_resources(
         resources,

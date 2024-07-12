@@ -19,8 +19,8 @@ describe Apipie::Generator::Swagger::MethodDescription::ResponseSchemaService do
 
   let(:response_description_dsl) do
     proc do
-      property :a_number, Integer
-      property :an_optional_number, Integer, required: false
+      property :a_number, Integer, example: 1
+      property :an_optional_number, Integer, required: false, example: 2
     end
   end
 
@@ -56,10 +56,10 @@ describe Apipie::Generator::Swagger::MethodDescription::ResponseSchemaService do
         expect(properties).to eq(
           {
             a_number: {
-              type: 'number', required: true
+              type: 'number', required: true, example: 1
             },
             an_optional_number: {
-              type: 'number'
+              type: 'number', example: 2
             }
           }
         )
@@ -72,10 +72,10 @@ describe Apipie::Generator::Swagger::MethodDescription::ResponseSchemaService do
           expect(properties).to eq(
             {
               a_number: {
-                type: %w[number null], required: true
+                type: %w[number null], required: true, example: 1
               },
               an_optional_number: {
-                type: %w[number null]
+                type: %w[number null], example: 2
               }
             }
           )

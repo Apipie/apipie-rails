@@ -6,7 +6,7 @@ describe Apipie::Extractor::Writer do
   let(:writer_class) { Apipie::Extractor::Writer }
   let(:writer) { writer_class.new(collector) }
   let(:test_examples_file) { File.join(Rails.root, "doc", "apipie_examples_test.json") }
-  let(:records) {
+  let(:records) do
     {
     "concern_resources#show" =>
       [{
@@ -31,8 +31,8 @@ describe Apipie::Extractor::Writer do
         :code=>"200"
       }]
     }
-  }
-  let(:loaded_records) {
+  end
+  let(:loaded_records) do
     {
     "concern_resources#show" =>
       [{
@@ -57,7 +57,7 @@ describe Apipie::Extractor::Writer do
         "recorded"=>true
       }]
     }
-  }
+  end
 
   context 'with doc_path overridden in configuration' do
     around(:each) do |example|
@@ -67,7 +67,7 @@ describe Apipie::Extractor::Writer do
       Apipie.configuration.doc_path = standard_path
     end
 
-    it 'should use the doc_path specified in configuration' do
+    it 'uses the doc_path specified in configuration' do
       expect(writer_class.examples_file).to eql(File.join(Rails.root, 'tmp', 'user_specified_doc_path', 'apipie_examples.json'))
     end
   end
@@ -80,13 +80,13 @@ describe Apipie::Extractor::Writer do
       Apipie.configuration.compress_examples = nil
     end
 
-    it 'should write to a compressed file' do
+    it 'writes to a compressed file' do
       expect(writer_class.examples_file).to match(/\.gz$/)
       writer_class.write_recorded_examples(records)
       expect(File.exist?(writer_class.examples_file))
     end
 
-    it 'should read from a compressed file' do
+    it 'reads from a compressed file' do
       writer_class.write_recorded_examples(records)
       expected_string = writer_class.send(:serialize_examples, records)
       expect(writer_class.load_recorded_examples)
@@ -100,7 +100,7 @@ describe Apipie::Extractor::Writer do
       expect(collector).to receive(:records).and_return(records)
     end
 
-    it "should read and write examples" do
+    it "reads and write examples" do
       writer.write_examples
       expect(writer.send(:load_recorded_examples)).to eql(loaded_records)
     end

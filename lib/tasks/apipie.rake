@@ -70,17 +70,17 @@ namespace :apipie do
     with_loaded_documentation do
       out = ENV["OUT_REF"] || File.join(Rails.root, Apipie.configuration.doc_path, 'apidoc_ref')
       paths = generate_swagger_using_args(args, out)
-      paths.each {|path|
+      paths.each do |path|
         existing_files_in_dir = Pathname(out).children(true)
 
         make_reference = false
 
         # reference filenames have the format <basename>.<counter>.swagger_ref
-        reference_files = existing_files_in_dir.select{|f|
+        reference_files = existing_files_in_dir.select do |f|
               f.extname == '.swagger_ref' &&
               f.basename.sub_ext("").extname.delete('.').to_i > 0 &&
               f.basename.sub_ext("").sub_ext("") == path.basename.sub_ext("")
-        }
+        end
         if reference_files.empty?
           print "Reference file does not exist for [#{path}]\n"
           counter = 1
@@ -111,7 +111,7 @@ namespace :apipie do
         if reference_files.length > num_refs_to_keep
           (reference_files - reference_files[-num_refs_to_keep..-1]).each(&:delete)
         end
-      }
+      end
     end
   end
 
@@ -186,11 +186,11 @@ namespace :apipie do
     av = renderer
     File.open(file_name, "w") do |f|
       variables.each do |var, val|
-        av.instance_variable_set("@#{var}", val)
+        av.instance_variable_set(:"@#{var}", val)
       end
       f.write av.render(
         :template => "#{template}",
-        :layout => (layout && "apipie/#{layout}"))
+        :layout => layout && "apipie/#{layout}")
     end
   end
 
@@ -259,7 +259,7 @@ namespace :apipie do
   end
 
   def generate_resource_pages(version, file_base, doc, include_json = false, lang = nil)
-    doc[:docs][:resources].each do |resource_id, _|
+    doc[:docs][:resources].each_key do |resource_id|
       resource_file_base = File.join(file_base, resource_id.to_s)
       FileUtils.mkdir_p(File.dirname(resource_file_base)) unless File.exist?(File.dirname(resource_file_base))
 

@@ -57,8 +57,7 @@ describe Apipie::ApipiesController, type: :controller do
     end
 
     it "succeeds on method details with the default language" do
-      allow(Apipie.configuration).to receive(:default_locale).and_return("en")
-      allow(Apipie.configuration).to receive(:languages).and_return([])
+      allow(Apipie.configuration).to receive_messages(default_locale: "en", languages: [])
 
       get :index, :params => { :version => "2.0", :resource => "architectures", :method => "index.en" }
 
@@ -189,7 +188,7 @@ describe Apipie::ApipiesController, type: :controller do
 
 
   describe "authenticate user" do
-    it "authenticate user if an authentication method is setted" do
+    it "authenticate user if an authentication method is set" do
       test = false
       Apipie.configuration.authenticate = Proc.new do
         test = true

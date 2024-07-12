@@ -19,9 +19,9 @@ class Apipie::Generator::Swagger::ResourceDescriptionsCollection
 
     if method_name.present?
       resources = resources.select do |resource_description|
-        resource_description._methods.select do |method_description_name, _|
+        resource_description._methods.any? do |method_description_name, _|
           method_description_name == method_name
-        end.present?
+        end
       end
     end
 

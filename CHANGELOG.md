@@ -1,6 +1,49 @@
  Changelog
 ===========
 
+## [v1.4.1](https://github.com/Apipie/apipie-rails/tree/v1.4.1) (2024-07-09)
+[Full Changelog](https://github.com/Apipie/apipie-rails/compare/v1.4.0...v1.4.1)
+* Fix multiple rubocop offenses via rubocop_challenger. (Mathieu Jobin)
+  * RSpec/ExampleWording (#913)
+  * Layout/FirstArrayElementIndentation (#914)
+  * Style/BlockDelimiters (#917)
+  * Style/MutableConstant (#916)
+  * Layout/InitialIndentation (#915)
+  * Performance/RegexpMatch (#918)
+* Fix CI: build green for modern ruby, rack, and rubocop-rspec (#939) (Murray Steele)
+
+## [v1.4.0](https://github.com/Apipie/apipie-rails/tree/v1.4.0) (2024-05-30)
+[Full Changelog](https://github.com/Apipie/apipie-rails/compare/v1.3.0...v1.4.0)
+* Add Ruby 3.3.0 to CI build matrix (#906) Masato Nakamura
+* Fix rubocop CI (#910) (Masato Nakamura)
+* Add metadata for rubygems.org and use https URLs (#909) (Masato Nakamura)
+* Bump GHA actions/checkout to be on node20 by default (#911) (Masato Nakamura)
+* Convert readme to markdown (#920) (Panos Dalitsouris)
+* Fix typos, Found via `codespell` (#921) (Kian-Meng Ang)
+* Bump ruby versions on test jobs (#927) (Masato Nakamura)
+* Support for Ruby 3.4.0-preview1 (#929) (Masato Nakamura)
+* Add "blank allowed" message to api doc (#926) (Peko)
+* Custom headers responses (#924) (Panos Dalitsouris)
+
+## [v1.3.0](https://github.com/Apipie/apipie-rails/tree/v1.3.0) (2023-12-19)
+[Full Changelog](https://github.com/Apipie/apipie-rails/compare/v1.2.3...v1.3.0)
+* rubocop fixes ([#897](https://github.com/Apipie/apipie-rails/pull/897)) (Mathieu Jobin)
+* Fix usage of deprecated Rack::File in Rack 3.0 ([#896](https://github.com/Apipie/apipie-rails/pull/896)) (James Dean Shepherd)
+* add rails 7.1 to the build matrix ([#898](https://github.com/Apipie/apipie-rails/pull/898)) (Mathieu Jobin)
+* super small typo fix ([#900](https://github.com/Apipie/apipie-rails/pull/900)) (Eric Pugh)
+* support for property example ([#901](https://github.com/Apipie/apipie-rails/pull/901)) (Chien-Wei Huang (Michael))
+* Use array items type from validator ([#904](https://github.com/Apipie/apipie-rails/pull/)) (Panos Dalitsouris)
+
+## [v1.2.3](https://github.com/Apipie/apipie-rails/tree/v1.2.3) (2023-10-11)
+[Full Changelog](https://github.com/Apipie/apipie-rails/compare/v1.2.2...v1.2.3)
+* Fix param: Consider default_value: nil as valid config ([#894](https://github.com/Apipie/apipie-rails/pull/894)) (davidwessman)
+
+## [v1.2.2](https://github.com/Apipie/apipie-rails/tree/v1.2.2) (2023-07-18)
+[Full Changelog](https://github.com/Apipie/apipie-rails/compare/v1.2.1...v1.2.2)
+* Fixed Swagger warnings for properties ([#892](https://github.com/Apipie/apipie-rails/pull/892)) (shev-vadim-net)
+* Improved support for multipart/form-data example recording ([#891](https://github.com/Apipie/apipie-rails/pull/891)) (Butiri Cristian & hossenlopp)
+* rubocop (1.54.2) fixes required with latest version ([#893](https://github.com/Apipie/apipie-rails/pull/893)) (Mathieu Jobin)
+
 ## [v1.2.1](https://github.com/Apipie/apipie-rails/tree/v1.2.1) (2023-06-09)
 [Full Changelog](https://github.com/Apipie/apipie-rails/compare/v1.2.0...v1.2.1)
 * rspec: Fixes deprecated matcher ([#882](https://github.com/Apipie/apipie-rails/pull/882)) (David Wessman)

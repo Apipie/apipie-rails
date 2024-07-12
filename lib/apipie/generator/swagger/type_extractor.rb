@@ -18,7 +18,7 @@ class Apipie::Generator::Swagger::TypeExtractor
     date: Apipie::Generator::Swagger::Type.new('string', 'date'),
     dateTime: Apipie::Generator::Swagger::Type.new('string', 'date-time'),
     password: Apipie::Generator::Swagger::Type.new('string', 'password')
-  }
+  }.freeze
 
   # @param [Apipie::Validator::BaseValidator, ResponseDescriptionAdapter::PropDesc::Validator, nil] validator
   def initialize(validator)

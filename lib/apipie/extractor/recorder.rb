@@ -1,7 +1,7 @@
 module Apipie
   module Extractor
     class Recorder
-      MULTIPART_BOUNDARY = 'APIPIE_RECORDER_EXAMPLE_BOUNDARY'
+      MULTIPART_BOUNDARY = 'APIPIE_RECORDER_EXAMPLE_BOUNDARY'.freeze
 
       def initialize
         @ignored_params = [:controller, :action]
@@ -14,12 +14,12 @@ module Apipie
         @params = Rack::Utils.parse_nested_query(@query)
         @params.merge!(env["action_dispatch.request.request_parameters"] || {})
         rack_input = env["rack.input"]
-        if data = parse_data(rack_input.read)
+        if data = parse_data(rack_input&.read)
           @request_data = data
         elsif form_hash = env["rack.request.form_hash"]
           @request_data = reformat_multipart_data(form_hash)
         end
-        rack_input.rewind
+        rack_input&.rewind
       end
 
       def analyse_controller(controller)
@@ -90,7 +90,7 @@ module Apipie
           lines << '' << %{... contents of "#{attrs[:name]}" ...}
         else
           # Look for subelements that contain a part.
-          attrs.each { |k,v| v.is_a?(Hash) and reformat_hash(boundary, v, lines) }
+          attrs.each_value { |v| v.is_a?(Hash) and reformat_hash(boundary, v, lines) }
         end
       end
 

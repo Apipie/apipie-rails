@@ -4,14 +4,20 @@ module Apipie
     def initialize(root)
       @root          = root.chomp('/')
       @compiled_root = /^#{Regexp.escape(root)}/
-      @file_server   = ::Rack::File.new(@root)
+      @file_server   = if defined?(::Rack::Files)
+                         ::Rack::Files.new(@root)
+                       else
+                         # Deprecated in Rack 3.0, kept
+                         # for backward compatibility
+                         ::Rack::File.new(@root)
+                       end
     end
 
     def match?(path)
       # Replace all null bytes
       path = ::Rack::Utils.unescape(path || '')
-                          .encode(Encoding::UTF_8, invalid: :replace, replace: '')
-                          .gsub("\x0", '')
+        .encode(Encoding::UTF_8, invalid: :replace, replace: '')
+        .gsub("\x0", '')
 
       full_path = path.empty? ? @root : File.join(@root, path)
       paths = "#{full_path}#{ext}"

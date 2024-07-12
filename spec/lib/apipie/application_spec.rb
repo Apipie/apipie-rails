@@ -8,7 +8,7 @@ describe Apipie::Application do
                                                       File.join(Rails.root, "lib", "**","*.rb")]
     end
 
-    it "should support receiving array as parameter" do
+    it "supports receiving array as parameter" do
       expect { Apipie.api_controllers_paths}.
         not_to raise_error
     end
@@ -33,7 +33,7 @@ describe Apipie::Application do
       context "with an undefined base url" do
         let(:base_url) { nil }
 
-        it "should not raise an error" do
+        it "does not raise an error" do
           expect { method_call }.not_to raise_error
         end
       end

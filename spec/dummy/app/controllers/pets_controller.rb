@@ -23,7 +23,7 @@ class PetsController < ApplicationController
   #-----------------------------------------------------------
   api :GET, "/pets/:id/as_properties", "Get a pet record"
   returns :code => 200 do
-    property :pet_name, String, :desc => "Name of pet", :required => false
+    property :pet_name, String, :desc => "Name of pet", :required => false, :example => 'mypet'
     property :animal_type, %w[dog cat iguana kangaroo], :desc => "Type of pet"   # required by default, because this is a 'property'
   end
   returns :code => 404 do
@@ -63,7 +63,7 @@ class PetsController < ApplicationController
   # mixing request/response and response-only parameters
   #
   # the param_group :pet_with_id has several parameters which are
-  # not expectd in the request, but would show up in the response
+  # not expected in the request, but would show up in the response
   # and vice versa
   #-----------------------------------------------------------
   def_param_group :pet_with_id do
@@ -364,8 +364,8 @@ class PetsController < ApplicationController
     result =  {
         a_number: 3,
         array_of_objects: [
-            {number1: 1, number2: 2},
-            {number1: 10, number2: 20}
+          {number1: 1, number2: 2},
+          {number1: 10, number2: 20}
         ]
     }
     render :json => result
@@ -387,8 +387,8 @@ class PetsController < ApplicationController
     result =  {
         a_number: 3,
         array_of_objects: [
-            {number1: 1, number2: 2},
-            {number1: 10, number2: "this should have been a number"}
+          {number1: 1, number2: 2},
+          {number1: 10, number2: "this should have been a number"}
         ]
     }
     render :json => result

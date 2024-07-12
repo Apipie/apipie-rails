@@ -40,7 +40,7 @@ class Apipie::Generator::Swagger::MethodDescription::ParametersService
 
       if Apipie.configuration.generator.swagger.json_input_uses_refs?
         composite = composite
-                    .referenced("#{@method_description.operation_id}_input")
+          .referenced("#{@method_description.operation_id}_input")
       end
 
       swagger_schema_for_body = composite.to_swagger
@@ -80,7 +80,7 @@ class Apipie::Generator::Swagger::MethodDescription::ParametersService
           warn_path_parameter_not_described(name, @path)
 
           result[name.to_sym] = Apipie::Generator::Swagger::ParamDescription
-                                .create_for_missing_param(@method_description, name)
+            .create_for_missing_param(@method_description, name)
         end
 
         result
@@ -89,15 +89,15 @@ class Apipie::Generator::Swagger::MethodDescription::ParametersService
 
   def body_param_descriptions
     @body_param_descriptions ||= all_params
-                                 .reject { |k, _| @path.param?(k) }
-                                 .values
+      .reject { |k, _| @path.param?(k) }
+      .values
   end
 
   def path_param_descriptions
     @path_param_descriptions ||= all_params
-                                 .select { |k, _| @path.param?(k) }
-                                 .each { |_, desc| desc.required = true }
-                                 .values
+      .select { |k, _| @path.param?(k) }
+      .each_value { |desc| desc.required = true }
+      .values
   end
 
   # @return [Array]

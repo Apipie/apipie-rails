@@ -178,7 +178,7 @@ module Apipie
       alias full_description desc
 
       # describe next method with document in given path
-      # in convension, these doc located under "#{Rails.root}/doc"
+      # in convention, these doc located under "#{Rails.root}/doc"
       # Example:
       # document "hello_world.md"
       # def hello_world
@@ -242,7 +242,7 @@ module Apipie
 
               if Apipie.configuration.validate_presence?
                 Validator::BaseValidator.raise_if_missing_params do |missing|
-                  method_params.each do |_, param|
+                  method_params.each_value do |param|
                     # check if required parameters are present
                     missing << param if param.required && !params.key?(param.name)
                   end
@@ -250,7 +250,7 @@ module Apipie
               end
 
               if Apipie.configuration.validate_value?
-                method_params.each do |_, param|
+                method_params.each_value do |param|
                   # params validations
                   param.validate(params[:"#{param.name}"]) if params.key?(param.name)
                 end
@@ -267,12 +267,11 @@ module Apipie
                 end
               end
 
-              if Apipie.configuration.process_value?
-                @api_params ||= {}
-                method_params.each do |_, param|
-                  # params processing
-                  @api_params[param.as] = param.process_value(params[:"#{param.name}"]) if params.key?(param.name)
-                end
+              return unless Apipie.configuration.process_value?
+              @api_params ||= {}
+              method_params.each_value do |param|
+                # params processing
+                @api_params[param.as] = param.process_value(params[:"#{param.name}"]) if params.key?(param.name)
               end
             end
           end
@@ -453,7 +452,7 @@ module Apipie
       include Apipie::DSL::Action
       include Apipie::DSL::Param
 
-      # defines the substitutions to be made in the API paths deifned
+      # defines the substitutions to be made in the API paths defined
       # in concerns included. For example:
       #
       # There is this method defined in concern:
@@ -473,7 +472,7 @@ module Apipie
       #
       # It has to be specified before the concern is included.
       #
-      # If not specified, the default predefined substitions are
+      # If not specified, the default predefined substitutions are
       #
       #    {:conroller_path => controller.controller_path,
       #     :resource_id  => `resource_id_from_apipie` }

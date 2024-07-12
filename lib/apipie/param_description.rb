@@ -246,7 +246,7 @@ module Apipie
 
     # makes modification that are based on the action that the param
     # is defined for. Typical for required and allow_nil variations in
-    # crate/update actions.
+    # create/update actions.
     def action_awareness
       if action_aware?
         if !@options.key?(:allow_nil)

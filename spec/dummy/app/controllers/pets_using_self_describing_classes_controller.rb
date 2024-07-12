@@ -13,9 +13,9 @@
 class Pet
   def self.describe_own_properties
     [
-        Apipie::prop(:pet_name, 'string', {:description => 'Name of pet', :required => false}),
-        Apipie::prop(:animal_type, 'string', {:description => 'Type of pet', :values => %w[dog cat iguana kangaroo]}),
-        Apipie::additional_properties(false)
+      Apipie::prop(:pet_name, 'string', {:description => 'Name of pet', :required => false}),
+      Apipie::prop(:animal_type, 'string', {:description => 'Type of pet', :values => %w[dog cat iguana kangaroo]}),
+      Apipie::additional_properties(false)
     ]
   end
 end
@@ -26,14 +26,14 @@ end
 class PetWithMeasurements
   def self.describe_own_properties
     [
-        Apipie::prop(:pet_name, 'string', {:description => 'Name of pet', :required => false}),
-        Apipie::prop('animal_type', 'string', {:description => 'Type of pet', :values => %w[dog cat iguana kangaroo]}),
-        Apipie::prop(:pet_measurements, 'object', {}, [
-            Apipie::prop(:weight, 'number', {:description => "Weight in pounds" }),
-            Apipie::prop(:height, 'number', {:description => "Height in inches" }),
-            Apipie::prop(:num_legs, 'number', {:description => "Number of legs", :required => false }),
-            Apipie::additional_properties(false)
-        ])
+      Apipie::prop(:pet_name, 'string', {:description => 'Name of pet', :required => false}),
+      Apipie::prop('animal_type', 'string', {:description => 'Type of pet', :values => %w[dog cat iguana kangaroo]}),
+      Apipie::prop(:pet_measurements, 'object', {}, [
+                     Apipie::prop(:weight, 'number', {:description => "Weight in pounds" }),
+                     Apipie::prop(:height, 'number', {:description => "Height in inches" }),
+                     Apipie::prop(:num_legs, 'number', {:description => "Number of legs", :required => false }),
+                     Apipie::additional_properties(false)
+                   ])
     ]
   end
 end
@@ -44,11 +44,11 @@ end
 class PetWithManyMeasurements
   def self.describe_own_properties
     [
-        Apipie::prop(:pet_name, 'string', {:description => 'Name of pet', :required => false}),
-        Apipie::prop(:many_pet_measurements, 'object', {is_array: true}, [
-            Apipie::prop(:weight, 'number', {:description => "Weight in pounds" }),
-            Apipie::prop(:height, 'number', {:description => "Height in inches" }),
-        ])
+      Apipie::prop(:pet_name, 'string', {:description => 'Name of pet', :required => false}),
+      Apipie::prop(:many_pet_measurements, 'object', {is_array: true}, [
+                     Apipie::prop(:weight, 'number', {:description => "Weight in pounds" }),
+                     Apipie::prop(:height, 'number', {:description => "Height in inches" }),
+                   ])
     ]
   end
 end
