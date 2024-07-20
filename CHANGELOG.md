@@ -1,6 +1,11 @@
  Changelog
 ===========
 
+## [v1.4.2](https://github.com/Apipie/apipie-rails/tree/v1.4.2) (2024-07-20)
+[Full Changelog](https://github.com/Apipie/apipie-rails/compare/v1.4.1...v1.4.2)
+* Fix rubocop with most recent version 1.65.0 (#930) (Mathieu Jobin)
+* Fix error for hash object warnings with delegated method descriptions (#938) (Murray Steele)
+
 ## [v1.4.1](https://github.com/Apipie/apipie-rails/tree/v1.4.1) (2024-07-09)
 [Full Changelog](https://github.com/Apipie/apipie-rails/compare/v1.4.0...v1.4.1)
 * Fix multiple rubocop offenses via rubocop_challenger. (Mathieu Jobin)
