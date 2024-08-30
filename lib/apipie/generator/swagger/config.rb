@@ -17,7 +17,7 @@ module Apipie
         CONFIG_ATTRIBUTES.each do |attribute|
           old_setter_method = "swagger_#{attribute}="
           define_method(old_setter_method) do |value|
-            ActiveSupport::Deprecation.warn(
+            ActiveSupport::Deprecation.new.warn(
               <<~HEREDOC
                 config.#{old_setter_method}#{value} is deprecated.
                 config.generator.swagger.#{attribute} instead.
@@ -29,7 +29,7 @@ module Apipie
 
           old_setter_method = "swagger_#{attribute}"
           define_method(old_setter_method) do
-            ActiveSupport::Deprecation.warn(
+            ActiveSupport::Deprecation.new.warn(
               <<~HEREDOC
                 config.#{old_setter_method} is deprecated.
                 Use config.generator.swagger.#{attribute} instead.
