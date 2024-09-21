@@ -15,6 +15,7 @@ it:
     required: richiesto
     optional: opzionale
     nil_allowed: consentito nil
+    blank_allowed: consentito vuoto
     param_name: Nome parametro
     params: Parametri
     examples: Esempi
@@ -29,3 +30,12 @@ it:
     api_documentation: Documentazione API
     headers: Header
     header_name: Nome Header
+    code: Codice
+    returns: Ritorno
+    deprecated: Deprecato
+    deprecation_details: Dettagli di deprecazione
+    deprecation:
+      attributes:
+        deprecated_in: Deprecato il
+        sunset_at: Rimozione il
+        info: Informazioni
