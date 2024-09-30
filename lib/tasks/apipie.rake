@@ -182,7 +182,7 @@ namespace :apipie do
     return @apipie_renderer
   end
 
-  def render_page(file_name, template, variables, layout = 'apipie')
+  def render_apipie_page(file_name, template, variables, layout = 'apipie')
     av = renderer
     File.open(file_name, "w") do |f|
       variables.each do |var, val|
@@ -238,21 +238,21 @@ namespace :apipie do
   def generate_one_page(file_base, doc, lang = nil)
     FileUtils.mkdir_p(File.dirname(file_base)) unless File.exist?(File.dirname(file_base))
 
-    render_page("#{file_base}-onepage#{lang_ext(lang)}.html", "static", {:doc => doc[:docs],
+    render_apipie_page("#{file_base}-onepage#{lang_ext(lang)}.html", "static", {:doc => doc[:docs],
       :language => lang, :languages => Apipie.configuration.languages})
   end
 
   def generate_plain_page(file_base, doc, lang = nil)
     FileUtils.mkdir_p(File.dirname(file_base)) unless File.exist?(File.dirname(file_base))
 
-    render_page("#{file_base}-plain#{lang_ext(lang)}.html", "plain", {:doc => doc[:docs],
+    render_apipie_page("#{file_base}-plain#{lang_ext(lang)}.html", "plain", {:doc => doc[:docs],
       :language => lang, :languages => Apipie.configuration.languages}, nil)
   end
 
   def generate_index_page(file_base, doc, include_json = false, show_versions = false, lang = nil)
     FileUtils.mkdir_p(File.dirname(file_base)) unless File.exist?(File.dirname(file_base))
     versions = show_versions && Apipie.available_versions
-    render_page("#{file_base}#{lang_ext(lang)}.html", "index", {:doc => doc[:docs],
+    render_apipie_page("#{file_base}#{lang_ext(lang)}.html", "index", {:doc => doc[:docs],
       :versions => versions, :language => lang, :languages => Apipie.configuration.languages})
 
     File.open("#{file_base}#{lang_ext(lang)}.json", "w") { |f| f << doc.to_json } if include_json
@@ -265,7 +265,7 @@ namespace :apipie do
 
       doc = Apipie.to_json(version, resource_id, nil, lang)
       doc[:docs][:link_extension] = (lang ? ".#{lang}.html" : ".html")
-      render_page("#{resource_file_base}#{lang_ext(lang)}.html", "resource", {:doc => doc[:docs],
+      render_apipie_page("#{resource_file_base}#{lang_ext(lang)}.html", "resource", {:doc => doc[:docs],
         :resource => doc[:docs][:resources].first, :language => lang, :languages => Apipie.configuration.languages})
       File.open("#{resource_file_base}#{lang_ext(lang)}.json", "w") { |f| f << doc.to_json } if include_json
     end
@@ -279,7 +279,7 @@ namespace :apipie do
 
         doc = Apipie.to_json(version, resource_id, method[:name], lang)
         doc[:docs][:link_extension] = (lang ? ".#{lang}.html" : ".html")
-        render_page("#{method_file_base}#{lang_ext(lang)}.html", "method", {:doc => doc[:docs],
+        render_apipie_page("#{method_file_base}#{lang_ext(lang)}.html", "method", {:doc => doc[:docs],
                                                            :resource => doc[:docs][:resources].first,
                                                            :method => doc[:docs][:resources].first[:methods].first,
                                                            :language => lang,
