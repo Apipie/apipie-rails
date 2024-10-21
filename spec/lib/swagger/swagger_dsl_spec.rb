@@ -570,7 +570,7 @@ describe "Swagger Responses" do
 
         expect(returns_obj).to match_field_structure([:pet_name,
                                                       :animal_type,
-                                                      {:pet_measurements => [:weight, :height, :num_legs]}
+                                                      {:pet_measurements => [:weight, :height, :num_legs, :num_tails]}
                                                      ])
       end
 
@@ -587,6 +587,7 @@ describe "Swagger Responses" do
         expect(pm_schema).to have_field(:weight, 'number', {:description => "Weight in pounds"})
         expect(pm_schema).to have_field(:height, 'number', {:description => "Height in inches"})
         expect(pm_schema).to have_field(:num_legs, 'number', {:description => "Number of legs", :required => false})
+        expect(pm_schema).to have_field(:num_tails, 'number', {:description => "Number of tails", :enum => [0, 1]})
       end
     end
 
