@@ -1401,7 +1401,7 @@ param :product_id, :number, :desc => "Identifier of the product", :required => t
 param :quantity, :number, :desc => "Number of products to order", :required => true
 ```
 
-DecimalValidator \-\-\-\-\-\-\-\-\-\-\-\-\--
+## DecimalValidator
 
 Check if the parameter is a decimal number
 
