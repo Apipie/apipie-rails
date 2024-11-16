@@ -1599,7 +1599,7 @@ default version is used instead.
 # Markup
 
 The default markup language is
-[RDoc](https://rdoc.github.io/rdoc/RDoc/Markup.html). It can be changed
+[RDoc](https://ruby.github.io/rdoc/RDoc/Markup.html). It can be changed
 in the config file (`config.markup=`) to one of these:
 
 Markdown
