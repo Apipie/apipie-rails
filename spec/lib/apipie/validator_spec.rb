@@ -146,4 +146,22 @@ describe Apipie::Validator do
       expect(validator.description).to eq('Must be one of: <code>first</code>, <code>second &amp; third</code>.')
     end
   end
+
+  describe 'subclassing BaseValidator' do
+    it 'adds the new validator to the list of validators' do
+      subclass = Class.new(Apipie::Validator::BaseValidator)
+      expect(Apipie::Validator::BaseValidator.validators).to include(subclass)
+      # clean up
+      Apipie::Validator::BaseValidator.validators.delete(subclass)
+    end
+
+    it 'adds the new validator to the list of validators recursively' do
+      subclass = Class.new(Apipie::Validator::BaseValidator)
+      subsubclass = Class.new(subclass)
+      expect(Apipie::Validator::BaseValidator.validators).to include(subsubclass)
+      # clean up
+      Apipie::Validator::BaseValidator.validators.delete(subclass)
+      Apipie::Validator::BaseValidator.validators.delete(subsubclass)
+    end
+  end
 end

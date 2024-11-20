@@ -32,6 +32,7 @@ class PetWithMeasurements
                      Apipie::prop(:weight, 'number', {:description => "Weight in pounds" }),
                      Apipie::prop(:height, 'number', {:description => "Height in inches" }),
                      Apipie::prop(:num_legs, 'number', {:description => "Number of legs", :required => false }),
+                     Apipie::prop(:num_tails, 'number', {:description => "Number of tails", :values => [0, 1] }),
                      Apipie::additional_properties(false)
                    ])
     ]
