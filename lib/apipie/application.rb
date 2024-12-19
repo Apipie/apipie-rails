@@ -380,7 +380,7 @@ module Apipie
 
     # @deprecated Use {#get_resource_id} instead
     def get_resource_name(klass)
-      ActiveSupport::Deprecation.warn(
+      ActiveSupport::Deprecation.new.warn(
         <<~HEREDOC
           Apipie::Application.get_resource_name is deprecated.
           Use `Apipie::Application.get_resource_id instead.
