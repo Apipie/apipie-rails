@@ -54,9 +54,7 @@ module Apipie
         end
       end
 
-      def logger
-        Rails.logger
-      end
+      delegate :logger, to: :Rails
 
       def call_recorder
         Thread.current[:apipie_call_recorder] ||= Recorder.new

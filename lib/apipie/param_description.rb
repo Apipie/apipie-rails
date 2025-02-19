@@ -87,7 +87,7 @@ module Apipie
       action_awareness
 
       if validator
-        if (validator != Hash) && (validator.is_a? Hash) && (validator[:array_of])
+        if (validator != Hash) && (validator.is_a? Hash) && validator[:array_of]
           @is_array = true
           validator = validator[:array_of]
           raise "an ':array_of =>' validator is allowed exclusively on response-only fields" unless @response_only

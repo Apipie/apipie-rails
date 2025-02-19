@@ -119,17 +119,13 @@ module Apipie
       @is_array_of != false
     end
 
-    def typename
-      @response_object.typename
-    end
+    delegate :typename, to: :@response_object
 
     def param_description
       nil
     end
 
-    def params_ordered
-      @response_object.params_ordered
-    end
+    delegate :params_ordered, to: :@response_object
 
     def additional_properties
       !!@response_object.additional_properties
