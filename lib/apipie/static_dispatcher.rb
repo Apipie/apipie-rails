@@ -30,9 +30,7 @@ module Apipie
       end
     end
 
-    def call(env)
-      @file_server.call(env)
-    end
+    delegate :call, to: :@file_server
 
     def ext
       @ext ||= begin

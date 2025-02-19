@@ -230,63 +230,61 @@ module Apipie
       def _apipie_define_validators(description)
 
         # [re]define method only if validation is turned on
-        if description && (Apipie.configuration.validate == true ||
-                           Apipie.configuration.validate == :implicitly ||
-                           Apipie.configuration.validate == :explicitly)
+        return unless description && [true, :implicitly, :explicitly].include?(Apipie.configuration.validate)
 
-          _apipie_save_method_params(description.method, description.params)
+        _apipie_save_method_params(description.method, description.params)
 
-          unless instance_methods.include?(:apipie_validations)
-            define_method(:apipie_validations) do
-              method_params = self.class._apipie_get_method_params(action_name)
+        unless instance_methods.include?(:apipie_validations)
+          define_method(:apipie_validations) do
+            method_params = self.class._apipie_get_method_params(action_name)
 
-              if Apipie.configuration.validate_presence?
-                Validator::BaseValidator.raise_if_missing_params do |missing|
-                  method_params.each_value do |param|
-                    # check if required parameters are present
-                    missing << param if param.required && !params.key?(param.name)
-                  end
-                end
-              end
-
-              if Apipie.configuration.validate_value?
+            if Apipie.configuration.validate_presence?
+              Validator::BaseValidator.raise_if_missing_params do |missing|
                 method_params.each_value do |param|
-                  # params validations
-                  param.validate(params[:"#{param.name}"]) if params.key?(param.name)
+                  # check if required parameters are present
+                  missing << param if param.required && !params.key?(param.name)
                 end
-              end
-
-              # Only allow params passed in that are defined keys in the api
-              # Auto skip the default params (format, controller, action)
-              if Apipie.configuration.validate_key?
-                params.reject{|k,_| %w[format controller action].include?(k.to_s) }.each_pair do |param, _|
-                  # params allowed
-                  if method_params.none? {|_,p| p.name.to_s == param.to_s}
-                    self.class._apipie_handle_validate_key_error params, param
-                  end
-                end
-              end
-
-              return unless Apipie.configuration.process_value?
-              @api_params ||= {}
-              method_params.each_value do |param|
-                # params processing
-                @api_params[param.as] = param.process_value(params[:"#{param.name}"]) if params.key?(param.name)
               end
             end
-          end
 
-          if Apipie.configuration.validate == :implicitly || Apipie.configuration.validate == true
-            old_method = instance_method(description.method)
+            if Apipie.configuration.validate_value?
+              method_params.each_value do |param|
+                # params validations
+                param.validate(params[:"#{param.name}"]) if params.key?(param.name)
+              end
+            end
 
-            define_method(description.method) do |*args|
-              apipie_validations
+            # Only allow params passed in that are defined keys in the api
+            # Auto skip the default params (format, controller, action)
+            if Apipie.configuration.validate_key?
+              params.reject{|k,_| %w[format controller action].include?(k.to_s) }.each_pair do |param, _|
+                # params allowed
+                if method_params.none? {|_,p| p.name.to_s == param.to_s}
+                  self.class._apipie_handle_validate_key_error params, param
+                end
+              end
+            end
 
-              # run the original method code
-              old_method.bind(self).call(*args)
+            return unless Apipie.configuration.process_value?
+            @api_params ||= {}
+            method_params.each_value do |param|
+              # params processing
+              @api_params[param.as] = param.process_value(params[:"#{param.name}"]) if params.key?(param.name)
             end
           end
         end
+
+        return unless [:implicitly, true].include?(Apipie.configuration.validate)
+        old_method = instance_method(description.method)
+
+        define_method(description.method) do |*args|
+          apipie_validations
+
+          # run the original method code
+          old_method.bind(self).call(*args)
+        end
+
+
       end
 
       def _apipie_handle_validate_key_error params, param

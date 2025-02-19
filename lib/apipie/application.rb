@@ -271,10 +271,7 @@ module Apipie
         .json_schema_for_method_response(method, return_code, allow_nulls)
     end
 
-    def json_schema_for_self_describing_class(cls, allow_nulls)
-      Apipie::SwaggerGenerator
-        .json_schema_for_self_describing_class(cls, allow_nulls)
-    end
+    delegate :json_schema_for_self_describing_class, to: :'Apipie::SwaggerGenerator'
 
     def to_swagger_json(version, resource_id, method_name, language, clear_warnings = false)
       return unless valid_search_args?(version, resource_id, method_name)

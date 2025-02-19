@@ -38,7 +38,7 @@ RSpec::Matchers.define :have_field do |name, type, opts = {}|
 
   match do |unresolved|
     actual = resolve_refs(unresolved)
-    return fail("expected schema to have type 'object' (got '#{actual[:type]}')") if (actual[:type]) != 'object'
+    return fail("expected schema to have type 'object' (got '#{actual[:type]}')") if actual[:type] != 'object'
     return fail("expected schema to include param named '#{name}' (got #{actual[:properties].keys})") if (prop = actual[:properties][name]).nil?
     return fail("expected param '#{name}' to have type '#{type}' (got '#{prop[:type]}')") if prop[:type] != type
     return fail("expected param '#{name}' to have description '#{opts[:description]}' (got '#{prop[:description]}')") if opts[:description] && prop[:description] != opts[:description]

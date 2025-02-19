@@ -431,9 +431,7 @@ module Apipie
 
     class DecimalValidator < BaseValidator
 
-      def validate(value)
-        self.class.validate(value)
-      end
+      delegate :validate, to: :class
 
       def self.build(param_description, argument, options, block)
         if argument == :decimal
@@ -456,9 +454,7 @@ module Apipie
 
     class NumberValidator < BaseValidator
 
-      def validate(value)
-        self.class.validate(value)
-      end
+      delegate :validate, to: :class
 
       def self.build(param_description, argument, options, block)
         if argument == :number
@@ -549,9 +545,7 @@ module Apipie
         "Must be an Array of nested elements"
       end
 
-      def params_ordered
-        @validator.params_ordered
-      end
+      delegate :params_ordered, to: :@validator
     end
 
   end
