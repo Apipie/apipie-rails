@@ -9,4 +9,4 @@ end
 
 $:.unshift File.expand_path('../../../lib', __dir__)
 
-require "logger" # Fix concurrent-ruby removing logger dependency which Rails itself does not have
+require 'logger' # Fix concurrent-ruby removing logger dependency which Rails itself does not have
