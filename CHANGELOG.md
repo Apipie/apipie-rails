@@ -3,7 +3,7 @@
 
 ## [v1.4.3](https://github.com/markbluhm/apipie-rails/tree/v1.4.2) (2025-04-22)
 [Full Changelog](https://github.com/markbluhm/apipie-rails/compare/v1.4.2...v1.4.3)
-* `Security` Upgraded JQuery from 1.12.4 to 3.7.1 [#?](https://github.com/Apipie/apipie-rails/pull/?) (Mark Bluhm)
+* `Security` Upgraded JQuery from 1.12.4 to 3.7.1 [#952](https://github.com/Apipie/apipie-rails/pull/952) (Mark Bluhm)
 
 ## [v1.4.2](https://github.com/Apipie/apipie-rails/tree/v1.4.2) (2024-07-20)
 [Full Changelog](https://github.com/Apipie/apipie-rails/compare/v1.4.1...v1.4.2)
