@@ -10,7 +10,13 @@ describe Apipie::Extractor::Collector do
 
     let(:record) { { controller: controller, action: action } }
     let(:controller) { ActionController::Base }
-    let(:action) { nil }
+    let(:action) { 'index' }
+
+    context 'when action is nil' do
+      let(:action) { nil }
+
+      it { is_expected.to be true }
+    end
 
     context 'when controller is nil' do
       let(:controller) { nil }
