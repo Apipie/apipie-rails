@@ -1,5 +1,18 @@
  Changelog
 ===========
+## [v1.5.0](https://github.com/Apipie/apipie-rails/tree/v1.5.0) (2025-08-19)
+[Full Changelog](https://github.com/Apipie/apipie-rails/compare/v1.4.2...v1.5.0)
+* Don't collect records without an action (Evgeni Golov)
+* Update test matrix: rails 7.2, 8.0, ruby 3.4 [#960](https://github.com/Apipie/apipie-rails/pull/960) (Evgeni Golov)
+* Fix activesupport::deprecation.warn deprecation (Jonathan Biolaz)
+* Rubocop autofix (Evgeni Golov)
+* Update ci workflow to run on ubuntu 24.04 (Evgeni Golov)
+* Fix issue with loading rails logger in tests (Eric Helms)
+* Update link for rdoc in readme (Panos Dalitsouris)
+* Fix the decimalvalidator header in readme.md [#945](https://github.com/Apipie/apipie-rails/pull/945) (Ewoud Kohl van Wijngaarden)
+* Rename render_page in apipie.rake to render_apipie_page [#943](https://github.com/Apipie/apipie-rails/pull/943) (Nathan Palmer)
+* Update it.yml following latest en.yml [#942](https://github.com/Apipie/apipie-rails/pull/942) (Claudio Maradonna)
+
 
 ## [v1.4.2](https://github.com/Apipie/apipie-rails/tree/v1.4.2) (2024-07-20)
 [Full Changelog](https://github.com/Apipie/apipie-rails/compare/v1.4.1...v1.4.2)
