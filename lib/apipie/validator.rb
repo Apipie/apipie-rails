@@ -298,6 +298,50 @@ module Apipie
       end
     end
 
+    class ArrayOfValidator < Apipie::Validator::BaseValidator
+      class << self
+        def for_class
+          :array_of_validator
+        end
+
+        def build(param_description, argument, options, block)
+          if argument == for_class
+            new(param_description, options, block)
+          end
+        end
+      end
+
+      def initialize(param_description, options, block)
+        super(param_description)
+        @items_type = options[:of]
+        @options = options
+        @block = block
+      end
+
+      def validate(values)
+        values ||= []
+        return false unless values.respond_to?(:each) && !values.is_a?(String)
+        values.all? { |v| validate_item(v) }
+      end
+
+      def validate_item(value)
+        Apipie::Validator::BaseValidator.find(
+          param_description,
+          items_type,
+          options,
+          block,
+        ).validate(value)
+      end
+
+      def description
+        "Must be array of #{items_type}s."
+      end
+
+      private
+
+      attr_reader :items_type, :param_description, :options, :block
+    end
+
     class ProcValidator < BaseValidator
 
       def initialize(param_description, argument)
