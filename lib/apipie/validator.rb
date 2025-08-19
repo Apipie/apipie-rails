@@ -177,23 +177,23 @@ module Apipie
     class EnumValidator < BaseValidator
       def initialize(param_description, argument)
         super(param_description)
-        @array = argument
+        @argument = argument
       end
 
       def validate(value)
-        @array.include?(value)
+        values.include?(value)
       end
 
       def self.build(param_description, argument, options, proc)
-        self.new(param_description, argument) if argument.is_a?(Array)
+        self.new(param_description, argument) if argument.is_a?(Array) || argument.respond_to?(:call)
       end
 
       def values
-        @array
+        @argument.respond_to?(:call) ? @argument.call : @argument
       end
 
       def description
-        string = @array.map { |value| format_description_value(value) }.join(', ')
+        string = values.map { |value| format_description_value(value) }.join(', ')
         "Must be one of: #{string}."
       end
     end
