@@ -278,6 +278,7 @@ describe UsersController do
                                   :required => false,
                                   :allow_nil => true,
                                   :allow_blank => false,
+                                  :is_array => nil,
                                   :metadata => nil,
                                   :show => true,
                                   :deprecated => false,
