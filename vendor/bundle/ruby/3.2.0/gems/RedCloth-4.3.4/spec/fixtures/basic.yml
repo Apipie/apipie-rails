@@ -1,0 +1,1028 @@
+--- 
+name: paragraphs
+desc: Textile looks for paragraphs in your text.  Paragraphs are separated by one blank line. Every paragraph is translated as an HTML paragraph.
+in: |-
+  A single paragraph.
+  
+  Followed by another.
+html: |-
+  <p>A single paragraph.</p>
+  <p>Followed by another.</p>
+---
+name: blocks with spaces on the blank line in between
+in: "This is line one\n \nThis is line two"
+html: "<p>This is line one</p>\n<p>This is line two</p>"
+---
+name: blocks with tabl on the blank line in between
+in: "This is line one\n\t\nThis is line two"
+html: "<p>This is line one</p>\n<p>This is line two</p>"
+---
+name: block containing block start
+in: |-
+  I saw a ship. It ate my elephant.
+html: |-
+  <p>I saw a ship. It ate my elephant.</p>
+---
+name: extended block containing block start
+in: |-
+  p.. I saw a ship. It ate my elephant.
+  
+  When the elephant comes to take a p. you...
+html: |-
+  <p>I saw a ship. It ate my elephant.</p>
+  <p>When the elephant comes to take a p. you&#8230;</p>
+---
+name: blockquote containing block start
+in: |-
+  bq. I saw a ship. It ate my elephant.
+html: |-
+  <blockquote>
+  <p>I saw a ship. It ate my elephant.</p>
+  </blockquote>
+---
+name: extended blockquote containing block start
+in: |-
+  bq.. I saw a ship. It ate my elephant.
+
+  When the elephant comes to take a p. you...
+html: |-
+  <blockquote>
+  <p>I saw a ship. It ate my elephant.</p>
+  <p>When the elephant comes to take a p. you&#8230;</p>
+  </blockquote>
+--- 
+name: notextile block
+in: |-
+  Some text:
+  
+  <notextile>
+  <div class="example"><pre>
+  Some code
+  </pre></div>
+  </notextile>
+  
+  Some more text.
+html: |-
+  <p>Some text:</p>
+  <div class="example"><pre>
+  Some code
+  </pre></div>
+  <p>Some more text.</p>
+---
+name: notextile block containing block start
+in: |-
+  notextile. I saw a ship. It ate my elephant.
+html: |-
+  I saw a ship. It ate my elephant.
+valid_html: false
+---
+name: extended notextile block containing block start
+in: |-
+  notextile.. I saw a ship. It ate my elephant.
+
+  When the elephant comes to take a p. you...
+html: |-
+  I saw a ship. It ate my elephant.
+  
+  When the elephant comes to take a p. you...
+valid_html: false
+--- 
+name: pre block containing block start
+in: |-
+  pre. I saw a ship. It ate my elephant.
+html: |-
+  <pre>I saw a ship. It ate my elephant.</pre>
+---
+name: extended pre block containing block start
+in: |-
+  pre.. I saw a ship. It ate my elephant.
+
+  When the elephant comes to take a p. you...
+html: |-
+  <pre>I saw a ship. It ate my elephant.</pre>
+  <pre>When the elephant comes to take a p. you...</pre>
+--- 
+name: html tags
+desc: You can certainly use HTML tags inside your Textile documents.  HTML will only be escaped if it&#8217;s found in a <code>pre</code> or <code>code</code> block.
+in: |-
+  I am <b>very</b> serious.
+  
+  <pre>
+    I am <b>very</b> serious.
+  </pre>
+html: |-
+  <p>I am <b>very</b> serious.</p>
+  <pre>
+    I am &lt;b&gt;very&lt;/b&gt; serious.
+  </pre>
+--- 
+name: line breaks
+desc: Line breaks are converted to HTML breaks.
+in: |-
+  I spoke.
+  And none replied.
+html: |-
+  <p>I spoke.<br />
+  And none replied.</p>
+html_no_breaks: |-
+  <p>I spoke.
+  And none replied.</p>
+lite_mode_html: |-
+  I spoke.<br />
+  And none replied.
+--- 
+name: curly quotes
+desc: Single- and double-quotes around words or phrases are converted to curly quotations, much easier on the eye.
+in: "\"Observe!\""
+html: <p>&#8220;Observe!&#8221;</p>
+---
+name: quotes contained in multi-paragraph quotes
+in: |-
+  "I first learned about this thing called "Redcloth" several years ago.
+
+  "It's wonderful."
+html: |-
+  <p>&#8220;I first learned about this thing called &#8220;Redcloth&#8221; several years ago.</p>
+  <p>&#8220;It&#8217;s wonderful.&#8221;</p>
+--- 
+name: double hyphens
+desc: Double hyphens are replaced with an em-dash.
+in: Observe--very nice!
+html: <p>Observe&#8212;very nice!</p>
+latex: "Observe---very nice!\n\n"
+--- 
+name: double hyphens with spaces
+desc: Double hyphens are replaced with an em-dash and surrounding spaces are preserved.
+in: Observe -- very nice!
+html: <p>Observe &#8212; very nice!</p>
+latex: "Observe --- very nice!\n\n"
+--- 
+name: parenthetical phrase set off with em dashes
+desc: Sentences with two em dashes should not turn them into strikethroughs
+in: An emdash indicates a parenthetical thought--like this one--which is set apart from the rest of a sentence.
+html: "<p>An emdash indicates a parenthetical thought&#8212;like this one&#8212;which is set apart from the rest of a sentence.</p>"
+latex: "An emdash indicates a parenthetical thought---like this one---which is set apart from the rest of a sentence.\n\n"
+---
+name: parenthetical phrase set off with em dashes surrounded by spaces
+desc: Sentences with two em dashes should not turn them into strikethroughs
+in: An emdash indicates a parenthetical thought -- like this one -- which is set apart from the rest of a sentence.
+html: "<p>An emdash indicates a parenthetical thought &#8212; like this one &#8212; which is set apart from the rest of a sentence.</p>"
+latex: "An emdash indicates a parenthetical thought --- like this one --- which is set apart from the rest of a sentence.\n\n"
+---
+name: single hyphens with spaces
+desc: Single hyphens are replaced with en-dashes if they are surrounded by spaces.
+in: Observe - tiny and brief.
+html: <p>Observe &#8211; tiny and brief.</p>
+latex: "Observe -- tiny and brief.\n\n"
+--- 
+name: midword hyphens 
+desc: Single hyphens are left alone if not surrounded by spaces.
+in: Observe the nicely-done hyphen.
+html: <p>Observe the nicely-done hyphen.</p>
+--- 
+name: ellipses
+desc: Triplets of periods become an ellipsis.
+in: Observe...
+html: <p>Observe&#8230;</p>
+lite_mode_html: Observe&#8230;
+--- 
+name: dimension sign
+desc: The letter 'x' becomes a dimension sign when used between digits.
+in: "Observe: 2x3."
+html: "<p>Observe: 2&#215;3.</p>"
+latex: "Observe: $2\\times3$.\n\n"
+--- 
+name: dimension sign with space after
+in: "The room is 2x3 inches big."
+html: "<p>The room is 2&#215;3 inches big.</p>"
+latex: "The room is $2\\times3$ inches big.\n\n"
+--- 
+name: dimension sign with spaces
+in: "Observe: 2 x 4."
+html: "<p>Observe: 2 &#215; 4.</p>"
+latex: "Observe: $2 \\times 4$.\n\n"
+--- 
+name: dimension signs chained
+in: "Observe: 2x3x4."
+html: "<p>Observe: 2&#215;3&#215;4.</p>"
+lite_mode_html: "Observe: 2&#215;3&#215;4."
+latex: "Observe: $2\\times3\\times4$.\n\n"
+--- 
+name: dimension signs with double primes
+in: 'My mouse: 2.5" x 4".'
+html: '<p>My mouse: 2.5&#8243; &#215; 4&#8243;.</p>'
+latex: "My mouse: $2.5'' \\times 4''$.\n\n"
+--- 
+name: dimension signs with single primes
+in: "My office: 5' x 4.5'."
+html: "<p>My office: 5&#8242; &#215; 4.5&#8242;.</p>"
+latex: "My office: $5' \\times 4.5'$.\n\n"
+--- 
+name: trademark and copyright
+desc: Conversion of trademark and copyright symbols.
+in: one(TM), two(R), three(C).
+html: <p>one&#8482;, two&#174;, three&#169;.</p>
+lite_mode_html: one&#8482;, two&#174;, three&#169;.
+--- 
+name: headers
+desc: To make an entire paragraph into a Header, place “h<em>n</em>.” at its beginning, where <em>n</em> is a number from 1-6.
+in: h3. Header 3
+html: <h3>Header 3</h3>
+--- 
+name: blockquote
+desc: To make an entire paragraph into a block quotation, place “bq.” before it.
+in: |-
+  Any old text
+  
+  bq. A block quotation.
+  
+  Any old text
+html: |-
+  <p>Any old text</p>
+  <blockquote>
+  <p>A block quotation.</p>
+  </blockquote>
+  <p>Any old text</p>
+--- 
+name: footnote reference
+desc: Numeric references within text to footnotes appear between square brackets.
+in: This is covered elsewhere[1].
+html: <p>This is covered elsewhere<sup class="footnote" id="fnr1"><a href="#fn1">1</a></sup>.</p>
+--- 
+name: footnote
+desc: To create the footnote that corresponds to its reference within the text, begin a new paragraph with fn and the footnote&#8217;s number, followed by a dot and a space.
+in: fn1. Down here, in fact.
+html: <p class="footnote" id="fn1"><a href="#fnr1"><sup>1</sup></a> Down here, in fact.</p>
+--- 
+name: em
+desc: Emphasis to text is added by surrounding a phrase with underscores.  In HTML, this often appears as <em>italics</em>.
+in: I _believe_ every word.
+html: <p>I <em>believe</em> every word.</p>
+lite_mode_html: "I <em>believe</em> every word."
+--- 
+name: strong
+desc: Strength can be give to text by surrounding with asterisks.  In HTML, this strength appears as <strong>bold</strong>.
+in: And then? She *fell*!
+html: <p>And then? She <strong>fell</strong>!</p>
+lite_mode_html: "And then? She <strong>fell</strong>!"
+---
+name: strong phrase beginning with a number
+desc: A strong phrase at the beginning of a line that begins with a number should not be recognized as a ul with a start value (no such thing)
+in: "*10 times as many*"
+html: "<p><strong>10 times as many</strong></p>"
+--- 
+name: force bold italics
+desc: Both italics and bold can be forced by doubling the underscores or asterisks.
+in: |-
+  I __know__.
+  I **really** __know__.
+html: |-
+  <p>I <i>know</i>.<br />
+  I <b>really</b> <i>know</i>.</p>
+--- 
+name: citation
+desc: Use double question marks to indicate <em>citation</em>.  The title of a book, for instance.
+in: ??Cat's Cradle?? by Vonnegut
+html: <p><cite>Cat&#8217;s Cradle</cite> by Vonnegut</p>
+--- 
+name: code phrases
+desc: Code phrases can be surrounded by at-symbols.
+in: Convert with @r.to_html@
+html: <p>Convert with <code>r.to_html</code></p>
+lite_mode_html: Convert with <code>r.to_html</code>
+---
+name: code phrases not created with multiple email addresses
+in: Please email why@domain.com or jason@domain.com.
+html: <p>Please email why@domain.com or jason@domain.com.</p>
+--- 
+name: del
+desc: To indicate a passage which has been deleted, surround the passage with hypens.
+in: I'm -sure- not sure.
+html: "<p>I&#8217;m <del>sure</del> not sure.</p>"
+--- 
+name: del beginning a phrase
+in: -delete-
+html: "<p><del>delete</del></p>"
+--- 
+name: ins
+desc: Pluses around a passage indicate its insertion.
+in: You are a +pleasant+ child.
+html: <p>You are a <ins>pleasant</ins> child.</p>
+--- 
+name: superscript
+desc: To superscript a phrase, surround with carets.
+in: a ^2^ + b ^2^ = c ^2^
+html: <p>a <sup>2</sup> + b <sup>2</sup> = c <sup>2</sup></p>
+---
+name: parenthetical superscript phrase
+in: '^(image courtesy NASA)^'
+html: '<p><sup>(image courtesy <span class="caps">NASA</span>)</sup></p>'
+--- 
+name: subscript
+desc: To subscript, surround with tildes.
+in: log ~2~ x
+html: <p>log <sub>2</sub> x</p>
+---
+name: parenthetical subscript phrase
+in: '~(image courtesy NASA)~'
+html: '<p><sub>(image courtesy <span class="caps">NASA</span>)</sub></p>'
+---
+name: tight superscript and subscript
+desc: if you want your superscript or subscript to not be surrounded by spaces, you must use square brackets
+in: f(x, n) = log[~4~]x[^n^]
+html: '<p>f(x, n) = log<sub>4</sub>x<sup>n</sup></p>'
+--- 
+name: span
+desc: Lastly, if you find yourself needing to customize the style of a passage, use percent symbols to translate the passage as an HTML span.
+in: I'm %unaware% of most soft drinks.
+html: <p>I&#8217;m <span>unaware</span> of most soft drinks.</p>
+--- 
+name: style span
+desc: This way, you can apply style settings, as described in the next section to arbitrary phrases.
+in: |-
+  I'm %{color:red}unaware%
+  of most %{font-size:0.5em;}soft drinks%.
+html: |-
+  <p>I&#8217;m <span style="color:red;">unaware</span><br />
+  of most <span style="font-size:0.5em;">soft drinks</span>.</p>
+lite_mode_html: |-
+  I&#8217;m <span style="color:red;">unaware</span><br />
+  of most <span style="font-size:0.5em;">soft drinks</span>.
+---
+name: percent sign
+desc: though percent signs indicate a span, they shouldn't be overly greedy.
+in: |-
+  http://blah.com/one%20two%20three
+  (min)5%-95%(max)
+html: |-
+  <p>http://blah.com/one%20two%20three<br />
+  (min)5%-95%(max)</p>
+--- 
+name: css class
+desc: A block can be tagged with a CSS class by circling the class in parentheses and placing it just before the period which marks the block.
+in: p(example1). An example
+html: <p class="example1">An example</p>
+--- 
+name: css id
+desc: An element ID can be given by prefixing the ID with a pound symbol and using it in place of the class.
+in: p(#big-red). Red here
+html: <p id="big-red">Red here</p>
+---
+name: css id with initial uppercase
+desc: CSS IDs are supposed to be lowercase, but Textile understands the invalid capitalization nonetheless
+in: p(#Foo). bar
+html: <p id="Foo">bar</p>
+---
+name: css class uppercase
+desc: CSS classes are supposed to be lowercase, but Textile understands the invalid capitalization nonetheless
+in: p(fooBar). baz
+html: <p class="fooBar">baz</p>
+---
+name: class and id combined
+desc: Class and ID can be combined by placing the class first.
+in: p(example1#big-red2). Red here
+html: <p class="example1" id="big-red2">Red here</p>
+--- 
+name: css style
+desc: Style settings can be provided directly by surrounding them in curly braces.
+in: p{color:blue;margin:30px;font-size:120%;font-family:'Comic Sans'}. Spacey blue
+html: <p style="color:blue;margin:30px;font-size:120%;font-family:&#39;Comic Sans&#39;;">Spacey blue</p>
+--- 
+name: language designations
+desc: Language designations can be given between angel brackets.
+in: p[fr]. rouge
+html: <p lang="fr">rouge</p>
+--- 
+name: block attributes on phrase modifiers
+desc: All block attributes can be applied to phrases as well by placing them just inside the opening modifier.
+in: |-
+  I seriously *{color:red}blushed*
+  when I _(big)sprouted_ that
+  corn stalk from my
+  %[es]cabeza%.
+html: |-
+  <p>I seriously <strong style="color:red;">blushed</strong><br />
+  when I <em class="big">sprouted</em> that<br />
+  corn stalk from my<br />
+  <span lang="es">cabeza</span>.</p>
+--- 
+name: inline attributes preceded by text are treated as literal
+desc: modifiers must come first, without anything before them
+in: |-
+  I *seriously {color:red}blushed*
+  when I _first (big)sprouted_ that
+  corn stalk from my
+  %grande [es]cabeza%.
+html: |-
+  <p>I <strong>seriously {color:red}blushed</strong><br />
+  when I <em>first (big)sprouted</em> that<br />
+  corn stalk from my<br />
+  <span>grande [es]cabeza</span>.</p>
+--- 
+name: align justified
+desc: Text inside blocks can be aligned in four basic ways.
+in: p<>. justified
+html: <p style="text-align:justify;">justified</p>
+--- 
+name: indentation
+desc: Indentation can also be specified by provide a single left paren for every 1em to the left.  A single right paren for every 1em to the right.
+in: p))). right ident 3em
+html: <p style="padding-right:3em;">right ident 3em</p>
+--- 
+name: indentation and alignment
+desc: Identation may be coupled with alignment.
+in: h2()>. Bingo.
+html: <h2 style="padding-left:1em;padding-right:1em;text-align:right;">Bingo.</h2>
+--- 
+name: many modifiers combined
+desc: And, furthermore, coupled with language settings and CSS styles.
+in: h3()>[no]{color:red}. Bingo
+html: <h3 style="padding-left:1em;padding-right:1em;text-align:right;color:red;" lang="no">Bingo</h3>
+--- 
+name: code blocks
+desc: For example, long code blocks belong between <code>pre</code> and <code>code</code> tags.  Please also indent your code inside the tags to be sure that all Textile processors out there will ignore the contents.
+in: |
+  <pre>
+  <code>
+    a.gsub!( /</, '' )
+  </code>
+  </pre>
+html: |-
+  <pre>
+  <code>
+    a.gsub!( /&lt;/, '' )
+  </code>
+  </pre>
+--- 
+name: div tags
+desc: You may also choose to surround sections with <code>div</code> tags to separate your document into sections. <a href="http://www.instiki.org/">Instiki</a> uses this technique to float a sidebar to the right.
+in: |
+  <div style="float:right;">
+  
+  h3. Sidebar
+  
+  "Hobix":http://hobix.com/
+  "Ruby":http://ruby-lang.org/
+  
+  </div>
+  
+  The main text of the page goes here and will stay to the left of the sidebar.
+html: |-
+  <div style="float:right;">
+  <h3>Sidebar</h3>
+  <p><a href="http://hobix.com/">Hobix</a><br />
+  <a href="http://ruby-lang.org/">Ruby</a></p>
+  </div>
+  <p>The main text of the page goes here and will stay to the left of the sidebar.</p>
+--- 
+name: numbered list
+desc: To make a numbered list, place each item in its own paragraph, preceded by &#8221;#&#8221;.
+in: |-
+  # A first item
+  # A second item
+  # A third
+html: |-
+  <ol>
+  	<li>A first item</li>
+  	<li>A second item</li>
+  	<li>A third</li>
+  </ol>
+--- 
+name: nested numbered lists
+desc: These lists may be nested by increasing the number of pound symbols preceding child entries.
+in: |-
+  # Fuel could be:
+  ## Coal
+  ## Gasoline
+  ## Electricity
+  # Humans need only:
+  ## Water
+  ## Protein
+html: |-
+  <ol>
+  	<li>Fuel could be:
+  	<ol>
+  		<li>Coal</li>
+  		<li>Gasoline</li>
+  		<li>Electricity</li>
+  	</ol></li>
+  	<li>Humans need only:
+  	<ol>
+  		<li>Water</li>
+  		<li>Protein</li>
+  	</ol></li>
+  </ol>
+--- 
+name: bulleted list
+desc: Bulleted lists use an asterisk in place of the pound.
+in: |-
+  * A first item
+  * A second item
+  * A third
+html: |-
+  <ul>
+  	<li>A first item</li>
+  	<li>A second item</li>
+  	<li>A third</li>
+  </ul>
+--- 
+name: nested bulleted lists
+desc: These lists may be nested in like manner.
+in: |-
+  * Fuel could be:
+  ** Coal
+  ** Gasoline
+  ** Electricity
+  * Humans need only:
+  ** Water
+  ** Protein
+html: |-
+  <ul>
+  	<li>Fuel could be:
+  	<ul>
+  		<li>Coal</li>
+  		<li>Gasoline</li>
+  		<li>Electricity</li>
+  	</ul></li>
+  	<li>Humans need only:
+  	<ul>
+  		<li>Water</li>
+  		<li>Protein</li>
+  	</ul></li>
+  </ul>
+--- 
+name: links
+desc: Basic links are comprised of a phrase which is linked to a <acronym title="Universal Resource Locator">URL</acronym>.  Place the descriptive phrase in quotation marks.  Follow it immediately by a colon and the URL.
+in: I searched "Google":http://google.com.
+html: <p>I searched <a href="http://google.com">Google</a>.</p>
+lite_mode_html: I searched <a href="http://google.com">Google</a>.
+--- 
+name: link aliases
+desc: If you are using the same link several times in your document, or you’d just like to be a tad more organized, you can use a link alias.  Place the URL anywhere in your document, beginning with its alias in square brackets.  Then, use the alias in place of the URL, using the link format above.
+in: |-
+  I am crazy about "Hobix":hobix
+  and "it's":hobix "all":hobix I ever
+  "link to":hobix!
+  
+  [hobix]http://hobix.com
+html: |-
+  <p>I am crazy about <a href="http://hobix.com">Hobix</a><br />
+  and <a href="http://hobix.com">it&#8217;s</a> <a href="http://hobix.com">all</a> I ever<br />
+  <a href="http://hobix.com">link to</a>!</p>
+--- 
+name: image
+desc: You can embed an image in your Textile document by surrounding its URL with exclamation marks.
+in: "!http://hobix.com/sample.jpg!"
+html: <p><img src="http://hobix.com/sample.jpg" alt="" /></p>
+lite_mode_html: <img src="http://hobix.com/sample.jpg" alt="" />
+--- 
+name: image title
+desc: A title for the image can also be provided in parens, just before the closing exclamation.
+in: "!openwindow1.gif(Bunny.)!"
+html: <p><img src="openwindow1.gif" title="Bunny." alt="Bunny." /></p>
+--- 
+name: image links
+desc: Links can be attached to images with a colon.
+in: "!openwindow1.gif!:http://hobix.com/"
+html: <p><a href="http://hobix.com/"><img src="openwindow1.gif" alt="" /></a></p>
+--- 
+name: image alignments
+desc: Alignments can be applied as well to images.
+in: |-
+  !>obake.gif!
+  
+  And others sat all round the small
+  machine and paid it to sing to them.
+html: |-
+  <p style="float:right;"><img src="obake.gif" alt="" /></p>
+  <p>And others sat all round the small<br />
+  machine and paid it to sing to them.</p>
+--- 
+name: acronym definitions
+desc: Definitions for acronyms can be provided by following an acronym with its definition in parens.
+in: We use CSS(Cascading Style Sheets).
+html: <p>We use <acronym title="Cascading Style Sheets"><span class="caps">CSS</span></acronym>.</p>
+lite_mode_html: We use <acronym title="Cascading Style Sheets"><span class="caps">CSS</span></acronym>.
+no_span_caps_html: <p>We use <acronym title="Cascading Style Sheets">CSS</acronym>.</p>
+--- 
+name: two-letter acronyms
+in: It employs AI(artificial intelligence) processing.
+html: <p>It employs <acronym title="artificial intelligence"><span class="caps">AI</span></acronym> processing.</p>
+--- 
+name: tables
+desc: Simple tables can be built by separating fields with pipe characters
+in: |-
+  | name | age | sex |
+  | joan | 24 | f |
+  | archie | 29 | m |
+  | bella | 45 | f |
+html: |-
+  <table>
+  	<tr>
+  		<td> name </td>
+  		<td> age </td>
+  		<td> sex </td>
+  	</tr>
+  	<tr>
+  		<td> joan </td>
+  		<td> 24 </td>
+  		<td> f </td>
+  	</tr>
+  	<tr>
+  		<td> archie </td>
+  		<td> 29 </td>
+  		<td> m </td>
+  	</tr>
+  	<tr>
+  		<td> bella </td>
+  		<td> 45 </td>
+  		<td> f </td>
+  	</tr>
+  </table>
+--- 
+name: table headers
+desc: Specify header cells by marking them with an underscore and period.
+in: |-
+  |_. name |_. age |_. sex |
+  | joan | 24 | f |
+  | archie | 29 | m |
+  | bella | 45 | f |
+html: |-
+  <table>
+  	<tr>
+  		<th>name </th>
+  		<th>age </th>
+  		<th>sex </th>
+  	</tr>
+  	<tr>
+  		<td> joan </td>
+  		<td> 24 </td>
+  		<td> f </td>
+  	</tr>
+  	<tr>
+  		<td> archie </td>
+  		<td> 29 </td>
+  		<td> m </td>
+  	</tr>
+  	<tr>
+  		<td> bella </td>
+  		<td> 45 </td>
+  		<td> f </td>
+  	</tr>
+  </table>
+--- 
+name: table cell attributes
+desc: The period used above marks the end of a cell’s attributes.  Other attributes can be applied as well.
+in: |-
+  |_. attribute list |
+  |<. align left |
+  |>. align right|
+  |=. center |
+  |<>. justify |
+  |^. valign top |
+  |~. bottom |
+html: |-
+  <table>
+  	<tr>
+  		<th>attribute list </th>
+  	</tr>
+  	<tr>
+  		<td style="text-align:left;">align left </td>
+  	</tr>
+  	<tr>
+  		<td style="text-align:right;">align right</td>
+  	</tr>
+  	<tr>
+  		<td style="text-align:center;">center </td>
+  	</tr>
+  	<tr>
+  		<td style="text-align:justify;">justify </td>
+  	</tr>
+  	<tr>
+  		<td style="vertical-align:top;">valign top </td>
+  	</tr>
+  	<tr>
+  		<td style="vertical-align:bottom;">bottom </td>
+  	</tr>
+  </table>
+--- 
+name: table colspan
+desc: You can also specify colspans with a backslash, followed by the cell width.
+in: |-
+  |\2. spans two cols |
+  | col 1 | col 2 |
+html: |-
+  <table>
+  	<tr>
+  		<td colspan="2">spans two cols </td>
+  	</tr>
+  	<tr>
+  		<td> col 1 </td>
+  		<td> col 2 </td>
+  	</tr>
+  </table>
+--- 
+name: table rowspan
+desc: Rowspan is specified by a forward slash, followed by the row height.
+in: |-
+  |/3. spans 3 rows | a |
+  | b |
+  | c |
+html: |-
+  <table>
+  	<tr>
+  		<td rowspan="3">spans 3 rows </td>
+  		<td> a </td>
+  	</tr>
+  	<tr>
+  		<td> b </td>
+  	</tr>
+  	<tr>
+  		<td> c </td>
+  	</tr>
+  </table>
+--- 
+name: block attributes applied to table cells
+desc: All block attributes can be applied to table cells as well.
+in: "|{background:#ddd}. Grey cell|"
+html: |-
+  <table>
+  	<tr>
+  		<td style="background:#ddd;">Grey cell</td>
+  	</tr>
+  </table>
+--- 
+name: block attributes applied to a table
+desc: Table-wide attributes can be applied before the first row of the table.  On its own line, followed by a period.
+in: |-
+  table{border:1px solid black}.
+  |This|is|a|row|
+  |This|is|a|row|
+html: |-
+  <table style="border:1px solid black;">
+  	<tr>
+  		<td>This</td>
+  		<td>is</td>
+  		<td>a</td>
+  		<td>row</td>
+  	</tr>
+  	<tr>
+  		<td>This</td>
+  		<td>is</td>
+  		<td>a</td>
+  		<td>row</td>
+  	</tr>
+  </table>
+--- 
+name: block attributes applied to a table row
+desc: Attributes can be applied to a single row by supplying the attribute before the row starts, using a <code>table</code> modifier and following it by a period.
+in: |-
+  |This|is|a|row|
+  {background:#ddd}. |This|is|grey|row|
+html: |-
+  <table>
+  	<tr>
+  		<td>This</td>
+  		<td>is</td>
+  		<td>a</td>
+  		<td>row</td>
+  	</tr>
+  	<tr style="background:#ddd;">
+  		<td>This</td>
+  		<td>is</td>
+  		<td>grey</td>
+  		<td>row</td>
+  	</tr>
+  </table>
+---
+name: extended block followed by pre block
+in: |-
+  div.. Just a test.
+  
+  Second div.
+  
+  pre. A pre block ends it.
+html: |-
+  <div>Just a test.</div>
+  <div>Second div.</div>
+  <pre>A pre block ends it.</pre>
+---
+name: extended block followed by blockquote
+in: |-
+  div.. Just a test.
+
+  Second div.
+
+  bq. A blockquote ends it.
+html: |-
+  <div>Just a test.</div>
+  <div>Second div.</div>
+  <blockquote>
+  <p>A blockquote ends it.</p>
+  </blockquote>
+---
+name: extended block followed by block code
+in: |-
+  div.. Just a test.
+
+  Second div.
+
+  bc. A blockcode ends it.
+html: |-
+  <div>Just a test.</div>
+  <div>Second div.</div>
+  <pre><code>A blockcode ends it.</code></pre>
+---
+name: extended block followed by notextile block
+in: |-
+  div.. Just a test.
+
+  Second div.
+
+  notextile. A notextile block ends it.
+html: |-
+  <div>Just a test.</div>
+  <div>Second div.</div>
+  A notextile block ends it.
+valid_html: false
+---
+name: simple parentheses
+in: |-
+  before (in parens) after
+html: |-
+  <p>before (in parens) after</p>
+---
+name: parentheses in underscores
+in: |-
+  before _(in parens)_ after
+html: |-
+  <p>before <em>(in parens)</em> after</p>
+---
+name: parentheses in asterisks
+in: |-
+  before *(in parens)* after
+html: |-
+  <p>before <strong>(in parens)</strong> after</p>
+---
+name: parentheses in underscores in quotes
+in: |-
+  "before _(in parens)_ after"
+html: |-
+  <p>&#8220;before <em>(in parens)</em> after&#8221;</p>
+---
+name: underscores in parentheses
+in: |-
+   one _two three_ (four _five six_) seven
+html: |-
+  <p>one <em>two three</em> (four <em>five six</em>) seven</p>
+---
+name: underscores in parentheses in quotes
+in: |-
+   "one _two three_ (four _five six_) seven"
+html: |-
+  <p>&#8220;one <em>two three</em> (four <em>five six</em>) seven&#8221;</p>
+---
+name: underscores in parentheses 2
+in: |-
+   one (two _three four_) five
+html: |-
+  <p>one (two <em>three four</em>) five</p>
+---
+name: underscores in parentheses in quotes 2
+in: |-
+   "one (two _three four_) five"
+html: |-
+  <p>&#8220;one (two <em>three four</em>) five&#8221;</p>
+---
+name: caps in parentheses
+desc: Uppercase words of three or more characters that are in parentheses should be recognized as well as those not in parentheses.
+in: IBM or (HAL)
+html: <p><span class="caps">IBM</span> or (<span class="caps">HAL</span>)</p>
+no_span_caps_html: <p>IBM or (HAL)</p>
+---
+name: phrase modifiers in parentheses
+desc: Inline modifiers are expected to work in parentheses as well.
+in: |-
+  __Amanita__s are mushrooms.
+  Lungworts (__Lobaria__) are lichens.
+  Blah blah (normal text **bold**) blah.
+html: |-
+  <p>__Amanita__s are mushrooms.<br />
+  Lungworts (<i>Lobaria</i>) are lichens.<br />
+  Blah blah (normal text <b>bold</b>) blah.</p>
+---
+name: square brackets are preserved
+in: |-
+  citation ["(Berk.) Hilton"], see
+  [Papers "blah blah."]
+html: |-
+  <p>citation [&#8220;(Berk.) Hilton&#8221;], see<br />
+  [Papers &#8220;blah blah.&#8221;]</p>
+---
+name: horizontal rule using asterisks
+in: |-
+  Just some *** text
+  
+  ***
+  
+  Some more text.
+html: |-
+  <p>Just some <strong>*</strong> text</p>
+  <hr />
+  <p>Some more text.</p>
+---
+name: horizontal rule using more than three asterisks
+in: |-
+  Just some **** text
+
+  ****
+
+  Some more text.
+html: |-
+  <p>Just some **** text</p>
+  <hr />
+  <p>Some more text.</p>
+---
+name: horizontal rule using dashes
+in: |-
+  Just some --- text
+
+  ---
+
+  Some more text.
+html: |-
+  <p>Just some <del>-</del> text</p>
+  <hr />
+  <p>Some more text.</p>
+---
+name: horizontal rule using underscores
+in: |-
+  Just some ___ text
+
+  ___
+
+  Some more text.
+html: |-
+  <p>Just some ___ text</p>
+  <hr />
+  <p>Some more text.</p>
+---
+name: lang attribute cannot contain square brackets
+in: "some @[[code]]@"
+html: "<p>some <code>[[code]]</code></p>"
+---
+name: pre blocks preserve leading whitespace
+in: |-
+  pre.      Text in a pre block
+  is displayed in a fixed-width
+       font. It preserves
+    s p a c e s, line breaks
+       and ascii bunnies.
+html: |-
+  <pre>     Text in a pre block
+  is displayed in a fixed-width
+       font. It preserves
+    s p a c e s, line breaks
+       and ascii bunnies.</pre>
+---
+name: code blocks preserve leading whitespace
+in: |-
+  bc.   false
+  } else {
+html: |-
+  <pre><code>  false
+  } else {</code></pre>
+---
+name: citation ending with question mark
+in: "??What the Story Morning Glory???"
+html: |-
+  <p><cite>What the Story Morning Glory?</cite></p>
+---
+name: citation including question mark
+in: "??What's the Matter with Kansas? How Conservatives Won the Heart of America?? is a great book!"
+html: |-
+  <p><cite>What&#8217;s the Matter with Kansas? How Conservatives Won the Heart of America</cite> is a great book!</p>
+---
+name: emphasized word including underscore
+in: |-
+  _trythis_ it will keep the empahsis.
+  _and_this_too_ it should keep the emphasis but does not with redcloth.
+html: |-
+  <p><em>trythis</em> it will keep the empahsis.<br />
+  <em>and_this_too</em> it should keep the emphasis but does not with redcloth.</p>
+---
+name: code captures spaces when made explicit with square brackets
+in: "Start a paragraph with [@p. @] (that's p, a period, and a space)."
+html: "<p>Start a paragraph with <code>p. </code> (that&#8217;s p, a period, and a space).</p>"
+---
+name: unrecognized block starting with t not eaten
+in: "tel. 0 700 123 123"
+html: "<p>tel. 0 700 123 123</p>"
+---
+name: bolded number at start of phrase
+in: "*22 watermelons* is my limit"
+html: "<p><strong>22 watermelons</strong> is my limit</p>"
+---
+name: bolded paragraph
+in: "*- I would expect it to be a bolded paragraph.*"
+html: <p><strong>- I would expect it to be a bolded paragraph.</strong></p>

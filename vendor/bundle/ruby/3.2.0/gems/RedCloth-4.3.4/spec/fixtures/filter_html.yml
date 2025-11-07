@@ -1,0 +1,177 @@
+---
+name: standalone html escaped
+in: |-
+  <hr>
+  <abc def="a=1&b=2">
+  <div>
+  <hr/>
+  <hr />
+  </div>
+filtered_html: |-
+  &lt;hr&gt;
+  &lt;abc def="a=1&amp;b=2"&gt;
+  &lt;div&gt;
+  &lt;hr/&gt;
+  &lt;hr /&gt;
+  &lt;/div&gt;
+---
+in:  Just a little harmless xss <script src=http://ha.ckers.org/xss.js></script>
+filtered_html: <p>Just a little harmless xss &lt;script src=http://ha.ckers.org/xss.js&gt;&lt;/script&gt;</p>
+---
+name: escapes partial inline script tag
+desc: The end tag is malformed, but it must be escaped since a browser would recognize it
+in:  Just a little harmless xss <script src=http://ha.ckers.org/xss.js></script
+filtered_html: <p>Just a little harmless xss &lt;script src=http://ha.ckers.org/xss.js&gt;&lt;/script</p>
+valid_html: false
+---
+name: escapes partial scanner-level script tag
+desc: The end tag is malformed, but it must be escaped since a browser would recognize it anyway.
+in: <script src=http://ha.ckers.org/xss.js></script
+filtered_html: '&lt;script src=http://ha.ckers.org/xss.js&gt;&lt;/script'
+valid_html: false
+---
+name: escapes self-closing scanner-level tag
+in: <hr />
+filtered_html: '&lt;hr /&gt;'
+valid_html: false
+---
+name: processes text beginning with space
+in: ' This should be <b>escaped</b>: <script type="text/javascript">alert("Hai. I`m in ya PC. Makin ya XSS viruzz! KThxBye");</script>'
+filtered_html: 'This should be &lt;b&gt;escaped&lt;/b&gt;: &lt;script type="text/javascript"&gt;alert("Hai. I`m in ya PC. Makin ya XSS viruzz! KThxBye");&lt;/script&gt;'
+---
+name: processes script tags beginning with space
+in: ' <script type="text/javascript">alert("Hai. I`m in ya PC. Makin ya XSS viruzz! KThxBye");</script>'
+filtered_html: '&lt;script type="text/javascript"&gt;alert("Hai. I`m in ya PC. Makin ya XSS viruzz! KThxBye");&lt;/script&gt;'
+---
+name: processes text in notextile tags
+in: |-
+  <notextile>
+  This should be <b>escaped</b>: <script type="text/javascript">alert("Hai. I`m in ya PC. Makin ya XSS viruzz! KThxBye");</script>
+  </notextile>
+filtered_html: |-
+  This should be &lt;b&gt;escaped&lt;/b&gt;: &lt;script type="text/javascript"&gt;alert("Hai. I`m in ya PC. Makin ya XSS viruzz! KThxBye");&lt;/script&gt;
+---
+name: processes text in inline notextile tags
+in: |-
+  This should be <b>escaped</b>: <notextile><script type="text/javascript">alert("Hai. I`m in ya PC. Makin ya XSS viruzz! KThxBye");</script></notextile>
+filtered_html: |-
+  <p>This should be &lt;b&gt;escaped&lt;/b&gt;: &lt;script type="text/javascript"&gt;alert("Hai. I`m in ya PC. Makin ya XSS viruzz! KThxBye");&lt;/script&gt;</p>
+---
+name: escapes script tags
+in: |-
+  <script type="text/javascript">
+    alert("Hai. I`m in ya PC. Makin ya XSS viruzz! KThxBye");
+  </script>
+filtered_html: |-
+  &lt;script type="text/javascript"&gt;
+    alert("Hai. I`m in ya PC. Makin ya XSS viruzz! KThxBye");
+  &lt;/script&gt;
+---
+name: escapes HTML entities within script tags
+in: |-
+  <script type="text/javascript">
+    <!--
+    document.write("Hello World!")
+    //-->
+  </script>
+filtered_html: |-
+  &lt;script type="text/javascript"&gt;
+    &lt;!--
+    document.write("Hello World!")
+    //--&gt;
+  &lt;/script&gt;
+---
+name: escapes inline html tags
+in: |-
+  p. Letting people inject their own HTML can be <em>dangerous</em>!.
+filtered_html: |-
+  <p>Letting people inject their own <span class="caps">HTML</span> can be &lt;em&gt;dangerous&lt;/em&gt;!.</p>
+---
+name: escapes html in comments
+in: |-
+  p. You can't have people injecting HTML into <!-- <b>comments</b>! -->.
+filtered_html: |-
+  <p>You can&#8217;t have people injecting <span class="caps">HTML</span> into &lt;!-- &lt;b&gt;comments&lt;/b&gt;! --&gt;.</p>
+---
+name: escapes html in inline code tags
+in: |-
+  p. I have some <code><em>awesome</em> code</code> here.
+filtered_html: |-
+  <p>I have some <code>&lt;em&gt;awesome&lt;/em&gt; code</code> here.</p>
+---
+name: escapes html notextile block
+in: |-
+  notextile. This is a <em>notextile</em> block.
+filtered_html: |-
+  This is a &lt;em&gt;notextile&lt;/em&gt; block.
+---
+name: escapes html in pre tags
+in: |-
+  <pre>
+  This should be <em>escaped</em>.
+  </pre>
+filtered_html: |-
+  <pre>
+  This should be &lt;em&gt;escaped&lt;/em&gt;.
+  </pre>
+---
+name: escapes html
+in: |-
+  <div>This should be escaped</div>
+filtered_html: |-
+  &lt;div&gt;This should be escaped&lt;/div&gt;
+---
+name: escapes html in html
+in: |-
+  <div>This should be <b>bold</b></div>
+filtered_html: |-
+  &lt;div&gt;This should be &lt;b&gt;bold&lt;/b&gt;&lt;/div&gt;
+---
+in: Here's a bad image <img src="JaVaScRiPt:alert('XSS');">
+filtered_html: <p>Here&#8217;s a bad image &lt;img src="JaVaScRiPt:alert('XSS');"&gt;</p>
+---
+in: Just some random > and < characters, but also a <br/> tag.
+filtered_html: <p>Just some random &gt; and &lt; characters, but also a &lt;br/&gt; tag.</p>
+---
+in: |-
+  Quotes outside "pre" tags are escaped.
+  
+  <a href="test">Tags are completely escaped outside pre tags.</a>
+
+  <pre>
+  <code>
+    # only < and > are escaped inside pre tags.  "Quotes" remain.
+
+    <div>
+      a = 1
+    </div>
+
+    Bad code here.
+
+    <script language="JavaScript">
+      window.open( "abfiltered_html:blank" );
+    </script>
+  </code>
+  </pre>
+
+filtered_html: |-
+  <p>Quotes outside &#8220;pre&#8221; tags are escaped.</p>
+  <p>&lt;a href="test"&gt;Tags are completely escaped outside pre tags.&lt;/a&gt;</p>
+  <pre>
+  <code>
+    # only &lt; and &gt; are escaped inside pre tags.  "Quotes" remain.
+
+    &lt;div&gt;
+      a = 1
+    &lt;/div&gt;
+
+    Bad code here.
+
+    &lt;script language="JavaScript"&gt;
+      window.open( "abfiltered_html:blank" );
+    &lt;/script&gt;
+  </code>
+  </pre>
+---
+in: /me <3 beer
+filtered_html: <p>/me &lt;3 beer</p>

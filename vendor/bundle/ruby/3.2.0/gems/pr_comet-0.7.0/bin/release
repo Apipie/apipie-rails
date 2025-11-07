@@ -1,0 +1,36 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# usage: bin/release VERSION
+
+require 'bundler/setup'
+require 'pr_comet'
+
+VERSION_FORMAT = /\A\d+\.\d+\.\d+(\.(pre|beta|rc)\d?)?\z/.freeze
+version = ARGV[0]
+update_pr = PrComet.new(base: 'master', branch: "update/v#{version}")
+release_pr = PrComet.new(base: 'production', branch: 'master')
+
+# Verifying
+abort 'usage: bin/release VERSION' if version.nil?
+abort 'A version must be like a `1.2.3`' unless VERSION_FORMAT.match?(version)
+
+# Modify a version file
+update_pr.commit ':comet: Update version' do
+  File.write('lib/pr_comet/version.rb', <<~VERSION)
+    # frozen_string_literal: true
+
+    class PrComet
+      VERSION = '#{version}'
+    end
+  VERSION
+end
+
+# Bundle Update
+update_pr.commit ':comet: Run $ bundle update' do
+  `bundle update`
+end
+
+# Create a pull request
+update_pr.create!(title: "Update v#{version}", body: '')
+release_pr.create!(title: "Release v#{version}", body: '', validate: false)

@@ -1,0 +1,762 @@
+--- # From http://thresholdstate.com/articles/4312/the-textile-reference-manual
+name: paragraph
+desc: Paragraphs are separated by blank lines. Each paragraph of text is transformed into a XHTML <p> paragraph block.
+in: |-
+  A paragraph.
+  
+  Another paragraph.
+html: |-
+  <p>A paragraph.</p>
+  <p>Another paragraph.</p>
+---
+name: line breaks
+desc: Line breaks within paragraphs are transformed into XHTML line breaks.
+in: |-
+  A paragraph with
+  a line break.
+html: |-
+  <p>A paragraph with<br />
+  a line break.</p>
+---
+name: xhtml tags
+desc: Simple XHTML tags may be included in a paragraph.
+in: Here's some <b>bold</b> text.
+html: <p>Here&#8217;s some <b>bold</b> text.</p>
+---
+name: no paragraph tags
+desc: A line beginning with a space will be left untouched, and not wrapped in <p> tags.
+in: " No paragraph tags here."
+html: "No paragraph tags here."
+valid_html: false
+---
+name: smart quotes
+desc: Single and double typewriter quotation marks ' and " are transformed into typographically correct “curly” quote marks.
+in: '"Proceed!" said he to the host.'
+html: '<p>&#8220;Proceed!&#8221; said he to the host.</p>'
+---
+name: smart quotes 2
+in: "'Proceed!' said he to the host."
+html: "<p>&#8216;Proceed!&#8217; said he to the host.</p>"
+---
+name: nested quotation marks
+desc: Single and double quotation marks may be nested one inside the other.
+in: |-
+  "'I swear, captain,' replied I."
+html: |-
+  <p>&#8220;&#8216;I swear, captain,&#8217; replied I.&#8221;</p>
+---
+name: nested quotation marks 2
+in: |-
+  '"I swear, captain," replied I.'
+html: |-
+  <p>&#8216;&#8220;I swear, captain,&#8221; replied I.&#8217;</p>
+---
+name: apostrophe glyphs
+desc: Single quotation marks ' will be turned into apostrophe glyphs when used as such.
+in: Greengrocers' apostrophe's.
+html: <p>Greengrocers&#8217; apostrophe&#8217;s.</p>
+---
+name: em-dash glyphs
+desc: Double -- dashes become an em-dash glyph.
+in: You know the Italian proverb -- Chi ha compagno ha padrone.
+html: <p>You know the Italian proverb &#8212; Chi ha compagno ha padrone.</p>
+---
+name: em-dash glyphs 2
+in: You know the Italian proverb--Chi ha compagno ha padrone.
+html: <p>You know the Italian proverb&#8212;Chi ha compagno ha padrone.</p>
+---
+name: en-dash glyphs
+desc: Single - dashes are replaced with en-dashes.
+in: You know the Italian proverb - Chi ha compagno ha padrone.
+html: <p>You know the Italian proverb &#8211; Chi ha compagno ha padrone.</p>
+---
+name: ellipsis character
+desc: Three period marks become an ellipsis character.
+in: Meanwhile...
+html: <p>Meanwhile&#8230;</p>
+---
+name: dimension character
+desc: An “x” is replaced with the dimension character when used between numbers.
+in: 1 x 2 x 3 = 6
+html: <p>1 &#215; 2 &#215; 3 = 6</p>
+---
+name: dimension character 2
+in: 1x2x3 = 6
+html: <p>1&#215;2&#215;3 = 6</p>
+---
+name: trademark register copyright
+desc: Trademark, Registered and Copyright symbols are represented by their common plain text equivalents.
+in: Registered(r) Trademark(tm) Copyright (c).
+html: <p>Registered&#174; Trademark&#8482; Copyright &#169;.</p>
+---
+name: acronyms
+desc: Acronyms consist of three or more uppercase characters, followed immediately by words in parentheses.
+in: ABC(Always Be Closing)
+html: <p><acronym title="Always Be Closing"><span class="caps">ABC</span></acronym></p>
+no_span_caps_html: <p><acronym title="Always Be Closing">ABC</acronym></p>
+latex: "Always Be Closing (ABC)\n\n"
+---
+name: uppercase
+desc: Uppercase words of three or more characters are enclosed with a special span element.
+in: IBM or HAL
+html: <p><span class="caps">IBM</span> or <span class="caps">HAL</span></p>
+no_span_caps_html: <p>IBM or HAL</p>
+latex: "IBM or HAL\n\n"
+---
+name: emphasis
+desc: Emphasis is added with _ underscores.
+in: The _underlying_ cause.
+html: <p>The <em>underlying</em> cause.</p>
+---
+name: strong text
+desc: Strong text is indicated by * asterisks.
+in: The *underlying* cause.
+html: <p>The <strong>underlying</strong> cause.</p>
+---
+name: italic text
+desc: em is a semantic tag, usually represented by browsers as italic text. To produce italic tags instead, use double underscores.
+in: The __underlying__ cause.
+html: <p>The <i>underlying</i> cause.</p>
+---
+name: bold text
+desc: strong is a semantic tag, usually represented by browsers as bold text. To produce bold tags instead, use double asterisks.
+in: The **underlying** cause.
+html: <p>The <b>underlying</b> cause.</p>
+---
+name: citation
+desc: Double question marks represent a citation, like the title of a book.
+in: ??The Count of Monte Cristo??, by Dumas.
+html: <p><cite>The Count of Monte Cristo</cite>, by Dumas.</p>
+---
+name: inserted and deleted text
+desc: Inserted and deleted text is represented by + plus and - minus symbols.
+in: Scratch -that-, replace with +this+.
+html: <p>Scratch <del>that</del>, replace with <ins>this</ins>.</p>
+---
+name: subscript
+desc: Subscript text is indicated by ~ tilde characters.
+in: log ~2~ n
+html: <p>log <sub>2</sub> n</p>
+---
+name: superscript
+desc: Superscript text is indicated by ^ caret characters.
+in: 2 ^x^
+html: <p>2 <sup>x</sup></p>
+---
+name: span tag
+desc: Percentage marks will enclose text with a XHTML span tag.
+in: The %underlying% cause.
+html: <p>The <span>underlying</span> cause.</p>
+---
+name: code
+desc: To include a short snippet of code such as XHTML or Javascript, surround it with @ “at” symbols. XHTML significant characters within a code phrase will be escaped for display to the reader.
+in: About the @<hr />@ tag.
+html: <p>About the <code>&lt;hr /&gt;</code> tag.</p>
+---
+name: links
+desc: Links are represented by double quotes and a colon.
+in: '"link text":http://example.com/'
+html: <p><a href="http://example.com/">link text</a></p>
+---
+name: local links
+desc: The host name may be omitted for local links.
+in: '"link text":/example'
+html: <p><a href="/example">link text</a></p>
+---
+name: link title
+desc: A title may be placed in () parentheses.
+in: '"link text(with title)":http://example.com/'
+html: <p><a href="http://example.com/" title="with title">link text</a></p>
+---
+name: link alias
+desc: For frequent linking to a single URL, you can specify a link alias with [] square brackets.
+in: |-
+  Here's "a link":tstate, and
+  "another link":tstate to the same site.
+  
+  [tstate]http://thresholdstate.com/
+html: |-
+  <p>Here&#8217;s <a href="http://thresholdstate.com/">a link</a>, and<br />
+  <a href="http://thresholdstate.com/">another link</a> to the same site.</p>
+---
+name: image
+desc: Use ! exclamation marks to insert an image tag.
+in: "!/img.gif!"
+html: <p><img src="/img.gif" alt="" /></p>
+---
+name: image 2
+in: "!http://thresholdstate.com/img.gif!"
+html: <p><img src="http://thresholdstate.com/img.gif" alt="" /></p>
+---
+name: image alt
+desc: Use () parentheses to include “alt” text.
+in: "!/img.gif(alt text)!"
+html: <p><img src="/img.gif" title="alt text" alt="alt text" /></p>
+---
+name: image links
+desc: Images may be combined with links by using an !image! in place of the link text.
+in: "!/img.gif!:http://textpattern.com/"
+html: <p><a href="http://textpattern.com/"><img src="/img.gif" alt="" /></a></p>
+---
+name: headers
+desc: Headers are represented by h1., h2., … h6..
+in: h1. Heading 1
+html: <h1>Heading 1</h1>
+---
+name: headers 2
+in: h2. Heading 2
+html: <h2>Heading 2</h2>
+---
+name: headers 3
+in: h6. Heading 6
+html: <h6>Heading 6</h6>
+---
+name: paragraph text
+desc: "Paragraph p text is represented by p.. This is the default block type: any paragraph without a block modifier will automatically be enclosed with p tags."
+in: |-
+  p. A paragraph.
+  Continued.
+  
+  Also a paragraph.
+html: |-
+  <p>A paragraph.<br />
+  Continued.</p>
+  <p>Also a paragraph.</p>
+---
+name: block quote
+desc: bq. indicates a quoted block of text.
+in: |-
+  bq. A quotation.
+  Continued.
+  
+  Regular paragraph.
+html: |-
+  <blockquote>
+  <p>A quotation.<br />
+  Continued.</p>
+  </blockquote>
+  <p>Regular paragraph.</p>
+---
+name: block quote citation
+desc: Block quotes may include a citation URL immediately following the period.
+in: bq.:http://thresholdstate.com/ A cited quotation.
+html: |-
+  <blockquote cite="http://thresholdstate.com/">
+  <p>A cited quotation.</p>
+  </blockquote>
+---
+name: footnotes
+desc: Footnotes are represented by the fn1., fn2., … block modifiers.
+in: |-
+  A footnote reference[1].
+  
+  fn1. The footnote.
+html: |-
+  <p>A footnote reference<sup class="footnote" id="fnr1"><a href="#fn1">1</a></sup>.</p>
+  <p class="footnote" id="fn1"><a href="#fnr1"><sup>1</sup></a> The footnote.</p>
+# html: |-
+#   <p>A footnote reference<sup class="footnote"><a href="#fn1216642796463b1223ae29d">1</a></sup>.</p>
+#   <p class="footnote" id="fn1216642796463b1223ae29d"><sup>1</sup> The footnote.</p>
+---
+name: block code
+desc: Code such as XHTML, Javascript or PHP may be displayed using the bc. “block code” modifier. XHTML significant characters such as < and > will be escaped within code blocks – bc is used for displaying code to the reader, not for executing it.
+note: Note that Textile will interpret any blank lines within the code as indicating the end of the code block. See Extended Blocks below for an explanation of how to display longer blocks of code.
+in: |-
+  bc. <script>
+  // a Javascript example
+  alert("Hello World");
+  </script>
+html: |-
+  <pre><code>&lt;script&gt;
+  // a Javascript example
+  alert("Hello World");
+  &lt;/script&gt;</code></pre>
+---
+name: preformatted text
+desc: Use the pre. block modifier for pre-formatted text. XHTML significant characters within the block will be escaped.
+note: pre. is almost identical to bc., with the exception that <code>...</code> tags are not used within the <pre> block.
+in: |-
+  pre. Pre-formatted
+  text
+html: |-
+  <pre>Pre-formatted
+  text</pre>
+latex: |-
+  \begin{verbatim}Pre-formatted
+  text\end{verbatim}
+---
+name: notextile
+desc: The notextile. block modifier applies no Textile processing at all to a block. Raw XHTML characters are passed through untouched, so this may be used to insert explicit XHTML markup, or execute Javascript or PHP code.
+in: |-
+  notextile. <script type="text/javascript">
+  document.write("Hello World!");
+  </script>
+  <noscript>Your browser doesn't support Javascript</noscript>
+html: |-
+  <script type="text/javascript">
+  document.write("Hello World!");
+  </script>
+  <noscript>Your browser doesn't support Javascript</noscript>
+valid_html: false
+---
+name: class attribute
+desc: CSS classes are specified with () parentheses.
+in: p(myclass). My classy paragraph.
+html: <p class="myclass">My classy paragraph.</p>
+---
+name: id attribute
+desc: CSS IDs are specified with () parentheses.
+in: p(#myid). My ID paragraph.
+html: <p id="myid">My ID paragraph.</p>
+---
+name: style attribute
+desc: CSS styles are specified with {} braces.
+in: p{color:red}. Red rum.
+html: <p style="color:red;">Red rum.</p>
+---
+name: lang attribute
+desc: Languages are specified with [] brackets.
+in: p[fr-fr]. En français.
+html: <p lang="fr-fr">En français.</p>
+---
+name: phrase modifiers
+desc: The same syntax may be applied to phrase modifiers.
+in: A *(myclass)classy* phrase.
+html: <p>A <strong class="myclass">classy</strong> phrase.</p>
+---
+name: phrase modifiers 2
+in: An _(#myid2)ID_ phrase.
+html: <p>An <em id="myid2">ID</em> phrase.</p>
+---
+name: phrase modifiers 3
+in: The %{color:blue}blue% room.
+html: <p>The <span style="color:blue;">blue</span> room.</p>
+---
+name: block and phrase attributes combined
+desc: Block and phrase attributes may be combined.
+in: p(myclass#myid3){color:green}[de-de]. A complex paragraph.
+html: <p style="color:green;" class="myclass" lang="de-de" id="myid3">A complex paragraph.</p>
+---
+name: block and phrase attributes combined 2
+in: A ??(myclass#myid4){color:green}[de-de]complex?? phrase.
+html: <p>A <cite style="color:green;" class="myclass" lang="de-de" id="myid4">complex</cite> phrase.</p>
+---
+name: extended blocks
+desc: Normally a block modifier covers a single block of text, and ends at the first blank line. To extend a block over multiple paragraphs that include blank lines, use a block modifier with two period marks instead of one. To close the extended block, use a different block modifier on the next paragraph.
+in: |-
+  bq.. A quote.
+  
+  The quote continued.
+  
+  p. Back to paragraph text.
+html: |-
+  <blockquote>
+  <p>A quote.</p>
+  <p>The quote continued.</p>
+  </blockquote>
+  <p>Back to paragraph text.</p>
+---
+name: extended block code
+desc: Extended blocks are useful for displaying longer examples of code that contain blank lines.
+in: |-
+  A PHP code example.
+  
+  bc.. <?php
+  function hello() {
+  // display a hello message
+  
+  print "Hello, World";
+  }
+  ?>
+  
+  p. Following paragraph.
+html: |-
+  <p>A <span class="caps">PHP</span> code example.</p>
+  <pre><code>&lt;?php
+  function hello() {
+  // display a hello message</code>
+
+  <code>print "Hello, World";
+  }
+  ?&gt;</code></pre>
+  <p>Following paragraph.</p>
+---
+name: extended block attributes
+desc: Any block attributes on an extended block will be included on each following block.
+in: |-
+  p(myclass).. A classy paragraph.
+  
+  Another classy paragraph.
+  
+  p. Not so classy.
+html: |-
+  <p class="myclass">A classy paragraph.</p>
+  <p class="myclass">Another classy paragraph.</p>
+  <p>Not so classy.</p>
+---
+name: extended block quote attributes
+desc: Attributes on bq.. extended blocks will be included on both the inner and outer blocks.
+in: |-
+  bq(myclass).. Quote paragraph 1.
+
+  Paragraph 2.
+html: |-
+  <blockquote class="myclass">
+  <p class="myclass">Quote paragraph 1.</p>
+  <p class="myclass">Paragraph 2.</p>
+  </blockquote>
+---
+name: extended block code attributes
+desc: Attributes on bc.. extended blocks will be included on both the inner and outer blocks.
+in: |-
+  bc(myclass).. Code block 1.
+  
+  Code block 2.
+html: |-
+  <pre class="myclass"><code class="myclass">Code block 1.</code>
+
+  <code class="myclass">Code block 2.</code></pre>
+---
+name: raw xhtml left in tact
+desc: Raw XHTML tags are generally left untouched by Textile. Span tags that enclose only part of a block of text will be left intact, while the block itself is treated normally.
+in: <b>bold</b> and <i>italic</i>, the hard way.
+html: <p><b>bold</b> and <i>italic</i>, the hard way.</p>
+---
+name: paragraphs entirely raw xhtml
+desc: Paragraphs that consist entirely of raw XHTML block tags will not be enclosed in <p>...</p> tags.
+in: <div class="mydiv">My div</div>
+html: <div class="mydiv">My div</div>
+---
+name: paragraphs with inline xhtml
+desc: Paragraphs that consist only of inline XHTML tags, will be enclosed in <p>...</p> tags.
+in: <img src="/img.gif" alt="image" />
+html: <p><img src="/img.gif" alt="image" /></p>
+---
+name: paragraphs with inline xhtml 2
+in: <span class="myspan">I'll make my own way.</span>
+html: '<p><span class="myspan">I&#8217;ll make my own way.</span></p>'
+---
+name: paragraphs partly enclosed in xhtml block tags
+desc: Paragraphs that are only partly enclosed in block tags will be enclosed in <p>...</p> tags.
+in: <div>inside</div> and outside.
+html: <div>inside</div> <p>and outside.</p>
+# html: <p><div>inside</div> and outside.</p>
+---
+name: complex xhtml blocks
+desc: Textile can’t always identify the beginning and end of long or complex blocks of XHTML. To prevent Textile from enclosing complex XHTML blocks in paragraph tags, either use a space at the beginning of each line...
+in: " <div>\n <span>My div</span>\n </div>"
+html: "<div>\n<span>My div</span>\n</div>"
+---
+name: complex xhtml blocks 2
+desc: ...or a notexile.. extended block.
+in: |-
+  notextile.. <div>
+  
+  <span>My div</span>
+  
+  </div>
+html: |-
+  <div>
+
+  <span>My div</span>
+
+  </div>
+---
+name: complex xhtml blocks with inline formatting
+desc: Textile will not wrap lines that start with a space in paragraph tags, but it should parse inline signatures
+in: " <div>\n <span>My *div*</span>\n </div>"
+html: "<div>\n<span>My <strong>div</strong></span>\n</div>"
+---
+name: explicit pre escapement
+desc: The contents of explicit <pre>...</pre> tags are escaped for display. 
+in: |-
+  <pre>
+  A HTML <b>example</b>
+  </pre>
+html: |-
+  <pre>
+  A HTML &lt;b&gt;example&lt;/b&gt;
+  </pre>
+note: This syntax is supported for backwards compatibility only, and doesn’t always work as expected. The block modifier pre. should be used instead.
+---
+name: explicit code escapement
+desc: The contents of explicit <code>...</code> tags are escaped for display.
+in: |-
+  <code>
+  Another HTML <b>example</b>
+  </code>
+html: |-
+  <p><code>
+  Another HTML &lt;b&gt;example&lt;/b&gt;
+  </code></p>
+note: This syntax is supported for backwards compatibility only, and doesn’t always work as expected. The block modifier bc. should be used instead.
+---
+name: notextile tags
+desc: Blocks enclosed by the pseudo tag <notextile>...</notextile> will be left untouched.
+in: |-
+  <notextile>
+  p. Leave me alone
+  </notextile>
+html: |-
+  p. Leave me alone
+# html: |-
+#   <p>
+#   p. Leave me alone
+#   </p>
+note: This syntax is supported for backwards compatibility only, and doesn’t always work as expected. The block modifier notextile. should be used instead.
+valid_html: false
+---
+name: left aligned text
+desc: Left alignment is specified with a < less than symbol.
+in: p<. Left-aligned paragraph.
+html: <p style="text-align:left;">Left-aligned paragraph.</p>
+---
+name: right aligned text
+desc: Right alignment is specified with a > greater than symbol.
+in: h3>. Right-aligned heading.
+html: <h3 style="text-align:right;">Right-aligned heading.</h3>
+---
+name: justified text
+desc: Use both <> symbols for justified text.
+in: p<>. Justified paragraph.
+html: <p style="text-align:justify;">Justified paragraph.</p>
+---
+name: centered text
+desc: An = equals symbol represents centered text.
+in: h3=. Centered heading.
+html: <h3 style="text-align:center;">Centered heading.</h3>
+---
+name: padding
+desc: Use empty ( and ) parentheses to add padding to blocks, in multiples of 1 em.
+in: p(. Left pad 1em.
+html: <p style="padding-left:1em;">Left pad 1em.</p>
+---
+name: padding 2
+in: p)). Right pad 2em.
+html: <p style="padding-right:2em;">Right pad 2em.</p>
+---
+name: padding 3
+in: p(). Left and right pad 1em.
+html: <p style="padding-left:1em;padding-right:1em;">Left and right pad 1em.</p>
+---
+name: numeric lists
+desc: Numeric lists are represented by lines beginning with #.
+in: |-
+  # Item one
+  # Item two
+  # Item three
+html: |-
+  <ol>
+  	<li>Item one</li>
+  	<li>Item two</li>
+  	<li>Item three</li>
+  </ol>
+---
+name: bulleted lists
+desc: Bulleted lists are represented by lines beginning with *.
+in: |-
+  * Item A
+  * Item B
+  * Item C
+html: |-
+  <ul>
+  	<li>Item A</li>
+  	<li>Item B</li>
+  	<li>Item C</li>
+  </ul>
+---
+name: nested lists
+desc: Use multiple # or * symbols to create nested lists.
+in: |-
+  # Item one
+  ## Item one-A
+  ## Item one-B
+  ### Item one-B-a
+  # Item two
+html: |-
+  <ol>
+  	<li>Item one
+  	<ol>
+  		<li>Item one-A</li>
+  		<li>Item one-B
+  		<ol>
+  			<li>Item one-B-a</li>
+  		</ol></li>
+  	</ol></li>
+  	<li>Item two</li>
+  </ol>
+---
+name: tables
+desc: Tables can be constructed using | “pipe” symbols to separate cells.
+in: "|a|simple|table|"
+html: |-
+  <table>
+  	<tr>
+  		<td>a</td>
+  		<td>simple</td>
+  		<td>table</td>
+  	</tr>
+  </table>
+---
+name: table heading cells
+desc: Use _. to indicate table heading cells.
+in: |-
+  |_. a|_. table|_. heading|
+  |a|table|row|
+html: |-
+  <table>
+  	<tr>
+  		<th>a</th>
+  		<th>table</th>
+  		<th>heading</th>
+  	</tr>
+  	<tr>
+  		<td>a</td>
+  		<td>table</td>
+  		<td>row</td>
+  	</tr>
+  </table>
+---
+name: cell attributes
+desc: Attributes may be applied separately to individual cells, rows, and entire tables. Cell attributes are placed within each cell.
+in: "|a|{color:red}. styled|cell|"
+html: |-
+  <table>
+  	<tr>
+  		<td>a</td>
+  		<td style="color:red;">styled</td>
+  		<td>cell</td>
+  	</tr>
+  </table>
+---
+name: row attributes
+desc: Row attributes are placed at the beginning of a row, followed by a dot and a space.
+in: (rowclass). |a|classy|row|
+html: |-
+  <table>
+  	<tr class="rowclass">
+  		<td>a</td>
+  		<td>classy</td>
+  		<td>row</td>
+  	</tr>
+  </table>
+---
+name: table attributes
+desc: Table attributes are specified by placing the special table. block modifier immediately before the table.
+in: |-
+  table(tableclass).
+  |a|classy|table|
+  |a|classy|table|
+html: |-
+  <table class="tableclass">
+  	<tr>
+  		<td>a</td>
+  		<td>classy</td>
+  		<td>table</td>
+  	</tr>
+  	<tr>
+  		<td>a</td>
+  		<td>classy</td>
+  		<td>table</td>
+  	</tr>
+  </table>
+---
+name: vertical alignment
+desc: Special alignment symbols are available for vertical alignment within table cells.
+in: "|^. top alignment|"
+html: |-
+  <table>
+  	<tr>
+  		<td style="vertical-align:top;">top alignment</td>
+  	</tr>
+  </table>
+---
+name: vertical alignment 2
+in: |-
+  |-. middle alignment|
+html: |-
+  <table>
+  	<tr>
+  		<td style="vertical-align:middle;">middle alignment</td>
+  	</tr>
+  </table>
+---
+name: vertical alignment 3
+in: |-
+  |~. bottom alignment|
+html: |-
+  <table>
+  	<tr>
+  		<td style="vertical-align:bottom;">bottom alignment</td>
+  	</tr>
+  </table>
+---
+name: column span
+desc: Use a \ backslash to indicate a column span.
+in: |-
+  |\2. spans two cols |
+  | col 1 | col 2 |
+html: |-
+  <table>
+  	<tr>
+  		<td colspan="2">spans two cols </td>
+  	</tr>
+  	<tr>
+  		<td> col 1 </td>
+  		<td> col 2 </td>
+  	</tr>
+  </table>
+---
+name: row span
+desc: Use a / forward slash to indicate a row span.
+in: |-
+  |/3. spans 3 rows | row a |
+  | row b |
+  | row c |
+html: |-
+  <table>
+  	<tr>
+  		<td rowspan="3">spans 3 rows </td>
+  		<td> row a </td>
+  	</tr>
+  	<tr>
+  		<td> row b </td>
+  	</tr>
+  	<tr>
+  		<td> row c </td>
+  	</tr>
+  </table>
+---
+name: whitespace required
+desc: Links, images and phrase modifiers normally require surrounding whitespace.
+in: this*won't*work
+html: <p>this*won&#8217;t*work</p>
+---
+name: modifier without whitespace
+desc: To use these without whitespace, surround the modifier with [] square brackets.
+in: this[*will*]work
+html: <p>this<strong>will</strong>work</p>
+---
+name: modifier without whitespace 2
+desc: This is particularly useful in conjunction with superscript and subscript.
+in: 1[^st^], 2[^nd^], 3[^rd^].
+html: <p>1<sup>st</sup>, 2<sup>nd</sup>, 3<sup>rd</sup>.</p>
+---
+name: modifier without whitespace 3
+in: 2 log[~n~]
+html: <p>2 log<sub>n</sub></p>
+---
+name: modifier without whitespace 4
+desc: It can also be used to include links and images without surrounding whitespace.
+in: |-
+  A close[!/img.gif!]image.
+  A tight["text":http://thresholdstate.com/]link.
+  A ["footnoted link":http://thresholdstate.com/][1].
+html: |-
+  <p>A close<img src="/img.gif" alt="" />image.<br />
+  A tight<a href="http://thresholdstate.com/">text</a>link.<br />
+  A <a href="http://thresholdstate.com/">footnoted link</a><sup class="footnote" id="fnr1"><a href="#fn1">1</a></sup>.</p>
+# html: |-
+#   <p>A close<img src="/img.gif" alt="" />image.<br />
+#   A tight<a href="http://thresholdstate.com/">text</a>link.<br />
+#   A <a href="http://thresholdstate.com/">footnoted link</a><sup class="footnote"><a href="#fn1216642796463b1223ae29d">1</a></sup>.</p>

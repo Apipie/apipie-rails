@@ -1,0 +1,631 @@
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+            "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+    <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Textile Reference</title>
+    <style type="text/css">
+    BODY {
+        margin: 10px 30px;
+    }
+    TABLE {
+        font-family: georgia, serif;
+        font-size: 11pt;
+        padding: 15px;
+    }
+    TH {
+        border-bottom: solid 1px black;
+        font-size: 24pt;
+        font-weight: bold;
+        padding-top: 30px;
+    }
+    H1 {
+        font-size: 42pt;
+    }
+    H4 {
+        color: #666;
+        background-color: #fee;
+        border: solid 1px #caa;
+        margin: 10px 0px 5px 0px;
+        padding: 5px;
+    }
+    P {
+        margin: 10px 15px 5px 15px;
+    }
+    TD.sections {
+        background: black;
+        color: white;
+        font-family: georgia, serif;
+        font-weight: bold;
+        font-size: 9pt;
+        padding: 5px;
+    }
+    TD.sections A         { color: #CCEEFF; }
+    TD.sections A:link    { color: #CCEEFF; }
+    TD.sections A:visited { color: #CCEEFF; }
+    TD.sections A:active  { color: #EEEEEE; }
+    TD.sections A:hover   { color: #EEEEEE; }
+
+    TD.example1 PRE {
+        background-color: #B30;
+        color: white;
+        font-family: georgia, serif;
+        font-weight: bold;
+        font-size: 9pt;
+        padding: 5px;
+    }
+    TD.example2 P {
+        border: solid 1px #DDD;
+        background-color: #EEE;
+        font-family: georgia, serif;
+        font-size: 9pt;
+        padding: 5px;
+    }
+    TD.example3 {
+        border: solid 1px #EED;
+        background-color: #FFE;
+        padding: 5px;
+    }
+    .big {
+        font-size: 15pt;
+    }
+    #big-red {
+        font-size: 15pt;
+        color: red
+    }
+    </style>
+    <script type="text/javascript">
+        function quickRedReference() {
+            window.open( 
+                "quick.html",
+                "redRef",
+                "height=600,width=550,channelmode=0,dependent=0," +
+                "directories=0,fullscreen=0,location=0,menubar=0," +
+                "resizable=0,scrollbars=1,status=1,toolbar=0"
+            );
+        }
+    </script>
+    </head>
+    <body>
+    <table>
+<tr><th colspan='3'><h1>A Textile Reference</h1></th></tr>
+<tr><td class='sections' colspan='3'>Sections: <a href='#writing-in-textile'>Writing&nbsp;in&nbsp;Textile</a> | <a href='#quick-block-modifiers'>Quick&nbsp;Block&nbsp;Modifiers</a> | <a href='#quick-phrase-modifiers'>Quick&nbsp;Phrase&nbsp;Modifiers</a> | <a href='#attributes'>Attributes</a> | <a href='#lists'>Lists</a> | <a href='#external-references'>External&nbsp;References</a> | <a href='#tables'>Tables</a></td></tr>
+<tr><td class='explain' colspan='3'>
+<p>Textile is a simple text markup.  Simple symbols mark words&#8217; emphasis.  Blocks of text can be easily tagged as headers, quotes, or lists.  A Textile document can then be converted to <acronym title="Hypertext Markup Language">HTML</acronym> for viewing on the web.</p>
+</td></tr>
+<tr><td class='explain' colspan='3'>
+<p>You can try Textile out on the <a href="http://www.textism.com/tools/textile/">Textile home page</a>.
+Textile is also available as <a href="http://github.com/codesponge/redcloth/">RedCloth</a> for Ruby or <a href="http://dealmeida.net/projects/textile">PyTextile</a> for Python.</p>
+</td></tr>
+<tr><td class='explain' colspan='3'>
+<p>Also refer to the <a href="javascript:quickRedReference();"><strong>Quick Reference</strong></a> for this guide.</p>
+<p>Note: This file was originally authored by _why, this version has been modified by codesponge(billychamp) to fix broken links.  The examples that use github.com used to point to hobix.com
+The broken links in the image examples have not (yet) been replaced.  
+</p>
+
+</td></tr>
+<tr><td class='explain' colspan='3'>
+<h4>Reading the Examples</h4>
+</td></tr>
+<tr><td class='explain' colspan='3'>
+<p>In each section below, examples are provided to clearly illustrate.  In each example, the Textile example is followed by the raw <span class="caps">HTML</span> it is translated into, followed by how the <span class="caps">HTML</span> appears in the browser.</p>
+</td></tr>
+<tr><td class='example1' valign='top'><pre>Textile example</pre></td><td>&rarr;</td><td class='example2'><p>Converted to HTML</p></td></tr><tr><td colspan='2'></td><td class='example3'>Browser-view</td></tr>
+<tr><th colspan='3'><a name='writing-in-textile'><small>1.</small></a><br />Writing in Textile</th></tr>
+<tr><td class='explain' colspan='3'>
+<p>Textile looks for paragraphs in your text.  Paragraphs are separated by one blank line. Every paragraph is translated as an <span class="caps">HTML</span> paragraph.</p>
+</td></tr>
+<tr><td class='example1' valign='top'><pre>A single paragraph.<br /><br />Followed by another.</pre></td><td>&rarr;</td><td class='example2'><p>&lt;p&gt;A single paragraph.&lt;/p&gt;<br /><br />	&lt;p&gt;Followed by another.&lt;/p&gt;</p></td></tr><tr><td colspan='2'></td><td class='example3'><p>A single paragraph.</p>
+
+	<p>Followed by another.</p></td></tr>
+<tr><td class='explain' colspan='3'>
+<h4>Using <span class="caps">HTML</span> in Textile</h4>
+</td></tr>
+<tr><td class='explain' colspan='3'>
+<p>You can certainly use <span class="caps">HTML</span> tags inside your Textile documents.  <span class="caps">HTML</span> will only be escaped if it&#8217;s found in a <code>pre</code> or <code>code</code> block.</p>
+</td></tr>
+<tr><td class='example1' valign='top'><pre>I am &lt;b&gt;very&lt;/b&gt; serious.<br /><br />&lt;pre&gt;<br />  I am &lt;b&gt;very&lt;/b&gt; serious.<br />&lt;/pre&gt;</pre></td><td>&rarr;</td><td class='example2'><p>&lt;p&gt;I am &lt;b&gt;very&lt;/b&gt; serious.&lt;/p&gt;<br /><br /><br />&lt;pre&gt;<br />  I am &amp;lt; b&amp;gt; very&amp;lt;/b&amp;gt; serious.<br />&lt;/pre&gt;</p></td></tr><tr><td colspan='2'></td><td class='example3'><p>I am <b>very</b> serious.</p>
+
+
+<pre>
+  I am &lt;b&gt;very&lt;/b&gt; serious.
+</pre></td></tr>
+<tr><td class='explain' colspan='3'>
+<h4>Line Breaks</h4>
+</td></tr>
+<tr><td class='explain' colspan='3'>
+<p>Line breaks are converted to <span class="caps">HTML</span> breaks.</p>
+</td></tr>
+<tr><td class='example1' valign='top'><pre>I spoke.<br />And none replied.</pre></td><td>&rarr;</td><td class='example2'><p>&lt;p&gt;I spoke.<br />And none replied.&lt;/p&gt;</p></td></tr><tr><td colspan='2'></td><td class='example3'><p>I spoke.
+And none replied.</p></td></tr>
+<tr><td class='explain' colspan='3'>
+<p>Line breaks can be disabled in RedCloth by turning on <code>fold_lines</code>.</p>
+</td></tr>
+<tr><td class='explain' colspan='3'>
+<h4>Entities</h4>
+</td></tr>
+<tr><td class='explain' colspan='3'>
+<p>Single- and double-quotes around words or phrases are converted to curly quotations, much easier on the eye.</p>
+</td></tr>
+<tr><td class='example1' valign='top'><pre>"Observe!"</pre></td><td>&rarr;</td><td class='example2'><p>&lt;p&gt;&amp;#8220; Observe!&amp;#8221;&lt;/p&gt;</p></td></tr><tr><td colspan='2'></td><td class='example3'><p>&#8220;Observe!&#8221;</p></td></tr>
+<tr><td class='explain' colspan='3'>
+<p>Double hyphens are replaced with an em-dash.</p>
+</td></tr>
+<tr><td class='example1' valign='top'><pre>Observe -- very nice!</pre></td><td>&rarr;</td><td class='example2'><p>&lt;p&gt;Observe&amp;#8212; very nice!&lt;/p&gt;</p></td></tr><tr><td colspan='2'></td><td class='example3'><p>Observe&#8212;very nice!</p></td></tr>
+<tr><td class='explain' colspan='3'>
+<p>Single hyphens are replaced with en-dashes.</p>
+</td></tr>
+<tr><td class='example1' valign='top'><pre>Observe - tiny and brief.</pre></td><td>&rarr;</td><td class='example2'><p>&lt;p&gt;Observe &amp;#8211; tiny and brief.&lt;/p&gt;</p></td></tr><tr><td colspan='2'></td><td class='example3'><p>Observe &#8211; tiny and brief.</p></td></tr>
+<tr><td class='explain' colspan='3'>
+<p>Triplets of periods become an ellipsis.</p>
+</td></tr>
+<tr><td class='example1' valign='top'><pre>Observe...</pre></td><td>&rarr;</td><td class='example2'><p>&lt;p&gt;Observe&amp;#8230;&lt;/p&gt;</p></td></tr><tr><td colspan='2'></td><td class='example3'><p>Observe&#8230;</p></td></tr>
+<tr><td class='explain' colspan='3'>
+<p>The letter &#8216;x&#8217; becomes a dimension sign when used alone.</p>
+</td></tr>
+<tr><td class='example1' valign='top'><pre>Observe: 2 x 2.</pre></td><td>&rarr;</td><td class='example2'><p>&lt;p&gt;Observe: 2&amp;#215; 2.&lt;/p&gt;</p></td></tr><tr><td colspan='2'></td><td class='example3'><p>Observe: 2&#215;2.</p></td></tr>
+<tr><td class='explain' colspan='3'>
+<p>Conversion of trademark and copyright symbols.</p>
+</td></tr>
+<tr><td class='example1' valign='top'><pre>one(TM), two(R), three(C).</pre></td><td>&rarr;</td><td class='example2'><p>&lt;p&gt;one&amp;#8482;, two&amp;#174;, three&amp;#169;.&lt;/p&gt;</p></td></tr><tr><td colspan='2'></td><td class='example3'><p>one&#8482;, two&#174;, three&#169;.</p></td></tr>
+<tr><td colspan='5' style='border-bottom: solid 1px #eee;'></td></tr>
+<tr><th colspan='3'><a name='quick-block-modifiers'><small>2.</small></a><br />Quick Block Modifiers</th></tr>
+<tr><td class='explain' colspan='3'>
+<p>Blocks of text default to being treated as paragraphs.  But modifers can be affixed to the beginning of a block to change its treatment.</p>
+</td></tr>
+<tr><td class='explain' colspan='3'>
+<h4>Headers</h4>
+</td></tr>
+<tr><td class='explain' colspan='3'>
+<p>To make an entire paragraph into a Header, place &#8220;h<em>n</em>.&#8221; at its beginning, where <em>n</em> is a number from 1-6.</p>
+</td></tr>
+<tr><td class='example1' valign='top'><pre>h1. Header 1</pre></td><td>&rarr;</td><td class='example2'><p>&lt;h1&gt;Header 1&lt;/h1&gt;</p></td></tr><tr><td colspan='2'></td><td class='example3'><h1>Header 1</h1></td></tr>
+<tr><td class='example1' valign='top'><pre>h2. Header 2</pre></td><td>&rarr;</td><td class='example2'><p>&lt;h2&gt;Header 2&lt;/h2&gt;</p></td></tr><tr><td colspan='2'></td><td class='example3'><h2>Header 2</h2></td></tr>
+<tr><td class='example1' valign='top'><pre>h3. Header 3</pre></td><td>&rarr;</td><td class='example2'><p>&lt;h3&gt;Header 3&lt;/h3&gt;</p></td></tr><tr><td colspan='2'></td><td class='example3'><h3>Header 3</h3></td></tr>
+<tr><td class='explain' colspan='3'>
+<h4>Block Quotes</h4>
+</td></tr>
+<tr><td class='explain' colspan='3'>
+<p>To make an entire paragraph into a block quotation, place &#8220;bq.&#8221; before it.</p>
+</td></tr>
+<tr><td class='example1' valign='top'><pre>An old text<br /><br />bq. A block quotation.<br /><br />Any old text</pre></td><td>&rarr;</td><td class='example2'><p>&lt;p&gt;An old text&lt;/p&gt;<br /><br />	&lt;blockquote&gt;<br />		&lt;p&gt;A block quotation.&lt;/p&gt;<br />	&lt;/blockquote&gt;<br /><br />	&lt;p&gt;Any old text&lt;/p&gt;</p></td></tr><tr><td colspan='2'></td><td class='example3'><p>An old text</p>
+
+	<blockquote>
+		<p>A block quotation.</p>
+	</blockquote>
+
+	<p>Any old text</p></td></tr>
+<tr><td class='explain' colspan='3'>
+<h4>Footnotes</h4>
+</td></tr>
+<tr><td class='explain' colspan='3'>
+<p>Numeric references within text to footnotes appear between square brackets.</p>
+</td></tr>
+<tr><td class='example1' valign='top'><pre>This is covered elsewhere[1].</pre></td><td>&rarr;</td><td class='example2'><p>&lt;p&gt;This is covered elsewhere&lt;sup&gt;&lt;a href="#fn1"&gt;1&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;</p></td></tr><tr><td colspan='2'></td><td class='example3'><p>This is covered elsewhere<sup><a href="#fn1">1</a></sup>.</p></td></tr>
+<tr><td class='explain' colspan='3'>
+<p>To create the footnote that corresponds to its reference within the text, begin a new paragraph with fn and the footnote&#8217;s number, followed by a dot and a space.</p>
+</td></tr>
+<tr><td class='example1' valign='top'><pre>fn1. Down here, in fact.</pre></td><td>&rarr;</td><td class='example2'><p>&lt;p id="fn1"&gt;&lt;sup&gt;1&lt;/sup&gt; Down here, in fact.&lt;/p&gt;</p></td></tr><tr><td colspan='2'></td><td class='example3'><p id="fn1"><sup>1</sup> Down here, in fact.</p></td></tr>
+<tr><td colspan='5' style='border-bottom: solid 1px #eee;'></td></tr>
+<tr><th colspan='3'><a name='quick-phrase-modifiers'><small>3.</small></a><br />Quick Phrase Modifiers</th></tr>
+<tr><td class='explain' colspan='3'>
+<h4>Structural Emphasis</h4>
+</td></tr>
+<tr><td class='explain' colspan='3'>
+<p>Emphasis to text is added by surrounding a phrase with underscores.  In <span class="caps">HTML</span>, this often appears as <em>italics</em>.</p>
+</td></tr>
+<tr><td class='example1' valign='top'><pre>I _believe_ every word.</pre></td><td>&rarr;</td><td class='example2'><p>&lt;p&gt;I &lt;em&gt;believe&lt;/em&gt; every word.&lt;/p&gt;</p></td></tr><tr><td colspan='2'></td><td class='example3'><p>I <em>believe</em> every word.</p></td></tr>
+<tr><td class='explain' colspan='3'>
+<p>Strength can be give to text by surrounding with asterisks.  In <span class="caps">HTML</span>, this strength appears as <strong>bold</strong>.</p>
+</td></tr>
+<tr><td class='example1' valign='top'><pre>And then? She *fell*!</pre></td><td>&rarr;</td><td class='example2'><p>&lt;p&gt;And then? She &lt;strong&gt;fell&lt;/strong&gt;!&lt;/p&gt;</p></td></tr><tr><td colspan='2'></td><td class='example3'><p>And then? She <strong>fell</strong>!</p></td></tr>
+<tr><td class='explain' colspan='3'>
+<p>Both italics and bold can be forced by doubling the underscores or asterisks.</p>
+</td></tr>
+<tr><td class='example1' valign='top'><pre>I __know__.<br />I **really** __know__.</pre></td><td>&rarr;</td><td class='example2'><p>&lt;p&gt;I &lt;i&gt;know&lt;/i&gt;.<br />I &lt;b&gt;really&lt;/b&gt; &lt;i&gt;know&lt;/i&gt;.&lt;/p&gt;</p></td></tr><tr><td colspan='2'></td><td class='example3'><p>I <i>know</i>.
+I <b>really</b> <i>know</i>.</p></td></tr>
+<tr><td class='explain' colspan='3'>
+<p>Use double question marks to indicate <em>citation</em>.  The title of a book, for instance.</p>
+</td></tr>
+<tr><td class='example1' valign='top'><pre>??Cat's Cradle?? by Vonnegut</pre></td><td>&rarr;</td><td class='example2'><p>&lt;p&gt;&lt;cite&gt;Cat&amp;#8217; s Cradle&lt;/cite&gt; by Vonnegut&lt;/p&gt;</p></td></tr><tr><td colspan='2'></td><td class='example3'><p><cite>Cat&#8217;s Cradle</cite> by Vonnegut</p></td></tr>
+<tr><td class='explain' colspan='3'>
+<p>Code phrases can be surrounded by at-symbols.</p>
+</td></tr>
+<tr><td class='example1' valign='top'><pre>Convert with @r.to_html@</pre></td><td>&rarr;</td><td class='example2'><p>&lt;p&gt;Convert with &lt;code&gt;r.to_html&lt;/code&gt;&lt;/p&gt;</p></td></tr><tr><td colspan='2'></td><td class='example3'><p>Convert with <code>r.to_html</code></p></td></tr>
+<tr><td class='explain' colspan='3'>
+<p>To indicate a passage which has been deleted, surround the passage with hypens.</p>
+</td></tr>
+<tr><td class='example1' valign='top'><pre>I'm -sure- not sure.</pre></td><td>&rarr;</td><td class='example2'><p>&lt;p&gt;I&amp;#8217; m &lt;del&gt;sure&lt;/del&gt; not sure.&lt;/p&gt;</p></td></tr><tr><td colspan='2'></td><td class='example3'><p>I&#8217;m <del>sure</del> not sure.</p></td></tr>
+<tr><td class='explain' colspan='3'>
+<p>Pluses around a passage indicate its insertion.</p>
+</td></tr>
+<tr><td class='example1' valign='top'><pre>You are a +pleasant+ child.</pre></td><td>&rarr;</td><td class='example2'><p>&lt;p&gt;You are a &lt;ins&gt;pleasant&lt;/ins&gt; child.&lt;/p&gt;</p></td></tr><tr><td colspan='2'></td><td class='example3'><p>You are a <ins>pleasant</ins> child.</p></td></tr>
+<tr><td class='explain' colspan='3'>
+<p>To superscript a phrase, surround with carets.</p>
+</td></tr>
+<tr><td class='example1' valign='top'><pre>a ^2^ + b ^2^ = c ^2^</pre></td><td>&rarr;</td><td class='example2'><p>&lt;p&gt;a &lt;sup&gt;2&lt;/sup&gt; + b &lt;sup&gt;2&lt;/sup&gt; = c &lt;sup&gt;2&lt;/sup&gt;&lt;/p&gt;</p></td></tr><tr><td colspan='2'></td><td class='example3'><p>a <sup>2</sup> + b <sup>2</sup> = c <sup>2</sup></p></td></tr>
+<tr><td class='explain' colspan='3'>
+<p>To subscript, surround with tildes.</p>
+</td></tr>
+<tr><td class='example1' valign='top'><pre>log ~2~ x</pre></td><td>&rarr;</td><td class='example2'><p>&lt;p&gt;log &lt;sub&gt;2&lt;/sub&gt; x&lt;/p&gt;</p></td></tr><tr><td colspan='2'></td><td class='example3'><p>log <sub>2</sub> x</p></td></tr>
+<tr><td class='explain' colspan='3'>
+<h4><span class="caps">HTML</span>-Specific</h4>
+</td></tr>
+<tr><td class='explain' colspan='3'>
+<p>Lastly, if you find yourself needing to customize the style of a passage, use percent symbols to translate the passage as an <span class="caps">HTML</span> span.</p>
+</td></tr>
+<tr><td class='example1' valign='top'><pre>I'm %unaware% of most soft drinks.</pre></td><td>&rarr;</td><td class='example2'><p>&lt;p&gt;I&amp;#8217; m &lt;span&gt;unaware&lt;/span&gt; of most soft drinks.&lt;/p&gt;</p></td></tr><tr><td colspan='2'></td><td class='example3'><p>I&#8217;m <span>unaware</span> of most soft drinks.</p></td></tr>
+<tr><td class='explain' colspan='3'>
+<p>This way, you can apply style settings, as described in the next section to arbitrary phrases.</p>
+</td></tr>
+<tr><td class='example1' valign='top'><pre>I'm %{color:red}unaware%<br />of most soft drinks.</pre></td><td>&rarr;</td><td class='example2'><p>&lt;p&gt;I&amp;#8217; m &lt;span style="color:red;"&gt;unaware&lt;/span&gt;<br />of most soft drinks.&lt;/p&gt;</p></td></tr><tr><td colspan='2'></td><td class='example3'><p>I&#8217;m <span style="color:red;">unaware</span>
+of most soft drinks.</p></td></tr>
+<tr><td colspan='5' style='border-bottom: solid 1px #eee;'></td></tr>
+<tr><th colspan='3'><a name='attributes'><small>4.</small></a><br />Attributes</th></tr>
+<tr><td class='explain' colspan='3'>
+<p>Tailoring Textile to suit your needs is quite easy.  Attributes allow you to provide <acronym title="Cascading Style Sheets">CSS</acronym> information about any phrase.</p>
+</td></tr>
+<tr><td class='explain' colspan='3'>
+<h4>Block Attributes</h4>
+</td></tr>
+<tr><td class='explain' colspan='3'>
+<p>A block can be tagged with a <span class="caps">CSS</span> class by circling the class in parentheses and placing it just before the period which marks the block.</p>
+</td></tr>
+<tr><td class='example1' valign='top'><pre>p(example1). An example</pre></td><td>&rarr;</td><td class='example2'><p>&lt;p class="example1"&gt;An example&lt;/p&gt;</p></td></tr><tr><td colspan='2'></td><td class='example3'><p class="example1">An example</p></td></tr>
+<tr><td class='explain' colspan='3'>
+<p>An element ID can be given by prefixing the ID with a pound symbol and using it in place of the class.</p>
+</td></tr>
+<tr><td class='example1' valign='top'><pre>p(#big-red). Red here</pre></td><td>&rarr;</td><td class='example2'><p>&lt;p id="big-red"&gt;Red here&lt;/p&gt;</p></td></tr><tr><td colspan='2'></td><td class='example3'><p id="big-red">Red here</p></td></tr>
+<tr><td class='explain' colspan='3'>
+<p>Class and ID can be combined by placing the class first.</p>
+</td></tr>
+<tr><td class='example1' valign='top'><pre>p(example1#big-red2). Red here</pre></td><td>&rarr;</td><td class='example2'><p>&lt;p class="example1" id="big-red2"&gt;Red here&lt;/p&gt;</p></td></tr><tr><td colspan='2'></td><td class='example3'><p class="example1" id="big-red2">Red here</p></td></tr>
+<tr><td class='explain' colspan='3'>
+<p>Style settings can be provided directly by surrounding them in curly braces.</p>
+</td></tr>
+<tr><td class='example1' valign='top'><pre>p{color:blue;margin:30px}. Spacey blue</pre></td><td>&rarr;</td><td class='example2'><p>&lt;p style="color:blue; margin:30px;"&gt;Spacey blue&lt;/p&gt;</p></td></tr><tr><td colspan='2'></td><td class='example3'><p style="color:blue;margin:30px;">Spacey blue</p></td></tr>
+<tr><td class='explain' colspan='3'>
+<p>Language designations can be given between angel brackets.</p>
+</td></tr>
+<tr><td class='example1' valign='top'><pre>p[fr]. rouge</pre></td><td>&rarr;</td><td class='example2'><p>&lt;p lang="fr"&gt;rouge&lt;/p&gt;</p></td></tr><tr><td colspan='2'></td><td class='example3'><p lang="fr">rouge</p></td></tr>
+<tr><td class='explain' colspan='3'>
+<h4>Phrase Attributes</h4>
+</td></tr>
+<tr><td class='explain' colspan='3'>
+<p>All block attributes can be applied to phrases as well by placing them just inside the opening modifier.</p>
+</td></tr>
+<tr><td class='example1' valign='top'><pre>I seriously *{color:red}blushed*<br />when I _(big)sprouted_ that<br />corn stalk from my<br />%[es]cabeza%.</pre></td><td>&rarr;</td><td class='example2'><p>&lt;p&gt;I seriously &lt;strong style="color:red;"&gt;blushed&lt;/strong&gt;<br />when I &lt;em class="big"&gt;sprouted&lt;/em&gt; that<br />corn stalk from my<br />&lt;span lang="es"&gt;cabeza&lt;/span&gt;.&lt;/p&gt;</p></td></tr><tr><td colspan='2'></td><td class='example3'><p>I seriously <strong style="color:red;">blushed</strong>
+when I <em class="big">sprouted</em> that
+corn stalk from my
+<span lang="es">cabeza</span>.</p></td></tr>
+<tr><td class='explain' colspan='3'>
+<h4>Block Alignments</h4>
+</td></tr>
+<tr><td class='explain' colspan='3'>
+<p>Text inside blocks can be aligned in four basic ways.</p>
+</td></tr>
+<tr><td class='example1' valign='top'><pre>p&lt;. align left</pre></td><td>&rarr;</td><td class='example2'><p>&lt;p style="text-align:left;"&gt;align left&lt;/p&gt;</p></td></tr><tr><td colspan='2'></td><td class='example3'><p style="text-align:left;">align left</p></td></tr>
+<tr><td class='example1' valign='top'><pre>p&gt;. align right</pre></td><td>&rarr;</td><td class='example2'><p>&lt;p style="text-align:right;"&gt;align right&lt;/p&gt;</p></td></tr><tr><td colspan='2'></td><td class='example3'><p style="text-align:right;">align right</p></td></tr>
+<tr><td class='example1' valign='top'><pre>p=. centered</pre></td><td>&rarr;</td><td class='example2'><p>&lt;p style="text-align:center;"&gt;centered&lt;/p&gt;</p></td></tr><tr><td colspan='2'></td><td class='example3'><p style="text-align:center;">centered</p></td></tr>
+<tr><td class='example1' valign='top'><pre>p&lt;&gt;. justified</pre></td><td>&rarr;</td><td class='example2'><p>&lt;p style="text-align:justify;"&gt;justified&lt;/p&gt;</p></td></tr><tr><td colspan='2'></td><td class='example3'><p style="text-align:justify;">justified</p></td></tr>
+<tr><td class='explain' colspan='3'>
+<p>Indentation can also be specified by provide a single left paren for every 1em to the left.  A single right paren for every 1em to the right.</p>
+</td></tr>
+<tr><td class='example1' valign='top'><pre>p(. left ident 1em</pre></td><td>&rarr;</td><td class='example2'><p>&lt;p style="padding-left:1em;"&gt;left ident 1em&lt;/p&gt;</p></td></tr><tr><td colspan='2'></td><td class='example3'><p style="padding-left:1em;">left ident 1em</p></td></tr>
+<tr><td class='example1' valign='top'><pre>p((. left ident 2em</pre></td><td>&rarr;</td><td class='example2'><p>&lt;p style="padding-left:2em;"&gt;left ident 2em&lt;/p&gt;</p></td></tr><tr><td colspan='2'></td><td class='example3'><p style="padding-left:2em;">left ident 2em</p></td></tr>
+<tr><td class='example1' valign='top'><pre>p))). right ident 3em</pre></td><td>&rarr;</td><td class='example2'><p>&lt;p style="padding-right:3em;"&gt;right ident 3em&lt;/p&gt;</p></td></tr><tr><td colspan='2'></td><td class='example3'><p style="padding-right:3em;">right ident 3em</p></td></tr>
+<tr><td class='explain' colspan='3'>
+<h4>Combining Alignments</h4>
+</td></tr>
+<tr><td class='explain' colspan='3'>
+<p>Identation may be coupled with alignment.</p>
+</td></tr>
+<tr><td class='example1' valign='top'><pre>h2()&gt;. Bingo.</pre></td><td>&rarr;</td><td class='example2'><p>&lt;h2 style="padding-left:1em; padding-right:1em; text-align:right;"&gt;Bingo.&lt;/h2&gt;</p></td></tr><tr><td colspan='2'></td><td class='example3'><h2 style="padding-left:1em;padding-right:1em;text-align:right;">Bingo.</h2></td></tr>
+<tr><td class='explain' colspan='3'>
+<p>And, furthermore, coupled with language settings and <span class="caps">CSS</span> styles.</p>
+</td></tr>
+<tr><td class='example1' valign='top'><pre>h3()&gt;[no]{color:red}. Bingo</pre></td><td>&rarr;</td><td class='example2'><p>&lt;h3 style="color:red; padding-left:1em; padding-right:1em; text-align:right;" lang="no"&gt;Bingo&lt;/h3&gt;</p></td></tr><tr><td colspan='2'></td><td class='example3'><h3 style="color:red;padding-left:1em;padding-right:1em;text-align:right;" lang="no">Bingo</h3></td></tr>
+<tr><td class='explain' colspan='3'>
+<h4><span class="caps">HTML</span> in Textile</h4>
+</td></tr>
+<tr><td class='explain' colspan='3'>
+<p>Textile is designed for quickening the simple markups.  For more complex formatting, you are encouraged to break out into <span class="caps">HTML</span>.</p>
+</td></tr>
+<tr><td class='explain' colspan='3'>
+<p>For example, long code blocks belong between <code>pre</code> and <code>code</code> tags.  Please also indent your code inside the tags to be sure that all Textile processors out there will ignore the contents.</p>
+</td></tr>
+<tr><td class='example1' valign='top'><pre>&lt;pre&gt;<br />&lt;code&gt;<br />  a.gsub!( /&lt;/, '' )<br />&lt;/code&gt;<br />&lt;/pre&gt;<br /></pre></td><td>&rarr;</td><td class='example2'><p>&lt;pre&gt;<br />&lt;code&gt;<br />  a.gsub!( /&amp;lt;/, '' )<br />&lt;/code&gt;<br />&lt;/pre&gt;</p></td></tr><tr><td colspan='2'></td><td class='example3'><pre>
+<code>
+  a.gsub!( /&lt;/, '' )
+</code>
+</pre></td></tr>
+<tr><td class='explain' colspan='3'>
+<p>You may also choose to surround sections with <code>div</code> tags to separate your document into sections. <a href="http://www.instiki.org/">Instiki</a> uses this technique to float a sidebar to the right.</p>
+</td></tr>
+<tr><td class='example1' valign='top'><pre>&lt;div style="float:right;"&gt;<br /><br />h3. Sidebar<br /><br />"GitHub":http://github.com/<br />"Ruby":http://ruby-lang.org/<br /><br />&lt;/div&gt;<br /><br />The main text of the<br />page goes here and will <br />stay to the left of the <br />sidebar.<br /></pre></td><td>&rarr;</td><td class='example2'><p>&lt;div style="float:right;"&gt;<br />	&lt;h3&gt;Sidebar&lt;/h3&gt;<br /><br />	&lt;p&gt;&lt;a href="http://hobix.com/"&gt;GitHub&lt;/a&gt;<br />&lt;a href="http://ruby-lang.org/"&gt;Ruby&lt;/a&gt;&lt;/p&gt;<br /><br /><br />&lt;/div&gt;<br />	&lt;p&gt;The main text of the<br />page goes here and will <br />stay to the left of the <br />sidebar.&lt;/p&gt;</p></td></tr><tr><td colspan='2'></td><td class='example3'><div style="float:right;">
+	<h3>Sidebar</h3>
+
+	<p><a href="http://github.com/">GitHub</a>
+<a href="http://ruby-lang.org/">Ruby</a></p>
+
+
+</div>
+	<p>The main text of the
+page goes here and will 
+stay to the left of the 
+sidebar.</p></td></tr>
+<tr><td colspan='5' style='border-bottom: solid 1px #eee;'></td></tr>
+<tr><th colspan='3'><a name='lists'><small>5.</small></a><br />Lists</th></tr>
+<tr><td class='explain' colspan='3'>
+<h4>Numeric Lists</h4>
+</td></tr>
+<tr><td class='explain' colspan='3'>
+<p>To make a numbered list, place each item in its own paragraph, preceded by &#8221;#&#8221;.</p>
+</td></tr>
+<tr><td class='example1' valign='top'><pre># A first item<br /># A second item<br /># A third</pre></td><td>&rarr;</td><td class='example2'><p>&lt;ol&gt;<br />	&lt;li&gt;A first item&lt;/li&gt;<br />		&lt;li&gt;A second item&lt;/li&gt;<br />		&lt;li&gt;A third&lt;/li&gt;<br />	&lt;/ol&gt;</p></td></tr><tr><td colspan='2'></td><td class='example3'><ol>
+	<li>A first item</li>
+		<li>A second item</li>
+		<li>A third</li>
+	</ol></td></tr>
+<tr><td class='explain' colspan='3'>
+<p>These lists may be nested by increasing the number of pound symbols preceding child entries.</p>
+</td></tr>
+<tr><td class='example1' valign='top'><pre># Fuel could be:<br />## Coal<br />## Gasoline<br />## Electricity<br /># Humans need only:<br />## Water<br />## Protein</pre></td><td>&rarr;</td><td class='example2'><p>&lt;ol&gt;<br />	&lt;li&gt;Fuel could be:<br />	&lt;ol&gt;<br />	&lt;li&gt;Coal&lt;/li&gt;<br />		&lt;li&gt;Gasoline&lt;/li&gt;<br />		&lt;li&gt;Electricity&lt;/li&gt;<br />	&lt;/ol&gt;<br />	&lt;/li&gt;<br />		&lt;li&gt;Humans need only:<br />	&lt;ol&gt;<br />	&lt;li&gt;Water&lt;/li&gt;<br />		&lt;li&gt;Protein&lt;/li&gt;<br />	&lt;/ol&gt;&lt;/li&gt;<br />	&lt;/ol&gt;</p></td></tr><tr><td colspan='2'></td><td class='example3'><ol>
+	<li>Fuel could be:
+	<ol>
+	<li>Coal</li>
+		<li>Gasoline</li>
+		<li>Electricity</li>
+	</ol>
+	</li>
+		<li>Humans need only:
+	<ol>
+	<li>Water</li>
+		<li>Protein</li>
+	</ol></li>
+	</ol></td></tr>
+<tr><td class='explain' colspan='3'>
+<h4>Bulleted Lists</h4>
+</td></tr>
+<tr><td class='explain' colspan='3'>
+<p>Bulleted lists use an asterisk in place of the pound.</p>
+</td></tr>
+<tr><td class='example1' valign='top'><pre>* A first item<br />* A second item<br />* A third</pre></td><td>&rarr;</td><td class='example2'><p>&lt;ul&gt;<br />	&lt;li&gt;A first item&lt;/li&gt;<br />		&lt;li&gt;A second item&lt;/li&gt;<br />		&lt;li&gt;A third&lt;/li&gt;<br />	&lt;/ul&gt;</p></td></tr><tr><td colspan='2'></td><td class='example3'><ul>
+	<li>A first item</li>
+		<li>A second item</li>
+		<li>A third</li>
+	</ul></td></tr>
+<tr><td class='explain' colspan='3'>
+<p>These lists may be nested in like manner.</p>
+</td></tr>
+<tr><td class='example1' valign='top'><pre>* Fuel could be:<br />** Coal<br />** Gasoline<br />** Electricity<br />* Humans need only:<br />** Water<br />** Protein</pre></td><td>&rarr;</td><td class='example2'><p>&lt;ul&gt;<br />	&lt;li&gt;Fuel could be:<br />	&lt;ul&gt;<br />	&lt;li&gt;Coal&lt;/li&gt;<br />		&lt;li&gt;Gasoline&lt;/li&gt;<br />		&lt;li&gt;Electricity&lt;/li&gt;<br />	&lt;/ul&gt;<br />	&lt;/li&gt;<br />		&lt;li&gt;Humans need only:<br />	&lt;ul&gt;<br />	&lt;li&gt;Water&lt;/li&gt;<br />		&lt;li&gt;Protein&lt;/li&gt;<br />	&lt;/ul&gt;&lt;/li&gt;<br />	&lt;/ul&gt;</p></td></tr><tr><td colspan='2'></td><td class='example3'><ul>
+	<li>Fuel could be:
+	<ul>
+	<li>Coal</li>
+		<li>Gasoline</li>
+		<li>Electricity</li>
+	</ul>
+	</li>
+		<li>Humans need only:
+	<ul>
+	<li>Water</li>
+		<li>Protein</li>
+	</ul></li>
+	</ul></td></tr>
+<tr><td colspan='5' style='border-bottom: solid 1px #eee;'></td></tr>
+<tr><th colspan='3'><a name='external-references'><small>6.</small></a><br />External References</th></tr>
+<tr><td class='explain' colspan='3'>
+<h4>Hypertext Links</h4>
+</td></tr>
+<tr><td class='explain' colspan='3'>
+<p>Basic links are comprised of a phrase which is linked to a <acronym title="Universal Resource Locator">URL</acronym>.  Place the descriptive phrase in quotation marks.  Follow it immediately by a colon and the <span class="caps">URL</span>.</p>
+</td></tr>
+<tr><td class='example1' valign='top'><pre>I searched "Google":http://google.com.</pre></td><td>&rarr;</td><td class='example2'><p>&lt;p&gt;I searched &lt;a href="http://google.com"&gt;Google&lt;/a&gt;.&lt;/p&gt;</p></td></tr><tr><td colspan='2'></td><td class='example3'><p>I searched <a href="http://google.com">Google</a>.</p></td></tr>
+<tr><td class='explain' colspan='3'>
+<p>Notice, the link won&#8217;t include any trailing punctuation.</p>
+</td></tr>
+<tr><td class='explain' colspan='3'>
+<h4>Link Aliases</h4>
+</td></tr>
+<tr><td class='explain' colspan='3'>
+<p>If you are using the same link several times in your document, or you&#8217;d just like to be a tad more organized, you can use a link alias.  Place the <span class="caps">URL</span> anywhere in your document, beginning with its alias in square brackets.  Then, use the alias in place of the <span class="caps">URL</span>, using the link format above.</p>
+</td></tr>
+<tr><td class='example1' valign='top'><pre>I am crazy about "GitHub":github<br />and "it's":github "all":github I ever<br />"link to":github!<br /><br />[github]http://github.com<br /></pre></td><td>&rarr;</td><td class='example2'><p>&lt;p&gt;I am crazy about &lt;a href="http://github.com"&gt;GitHub&lt;/a&gt;<br />and &lt;a href="http://github.com"&gt;it&amp;#8217; s&lt;/a&gt; &lt;a href="http://github.com"&gt;all&lt;/a&gt; I ever<br />&lt;a href="http://github.com"&gt;link to&lt;/a&gt;!&lt;/p&gt;</p></td></tr><tr><td colspan='2'></td><td class='example3'><p>I am crazy about <a href="http://github.com">GitHub</a>
+and <a href="http://github.com">it&#8217;s</a> <a href="http://github.com">all</a> I ever
+<a href="http://github.com">link to</a>!</p></td></tr>
+<tr><td class='explain' colspan='3'>
+<h4>Embedded Images</h4>
+</td></tr>
+<tr><td class='explain' colspan='3'>
+<p>You can embed an image in your Textile document by surrounding its <span class="caps">URL</span> with exclamation marks.</p>
+</td></tr>
+<tr><td class='example1' valign='top'><pre>!http://hobix.com/sample.jpg!</pre></td><td>&rarr;</td><td class='example2'><p>&lt;p&gt;&lt;img src="http://hobix.com/sample.jpg" alt="" /&gt;&lt;/p&gt;</p></td></tr><tr><td colspan='2'></td><td class='example3'><p><img src="http://hobix.com/sample.jpg" alt="" /></p></td></tr>
+<tr><td class='explain' colspan='3'>
+<p>URLs may be relative.</p>
+</td></tr>
+<tr><td class='explain' colspan='3'>
+<p>A title for the image can also be provided in parens, just before the closing exclamation.</p>
+</td></tr>
+<tr><td class='example1' valign='top'><pre>!openwindow1.gif(Bunny.)!</pre></td><td>&rarr;</td><td class='example2'><p>&lt;p&gt;&lt;img src="openwindow1.gif" title="Bunny." alt="Bunny." /&gt;&lt;/p&gt;</p></td></tr><tr><td colspan='2'></td><td class='example3'><p><img src="openwindow1.gif" title="Bunny." alt="Bunny." /></p></td></tr>
+<tr><td class='explain' colspan='3'>
+<p>The title also acts as <strong>alt</strong> text should the image not be found.</p>
+</td></tr>
+<tr><td class='explain' colspan='3'>
+<p>Links can be attached to images with a colon.</p>
+</td></tr>
+<tr><td class='example1' valign='top'><pre>!openwindow1.gif!:http://hobix.com/</pre></td><td>&rarr;</td><td class='example2'><p>&lt;p&gt;&lt;a href="http://hobix.com/"&gt;&lt;img src="openwindow1.gif" alt="" /&gt;&lt;/a&gt;&lt;/p&gt;</p></td></tr><tr><td colspan='2'></td><td class='example3'><p><a href="http://hobix.com/"><img src="openwindow1.gif" alt="" /></a></p></td></tr>
+<tr><td class='explain' colspan='3'>
+<h4>Image Alignments</h4>
+</td></tr>
+<tr><td class='explain' colspan='3'>
+<p>Alignments can be applied as well to images.</p>
+</td></tr>
+<tr><td class='example1' valign='top'><pre>!&gt;obake.gif!<br /><br />And others sat all round the small<br />machine and paid it to sing to them.</pre></td><td>&rarr;</td><td class='example2'><p>&lt;p style="float:right"&gt;&lt;img src="obake.gif" alt="" /&gt;&lt;/p&gt;<br /><br />	&lt;p&gt;And others sat all round the small<br />machine and paid it to sing to them.&lt;/p&gt;</p></td></tr><tr><td colspan='2'></td><td class='example3'><p style="float:right"><img src="obake.gif" alt="" /></p>
+
+	<p>And others sat all round the small
+machine and paid it to sing to them.</p></td></tr>
+<tr><td class='explain' colspan='3'>
+<h4>Acronyms</h4>
+</td></tr>
+<tr><td class='explain' colspan='3'>
+<p>Definitions for acronyms can be provided by following an acronym with its definition in parens.</p>
+</td></tr>
+<tr><td class='example1' valign='top'><pre>We use CSS(Cascading Style Sheets).</pre></td><td>&rarr;</td><td class='example2'><p>&lt;p&gt;We use &lt;acronym title="Cascading Style Sheets"&gt;CSS&lt;/acronym&gt;.&lt;/p&gt;</p></td></tr><tr><td colspan='2'></td><td class='example3'><p>We use <acronym title="Cascading Style Sheets">CSS</acronym>.</p></td></tr>
+<tr><td colspan='5' style='border-bottom: solid 1px #eee;'></td></tr>
+<tr><th colspan='3'><a name='tables'><small>7.</small></a><br />Tables</th></tr>
+<tr><td class='explain' colspan='3'>
+<p>Simple tables can be built by separating fields with pipe characters</p>
+</td></tr>
+<tr><td class='example1' valign='top'><pre>| name | age | sex |<br />| joan | 24 | f |<br />| archie | 29 | m |<br />| bella | 45 | f |</pre></td><td>&rarr;</td><td class='example2'><p>&lt;table&gt;<br />		&lt;tr&gt;<br />			&lt;td&gt; name &lt;/td&gt;<br />			&lt;td&gt; age &lt;/td&gt;<br />			&lt;td&gt; sex &lt;/td&gt;<br />		&lt;/tr&gt;<br />		&lt;tr&gt;<br />			&lt;td&gt; joan &lt;/td&gt;<br />			&lt;td&gt; 24 &lt;/td&gt;<br />			&lt;td&gt; f &lt;/td&gt;<br />		&lt;/tr&gt;<br />		&lt;tr&gt;<br />			&lt;td&gt; archie &lt;/td&gt;<br />			&lt;td&gt; 29 &lt;/td&gt;<br />			&lt;td&gt; m &lt;/td&gt;<br />		&lt;/tr&gt;<br />		&lt;tr&gt;<br />			&lt;td&gt; bella &lt;/td&gt;<br />			&lt;td&gt; 45 &lt;/td&gt;<br />			&lt;td&gt; f &lt;/td&gt;<br />		&lt;/tr&gt;<br />	&lt;/table&gt;</p></td></tr><tr><td colspan='2'></td><td class='example3'><table>
+		<tr>
+			<td> name </td>
+			<td> age </td>
+			<td> sex </td>
+		</tr>
+		<tr>
+			<td> joan </td>
+			<td> 24 </td>
+			<td> f </td>
+		</tr>
+		<tr>
+			<td> archie </td>
+			<td> 29 </td>
+			<td> m </td>
+		</tr>
+		<tr>
+			<td> bella </td>
+			<td> 45 </td>
+			<td> f </td>
+		</tr>
+	</table></td></tr>
+<tr><td class='explain' colspan='3'>
+<p>Specify header cells by marking them with an underscore and period.</p>
+</td></tr>
+<tr><td class='example1' valign='top'><pre>|_. name |_. age |_. sex |<br />| joan | 24 | f |<br />| archie | 29 | m |<br />| bella | 45 | f |</pre></td><td>&rarr;</td><td class='example2'><p>&lt;table&gt;<br />		&lt;tr&gt;<br />			&lt;th&gt;name &lt;/th&gt;<br />			&lt;th&gt;age &lt;/th&gt;<br />			&lt;th&gt;sex &lt;/th&gt;<br />		&lt;/tr&gt;<br />		&lt;tr&gt;<br />			&lt;td&gt; joan &lt;/td&gt;<br />			&lt;td&gt; 24 &lt;/td&gt;<br />			&lt;td&gt; f &lt;/td&gt;<br />		&lt;/tr&gt;<br />		&lt;tr&gt;<br />			&lt;td&gt; archie &lt;/td&gt;<br />			&lt;td&gt; 29 &lt;/td&gt;<br />			&lt;td&gt; m &lt;/td&gt;<br />		&lt;/tr&gt;<br />		&lt;tr&gt;<br />			&lt;td&gt; bella &lt;/td&gt;<br />			&lt;td&gt; 45 &lt;/td&gt;<br />			&lt;td&gt; f &lt;/td&gt;<br />		&lt;/tr&gt;<br />	&lt;/table&gt;</p></td></tr><tr><td colspan='2'></td><td class='example3'><table>
+		<tr>
+			<th>name </th>
+			<th>age </th>
+			<th>sex </th>
+		</tr>
+		<tr>
+			<td> joan </td>
+			<td> 24 </td>
+			<td> f </td>
+		</tr>
+		<tr>
+			<td> archie </td>
+			<td> 29 </td>
+			<td> m </td>
+		</tr>
+		<tr>
+			<td> bella </td>
+			<td> 45 </td>
+			<td> f </td>
+		</tr>
+	</table></td></tr>
+<tr><td class='explain' colspan='3'>
+<h4>Cell Attributes</h4>
+</td></tr>
+<tr><td class='explain' colspan='3'>
+<p>The period used above marks the end of a cell&#8217;s attributes.  Other attributes can be applied as well.</p>
+</td></tr>
+<tr><td class='example1' valign='top'><pre>|_. attribute list |<br />|&lt;. align left |<br />|&gt;. align right|<br />|=. center |<br />|&lt;&gt;. justify |<br />|^. valign top |<br />|~. bottom |</pre></td><td>&rarr;</td><td class='example2'><p>&lt;table&gt;<br />		&lt;tr&gt;<br />			&lt;th&gt;attribute list &lt;/th&gt;<br />		&lt;/tr&gt;<br />		&lt;tr&gt;<br />			&lt;td style="text-align:left;"&gt;align left &lt;/td&gt;<br />		&lt;/tr&gt;<br />		&lt;tr&gt;<br />			&lt;td style="text-align:right;"&gt;align right&lt;/td&gt;<br />		&lt;/tr&gt;<br />		&lt;tr&gt;<br />			&lt;td style="text-align:center;"&gt;center &lt;/td&gt;<br />		&lt;/tr&gt;<br />		&lt;tr&gt;<br />			&lt;td style="text-align:justify;"&gt;justify &lt;/td&gt;<br />		&lt;/tr&gt;<br />		&lt;tr&gt;<br />			&lt;td style="vertical-align:top;"&gt;valign top &lt;/td&gt;<br />		&lt;/tr&gt;<br />		&lt;tr&gt;<br />			&lt;td style="vertical-align:bottom;"&gt;bottom &lt;/td&gt;<br />		&lt;/tr&gt;<br />	&lt;/table&gt;</p></td></tr><tr><td colspan='2'></td><td class='example3'><table>
+		<tr>
+			<th>attribute list </th>
+		</tr>
+		<tr>
+			<td style="text-align:left;">align left </td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">align right</td>
+		</tr>
+		<tr>
+			<td style="text-align:center;">center </td>
+		</tr>
+		<tr>
+			<td style="text-align:justify;">justify </td>
+		</tr>
+		<tr>
+			<td style="vertical-align:top;">valign top </td>
+		</tr>
+		<tr>
+			<td style="vertical-align:bottom;">bottom </td>
+		</tr>
+	</table></td></tr>
+<tr><td class='explain' colspan='3'>
+<p>You can also specify colspans with a backslash, followed by the cell width.</p>
+</td></tr>
+<tr><td class='example1' valign='top'><pre>|\2. spans two cols |<br />| col 1 | col 2 |</pre></td><td>&rarr;</td><td class='example2'><p>&lt;table&gt;<br />		&lt;tr&gt;<br />			&lt;td colspan="2"&gt;spans two cols &lt;/td&gt;<br />		&lt;/tr&gt;<br />		&lt;tr&gt;<br />			&lt;td&gt; col 1 &lt;/td&gt;<br />			&lt;td&gt; col 2 &lt;/td&gt;<br />		&lt;/tr&gt;<br />	&lt;/table&gt;</p></td></tr><tr><td colspan='2'></td><td class='example3'><table>
+		<tr>
+			<td colspan="2">spans two cols </td>
+		</tr>
+		<tr>
+			<td> col 1 </td>
+			<td> col 2 </td>
+		</tr>
+	</table></td></tr>
+<tr><td class='explain' colspan='3'>
+<p>Rowspan is specified by a forward slash, followed by the row height.</p>
+</td></tr>
+<tr><td class='example1' valign='top'><pre>|/3. spans 3 rows | a |<br />| b |<br />| c |</pre></td><td>&rarr;</td><td class='example2'><p>&lt;table&gt;<br />		&lt;tr&gt;<br />			&lt;td rowspan="3"&gt;spans 3 rows &lt;/td&gt;<br />			&lt;td&gt; a &lt;/td&gt;<br />		&lt;/tr&gt;<br />		&lt;tr&gt;<br />			&lt;td&gt; b &lt;/td&gt;<br />		&lt;/tr&gt;<br />		&lt;tr&gt;<br />			&lt;td&gt; c &lt;/td&gt;<br />		&lt;/tr&gt;<br />	&lt;/table&gt;</p></td></tr><tr><td colspan='2'></td><td class='example3'><table>
+		<tr>
+			<td rowspan="3">spans 3 rows </td>
+			<td> a </td>
+		</tr>
+		<tr>
+			<td> b </td>
+		</tr>
+		<tr>
+			<td> c </td>
+		</tr>
+	</table></td></tr>
+<tr><td class='explain' colspan='3'>
+<p>All block attributes can be applied to table cells as well.</p>
+</td></tr>
+<tr><td class='example1' valign='top'><pre>|{background:#ddd}. Grey cell|</pre></td><td>&rarr;</td><td class='example2'><p>&lt;table&gt;<br />		&lt;tr&gt;<br />			&lt;td style="background:#ddd;"&gt;Grey cell&lt;/td&gt;<br />		&lt;/tr&gt;<br />	&lt;/table&gt;</p></td></tr><tr><td colspan='2'></td><td class='example3'><table>
+		<tr>
+			<td style="background:#ddd;">Grey cell</td>
+		</tr>
+	</table></td></tr>
+<tr><td class='explain' colspan='3'>
+<h4>Table and Row Attributes</h4>
+</td></tr>
+<tr><td class='explain' colspan='3'>
+<p>Table-wide attributes can be applied before the first row of the table.  On its own line, followed by a period.</p>
+</td></tr>
+<tr><td class='example1' valign='top'><pre>table{border:1px solid black}.<br />|This|is|a|row|<br />|This|is|a|row|</pre></td><td>&rarr;</td><td class='example2'><p>&lt;table style="border:1px solid black;"&gt;<br />		&lt;tr&gt;<br />			&lt;td&gt;This&lt;/td&gt;<br />			&lt;td&gt;is&lt;/td&gt;<br />			&lt;td&gt;a&lt;/td&gt;<br />			&lt;td&gt;row&lt;/td&gt;<br />		&lt;/tr&gt;<br />		&lt;tr&gt;<br />			&lt;td&gt;This&lt;/td&gt;<br />			&lt;td&gt;is&lt;/td&gt;<br />			&lt;td&gt;a&lt;/td&gt;<br />			&lt;td&gt;row&lt;/td&gt;<br />		&lt;/tr&gt;<br />	&lt;/table&gt;</p></td></tr><tr><td colspan='2'></td><td class='example3'><table style="border:1px solid black;">
+		<tr>
+			<td>This</td>
+			<td>is</td>
+			<td>a</td>
+			<td>row</td>
+		</tr>
+		<tr>
+			<td>This</td>
+			<td>is</td>
+			<td>a</td>
+			<td>row</td>
+		</tr>
+	</table></td></tr>
+<tr><td class='explain' colspan='3'>
+<p>Attributes can be applied to a single row by supplying the attribute before the row starts, using a <code>table</code> modifier and following it by a period.</p>
+</td></tr>
+<tr><td class='example1' valign='top'><pre>|This|is|a|row|<br />{background:#ddd}. |This|is|grey|row|</pre></td><td>&rarr;</td><td class='example2'><p>&lt;table&gt;<br />		&lt;tr&gt;<br />			&lt;td&gt;This&lt;/td&gt;<br />			&lt;td&gt;is&lt;/td&gt;<br />			&lt;td&gt;a&lt;/td&gt;<br />			&lt;td&gt;row&lt;/td&gt;<br />		&lt;/tr&gt;<br />		&lt;tr style="background:#ddd;"&gt;<br />			&lt;td&gt;This&lt;/td&gt;<br />			&lt;td&gt;is&lt;/td&gt;<br />			&lt;td&gt;grey&lt;/td&gt;<br />			&lt;td&gt;row&lt;/td&gt;<br />		&lt;/tr&gt;<br />	&lt;/table&gt;</p></td></tr><tr><td colspan='2'></td><td class='example3'><table>
+		<tr>
+			<td>This</td>
+			<td>is</td>
+			<td>a</td>
+			<td>row</td>
+		</tr>
+		<tr style="background:#ddd;">
+			<td>This</td>
+			<td>is</td>
+			<td>grey</td>
+			<td>row</td>
+		</tr>
+	</table></td></tr>
+<tr><td colspan='5' style='border-bottom: solid 1px #eee;'></td></tr>
+</table>
+</body>
+</html>

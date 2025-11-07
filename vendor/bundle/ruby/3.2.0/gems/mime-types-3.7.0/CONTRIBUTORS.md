@@ -1,0 +1,52 @@
+# Contributors
+
+- Austin Ziegler created mime-types.
+
+Thanks to everyone else who has contributed to mime-types over the years:
+
+- Aaron Patterson
+- Aggelos Avgerinos
+- Al Snow
+- Alex Vondrak
+- Andre Pankratz
+- Andy Brody
+- Arnaud Meuret
+- Brandon Galbraith
+- Burke Libbey
+- Chris Gat
+- Daniel Watkins
+- David Genord
+- Dillon Welch
+- Edward Betts
+- Eric Marden
+- Garret Alfert
+- Godfrey Chan
+- Greg Brockman
+- Hans de Graaff
+- Henrik Hodne
+- Igor Victor
+- Janko Marohnić
+- Jean Boussier
+- Jeremy Evans
+- Juanito Fatas
+- Jun Aruga
+- Keerthi Siva
+- Ken Ip
+- Kevin Menard
+- Koichi ITO
+- Łukasz Śliwa
+- Martin d'Allens
+- Masato Nakamura
+- Mauricio Linhares
+- Nana Kugayama
+- Nicholas La Roux
+- Nicolas Leger
+- nycvotes-dev
+- Olle Jonsson
+- Postmodern
+- Richard Hirner
+- Richard Hurt
+- Richard Schneeman
+- Robb Shecter
+- Tibor Szolár
+- Todd Carrico

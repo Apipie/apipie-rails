@@ -1,0 +1,509 @@
+---
+name: header one
+in: h1. Header 1
+html: <h1>Header 1</h1>
+latex: "\\section{Header 1}\n\n"
+---
+name: header two
+in: h2. Header 2
+html: <h2>Header 2</h2>
+latex: "\\subsection{Header 2}\n\n"
+---
+name: header three
+in: h3. Header 3
+html: <h3>Header 3</h3>
+latex: "\\subsubsection{Header 3}\n\n"
+---
+name: header four
+in: h4. Header 4
+html: <h4>Header 4</h4>
+latex: "\\paragraph{Header 4}\n\n"
+---
+name: header five
+in: h5. Header 5
+html: <h5>Header 5</h5>
+latex: "\\subparagraph{Header 5}\n\n"
+---
+name: header six
+in: h6. Header 6
+html: <h6>Header 6</h6>
+latex: "\\textbf{Header 6}\n\n"
+---
+name: blockquote
+in: |-
+  Any old text.
+
+  bq. A block quotation.
+
+  Any old text.
+
+html: |-
+  <p>Any old text.</p>
+  <blockquote>
+  <p>A block quotation.</p>
+  </blockquote>
+  <p>Any old text.</p>
+
+latex: |+
+  Any old text.
+  
+  \begin{quotation}
+  A block quotation.
+  
+  \end{quotation}
+
+  Any old text.
+
+---
+in: |-
+  # A first item
+  # A second item
+  # A third item
+  # A fourth item
+html: |-
+  <ol>
+  	<li>A first item</li>
+  	<li>A second item</li>
+  	<li>A third item</li>
+  	<li>A fourth item</li>
+  </ol>
+latex: |+
+  \begin{enumerate}
+    \item A first item
+    \item A second item
+    \item A third item
+    \item A fourth item
+  \end{enumerate}
+  
+---
+in: |-
+  * A first item
+  * A second item
+  * A third item
+  * A fourth item
+
+html: |-
+  <ul>
+  	<li>A first item</li>
+  	<li>A second item</li>
+  	<li>A third item</li>
+  	<li>A fourth item</li>
+  </ul>
+latex: |+
+  \begin{itemize}
+    \item A first item
+    \item A second item
+    \item A third item
+    \item A fourth item
+  \end{itemize}
+  
+---
+in: _a phrase_
+html: <p><em>a phrase</em></p>
+latex: "\\emph{a phrase}\n\n"
+---
+in: __a phrase__
+html: <p><i>a phrase</i></p>
+latex: "\\textit{a phrase}\n\n"
+---
+in: '*a phrase*'
+html: <p><strong>a phrase</strong></p>
+latex: "\\textbf{a phrase}\n\n"
+---
+in: '**a phrase**'
+html: <p><b>a phrase</b></p>
+latex: "\\textbf{a phrase}\n\n"
+---
+in: Nabokov's ??Pnin??
+html: <p>Nabokov&#8217;s <cite>Pnin</cite></p>
+latex: "Nabokov's \\begin{quote}Pnin\\end{quote}\n\n"
+---
+name: del part of word
+in: 'A very [-extra-]ordinary day.'
+html: "<p>A very <del>extra</del>ordinary day.</p>"
+latex: "A very \\sout{extra}ordinary day.\n\n"
+---
+name: del part of word that contains a hyphen
+in: 'An [-extra-extra-]ordinary day.'
+html: <p>An <del>extra-extra</del>ordinary day.</p>
+latex: "An \\sout{extra-extra}ordinary day.\n\n"
+---
+name: del a phrase
+in: 'Delete -a phrase- this way.'
+html: <p>Delete <del>a phrase</del> this way.</p>
+latex: "Delete \\sout{a phrase} this way.\n\n"
+---
+name: del a phrase that contains hyphens
+in: 'Delete -a no-nonsense phrase- this way.'
+html: <p>Delete <del>a no-nonsense phrase</del> this way.</p>
+latex: "Delete \\sout{a no-nonsense phrase} this way.\n\n"
+---
+in: +a phrase+
+html: <p><ins>a phrase</ins></p>
+latex: "\\underline{a phrase}\n\n"
+---
+in: ^a phrase^
+html: <p><sup>a phrase</sup></p>
+latex: "\\textsuperscript{a phrase}\n\n"
+---
+in: ~a phrase~
+html: <p><sub>a phrase</sub></p>
+latex: "\\textsubscript{a phrase}\n\n"
+---
+in: "%(myclass)SPAN%"
+html: <p><span class="myclass"><span class="caps">SPAN</span></span></p>
+no_span_caps_html: <p><span class="myclass">SPAN</span></p>
+---
+in: "%{color:red}red%"
+html: <p><span style="color:red;">red</span></p>
+---
+in: "%[fr]rouge%"
+html: <p><span lang="fr">rouge</span></p>
+---
+in: _(big)red_
+html: <p><em class="big">red</em></p>
+---
+in: p=. A centered paragraph.
+html: <p style="text-align:center;">A centered paragraph.</p>
+latex: "\\begin{center}A centered paragraph.\\end{center}\n\n"
+---
+in: p(bob). A paragraph
+html: <p class="bob">A paragraph</p>
+---
+in: p{color:#ddd}. A paragraph
+html: <p style="color:#ddd;">A paragraph</p>
+---
+in: p[fr]. A paragraph
+html: <p lang="fr">A paragraph</p>
+---
+in: h2()>. right-aligned header2, indented 1em both side
+html: <h2 style="padding-left:1em;padding-right:1em;text-align:right;">right-aligned header2, indented 1em both side</h2>
+---
+in: h3=. centered header
+html: <h3 style="text-align:center;">centered header</h3>
+latex: "\\begin{center}\\subsubsection{centered header}\\end{center}\n\n"
+---
+in: '!>/image.gif! right-aligned image'
+html: <p style="float:right;"><img src="/image.gif" alt="" /> right-aligned image</p>
+---
+in: p[no]{color:red}. A Norse of a different colour.
+html: <p style="color:red;" lang="no">A Norse of a different colour.</p>
+---
+in: |-
+  |This|is|a|simple|table|
+  |This|is|a|simple|row|
+html: |-
+  <table>
+  	<tr>
+  		<td>This</td>
+  		<td>is</td>
+  		<td>a</td>
+  		<td>simple</td>
+  		<td>table</td>
+  	</tr>
+  	<tr>
+  		<td>This</td>
+  		<td>is</td>
+  		<td>a</td>
+  		<td>simple</td>
+  		<td>row</td>
+  	</tr>
+  </table>
+latex: |
+  \begin{table}
+    \centering
+    \begin{tabular}{ l l l l l }
+      This & is & a & simple & table \\
+      This & is & a & simple & row \\
+    \end{tabular}
+  \end{table}
+---
+in: |-
+  table{border:1px solid black}.
+  |This|is|a|row|
+  |This|is|a|row|
+html: |-
+  <table style="border:1px solid black;">
+  	<tr>
+  		<td>This</td>
+  		<td>is</td>
+  		<td>a</td>
+  		<td>row</td>
+  	</tr>
+  	<tr>
+  		<td>This</td>
+  		<td>is</td>
+  		<td>a</td>
+  		<td>row</td>
+  	</tr>
+  </table>
+---
+in: '{background:#ddd}. |This|is|a|row|'
+html: |-
+  <table>
+  	<tr style="background:#ddd;">
+  		<td>This</td>
+  		<td>is</td>
+  		<td>a</td>
+  		<td>row</td>
+  	</tr>
+  </table>
+---
+in: |-
+  |{background:#ddd}. Cell with gray background|
+  |\2. Cell spanning 2 columns|
+  |/3. Cell spanning 3 rows|
+  |>. Right-aligned cell|
+html: |-
+  <table>
+  	<tr>
+  		<td style="background:#ddd;">Cell with gray background</td>
+  	</tr>
+  	<tr>
+  		<td colspan="2">Cell spanning 2 columns</td>
+  	</tr>
+  	<tr>
+  		<td rowspan="3">Cell spanning 3 rows</td>
+  	</tr>
+  	<tr>
+  		<td style="text-align:right;">Right-aligned cell</td>
+  	</tr>
+  </table>
+---
+name: basics
+in: |-
+  h2{color:green}. This is a title
+
+  h3. This is a subhead
+  
+  p{color:red}. This is some text of dubious character. Isn't the use of "quotes" just lazy writing -- and theft of 'intellectual property' besides? I think the time has come to see a block quote.
+  
+  bq[fr]. This is a block quote. I'll admit it's not the most exciting block quote ever devised.
+  
+  Simple list:
+  
+  # one
+  # two
+  # three
+  
+  Multi-level list:
+  
+  # one
+  ## aye
+  ## bee
+  ## see
+  # two
+  ## x
+  ## y
+  # three
+  
+html: |-
+  <h2 style="color:green;">This is a title</h2>
+  <h3>This is a subhead</h3>
+  <p style="color:red;">This is some text of dubious character. Isn&#8217;t the use of &#8220;quotes&#8221; just lazy writing &#8212; and theft of &#8216;intellectual property&#8217; besides? I think the time has come to see a block quote.</p>
+  <blockquote lang="fr">
+  <p lang="fr">This is a block quote. I&#8217;ll admit it&#8217;s not the most exciting block quote ever devised.</p>
+  </blockquote>
+  <p>Simple list:</p>
+  <ol>
+  	<li>one</li>
+  	<li>two</li>
+  	<li>three</li>
+  </ol>
+  <p>Multi-level list:</p>
+  <ol>
+  	<li>one
+  	<ol>
+  		<li>aye</li>
+  		<li>bee</li>
+  		<li>see</li>
+  	</ol></li>
+  	<li>two
+  	<ol>
+  		<li>x</li>
+  		<li>y</li>
+  	</ol></li>
+  	<li>three</li>
+  </ol>
+---
+name: tougher stuff
+in: |-
+
+  Multi-level list:
+
+  # one
+  ## aye
+  ## bee
+  ## see
+  # two
+  ## x
+  ## y
+  # three
+
+  Mixed list:
+
+  * Point one
+  * Point two
+  ## Step 1
+  ## Step 2
+  ## Step 3
+  * Point three
+  ** Sub point 1
+  ** Sub point 2
+
+
+  Well, that went well. How about we insert an <a href="/" title="watch out">old-fashioned hypertext link</a>? Will the quote marks in the tags get messed up? No!
+
+  "This is a link (optional title)":http://www.textism.com
+
+html: |-
+  <p>Multi-level list:</p>
+  <ol>
+  	<li>one
+  	<ol>
+  		<li>aye</li>
+  		<li>bee</li>
+  		<li>see</li>
+  	</ol></li>
+  	<li>two
+  	<ol>
+  		<li>x</li>
+  		<li>y</li>
+  	</ol></li>
+  	<li>three</li>
+  </ol>
+  <p>Mixed list:</p>
+  <ul>
+  	<li>Point one</li>
+  	<li>Point two
+  	<ol>
+  		<li>Step 1</li>
+  		<li>Step 2</li>
+  		<li>Step 3</li>
+  	</ol></li>
+  	<li>Point three
+  	<ul>
+  		<li>Sub point 1</li>
+  		<li>Sub point 2</li>
+  	</ul></li>
+  </ul>
+  <p>Well, that went well. How about we insert an <a href="/" title="watch out">old-fashioned hypertext link</a>? Will the quote marks in the tags get messed up? No!</p>
+  <p><a href="http://www.textism.com" title="optional title">This is a link</a></p>
+---
+name: table
+in: |-
+  table{border:1px solid black}.
+  |_. this|_. is|_. a|_. header|
+  <{background:gray}. |\2. this is|{background:red;width:200px}. a|^<>{height:200px}. row|
+  |this|<>{padding:10px}. is|^. another|(bob#bob). row|
+html: |-
+  <table style="border:1px solid black;">
+  	<tr>
+  		<th>this</th>
+  		<th>is</th>
+  		<th>a</th>
+  		<th>header</th>
+  	</tr>
+  	<tr style="text-align:left;background:gray;">
+  		<td colspan="2">this is</td>
+  		<td style="background:red;width:200px;">a</td>
+  		<td style="vertical-align:top;text-align:justify;height:200px;">row</td>
+  	</tr>
+  	<tr>
+  		<td>this</td>
+  		<td style="text-align:justify;padding:10px;">is</td>
+  		<td style="vertical-align:top;">another</td>
+  		<td class="bob" id="bob">row</td>
+  	</tr>
+  </table>
+---
+in: |-
+  An image:
+  
+  !/common/textist.gif(optional alt text)!
+  
+  # Librarians rule
+  # Yes they do
+  # But you knew that
+  
+  Some more text of dubious character. Here is a noisome string of CAPITAL letters. Here is something we want to _emphasize_.
+  That was a linebreak. And something to indicate *strength*. Of course I could use <em>my own HTML tags</em> if I <strong>felt</strong> like it.
+html: |-
+  <p>An image:</p>
+  <p><img src="/common/textist.gif" title="optional alt text" alt="optional alt text" /></p>
+  <ol>
+  	<li>Librarians rule</li>
+  	<li>Yes they do</li>
+  	<li>But you knew that</li>
+  </ol>
+  <p>Some more text of dubious character. Here is a noisome string of <span class="caps">CAPITAL</span> letters. Here is something we want to <em>emphasize</em>.<br />
+  That was a linebreak. And something to indicate <strong>strength</strong>. Of course I could use <em>my own <span class="caps">HTML</span> tags</em> if I <strong>felt</strong> like it.</p>
+---
+name: code
+in: |-
+  h3. Coding
+  
+  This <code>is some code, "isn't it"</code>. Watch those quote marks! Now for some preformatted text:
+  
+  <pre>
+  <code>
+      $text = str_replace("<p>%::%</p>","",$text);
+      $text = str_replace("%::%</p>","",$text);
+      $text = str_replace("%::%","",$text);
+  
+  </code>
+  </pre>
+  
+  This isn't code.
+  
+  
+html: |-
+  <h3>Coding</h3>
+  <p>This <code>is some code, "isn't it"</code>. Watch those quote marks! Now for some preformatted text:</p>
+  <pre>
+  <code>
+      $text = str_replace("&lt;p&gt;%::%&lt;/p&gt;","",$text);
+      $text = str_replace("%::%&lt;/p&gt;","",$text);
+      $text = str_replace("%::%","",$text);
+  
+  </code>
+  </pre>
+  <p>This isn&#8217;t code.</p>
+---
+name: hard break
+in: |-
+  trivial
+  break
+  
+  next
+html: |-
+  <p>trivial<br />
+  break</p>
+  <p>next</p>
+---
+name: normal paragraphs
+in: |-
+  trivial
+
+  paragraphs
+html: |-
+  <p>trivial</p>
+  <p>paragraphs</p>
+---
+name: hard break in a list
+in: |-
+  * first line
+  * second
+  line
+  * third line
+html: |-
+  <ul>
+  	<li>first line</li>
+  	<li>second<br />
+  line</li>
+  	<li>third line</li>
+  </ul>
+---
+name: copyright symbol at line start
+in: "(C) copyright conversion (C) test."
+html: "<p>&#169; copyright conversion &#169; test.</p>"

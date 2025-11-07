@@ -1,0 +1,298 @@
+== 4.3.4 / Mar 13th, 2024
+
+* A round of cleanups [Helio Cola]
+* Stop checking for main function in libc [Jean byroot Boussier]
+* Update maintainer, scrub redcloth.org [Jason Garber]
+* Add GitHub action [Anton Maminov]
+
+== 4.3.3 / Nov 2nd, 2023
+
+* Add tests for CVE-2023-31606 [Helio Cola]
+* Fix rake compile [Helio Cola and Faria Education Group]
+* Fix CVE-2023-31606 (ReDOS possible in the sanitize_html function) [Kornelius Kalnbach and Merbin Russel]
+* Immutable strings [Matijs van Zuijlen]
+
+== 4.3.2 / May 23rd, 2016
+
+* Fix additional case for CVE-2012-6684 [Joshua Siler]
+
+== 4.3.1 / May 17th, 2016
+
+* Fix additional case for CVE-2012-6684 [Joshua Siler]
+
+== 4.3.0 / April 29th, 2016
+
+* Remove JRuby and Windows cross compilation and support
+* Add Ruby 2.2.3 testing and support
+
+* include CVE-2012-6684 fix [Tomas Pospisek]
+  * fix by [Antonio Terceiro] 
+    * see http://sources.debian.net/src/ruby-redcloth/4.2.9-4/debian/patches/0001-Filter-out-javascript-links-when-using-filter_html-o.patch/
+  * vulnerability reported by [Kousuke Ebihara] 
+    * see http://co3k.org/blog/redcloth-unfixed-xss-en
+
+== 4.2.9.1 / February 24, 2015
+
+* Lazy-load latex_entities.yml [Charlie Somerville]
+
+== 4.2.9 / November 25, 2011
+
+* Fix RbConfig / Config warning in Ruby 1.9.3. [Steve Purcell, Robert Gleeson, and unclaimedbaggage]
+* Use RSTRING_NOT_MODIFIED header for Rubinius [Dirkjan Bussink]
+
+== 4.2.8 / August 17, 2011
+
+* Do not treat warnings as errors so it compiles cleanly. [Tomasz Wałkuski]
+
+== 4.2.7 / February 10, 2011
+
+* Fixed typo in gemspec to make case-sensitive require work. [Gabe da Silveira]
+* Tested installing the gem and requiring it with both cases on Ubuntu 8.04, 10.10 and OS X Version 10.6.6.
+* Have spaces around the en-dash in LaTeX [Benjamin Quorning]
+* Turned double-quote close to smart quotes in LaTeX [Jonathan D. Blake]
+
+=== 4.2.6 / February 9, 2011
+
+* Add case-sensitive require back into the gemspec.
+* Fix rdoc options in gemspec.
+
+=== 4.2.5 / February 7, 2011
+
+* Fix bundler and rubygems-test incompatibilities. Working around bug:
+    https://github.com/carlhuda/bundler/issues/issue/1021
+
+=== 4.2.4 / February 7, 2011
+
+* Add .gemtest to opt-in to rubygems-test program (gem install rubygems-test to participate)
+* Allow attributes to be set on hr and br tags [Jesse Stormier]
+* Fix dangling <li> [Stephen Bannasch]
+* Switch to bundler and rake-compiler for gem management/compilation
+* Fix invalid YAML for Ruby 1.9.2 [Aaron Patterson]
+
+=== 4.2.3 / March 1, 2010
+
+* Allow quotes in styles so you can do things like listing font-families. [Jason Garber]
+* Fix uninitialized constant Gem::Specification::PLATFORM_CROSS_TARGETS in Rails [Jason Garber]
+* Allow uppercase letters in class and ID attributes [Jason Garber]
+* Fix compatibility with newer Echoe, by using full-name for Platform [Flameeyes]
+* Fixes for PPC/PPC64 [Flameeyes]
+* Added a modified copy of 'Textile Reference' to a doc folder [codesponge]
+* Add footnote return links [Jonathan Rudenberg]
+* Add bug report link to the README
+
+=== 4.2.2 / June 30, 2009
+
+* Fix regression where percent wasn't accepted in style attribute. [Jason Garber]
+
+=== 4.2.1 / June 16, 2009
+
+* Fix regression where period wasn't accepted in style attribute. [Jason Garber]
+
+=== 4.2.0 / June 10, 2009
+
+* Fixed image with title, href, and text afterward not being made a link. [Jason Garber]
+
+* Pass string encoding through in Ruby 1.9. [Jason Garber]
+
+* Allow two-letter acronyms. [Jason Garber]
+
+* Removed vertical alignment in lists. It doesn't make sense and it conflicts with other things. [Jason Garber]
+
+* Allow table cells to be empty. [Jason Garber]
+
+* Resolve conflict between table signature and blocks beginning with t. [Jason Garber]
+
+* Enable code signature to capture trailing space when in square brackets. [Jason Garber]
+
+* Allow emphasized phrases to include underscores. [Jason Garber]
+
+* Include an ending question mark in a citation. [Jason Garber]
+
+* Fix <notextile> blocks being included in following paragraph. [Jason Garber]
+
+* Preserve leading whitespace in pre and bc blocks. [Jason Garber]
+
+* Don't add hard break after preexisting <br />. [Jason Garber]
+
+* Switched tests from Test::Unit to Rspec. [Jason Garber]
+
+* Accept multiline content in table cells. [Jason Garber]
+
+* Change to list attributes so you can give style/class to list items (taken from PyTextile).  Breaks backwards compatibility.
+
+  Before, the style applied to the first list item applied to the entire list.  Now, class/id/style placed
+  before the list applies to the list element and after the hash or asterisk applies to the list item.  For
+  example:
+                                   <ul id="groceries">
+    (#groceries)# Milk               <li>milk</li>
+    # Eggs                           <li>eggs</li>
+    #(optional) granola              <li class="optional">granola</li>
+                                   </ul>
+
+* Separated attributes out to have their own mark/store variable and regs.  This way, they won't conflict with captured text or backtracked text. [Jason Garber]
+
+* Added a RedCloth::EXTENSION_LANGUAGE constant so you can tell what version of the parser you are using. [Jason Garber]
+
+* Added a NotCompiledError to give a friendlier message when people just unpack RedCloth into their projects. [Jason Garber]
+
+* Added a pure-ruby version of the parser for times when you can't compile the C or Java extensions.  You should avoid using it if at all possible because it is 32 times slower (and has some other problems, too)! [Jason Garber]
+
+* Ignore spaces and tabs on blank lines between blocks. #120 [Jason Garber]
+
+* Allow HTML tags with quoted attributes to be inside link text.  To do this, I had to remove the possibility that attributes in HTML tags could have spaces around the equals sign or unquoted attributes.  This change also greatly expands the complexity of the state machine, so compilation takes a long time. Sorry. [Jason Garber]
+
+* Many improvements to the LaTeX formatter by Bil Kleb, a NASA scientist who's been working with LaTeX for 20 years.  Thanks, Bil!
+
+=== 4.1.9 / February 20, 2009
+
+* Make compatible with Ruby 1.9.
+
+* Image URLs and image titles can now contain parentheses. #71
+
+* Handle caps properly in link titles. #77
+
+* Remove extra preformatted line breaks after extended block code. #79
+
+* Fix inline <notextile> being recognized as block <notextile>. #81
+
+* Allow leading spaces on lists for backward compatibility with RedCloth 3.x. #89
+
+* Recognize deleted phrases when they start at the beginning of a line. #83
+
+* Fix escaped <code> tag when it has the class attribute and is in a <pre> tag. #95
+
+* Fix dimensions and primes for LaTeX. #103
+
+* Don't allow square brackets inside lang attribute so double square brackets are interpreted like Textile 2 and RedCloth 3. #101
+
+* Improve LaTeX output for tables. #96
+
+* Fix bad parsing of bracketed image links (which would hang the interpreter in some cases). #97
+
+* Handle links containing parentheses.  Brackets are no longer required. #82 [Ryan Alyea]
+
+* Made italics use the correct LaTeX tag: textit rather than emph. #98
+
+* Fixed custom block signatures calling built-in Ruby String methods. #92
+
+* Mentioned the three supported platforms and what's necessary to build RedCloth in the README file.
+
+* Fixed a require problem that caused an error when you would gem check --test RedCloth. #91
+
+=== 4.1.1 / November 19, 2008
+
+* Added 'lib/case_sensitive_require' back into gemspec.  It got left out in the conversion to echoe, so "require 'RedCloth'" didn't work. #88
+
+* Fixed <embed> being recognized as a block-level element when using the twice-cooked method of flash embedding. #87
+
+* Added horizontal rules from RedCloth 3.  Three or more asterisks, dashes, or underscores between blocks triggers the HR tag.
+
+* echoe was not being properly registered as a development dependency; a bug in RubyGems was making it a runtime dependency
+
+* Fixed "No definition for redcloth_to Installing RDoc documentation"
+
+* Fixed wrong platform names when cross-compiling java and win32 versions
+
+=== 4.1.0 / October 31, 2008
+
+* JRuby support!  [olabini]
+  To run the tests with JRuby, you only need to: jruby -S rake
+  To compile the jruby version of the gem: jruby -S rake compile
+
+* Added textilize ERB utility method. [edraut]
+  Use it in an ERB template like this: <%=t my_textile_string %> or
+  <%=r %{Some *textile* if you please!} %>
+
+* Fix extended blockcode stripping whitespace following blank line. #78
+
+
+=== 4.0.4 / October 1, 2008
+
+* Added some very basic support for images in LaTeX. [virtualfunction]
+
+* Fixed missed caps and inline modifiers wrapped in parentheses. #43, #45
+
+* Removed indication of quotes explicitly with square brackets.  Textile 2.0 does not support this and it wasn't in RedCloth 3. #46
+
+* Made percent signs less greedy.  They must surround a phrase or else they must be surrounded with square brackets, just like sup, sub, and del phrases. #47
+
+* Reduced link eagerness so it wouldn't include preceding quoted phrases. #48
+
+* Fixed compatibility issues with Ruby 1.9 [Keita Yamaguchi]. #52, 53, 54
+
+* Fixed an error when a link was badly nested in parentheses. #55
+
+* Fixed an error on superscript/subscript parenthetical phrase. #56
+
+* Fixed bold phrases starting with a number being recognized as unordered lists. #60
+
+* Fixed behavior of unclosed (multi-paragraph) quotes and incorrect handling of links inside double quotations. #59, #63
+
+* Fixed empty block HTML disappearing. #64
+
+
+=== 4.0.3 / August 18, 2008
+
+* Fix NoMethodError: private method gsub!' called for nil:NilClass when two dimensions followed by a space. #38
+
+* Fixed unititialized constant RedCloth::TextileDoc with Rails 2.1.  Came from a workaround for Rails bug #320 that was applied even when not necessary. #42
+
+
+=== 4.0.2 / August 15, 2008
+
+* Fixed link references/aliases not being recognized when they include hyphens. #36
+
+* Dimensions in feet and inches use correct typographic characters. #25
+
+* Limit overzealous superscript and subscript.  Sup/sub phrases must be surrounded by spaces or square brackets, as in Textile 2. #35
+
+* Fixed HTML before tables causing the opening table tag to be emitted twice. #33
+
+* Cleaned up unused code that was causing a warning. #28
+
+* Workaround for Rails 2.1 bug that loads a previous version of RedCloth before loading the unpacked gem.  Has since been fixed in edge rails. #30
+
+* Added a RedCloth::VERSION.to_s and .== methods so you can puts and compare RedCloth::VERSION just like in previous RedCloth releases. #26
+
+* Fixed HTML block ending tags terminating blocks prematurely. #22
+
+
+=== 4.0.1 / July 24, 2008
+
+* Fixed lines starting with dashes being recognized as a definition list when there were no definitions.
+
+* Created alias RedCloth.rb so Rails 2.1 gem dependency works on case-sensitive operating systems	.
+* Fixed parsing sentences that had two em dashes surrounded by spaces from becoming del phrases. #19
+
+* Fixed links including prior quoted phrases. #17
+
+
+=== 4.0.0 / July 21, 2008
+
+* New SuperRedCloth (RedCloth 4.0) is a total rewrite using Ragel for the parsing.
+
+* Markdown support has been removed.
+
+* Single newlines become <br> tags, just as in traditional RedCloth and other Textile parsers.
+
+* HTML special characters are automatically escaped inside code signatures, like Textile 2.  This means you can simply write @<br />@ and the symbols are escaped whereas in RedCloth 3 you had to write @&lt;br /&gt;@ to make the code fragment readable.
+
+* The restrictions parameter is observed just like previous versions (except :hard_breaks is now the default).
+
+* Arguments to RedCloth#to_html are called so extensions made for prior versions can work.  Note: extensions need to be included rather than defined directly within the RedCloth class as was previously possible.
+
+* Custom block tags can be implemented as in the previous version, though the means of implementing them differs.
+
+* HTML embedded in the Textile input does not often need to be escaped from Textile parsing.
+
+* The parser will not wrap lines that begin with a space in paragraph tags.
+
+* Rudimentary support for LaTeX is built in.
+
+* RedCloth::VERSION on a line by itself inserts the version number into the output.
+
+* Output (less newlines and tabs) is identical to Textile 2 except a few cases where the RedCloth way was preferable.
+
+* Over 500 tests prevent regression
+
+* It's 40 times faster than the previous version.

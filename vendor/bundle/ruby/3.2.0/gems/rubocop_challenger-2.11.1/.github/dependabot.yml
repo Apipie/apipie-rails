@@ -1,0 +1,31 @@
+version: 2
+updates:
+- package-ecosystem: bundler
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "08:00"
+    timezone: Japan
+  open-pull-requests-limit: 10
+  reviewers:
+  - ryz310
+  assignees:
+  - ryz310
+  labels:
+  - dependabot
+  ignore:
+  - dependency-name: simplecov
+    versions:
+    - ">= 0.19.a, < 0.20"
+  - dependency-name: rubocop
+    versions:
+    - 1.10.0
+    - 1.11.0
+    - 1.12.0
+    - 1.12.1
+  - dependency-name: rubocop-performance
+    versions:
+    - 1.10.0
+  - dependency-name: rubocop-rspec
+    versions:
+    - 2.2.0

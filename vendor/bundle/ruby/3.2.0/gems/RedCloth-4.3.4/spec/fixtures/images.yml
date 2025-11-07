@@ -1,0 +1,279 @@
+---
+in:  This is an !image.jpg!
+html: <p>This is an <img src="image.jpg" alt="" /></p>
+latex: |+
+  This is an \begin{figure}
+    \centering
+    \includegraphics[]{image.jpg}
+  \end{figure}
+
+---
+in:  This is an !image.jpg(with alt text)!
+html: <p>This is an <img src="image.jpg" title="with alt text" alt="with alt text" /></p>
+latex: |+
+  This is an \begin{figure}
+    \centering
+    \includegraphics[]{image.jpg}
+    \caption{with alt text}
+  \end{figure}
+
+---
+in:  This is an !http://example.com/i/image.jpg!
+html: <p>This is an <img src="http://example.com/i/image.jpg" alt="" /></p>
+# Note that we are removing remote links fro security reasons for now
+latex: |+
+  This is an 
+
+---
+in:  This is an !http://example.com/i/image.jpg#a1!
+html: <p>This is an <img src="http://example.com/i/image.jpg#a1" alt="" /></p>
+---
+in:  This is an !image.jpg!.
+html: <p>This is an <img src="image.jpg" alt="" />.</p>
+---
+in:  This is an !image.jpg(with alt text)!.
+html: <p>This is an <img src="image.jpg" title="with alt text" alt="with alt text" />.</p>
+---
+in:  This is an !http://example.com/i/image.jpg!.
+html: <p>This is an <img src="http://example.com/i/image.jpg" alt="" />.</p>
+---
+in:  This is an !http://example.com/i/image.jpg#a1!.
+html: <p>This is an <img src="http://example.com/i/image.jpg#a1" alt="" />.</p>
+---
+in:  This is not an image!!!
+html: <p>This is not an image!!!</p>
+---
+in:  This is not an! image!
+html: <p>This is not an! image!</p>
+---
+in:  This is an !http://example.com/i/image.jpg!:#1
+html: <p>This is an <a href="#1"><img src="http://example.com/i/image.jpg" alt="" /></a></p>
+---
+in:  This is an !http://example.com/i/image.jpg!:#a
+html: <p>This is an <a href="#a"><img src="http://example.com/i/image.jpg" alt="" /></a></p>
+---
+in:  This is an !http://example.com/i/image.jpg!:#a1
+html: <p>This is an <a href="#a1"><img src="http://example.com/i/image.jpg" alt="" /></a></p>
+---
+in:  This is an !http://example.com/i/image.jpg!:#a10
+html: <p>This is an <a href="#a10"><img src="http://example.com/i/image.jpg" alt="" /></a></p>
+---
+in:  This is an !http://example.com/i/image.jpg!:index.html
+html: <p>This is an <a href="index.html"><img src="http://example.com/i/image.jpg" alt="" /></a></p>
+---
+in:  This is an !http://example.com/i/image.jpg!:index.html#1
+html: <p>This is an <a href="index.html#1"><img src="http://example.com/i/image.jpg" alt="" /></a></p>
+---
+in:  This is an !http://example.com/i/image.jpg!:index.html#a1
+html: <p>This is an <a href="index.html#a1"><img src="http://example.com/i/image.jpg" alt="" /></a></p>
+---
+in:  This is an !http://example.com/i/image.jpg!:index.html#a10
+html: <p>This is an <a href="index.html#a10"><img src="http://example.com/i/image.jpg" alt="" /></a></p>
+---
+in:  This is an !http://example.com/i/image.jpg!:index.html?foo=bar
+html: <p>This is an <a href="index.html?foo=bar"><img src="http://example.com/i/image.jpg" alt="" /></a></p>
+---
+in:  This is an !http://example.com/i/image.jpg!:index.html?foo=bar#1
+html: <p>This is an <a href="index.html?foo=bar#1"><img src="http://example.com/i/image.jpg" alt="" /></a></p>
+---
+in:  This is an !http://example.com/i/image.jpg!:index.html?foo=bar#a
+html: <p>This is an <a href="index.html?foo=bar#a"><img src="http://example.com/i/image.jpg" alt="" /></a></p>
+---
+in:  This is an !http://example.com/i/image.jpg!:index.html?foo=bar#a1
+html: <p>This is an <a href="index.html?foo=bar#a1"><img src="http://example.com/i/image.jpg" alt="" /></a></p>
+---
+in:  This is an !http://example.com/i/image.jpg!:index.html?foo=bar#a10
+html: <p>This is an <a href="index.html?foo=bar#a10"><img src="http://example.com/i/image.jpg" alt="" /></a></p>
+---
+in:  This is an !http://example.com/i/image.jpg!:http://example.com/
+html: <p>This is an <a href="http://example.com/"><img src="http://example.com/i/image.jpg" alt="" /></a></p>
+---
+in:  This is an !http://example.com/i/image.jpg!:http://example.com/#1
+html: <p>This is an <a href="http://example.com/#1"><img src="http://example.com/i/image.jpg" alt="" /></a></p>
+---
+in:  This is an !http://example.com/i/image.jpg!:http://example.com/#a
+html: <p>This is an <a href="http://example.com/#a"><img src="http://example.com/i/image.jpg" alt="" /></a></p>
+---
+in:  This is an !http://example.com/i/image.jpg!:http://example.com/#a1
+html: <p>This is an <a href="http://example.com/#a1"><img src="http://example.com/i/image.jpg" alt="" /></a></p>
+---
+in:  This is an !http://example.com/i/image.jpg!:http://example.com/#a10
+html: <p>This is an <a href="http://example.com/#a10"><img src="http://example.com/i/image.jpg" alt="" /></a></p>
+---
+in:  This is an !http://example.com/i/image.jpg!:http://example.com/index.html
+html: <p>This is an <a href="http://example.com/index.html"><img src="http://example.com/i/image.jpg" alt="" /></a></p>
+---
+in:  This is an !http://example.com/i/image.jpg!:http://example.com/index.html#1
+html: <p>This is an <a href="http://example.com/index.html#1"><img src="http://example.com/i/image.jpg" alt="" /></a></p>
+---
+in:  This is an !http://example.com/i/image.jpg!:http://example.com/index.html#a
+html: <p>This is an <a href="http://example.com/index.html#a"><img src="http://example.com/i/image.jpg" alt="" /></a></p>
+---
+in:  This is an !http://example.com/i/image.jpg!:http://example.com/index.html#a1
+html: <p>This is an <a href="http://example.com/index.html#a1"><img src="http://example.com/i/image.jpg" alt="" /></a></p>
+---
+in:  This is an !http://example.com/i/image.jpg!:http://example.com/index.html#a10
+html: <p>This is an <a href="http://example.com/index.html#a10"><img src="http://example.com/i/image.jpg" alt="" /></a></p>
+---
+in:  This is an !http://example.com/i/image.jpg!:http://example.com/index.html?foo=bar
+html: <p>This is an <a href="http://example.com/index.html?foo=bar"><img src="http://example.com/i/image.jpg" alt="" /></a></p>
+---
+in:  This is an !http://example.com/i/image.jpg!:http://example.com/index.html?foo=bar#1
+html: <p>This is an <a href="http://example.com/index.html?foo=bar#1"><img src="http://example.com/i/image.jpg" alt="" /></a></p>
+---
+in:  This is an !http://example.com/i/image.jpg!:http://example.com/index.html?foo=bar#a
+html: <p>This is an <a href="http://example.com/index.html?foo=bar#a"><img src="http://example.com/i/image.jpg" alt="" /></a></p>
+---
+in:  This is an !http://example.com/i/image.jpg!:http://example.com/index.html?foo=bar#a1
+html: <p>This is an <a href="http://example.com/index.html?foo=bar#a1"><img src="http://example.com/i/image.jpg" alt="" /></a></p>
+---
+in:  This is an !http://example.com/i/image.jpg!:http://example.com/index.html?foo=bar#a10
+html: <p>This is an <a href="http://example.com/index.html?foo=bar#a10"><img src="http://example.com/i/image.jpg" alt="" /></a></p>
+---
+in:  This is an !http://example.com/i/image.jpg!:http://example.com/index.html?foo=bar&a=b
+html: <p>This is an <a href="http://example.com/index.html?foo=bar&amp;a=b"><img src="http://example.com/i/image.jpg" alt="" /></a></p>
+---
+in:  This is an !http://example.com/i/image.jpg!:http://example.com/index.html?foo=bar&a=b#1
+html: <p>This is an <a href="http://example.com/index.html?foo=bar&amp;a=b#1"><img src="http://example.com/i/image.jpg" alt="" /></a></p>
+---
+in:  This is an !http://example.com/i/image.jpg!:http://example.com/index.html?foo=bar&a=b#a
+html: <p>This is an <a href="http://example.com/index.html?foo=bar&amp;a=b#a"><img src="http://example.com/i/image.jpg" alt="" /></a></p>
+---
+in:  This is an !http://example.com/i/image.jpg!:http://example.com/index.html?foo=bar&a=b#a1
+html: <p>This is an <a href="http://example.com/index.html?foo=bar&amp;a=b#a1"><img src="http://example.com/i/image.jpg" alt="" /></a></p>
+---
+in:  This is an !http://example.com/i/image.jpg!:http://example.com/index.html?foo=bar&a=b#a10
+html: <p>This is an <a href="http://example.com/index.html?foo=bar&amp;a=b#a10"><img src="http://example.com/i/image.jpg" alt="" /></a></p>
+---
+in:  This is an !http://example.com/i/image.jpg!:http://example.com/index.html?foo=bar&a=b.
+html: <p>This is an <a href="http://example.com/index.html?foo=bar&amp;a=b"><img src="http://example.com/i/image.jpg" alt="" /></a>.</p>
+---
+in:  This is an !http://example.com/i/image.jpg!:http://example.com/index.html?foo=bar&a=b#1.
+html: <p>This is an <a href="http://example.com/index.html?foo=bar&amp;a=b#1"><img src="http://example.com/i/image.jpg" alt="" /></a>.</p>
+---
+in:  This is an !http://example.com/i/image.jpg!:http://example.com/index.html?foo=bar&a=b#a.
+html: <p>This is an <a href="http://example.com/index.html?foo=bar&amp;a=b#a"><img src="http://example.com/i/image.jpg" alt="" /></a>.</p>
+---
+in:  This is an !http://example.com/i/image.jpg!:http://example.com/index.html?foo=bar&a=b#a1.
+html: <p>This is an <a href="http://example.com/index.html?foo=bar&amp;a=b#a1"><img src="http://example.com/i/image.jpg" alt="" /></a>.</p>
+---
+in:  This is an !http://example.com/i/image.jpg!:http://example.com/index.html?foo=bar&a=b#a10.
+html: <p>This is an <a href="http://example.com/index.html?foo=bar&amp;a=b#a10"><img src="http://example.com/i/image.jpg" alt="" /></a>.</p>
+---
+in:  This is an !http://example.com/i/image.jpg!:http://example.com/index.html?foo=bar&a=b, but this is not.
+html: <p>This is an <a href="http://example.com/index.html?foo=bar&amp;a=b"><img src="http://example.com/i/image.jpg" alt="" /></a>, but this is not.</p>
+---
+in:  This is an !http://example.com/i/image.jpg!:http://example.com/index.html?foo=bar&a=b#1, but this is not.
+html: <p>This is an <a href="http://example.com/index.html?foo=bar&amp;a=b#1"><img src="http://example.com/i/image.jpg" alt="" /></a>, but this is not.</p>
+---
+in:  This is an !http://example.com/i/image.jpg!:http://example.com/index.html?foo=bar&a=b#a, but this is not.
+html: <p>This is an <a href="http://example.com/index.html?foo=bar&amp;a=b#a"><img src="http://example.com/i/image.jpg" alt="" /></a>, but this is not.</p>
+---
+in:  This is an !http://example.com/i/image.jpg!:http://example.com/index.html?foo=bar&a=b#a1, but this is not.
+html: <p>This is an <a href="http://example.com/index.html?foo=bar&amp;a=b#a1"><img src="http://example.com/i/image.jpg" alt="" /></a>, but this is not.</p>
+---
+in:  (This is an !http://example.com/i/image.jpg!:http://example.com/index.html?foo=bar&a=b#a10)  This is not.
+html: <p>(This is an <a href="http://example.com/index.html?foo=bar&amp;a=b#a10"><img src="http://example.com/i/image.jpg" alt="" /></a>)  This is not.</p>
+---
+in:  (This is an !http://example.com/i/image.jpg!:http://example.com/index.html?foo=bar&a=b)  This is not.
+html: <p>(This is an <a href="http://example.com/index.html?foo=bar&amp;a=b"><img src="http://example.com/i/image.jpg" alt="" /></a>)  This is not.</p>
+---
+in:  (This is an !http://example.com/i/image.jpg!:http://example.com/index.html?foo=bar&a=b#1)  This is not.
+html: <p>(This is an <a href="http://example.com/index.html?foo=bar&amp;a=b#1"><img src="http://example.com/i/image.jpg" alt="" /></a>)  This is not.</p>
+---
+in:  (This is an !http://example.com/i/image.jpg!:http://example.com/index.html?foo=bar&a=b#a)  This is not.
+html: <p>(This is an <a href="http://example.com/index.html?foo=bar&amp;a=b#a"><img src="http://example.com/i/image.jpg" alt="" /></a>)  This is not.</p>
+---
+in:  (This is an !http://example.com/i/image.jpg!:http://example.com/index.html?foo=bar&a=b#a1)  This is not.
+html: <p>(This is an <a href="http://example.com/index.html?foo=bar&amp;a=b#a1"><img src="http://example.com/i/image.jpg" alt="" /></a>)  This is not.</p>
+---
+in:  (This is an !http://example.com/i/image.jpg!:http://example.com/index.html?foo=bar&a=b#a10)  This is not.
+html: <p>(This is an <a href="http://example.com/index.html?foo=bar&amp;a=b#a10"><img src="http://example.com/i/image.jpg" alt="" /></a>)  This is not.</p>
+---
+name: image with relative src with dot
+in: "!../../image.jpg!"
+html: <p><img src="../../image.jpg" alt="" /></p>
+latex: |+
+  \begin{figure}
+    \centering
+    \includegraphics[]{../../image.jpg}
+  \end{figure}
+
+---
+name: image with class
+in: "!(myclass)image.jpg!"
+html: <p><img src="image.jpg" class="myclass" alt="" /></p>
+---
+name: image with class and dotspace
+in: "!(myclass). image.jpg!"
+html: <p><img src="image.jpg" class="myclass" alt="" /></p>
+---
+name: image with class and relative src with dots
+in: "!(myclass)../../image.jpg!"
+html: <p><img src="../../image.jpg" class="myclass" alt="" /></p>
+---
+name: image with class and dotspace and relative src with dots
+in: "!(myclass). ../../image.jpg!"
+html: <p><img src="../../image.jpg" class="myclass" alt="" /></p>
+---
+name: image with style
+in: "!{color:red}image.jpg!"
+html: <p><img src="image.jpg" style="color:red;" alt="" /></p>
+---
+name: image with style and dotspace
+in: "!{color:red}. image.jpg!"
+html: <p><img src="image.jpg" style="color:red;" alt="" /></p>
+---
+name: image attributes has ampersand html entity in alt and title
+in: "!/pictures/cat_and_fox.jpg(Trady Blix & The cartoon fox)!"
+html: '<p><img src="/pictures/cat_and_fox.jpg" title="Trady Blix &amp; The cartoon fox" alt="Trady Blix &amp; The cartoon fox" /></p>'
+latex: |+
+  \begin{figure}
+    \centering
+    \includegraphics[]{/pictures/cat_and_fox.jpg}
+    \caption{Trady Blix \& The cartoon fox}
+  \end{figure}
+
+---
+name: image attributes has double quote html entity in alt and title
+in: '!/pictures/bacon.jpg(The fox said: "Have some chunky bacon")!'
+html: '<p><img src="/pictures/bacon.jpg" title="The fox said: &quot;Have some chunky bacon&quot;" alt="The fox said: &quot;Have some chunky bacon&quot;" /></p>'
+latex: |+
+  \begin{figure}
+    \centering
+    \includegraphics[]{/pictures/bacon.jpg}
+    \caption{The fox said: "Have some chunky bacon"}
+  \end{figure}
+
+---
+name: image attributes has single quote html entity in alt and title
+in: "!/pictures/bacon.jpg(The fox said: 'Have some chunky bacon')!"
+html: '<p><img src="/pictures/bacon.jpg" title="The fox said: &#39;Have some chunky bacon&#39;" alt="The fox said: &#39;Have some chunky bacon&#39;" /></p>'
+---
+name: in square brackets
+in:  This is an [!image.jpg!] you see.
+html: <p>This is an <img src="image.jpg" alt="" /> you see.</p>
+---
+name: with link in square brackets
+in:  This is an [!image.jpg!:http://example.com/] you see.
+html: <p>This is an <a href="http://example.com/"><img src="image.jpg" alt="" /></a> you see.</p>
+---
+name: url containing parentheses
+in: "!http://commons.wikimedia.org/wiki/File:Rubis_sur_calcite_2(Vietnam).jpg!"
+html: |-
+  <p><img src="http://commons.wikimedia.org/wiki/File:Rubis_sur_calcite_2(Vietnam).jpg" alt="" /></p>
+---
+name: with alt and url containing parentheses
+in: "!http://commons.wikimedia.org/wiki/File:Rubis_sur_calcite_2(Vietnam).jpg(a big rock)!"
+html: |-
+  <p><img src="http://commons.wikimedia.org/wiki/File:Rubis_sur_calcite_2(Vietnam).jpg" title="a big rock" alt="a big rock" /></p>
+---
+name: with link that contains parentheses
+in: "!image.jpg(Alt text with (parentheses).)!"
+html: |-
+  <p><img src="image.jpg" title="Alt text with (parentheses)." alt="Alt text with (parentheses)." /></p>
+---
+name: with link and title and text afterward
+in: "!/image_r.jpg(description)!:image.jpg text."
+html: |-
+  <p><a href="image.jpg"><img src="/image_r.jpg" title="description" alt="description" /></a> text.</p>

@@ -1,0 +1,191 @@
+= RedCloth - Textile parser for Ruby
+
+Homepage::  https://github.com/jgarber/redcloth
+Maintainer:: Helio Cola https://github.com/heliocola
+Author::    Jason Garber
+Copyright:: (c) 2011 Jason Garber
+License::   MIT
+
+{rdoc-image:https://codeclimate.com/github/jgarber/redcloth/badges/gpa.svg}[https://codeclimate.com/github/jgarber/redcloth]
+
+= RedCloth
+
+RedCloth is a Ruby library for converting Textile into HTML.
+
+== Attention - Deprecating JRuby and Windows support in version 4.3
+
+In order to prioritize merging a fix for the long standing vulnerability *CVE-2012-6684*, our {new maintainer}[https://github.com/joshuasiler] has elected to stop maintaining the precompiled versions for Windows and JRuby. 
+
+== Installing
+
+RedCloth can be installed via RubyGems:
+
+  gem install RedCloth
+
+== Compiling
+
+If you just want to use RedCloth, you do NOT need to build/compile it. It is
+compiled from C sources automatically when you install the gem on the ruby
+platform. Precompiled binary gems are provided for JRuby and Win32 platforms prior to version 4.3.
+
+RedCloth can be compiled with <tt>rake compile</tt>. Ragel 6.3 or greater is
+required. Again, Ragel is NOT needed to simply use RedCloth.
+
+=== Supported platforms
+
+By default, the rake compile task builds a native C extension (MRI 1.8 or 1.9). A pure Ruby version can also be generated, but it's super slow and Ruby 1.8-only, and doesn't
+support multi-byte characters. 
+
+The RedCloth::EXTENSION_LANGUAGE constant indicates in which language your
+copy of RedCloth is compiled.
+
+== Bugs
+
+Please submit bugs as issues to this repo.
+
+== Using RedCloth
+
+RedCloth is simply an extension of the String class that can handle
+Textile formatting.  Use it like a String and output HTML with its
+RedCloth#to_html method.
+
+Simple use:
+ text = "This is *my* text."
+ RedCloth.new(text).to_html
+
+Multi-line example:
+
+ doc = RedCloth.new <<EOD
+ h2. Test document
+
+ Just a simple test.
+ EOD
+ puts doc.to_html
+
+
+== What is Textile?
+
+Textile is a simple formatting style for text
+documents, loosely based on some HTML conventions.
+
+== Sample Textile Text
+
+ h2. This is a title
+
+ h3. This is a subhead
+
+ This is a bit of paragraph.
+
+ bq. This is a blockquote.
+
+= Writing Textile
+
+A Textile document consists of paragraphs.  Paragraphs
+can be specially formatted by adding a small instruction
+to the beginning of the paragraph.
+
+ h3.     Header 3.
+ bq.     Blockquote.
+ #       Numeric list.
+ *       Bulleted list.
+
+== Quick Phrase Modifiers
+
+Quick phrase modifiers are also included, to allow formatting
+of small portions of text within a paragraph.
+
+ _emphasis_
+ __italicized__
+ *strong*
+ **bold**
+ ??citation??
+ -deleted text-
+ +inserted text+
+ ^superscript^
+ ~subscript~
+ @code@
+ %(classname)span%
+
+ ==notextile== (leave text alone)
+
+== Links
+
+To make a hypertext link, put the link text in "quotation
+marks" followed immediately by a colon and the URL of the link.
+
+Optional: text in (parentheses) following the link text,
+but before the closing quotation mark, will become a title
+attribute for the link, visible as a tool tip when a cursor is above it.
+
+Example:
+
+ "This is a link (This is a title)":http://www.textism.com
+
+Will become:
+
+ <a href="http://www.textism.com" title="This is a title">This is a link</a>
+
+== Images
+
+To insert an image, put the URL for the image inside exclamation marks.
+
+Optional: text that immediately follows the URL in (parentheses) will
+be used as the Alt text for the image. Images on the web should always
+have descriptive Alt text for the benefit of readers using non-graphical
+browsers.
+
+Optional: place a colon followed by a URL immediately after the
+closing ! to make the image into a link.
+
+Example:
+
+ !http://www.textism.com/common/textist.gif(Textist)!
+
+Will become:
+
+ <img src="http://www.textism.com/common/textist.gif" alt="Textist" />
+
+With a link:
+
+ !/common/textist.gif(Textist)!:http://textism.com
+
+Will become:
+
+ <a href="http://textism.com"><img src="/common/textist.gif" alt="Textist" /></a>
+
+== Defining Acronyms
+
+HTML allows authors to define acronyms via the tag. The definition appears as a
+tool tip when a cursor hovers over the acronym. A crucial aid to clear writing,
+this should be used at least once for each acronym in documents where they appear.
+
+To quickly define an acronym in Textile, place the full text in (parentheses)
+immediately following the acronym.
+
+Example:
+
+ ACLU(American Civil Liberties Union)
+
+Will become:
+
+ <acronym title="American Civil Liberties Union">ACLU</acronym>
+ 
+== Filtering HTML
+
+RedCloth doesn't filter unsafe html tags by default, do to this use the following syntax:
+  RedCloth.new("<script>alert(1)</script>", [:filter_html]).to_html
+which will filter the script tags from the HTML resulting in:
+  "&lt;script&gt;alert(1)&lt;/script&gt;"
+
+== Adding Tables
+
+In Textile, simple tables can be added by separating each column by
+a pipe.
+
+    |a|simple|table|row|
+    |And|Another|table|row|
+
+Styles are applied with curly braces.
+
+    table{border:1px solid black}.
+    {background:#ddd;color:red}. |a|red|row|

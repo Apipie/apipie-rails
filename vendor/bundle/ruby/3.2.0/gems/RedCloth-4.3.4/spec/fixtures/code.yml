@@ -1,0 +1,257 @@
+---
+name: inline code
+in: 'This is an empty dictionary: @{}@'
+html: '<p>This is an empty dictionary: <code>{}</code></p>'
+latex: "This is an empty dictionary: \\verb@{}@\n\n"
+---
+name: inline snip
+in: "The ```command``` is here."
+html:  "<p>The <pre><code>command</code></pre>\n is here.</p>"
+latex: "The \\verb`command` is here.\n\n"
+---
+name: inline code escapement
+in: 'Please type @cat "file.txt" > otherfile.txt@ at the prompt.'
+html: '<p>Please type <code>cat "file.txt" &gt; otherfile.txt</code> at the prompt.</p>'
+latex: "Please type \\verb@cat \"file.txt\" > otherfile.txt@ at the prompt.\n\n"
+---
+name: inline code escapement with digits
+in: |-
+  Regex-based string substitution with Ruby's gsub!: @"123<789".gsub!(/</, "") => "123789"@
+html: |-
+  <p>Regex-based string substitution with Ruby&#8217;s gsub!: <code>"123&lt;789".gsub!(/&lt;/, "") =&gt; "123789"</code></p>
+latex: |+
+  Regex-based string substitution with Ruby's gsub!: \verb@"123<789".gsub!(/</, "") => "123789"@
+
+---
+name: inlne code escapement describing textile paragraph styling 
+in: 'This paragraph is aligned left but if you add this: @p>.@ to the beginning it will be aligned right.'
+html: '<p>This paragraph is aligned left but if you add this: <code>p&gt;.</code> to the beginning it will be aligned right.</p>'
+latex: "This paragraph is aligned left but if you add this: \\verb@p>.@ to the beginning it will be aligned right.\n\n"
+---
+name: escapes code snippet containing html tag
+in: 'At the top of each page, please put @<h2>Title</h2>@ in the HTML.'
+html: '<p>At the top of each page, please put <code>&lt;h2&gt;Title&lt;/h2&gt;</code> in the <span class="caps">HTML</span>.</p>'
+latex: "At the top of each page, please put \\verb@<h2>Title</h2>@ in the HTML.\n\n"
+---
+name: escaping in blockcode
+in: 'bc. This is within a block of code, so < and > should be entities.  You can talk about a <p class="foo"> tag if you wish and it will be properly escaped.'
+html: '<pre><code>This is within a block of code, so &lt; and &gt; should be entities.  You can talk about a &lt;p class="foo"&gt; tag if you wish and it will be properly escaped.</code></pre>'
+---
+name: escaping in pre
+in: '<pre><code>This is within a block of code, so < and > should be entities.  You can talk about a <p class="foo"> tag in pre tags too.</code></pre>'
+html: '<pre><code>This is within a block of code, so &lt; and &gt; should be entities.  You can talk about a &lt;p class="foo"&gt; tag in pre tags too.</code></pre>'
+---
+name: escaping in normal text
+in: |-
+  This is a regular paragraph.  AT&T. &pound;38 > $38.
+html: |-
+  <p>This is a regular paragraph.  AT&amp;T. &pound;38 &gt; $38.</p>
+latex: "This is a regular paragraph.  AT\\&T. \\pounds{}38 \\textgreater{} \\$38.\n\n"
+---
+name: preservation of existing entities
+in: "Math fact: 3 &lt; 5 &amp; 5 &gt; 3 but &pound;6 &#62; $6. Oh, and 2 &divide; 4 is &frac12;."
+html: "<p>Math fact: 3 &lt; 5 &amp; 5 &gt; 3 but &pound;6 &#62; $6. Oh, and 2 &divide; 4 is &frac12;.</p>"
+latex: "Math fact: 3 \\textless{} 5 \\& 5 \\textgreater{} 3 but \\pounds{}6 \\textgreater{} \\$6. Oh, and 2 \\textdiv{} 4 is \\sfrac{1}{2}.\n\n"
+---
+name: escaping of existing entities in blockcode
+in: "bc. Math fact: 3 &lt; 5 &amp; 5 &gt; 3 but &pound;5 &#62; $5."
+html: "<pre><code>Math fact: 3 &amp;lt; 5 &amp;amp; 5 &amp;gt; 3 but &amp;pound;5 &amp;#62; $5.</code></pre>"
+latex: "\\begin{verbatim}\nMath fact: 3 &lt; 5 &amp; 5 &gt; 3 but &pound;5 &#62; $5.\\end{verbatim}\n"
+---
+name: no formatting within pre
+in: |-
+  <pre>
+  <code>
+  # *test*
+  __not italics__
+  no hard breaks
+  </code>
+  </pre>
+html: |-
+  <pre>
+  <code>
+  # *test*
+  __not italics__
+  no hard breaks
+  </code>
+  </pre>
+---
+name: no formatting within blockcode
+in: |-
+  bc. __not italics__
+html: |-
+  <pre><code>__not italics__</code></pre>
+---
+name: double-equals as inline notextile
+in: |-
+  p. Regular paragraph
+
+  ==Escaped portion -- will not be formatted by Textile at all==
+
+  p. Back to normal.
+html: |-
+  <p>Regular paragraph</p>
+  <p>Escaped portion -- will not be formatted by Textile at all</p>
+  <p>Back to normal.</p>
+---
+name: notextile tags
+in: |-
+  <notextile>
+  # *test*
+  </notextile>
+html: |-
+  # *test*
+valid_html: false
+---
+name: unfinished notextile tag
+in: |-
+  <notextile>
+  # *test*
+html: |-
+  <p><notextile></p>
+  <ol>
+  	<li><strong>test</strong></li>
+  </ol>
+valid_html: false
+---
+name: unfinished script tag
+in: |-
+  <script>
+  function main(){}
+html: |-
+  <script><br />
+  function main(){}
+valid_html: false
+---
+name: inline notextile tags
+in: 'This is how you make a link: <notextile>"link":http://www.redcloth.org</notextile>'
+html: '<p>This is how you make a link: "link":http://www.redcloth.org</p>'
+---
+name: code in list items
+in: |-
+  * @foo@
+  * @bar@
+  * and @x@ is also.
+
+html: |-
+  <ul>
+  	<li><code>foo</code></li>
+  	<li><code>bar</code></li>
+  	<li>and <code>x</code> is also.</li>
+  </ul>
+latex: |+
+  \begin{itemize}
+    \item \verb@foo@
+    \item \verb@bar@
+    \item and \verb@x@ is also.
+  \end{itemize}
+
+---
+name: extended block code
+in: |-
+  If you have a line or two of code or HTML to embed, use extended block code like so:
+
+  bc.. ./foo.pl%
+  <p>foo outputs an HTML paragraph</p>
+  
+  <p>block of code keeps going until a different block signature is encountered</p>
+
+  p. And then go back with a normal paragraph.
+html: |-
+  <p>If you have a line or two of code or <span class="caps">HTML</span> to embed, use extended block code like so:</p>
+  <pre><code>./foo.pl%
+  &lt;p&gt;foo outputs an HTML paragraph&lt;/p&gt;</code>
+
+  <code>&lt;p&gt;block of code keeps going until a different block signature is encountered&lt;/p&gt;</code></pre>
+  <p>And then go back with a normal paragraph.</p>
+---
+name: extended block code preserves leading whitespace after blank line
+in: |-
+  bc.. class Foo
+      def bar
+          'bar'
+      end
+
+      def baz
+          'baz'
+      end
+  end
+
+  p. That's it!
+html: |-
+  <pre><code>class Foo
+      def bar
+          'bar'
+      end</code>
+
+  <code>    def baz
+          'baz'
+      end
+  end</code></pre>
+  <p>That&#8217;s it!</p>
+---
+name: block code containing code avoids nesting code tags
+in: |-
+  bc. A one-liner: @ruby -ne '($h||={}).fetch($_){puts $h[$_]=$_}'@
+html: |-
+  <pre><code>A one-liner: @ruby -ne '($h||={}).fetch($_){puts $h[$_]=$_}'@</code></pre>
+---
+name: block code containing block start
+in: |-
+  bc. I saw a ship. It ate my elephant.
+html: |-
+  <pre><code>I saw a ship. It ate my elephant.</code></pre>
+---
+name: extended block code containing block start
+in: |-
+  bc.. This is an extended bc.
+  
+  I saw a ship. It ate my elephant.
+html: |-
+  <pre><code>This is an extended bc.</code>
+  
+  <code>I saw a ship. It ate my elephant.</code></pre>
+---
+name: block containing html tags
+in: bc. Can I talk about <h2>Headings</h2> here?
+html: '<pre><code>Can I talk about &lt;h2&gt;Headings&lt;/h2&gt; here?</code></pre>'
+---
+name: escape latex standard symbols 
+in: "standard symbols # $ % & _ { }" 
+latex: "standard symbols \\# \\$ \\% \\& \\_ \\{ \\}\n\n" 
+---
+name: escape latex text symbols 
+in: "text symbols \\ ~ ^" 
+latex: "text symbols \\textbackslash{} \\~{} \\^{}\n\n" 
+---
+name: named html entities to latex 
+in: "&hellip; &frac12;" 
+latex: "\\ldots{} \\sfrac{1}{2}\n\n" 
+---
+name: numeric html entities to latex 
+in: "&#8230; &#189;" 
+latex: "\\ldots{} \\sfrac{1}{2}\n\n"
+---
+name: unclosed pre tag
+in: '<pre><code>This is a pre that will go unfinished'
+html: '<pre><code>This is a pre that will go unfinished'
+valid_html: false
+---
+name: unclosed code tag
+in: 'This is a some <code>code that will go unfinished'
+html: '<p>This is a some <code>code that will go unfinished</p>'
+valid_html: false
+---
+name: code containing parentheses
+in: 'p. @some_method(some_params, some => test);@ Oh dear this fails'
+html: '<p><code>some_method(some_params, some =&gt; test);</code> Oh dear this fails</p>'
+latex: "\\verb@some_method(some_params, some => test);@ Oh dear this fails\n\n"
+---
+name: code preserves initial square brackets
+description: usually square brackets are used for the language (English, French, Spanish...), but that doesn't make sense for code and apparently is needed for some computer languages.
+in: "@[project]_dff.skjd@"
+html: <p><code>[project]_dff.skjd</code></p>
+---
+name: following also bracketed code in same line
+in: "Some [@code@] and some [@more code@]."
+html: "<p>Some <code>code</code> and some <code>more code</code>.</p>"

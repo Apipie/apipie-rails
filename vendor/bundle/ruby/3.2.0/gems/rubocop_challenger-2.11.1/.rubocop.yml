@@ -1,0 +1,30 @@
+require:
+  - rubocop-performance
+  - rubocop-rake
+  - rubocop-rspec
+  - rubocop-thread_safety
+
+inherit_from: .rubocop_todo.yml
+
+AllCops:
+  TargetRubyVersion: 2.7
+  NewCops: enable
+
+Metrics/BlockLength:
+  Exclude:
+    - "challenger.gemspec"
+    - "spec/**/*"
+
+Naming/VariableNumber:
+  EnforcedStyle: snake_case
+
+# For integration testing
+RSpec/MultipleExpectations:
+  Exclude:
+    - "spec/lib/rubocop_challenger/cli_spec.rb"
+
+RSpec/MultipleMemoizedHelpers:
+  Max: 10
+
+RSpec/NestedGroups:
+  Max: 4

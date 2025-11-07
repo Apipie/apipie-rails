@@ -1,0 +1,38 @@
+# Rubocop challenge!
+
+[<%= title %>](<%= rubydoc_url %>)
+
+<% if safe_autocorrect? -%>
+**Safe autocorrect: Yes**
+:white_check_mark: The autocorrect a cop does is safe (equivalent) by design.
+<% else -%>
+**Safe autocorrect: No**
+:warning: The autocorrect a cop can yield false positives by design.
+<% end -%>
+
+## Description
+
+> ### Overview
+>
+<% description.each_line do |line| -%>
+<%= "> #{line}".chomp.strip %>
+<% end -%>
+>
+> ### Examples
+<% examples.each do |name, text| -%>
+<% unless name.empty? -%>
+>
+> #### <%= name %>
+<% end -%>
+>
+> ```rb
+<% text.each_line do |line| -%>
+<%= "> #{line}".chomp.strip %>
+<% end -%>
+> ```
+<% end -%>
+
+## Checklist
+
+- [ ] Operation check
+- [ ] Team agreement

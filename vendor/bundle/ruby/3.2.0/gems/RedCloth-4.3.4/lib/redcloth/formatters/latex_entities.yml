@@ -1,0 +1,2414 @@
+# based on "SGML/XML character entity reference" at http://www.bitjungle.com/isoent/
+#
+---
+#EM SPACE
+emsp: \hspace{1em}
+#EM SPACE
+"8195": \hspace{1em}
+#EN SPACE
+ensp: \hspace{0.5em}
+#EN SPACE
+"8194": \hspace{0.5em}
+#THREE-PER-EM SPACE
+"8196": \hspace{0.33em}
+#FOUR-PER-EM SPACE
+"8197": \hspace{0.25em}
+#FIGURE SPACE
+"8199": \hphantom{0}
+#PUNCTUATION SPACE
+"8200": \hphantom{,}
+#THIN SPACE
+thinsp: \hspace{0.167em}
+#THIN SPACE
+"8201": \hspace{0.167em}
+#HAIR SPACE
+"8202": \hspace{1pt}
+#EM DASH
+mdash: ---
+#EM DASH
+"8212": ---
+#EN DASH
+ndash: ' -- '
+#EN DASH
+"8211": ' -- '
+#HYPHEN
+"8208": "-"
+#OPEN BOX
+"9251": \textvisiblespace{}
+#HORIZONTAL ELLIPSIS
+hellip: \ldots{}
+#HORIZONTAL ELLIPSIS
+"8230": \ldots{}
+#TWO DOT LEADER
+"8229": \nldr{}
+#VULGAR FRACTION ONE THIRD
+"8531": \sfrac{1}{3}
+#VULGAR FRACTION TWO THIRDS
+"8532": \sfrac{2}{3}
+#VULGAR FRACTION ONE FIFTH
+"8533": \sfrac{1}{5}
+#VULGAR FRACTION TWO FIFTHS
+"8534": \sfrac{2}{5}
+#VULGAR FRACTION THREE FIFTHS
+"8535": \sfrac{3}{5}
+#VULGAR FRACTION FOUR FIFTHS
+"8536": \sfrac{4}{5}
+#VULGAR FRACTION ONE SIXTH
+"8537": \sfrac{1}{6}
+#VULGAR FRACTION FIVE SIXTHS
+"8538": \sfrac{5}{6}
+#CARE OF
+"8453": "{^c\\!/\\!_o}"
+#FULL BLOCK
+"9608": \block{}
+#UPPER HALF BLOCK
+"9600": \uhblk{}
+#LOWER HALF BLOCK
+"9604": \lhblk{}
+#LIGHT SHADE
+#requires color
+"9617": \textcolor[gray]{.75}{\block}
+#MEDIUM SHADE
+#requires color
+"9618": \textcolor[gray]{.5}{\block}
+#DARK SHADE
+#requires color
+"9619": \textcolor[gray]{.25}{\block}
+#BLACK VERTICAL RECTANGLE
+"9646": \marker{}
+#WHITE CIRCLE
+"9675": \circ{}
+#WHITE SQUARE
+#requires amssymb
+"9633": \square{}
+#WHITE RECTANGLE
+"9645": \fbox{~~}
+#WHITE UP-POINTING TRIANGLE
+#requires amssymb
+"9653": \vartriangle{}
+#WHITE DOWN-POINTING TRIANGLE
+#requires amssymb
+"9663": \triangledown{}
+#WHITE STAR
+#requires pifont
+"9734": \ding{73}
+#BULLET
+bull: \textbullet{}
+#BULLET
+"8226": \textbullet{}
+#BLACK SMALL SQUARE
+#requires amssymb
+"9642": \blacksquare{}
+#BLACK UP-POINTING TRIANGLE
+#requires amssymb
+"9652": \blacktriangle{}
+#BLACK DOWN-POINTING TRIANGLE
+#requires amssymb
+"9662": \blacktriangledown{}
+#BLACK LEFT-POINTING TRIANGLE
+#requires amssymb
+"9666": \blacktriangleleft{}
+#BLACK RIGHT-POINTING TRIANGLE
+#requires amssymb
+"9656": \blacktriangleright{}
+#BLACK CLUB SUIT
+#requires pifont
+clubs: \ding{168}
+#BLACK CLUB SUIT
+#requires pifont
+"9827": \ding{168}
+#BLACK DIAMOND SUIT
+#requires pifont
+diams: \ding{169}
+#BLACK DIAMOND SUIT
+#requires pifont
+"9830": \ding{169}
+#BLACK HEART SUIT
+#requires pifont
+hearts: \ding{170}
+#BLACK HEART SUIT
+"9829": \ding{170}
+#BLACK SPADE SUIT
+#requires pifont
+spades: \ding{171}
+#BLACK SPADE SUIT
+#requires pifont
+"9824": \ding{171}
+#MALTESE CROSS
+#requires pifont
+"10016": \maltese{}
+#DAGGER
+dagger: \dag{}
+#DAGGER
+"8224": \dag{}
+#DOUBLE DAGGER
+Dagger: \ddag{}
+#DOUBLE DAGGER
+"8225": \ddag{}
+#CHECK MARK
+#requires pifont
+"10003": \checkmark{}
+#BALLOT X
+#requires pifont
+"10007": \ding{55}
+#MUSIC SHARP SIGN
+"9839": \sharp{}
+#MUSIC FLAT SIGN
+"9837": \flat{}
+#MALE SIGN
+#requires wasysym
+"9794": \male{}
+#FEMALE SIGN
+#requires wasysym
+"9792": \female{}
+#TELEPHONE SIGN
+#requires pifont
+"9742": \phone{}
+#TELEPHONE RECORDER
+#requires wasysym
+"8981": \recorder{}
+#SOUND RECORDING COPYRIGHT
+#requires textcomp
+"8471": \textcircledP{}
+#CARET
+"8257": \mathchar"1356
+#SINGLE LOW-9 QUOTATION MARK
+#requires fontenc:T1
+lsquor: ","
+#SINGLE LOW-9 QUOTATION MARK
+#requires fontenc:T1
+"8218": ","
+#DOUBLE LOW-9 QUOTATION MARK
+#requires fontenc:T1
+ldquor: ',,'
+#DOUBLE LOW-9 QUOTATION MARK
+#requires fontenc:T1
+"8222": ',,'
+#LATIN SMALL LIGATURE FF
+"64256": ff
+#LATIN SMALL LIGATURE FI
+"64257": fi
+#SMALL FJ LIGATURE
+"58290": fj
+#LATIN SMALL LIGATURE FFI
+"64259": ffi
+#LATIN SMALL LIGATURE FFL
+"64260": ffl
+#LATIN SMALL LIGATURE FL
+"64258": fl
+#DOUBLE HIGH-REVERSED-9 QUOTATION MARK
+"8223": '``'
+#SINGLE HIGH-REVERSED-9 QUOTATION MARK
+"8219": '`'
+#VERTICAL ELLIPSIS
+"8942": \vdots{}
+#HYPHEN BULLET
+"8259": \hybull{}
+#LOZENGE
+#requires amssymb
+loz: \lozenge{}
+#LOZENGE
+#requires amssymb
+"9674": \lozenge{}
+#LOZENGE, FILLED
+#requires amssymb
+"59403": \blacklozenge{}
+#WHITE LEFT-POINTING TRIANGLE
+"9667": \triangleleft{}
+#WHITE RIGHT-POINTING TRIANGLE
+"9657": \triangleright{}
+#BLACK STAR
+#requires amssymb
+"9733": \bigstar{}
+#MUSIC NATURAL SIGN
+"9838": \natural{}
+#PRESCRIPTION TAKE
+#requires textcomp
+"8478": \textrecipe{}
+#SIX POINTED BLACK STAR
+#requires pifont
+"10038": \ding{86}
+#POSITION INDICATOR
+"8982": \mathchar"2208
+#BOTTOM LEFT CROP
+"8973": \dlcrop{}
+#BOTTOM RIGHT CROP
+"8972": \drcrop{}
+#TOP LEFT CROP
+"8975": \ulcrop{}
+#TOP RIGHT CROP
+"8974": \urcrop{}
+#VULGAR FRACTION ONE HALF
+frac12: \sfrac{1}{2}
+#VULGAR FRACTION ONE HALF
+"189": \sfrac{1}{2}
+#VULGAR FRACTION ONE QUARTER
+frac14: \sfrac{1}{4}
+#VULGAR FRACTION ONE QUARTER
+"188": \sfrac{1}{4}
+#VULGAR FRACTION THREE QUARTERS
+frac34: \sfrac{3}{4}
+#VULGAR FRACTION THREE QUARTERS
+"190": \sfrac{3}{4}
+#VULGAR FRACTION ONE EIGHTH
+"8539": \sfrac{1}{8}
+#VULGAR FRACTION THREE EIGHTHS
+"8540": \sfrac{3}{8}
+#VULGAR FRACTION FIVE EIGHTHS
+"8541": \sfrac{5}{8}
+#VULGAR FRACTION SEVEN EIGHTHS
+"8542": \sfrac{7}{8}
+#SUPERSCRIPT ONE
+sup1: ^1
+#SUPERSCRIPT ONE
+"185": ^1
+#SUPERSCRIPT TWO
+sup2: ^2
+#SUPERSCRIPT TWO
+"178": ^2
+#SUPERSCRIPT THREE
+sup3: ^3
+#SUPERSCRIPT THREE
+"179": ^3
+#PLUS SIGN
+"43": +
+#PLUS-MINUS SIGN
+#requires textcomp
+plusmn: \textpm{}
+#PLUS-MINUS SIGN
+#requires textcomp
+"177": \textpm{}
+#LESS-THAN SIGN
+lt: \textless{}
+#LESS-THAN SIGN
+"60": \textless{}
+#EQUALS SIGN
+"61": "="
+#GREATER-THAN SIGN
+gt: \textgreater{}
+#GREATER-THAN SIGN
+"62": \textgreater{}
+#DIVISION SIGN
+#requires textcomp
+divide: \textdiv{}
+#DIVISION SIGN
+#requires textcomp
+"247": \textdiv{}
+#MULTIPLICATION SIGN
+#requires textcomp
+times: \texttimes{}
+#MULTIPLICATION SIGN
+#requires textcomp
+"215": \texttimes{}
+#CURRENCY SIGN
+#requires wasysym
+curren: \textcurrency{}
+#CURRENCY SIGN
+#requires wasysym
+"164": \textcurrency{}
+#POUND SIGN
+pound: \pounds{}
+#POUND SIGN
+"163": \pounds{}
+#DOLLAR SIGN
+"36": \$
+#CENT SIGN
+#requires wasysym
+cent: \textcent{}
+#CENT SIGN
+#requires wasysym
+"162": \textcent{}
+#YEN SIGN
+#requires amsfonts
+yen: \textyen{}
+#YEN SIGN
+#requires amsfonts
+"165": \textyen{}
+#NUMBER SIGN
+"35": \#
+#PERCENT SIGN
+"37": \%
+#AMPERSAND
+amp: \&
+#AMPERSAND
+"38": \&
+#ASTERISK
+"42": \ast{}
+#COMMERCIAL AT
+"64": "@"
+#LEFT SQUARE BRACKET
+"91": "["
+#REVERSE SOLIDUS
+"92": \textbackslash{}
+#RIGHT SQUARE BRACKET
+"93": "]"
+#LEFT CURLY BRACKET
+"123": \{
+#HORIZONTAL BAR
+"8213": ---
+#VERTICAL LINE
+"124": \textbar{}
+#RIGHT CURLY BRACKET
+"125": \}
+#MICRO SIGN
+#requires textcomp
+micro: \textmu{}
+#MICRO SIGN
+#requires textcomp
+"181": \textmu{}
+#OHM SIGN
+#requires textcomp
+"8486": \textohm{}
+#DEGREE SIGN
+#requires textcomp
+deg: \textdegree{}
+#DEGREE SIGN
+#requires textcomp
+"176": \textdegree{}
+#MASCULINE ORDINAL INDICATOR
+#requires textcomp
+ordm: \textordmasculine{}
+#MASCULINE ORDINAL INDICATOR
+#requires textcomp
+"186": \textordmasculine{}
+#FEMININE ORDINAL INDICATOR
+#requires textcomp
+ordf: \textordfeminine{}
+#FEMININE ORDINAL INDICATOR
+#requires textcomp
+"170": \textordfeminine{}
+#SECTION SIGN
+#requires textcomp
+sect: \S{}
+#SECTION SIGN
+#requires textcomp
+"167": \S{}
+#PILCROW SIGN
+#requires textcomp
+para: \P{}
+#PILCROW SIGN
+#requires textcomp
+"182": \P{}
+#MIDDLE DOT
+#requires amssymb
+middot: \textperiodcentered{}
+#MIDDLE DOT
+#requires amssymb
+"183": \textperiodcentered{}
+#LEFTWARDS ARROW
+#requires textcomp
+larr: \textleftarrow{}
+#LEFTWARDS ARROW
+#requires textcomp
+"8592": \textleftarrow{}
+#RIGHTWARDS ARROW
+#requires textcomp
+rarr: \textrightarrow{}
+#RIGHTWARDS ARROW
+#requires textcomp
+"8594": \textrightarrow{}
+#UPWARDS ARROW
+#requires textcomp
+uarr: \textuparrow{}
+#UPWARDS ARROW
+#requires textcomp
+"8593": \textuparrow{}
+#DOWNWARDS ARROW
+#requires textcomp
+darr: \textdownarrow{}
+#DOWNWARDS ARROW
+#requires textcomp
+"8595": \textdownarrow{}
+#COPYRIGHT SIGN
+#requires textcomp
+copy: \copyright{}
+#COPYRIGHT SIGN
+#requires textcomp
+"169": \copyright{}
+#REGISTERED SIGN
+#requires amssymb
+reg: \textregistered{}
+#REGISTERED SIGN
+#requires amssymb
+"174": \textregistered{}
+#TRADE MARK SIGN
+trade: \texttrademark{}
+#TRADE MARK SIGN
+"8482": \texttrademark{}
+#BROKEN BAR
+#requires wasysym
+brvbar: \textbrokenbar{}
+#BROKEN BAR
+#requires wasysym
+"166": \textbrokenbar{}
+#NOT SIGN
+#requires textcomp
+not: \textlnot{}
+#NOT SIGN
+#requires textcomp
+"172": \textlnot{}
+#EIGHTH NOTE
+#requires wasysym
+"9834": \textmusicalnote{}
+#EXCLAMATION MARK
+"33": "!"
+#INVERTED EXCLAMATION MARK
+iexcl: "!`"
+#INVERTED EXCLAMATION MARK
+"161": "!`"
+#QUOTATION MARK
+#requires fontenc:T1
+quot: "\""
+#QUOTATION MARK
+#requires fontenc:T1
+"34": "\""
+#APOSTROPHE
+#requires textcomp
+"39": "'"
+#LEFT PARENTHESIS
+"40": (
+#RIGHT PARENTHESIS
+"41": )
+#COMMA
+"44": ","
+#LOW LINE
+"95": \_
+#HYPHEN-MINUS
+"45": "-"
+#FULL STOP
+"46": .
+#SOLIDUS
+"47": /
+#COLON
+"58": ":"
+#SEMICOLON
+"59": ;
+#QUESTION MARK
+"63": "?"
+#INVERTED QUESTION MARK
+iquest: ?`
+#INVERTED QUESTION MARK
+"191": ?`
+#LEFT-POINTING DOUBLE ANGLE QUOTATION MARK
+#requires fontenc:T1
+laquo: \guillemotleft{}
+#LEFT-POINTING DOUBLE ANGLE QUOTATION MARK
+#requires fontenc:T1
+"171": \guillemotleft{}
+#RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK
+#requires fontenc:T1
+raquo: \guillemotright{}
+#RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK
+#requires fontenc:T1
+"187": \guillemotright{}
+#LEFT SINGLE QUOTATION MARK
+lsquo: '`'
+#LEFT SINGLE QUOTATION MARK
+"8216": '`'
+#RIGHT SINGLE QUOTATION MARK
+rsquo: "'"
+#RIGHT SINGLE QUOTATION MARK
+"8217": "'"
+#LEFT DOUBLE QUOTATION MARK
+ldquo: '``'
+#LEFT DOUBLE QUOTATION MARK
+"8220": '``'
+#RIGHT DOUBLE QUOTATION MARK
+rdquo: "''"
+#RIGHT DOUBLE QUOTATION MARK
+"8221": "''"
+#NO-BREAK SPACE
+nbsp: "~"
+#NO-BREAK SPACE
+"160": "~"
+#SOFT HYPHEN
+shy: \-
+#SOFT HYPHEN
+"173": \-
+#BOX DRAWINGS LIGHT HORIZONTAL
+"9472": \boxh{}
+#BOX DRAWINGS LIGHT VERTICAL
+"9474": \boxv{}
+#BOX DRAWINGS LIGHT UP AND RIGHT
+"9492": \boxur{}
+#BOX DRAWINGS LIGHT UP AND LEFT
+"9496": \boxul{}
+#BOX DRAWINGS LIGHT DOWN AND LEFT
+"9488": \boxdl{}
+#BOX DRAWINGS LIGHT DOWN AND RIGHT
+"9484": \boxdr{}
+#BOX DRAWINGS LIGHT VERTICAL AND RIGHT
+"9500": \boxvr{}
+#BOX DRAWINGS LIGHT UP AND HORIZONTAL
+"9524": \boxhu{}
+#BOX DRAWINGS LIGHT VERTICAL AND LEFT
+"9508": \boxvl{}
+#BOX DRAWINGS LIGHT DOWN AND HORIZONTAL
+"9516": \boxhd{}
+#BOX DRAWINGS LIGHT VERTICAL AND HORIZONTAL
+"9532": \boxvh{}
+#BOX DRAWINGS VERTICAL SINGLE AND RIGHT DOUBLE
+"9566": \boxvR{}
+#BOX DRAWINGS UP DOUBLE AND HORIZONTAL SINGLE
+"9576": \boxhU{}
+#BOX DRAWINGS VERTICAL SINGLE AND LEFT DOUBLE
+"9569": \boxvL{}
+#BOX DRAWINGS DOWN DOUBLE AND HORIZONTAL SINGLE
+"9573": \boxhD{}
+#BOX DRAWINGS VERTICAL SINGLE AND HORIZONTAL DOUBLE
+"9578": \boxvH{}
+#BOX DRAWINGS DOUBLE HORIZONTAL
+"9552": \boxH{}
+#BOX DRAWINGS DOUBLE VERTICAL
+"9553": \boxV{}
+#BOX DRAWINGS DOUBLE UP AND RIGHT
+"9562": \boxUR{}
+#BOX DRAWINGS DOUBLE UP AND LEFT
+"9565": \boxUL{}
+#BOX DRAWINGS DOUBLE DOWN AND LEFT
+"9559": \boxDL{}
+#BOX DRAWINGS DOUBLE DOWN AND RIGHT
+"9556": \boxDR{}
+#BOX DRAWINGS DOUBLE VERTICAL AND RIGHT
+"9568": \boxVR{}
+#BOX DRAWINGS DOUBLE UP AND HORIZONTAL
+"9577": \boxHU{}
+#BOX DRAWINGS DOUBLE VERTICAL AND LEFT
+"9571": \boxVL{}
+#BOX DRAWINGS DOUBLE DOWN AND HORIZONTAL
+"9574": \boxHD{}
+#BOX DRAWINGS DOUBLE VERTICAL AND HORIZONTAL
+"9580": \boxVH{}
+#BOX DRAWINGS VERTICAL DOUBLE AND RIGHT SINGLE
+"9567": \boxVr{}
+#BOX DRAWINGS UP SINGLE AND HORIZONTAL DOUBLE
+"9575": \boxHu{}
+#BOX DRAWINGS VERTICAL DOUBLE AND LEFT SINGLE
+"9570": \boxVl{}
+#BOX DRAWINGS DOWN SINGLE AND HORIZONTAL DOUBLE
+"9572": \boxHd{}
+#BOX DRAWINGS VERTICAL DOUBLE AND HORIZONTAL SINGLE
+"9579": \boxVh{}
+#BOX DRAWINGS UP SINGLE AND RIGHT DOUBLE
+"9560": \boxuR{}
+#BOX DRAWINGS UP DOUBLE AND LEFT SINGLE
+"9564": \boxUl{}
+#BOX DRAWINGS DOWN SINGLE AND LEFT DOUBLE
+"9557": \boxdL{}
+#BOX DRAWINGS DOWN DOUBLE AND RIGHT SINGLE
+"9555": \boxDr{}
+#BOX DRAWINGS UP DOUBLE AND RIGHT SINGLE
+"9561": \boxUr{}
+#BOX DRAWINGS UP SINGLE AND LEFT DOUBLE
+"9563": \boxuL{}
+#BOX DRAWINGS DOWN DOUBLE AND LEFT SINGLE
+"9558": \boxDl{}
+#BOX DRAWINGS DOWN SINGLE AND RIGHT DOUBLE
+"9554": \boxdR{}
+#ALEF SYMBOL
+alefsym: \aleph{}
+#ALEF SYMBOL
+"8501": \aleph{}
+#LOGICAL AND
+and: \wedge{}
+#LOGICAL AND
+"8743": \wedge{}
+#RIGHT ANGLE
+"8735": \sqangle{}
+#SPHERICAL ANGLE
+#requires amssymb
+"8738": \sphericalangle{}
+#ALMOST EQUAL TO
+"8776": \approx{}
+#BECAUSE
+#requires amssymb
+"8757": \because{}
+#UP TACK
+"8869": \bot{}
+#INTERSECTION
+cap: \cap{}
+#INTERSECTION
+"8745": \cap{}
+#APPROXIMATELY EQUAL TO
+cong: \cong{}
+#APPROXIMATELY EQUAL TO
+"8773": \cong{}
+#CONTOUR INTEGRAL
+"8750": \oint{}
+#UNION
+cup: \cup{}
+#UNION
+"8746": \cup{}
+#IDENTICAL TO
+equiv: \equiv{}
+#IDENTICAL TO
+"8801": \equiv{}
+#THERE EXISTS
+exist: \exists{}
+#THERE EXISTS
+"8707": \exists{}
+#FOR ALL
+forall: \forall{}
+#FOR ALL
+"8704": \forall{}
+#LATIN SMALL LETTER F WITH HOOK
+fnof: f
+#LATIN SMALL LETTER F WITH HOOK
+"402": f
+#GREATER-THAN OR EQUAL TO
+ge: \geq{}
+#GREATER-THAN OR EQUAL TO
+"8805": \geq{}
+#LEFT RIGHT DOUBLE ARROW
+"8660": \iff{}
+#INFINITY
+infin: \infty{}
+#INFINITY
+"8734": \infty{}
+#INTEGRAL
+int: \int{}
+#INTEGRAL
+"8747": \int{}
+#ELEMENT OF
+isin: \in{}
+#ELEMENT OF
+"8712": \in{}
+#LEFT ANGLE BRACKET
+#requires textcomp
+lang: \textlangle{}
+#LEFT ANGLE BRACKET
+#requires textcomp
+"12296": \textlangle{}
+#LEFTWARDS DOUBLE ARROW
+lArr: \Leftarrow{}
+#LEFTWARDS DOUBLE ARROW
+"8656": \Leftarrow{}
+#LESS-THAN OR EQUAL TO
+le: \leq{}
+#LESS-THAN OR EQUAL TO
+"8804": \leq{}
+#MINUS SIGN
+#requires textcomp
+minus: \textminus{}
+#MINUS SIGN
+#requires textcomp
+"8722": \textminus{}
+#MINUS-OR-PLUS SIGN
+"8723": \mp{}
+#NABLA
+nabla: \nabla{}
+#NABLA
+"8711": \nabla{}
+#NOT EQUAL TO
+ne: \not=
+#NOT EQUAL TO
+"8800": \not=
+#CONTAINS AS MEMBER
+ni: \ni{}
+#CONTAINS AS MEMBER
+"8715": \ni{}
+#LOGICAL OR
+or: \vee{}
+#LOGICAL OR
+"8744": \vee{}
+#PARALLEL TO
+"8741": \parallel{}
+#PARTIAL DIFFERENTIAL
+part: \partial{}
+#PARTIAL DIFFERENTIAL
+"8706": \partial{}
+#PER MILLE SIGN
+#requires wasysym
+permil: \textperthousand{}
+#PER MILLE SIGN
+#requires wasysym
+"8240": \textperthousand{}
+#UP TACK
+perp: \perp{}
+#UP TACK
+"8869": \perp{}
+#PRIME
+prime: ^\prime
+#PRIME
+"8242": ^\prime
+#DOUBLE PRIME
+Prime: "{''}"
+#DOUBLE PRIME
+"8243": "{''}"
+#PROPORTIONAL TO
+prop: \propto{}
+#PROPORTIONAL TO
+"8733": \propto{}
+#FOURTH ROOT
+#requires textcomp
+radic: \textsurd{}
+#FOURTH ROOT
+#requires textcomp
+"8730": \textsurd{}
+#RIGHT ANGLE BRACKET
+#requires textcomp
+rang: \textrangle{}
+#RIGHT ANGLE BRACKET
+#requires textcomp
+"12297": \textrangle{}
+#RIGHTWARDS DOUBLE ARROW
+rArr: \Rightarrow{}
+#RIGHTWARDS DOUBLE ARROW
+"8658": \Rightarrow{}
+#TILDE OPERATOR
+sim: \sim{}
+#TILDE OPERATOR
+"8764": \sim{}
+#APPROXIMATELY EQUAL TO
+"8771": \simeq{}
+#BLACK SQUARE
+#requires amssymb
+"9632": \square{}
+#SUBSET OF
+sub: \subset{}
+#SUBSET OF
+"8834": \subset{}
+#SUBSET OF OR EQUAL TO
+sube: \subseteq{}
+#SUBSET OF OR EQUAL TO
+"8838": \subseteq{}
+#SUPERSET OF
+sup: \supset{}
+#SUPERSET OF
+"8835": \supset{}
+#SUPERSET OF OR EQUAL TO
+supe: \supseteq{}
+#SUPERSET OF OR EQUAL TO
+"8839": \supseteq{}
+#THEREFORE
+#requires amssymb
+there4: \therefore{}
+#THEREFORE
+#requires amssymb
+"8756": \therefore{}
+#DOUBLE VERTICAL LINE
+#requires textcomp
+"8214": \textbardbl{}
+#ANGSTROM SIGN
+"8491": \AA{}
+#SCRIPT CAPITAL B
+#requires mathrsfs
+"8492": B
+#RING OPERATOR
+"8728": \circ{}
+#DIAERESIS
+"168": \ddot{}
+#COMBINING FOUR DOTS ABOVE
+"8412": \ddot{}\kern4.5pt\ddot{ }
+#SCRIPT CAPITAL H
+#requires mathrsfs
+"8459": H
+#SCRIPT CAPITAL L
+#requires mathrsfs
+"8466": L
+#ASTERISK OPERATOR
+lowast: _\ast
+#ASTERISK OPERATOR
+"8727": _\ast
+#NOT AN ELEMENT OF
+notin: \not\in{}
+#NOT AN ELEMENT OF
+"8713": \not\in{}
+#SCRIPT SMALL O
+"8500": \mathit{o}
+#SCRIPT CAPITAL M
+#requires mathrsfs
+"8499": M
+#COMBINING THREE DOTS ABOVE
+"8411": \ddot{}\kern 3pt\dot{ }
+#TRIPLE PRIME
+"8244": "{'''}"
+#ESTIMATES
+"8793": \stackrel{\wedge}{=}
+#GREEK SMALL LETTER ALPHA
+alpha: \alpha{}
+#GREEK SMALL LETTER ALPHA
+"945": \alpha{}
+#GREEK SMALL LETTER BETA
+beta: \beta{}
+#GREEK SMALL LETTER BETA
+"946": \beta{}
+#GREEK SMALL LETTER GAMMA
+gamma: \gamma{}
+#GREEK SMALL LETTER GAMMA
+"947": \gamma{}
+#GREEK CAPITAL LETTER GAMMA
+Gamma: \Gamma{}
+#GREEK CAPITAL LETTER GAMMA
+"915": \Gamma{}
+#GREEK LETTER DIGAMMA
+#requires amssymb
+"988": \digamma{}
+#GREEK SMALL LETTER DELTA
+delta: \delta{}
+#GREEK SMALL LETTER DELTA
+"948": \delta{}
+#GREEK CAPITAL LETTER DELTA
+Delta: \Delta{}
+#GREEK CAPITAL LETTER DELTA
+"916": \Delta{}
+#GREEK SMALL LETTER EPSILON
+epsilon: \epsilon{}
+#GREEK SMALL LETTER EPSILON
+"949": \epsilon{}
+#SMALL ELEMENT OF
+"8714": \epsilon{}
+#GREEK SMALL LETTER ZETA
+zeta: \zeta{}
+#GREEK SMALL LETTER ZETA
+"950": \zeta{}
+#GREEK SMALL LETTER ETA
+eta: \eta{}
+#GREEK SMALL LETTER ETA
+"951": \eta{}
+#GREEK SMALL LETTER THETA
+theta: \theta{}
+#GREEK SMALL LETTER THETA
+"952": \theta{}
+#GREEK CAPITAL LETTER THETA
+Theta: \Theta{}
+#GREEK CAPITAL LETTER THETA
+"920": \Theta{}
+#GREEK THETA SYMBOL
+thetasym: \vartheta{}
+#GREEK THETA SYMBOL
+"977": \vartheta{}
+#GREEK SMALL LETTER IOTA
+iota: \iota{}
+#GREEK SMALL LETTER IOTA
+"953": \iota{}
+#GREEK SMALL LETTER KAPPA
+kappa: \kappa{}
+#GREEK SMALL LETTER KAPPA
+"954": \kappa{}
+#GREEK KAPPA SYMBOL
+#requires amssymb
+"1008": \varkappa{}
+#GREEK SMALL LETTER LAMDA
+lambda: \lambda{}
+#GREEK SMALL LETTER LAMDA
+"955": \lambda{}
+#GREEK CAPITAL LETTER LAMDA
+Lambda: \Lambda{}
+#GREEK CAPITAL LETTER LAMDA
+"923": \Lambda{}
+#GREEK SMALL LETTER MU
+mu: \mu{}
+#GREEK SMALL LETTER MU
+"956": \mu{}
+#GREEK SMALL LETTER NU
+nu: \nu{}
+#GREEK SMALL LETTER NU
+"957": \nu{}
+#GREEK SMALL LETTER XI
+xi: \xi{}
+#GREEK SMALL LETTER XI
+"958": \xi{}
+#GREEK CAPITAL LETTER XI
+Xi: \Xi{}
+#GREEK CAPITAL LETTER XI
+"926": \Xi{}
+#GREEK SMALL LETTER PI
+pi: \pi{}
+#GREEK SMALL LETTER PI
+"960": \pi{}
+#GREEK PI SYMBOL
+piv: \varpi{}
+#GREEK PI SYMBOL
+"982": \varpi{}
+#GREEK CAPITAL LETTER PI
+Pi: \Pi{}
+#GREEK CAPITAL LETTER PI
+"928": \Pi{}
+#GREEK SMALL LETTER RHO
+rho: \rho{}
+#GREEK SMALL LETTER RHO
+"961": \rho{}
+#GREEK RHO SYMBOL
+"1009": \varrho{}
+#GREEK SMALL LETTER SIGMA
+sigma: \sigma{}
+#GREEK SMALL LETTER SIGMA
+"963": \sigma{}
+#GREEK CAPITAL LETTER SIGMA
+Sigma: \Sigma{}
+#GREEK CAPITAL LETTER SIGMA
+"931": \Sigma{}
+#GREEK SMALL LETTER FINAL SIGMA
+sigmaf: \varsigma{}
+#GREEK SMALL LETTER FINAL SIGMA
+"962": \varsigma{}
+#GREEK SMALL LETTER TAU
+tau: \tau{}
+#GREEK SMALL LETTER TAU
+"964": \tau{}
+#GREEK SMALL LETTER UPSILON
+upsi: \upsilon{}
+#GREEK SMALL LETTER UPSILON
+"965": \upsilon{}
+#GREEK UPSILON WITH HOOK SYMBOL
+upsih: \Upsilon{}
+#GREEK UPSILON WITH HOOK SYMBOL
+"978": \Upsilon{}
+#GREEK SMALL LETTER PHI
+phis: \phi{}
+#GREEK SMALL LETTER PHI
+"966": \phi{}
+#GREEK CAPITAL LETTER PHI
+Phi: \Phi{}
+#GREEK CAPITAL LETTER PHI
+"934": \Phi{}
+#GREEK PHI SYMBOL
+"981": \varphi{}
+#GREEK SMALL LETTER CHI
+chi: \chi{}
+#GREEK SMALL LETTER CHI
+"967": \chi{}
+#GREEK SMALL LETTER PSI
+psi: \psi{}
+#GREEK SMALL LETTER PSI
+"968": \psi{}
+#GREEK CAPITAL LETTER PSI
+Psi: \Psi{}
+#GREEK CAPITAL LETTER PSI
+"936": \Psi{}
+#GREEK SMALL LETTER OMEGA
+omega: \omega{}
+#GREEK SMALL LETTER OMEGA
+"969": \omega{}
+#GREEK CAPITAL LETTER OMEGA
+Omega: \Omega{}
+#GREEK CAPITAL LETTER OMEGA
+"937": \Omega{}
+#GREEK SMALL LETTER ALPHA
+#requires amsbsy
+"945": \alpha{}
+#GREEK SMALL LETTER BETA
+#requires amsbsy
+"946": \beta{}
+#GREEK SMALL LETTER GAMMA
+#requires amsbsy
+"947": \gamma{}
+#GREEK CAPITAL LETTER GAMMA
+#requires amsbsy
+"915": \Gamma{}
+#GREEK LETTER DIGAMMA
+#requires amsbsy,amssymb
+"988": \digamma{}
+#GREEK SMALL LETTER DELTA
+#requires amsbsy
+"948": \delta{}
+#GREEK CAPITAL LETTER DELTA
+#requires amsbsy
+"916": \Delta{}
+#GREEK SMALL LETTER EPSILON
+#requires amsbsy
+"949": \epsilon{}
+#GREEK SMALL LETTER EPSILON
+#requires amsbsy
+"949": \varepsilon{}
+#GREEK SMALL LETTER EPSILON
+#requires amsbsy
+"949": \epsilon{}
+#GREEK SMALL LETTER ZETA
+#requires amsbsy
+"950": \zeta{}
+#GREEK SMALL LETTER ETA
+#requires amsbsy
+"951": \eta{}
+#GREEK SMALL LETTER THETA
+#requires amsbsy
+"952": \theta{}
+#GREEK CAPITAL LETTER THETA
+#requires amsbsy
+"920": \Theta{}
+#GREEK THETA SYMBOL
+#requires amsbsy
+"977": \vartheta{}
+#GREEK SMALL LETTER IOTA
+#requires amsbsy
+"953": \iota{}
+#GREEK SMALL LETTER KAPPA
+#requires amsbsy
+"954": \kappa{}
+#GREEK KAPPA SYMBOL
+#requires amsbsy,amssymb
+"1008": \varkappa{}
+#GREEK SMALL LETTER LAMDA
+#requires amsbsy
+"955": \lambda{}
+#GREEK CAPITAL LETTER LAMDA
+#requires amsbsy
+"923": \Lambda{}
+#GREEK SMALL LETTER MU
+#requires amsbsy
+"956": \mu{}
+#GREEK SMALL LETTER NU
+#requires amsbsy
+"957": \nu{}
+#GREEK SMALL LETTER XI
+#requires amsbsy
+"958": \xi{}
+#GREEK CAPITAL LETTER XI
+#requires amsbsy
+"926": \Xi{}
+#GREEK SMALL LETTER PI
+#requires amsbsy
+"960": \pi{}
+#GREEK CAPITAL LETTER PI
+#requires amsbsy
+"928": \Pi{}
+#GREEK PI SYMBOL
+#requires amsbsy
+"982": \varpi{}
+#GREEK SMALL LETTER RHO
+#requires amsbsy
+"961": \rho{}
+#GREEK RHO SYMBOL
+#requires amsbsy
+"1009": \varrho{}
+#GREEK SMALL LETTER SIGMA
+#requires amsbsy
+"963": \sigma{}
+#GREEK CAPITAL LETTER SIGMA
+#requires amsbsy
+"931": \Sigma{}
+#GREEK SMALL LETTER FINAL SIGMA
+#requires amsbsy
+"962": \varsigma{}
+#GREEK SMALL LETTER TAU
+#requires amsbsy
+"964": \tau{}
+#GREEK SMALL LETTER UPSILON
+#requires amsbsy
+"965": \upsilon{}
+#GREEK CAPITAL LETTER UPSILON
+#requires amsbsy
+"978": \Upsilon{}
+#GREEK SMALL LETTER PHI
+#requires amsbsy
+"966": \phi{}
+#GREEK CAPITAL LETTER PHI
+#requires amsbsy
+"934": \Phi{}
+#GREEK PHI SYMBOL
+#requires amsbsy
+"981": \varphi{}
+#GREEK SMALL LETTER CHI
+#requires amsbsy
+"967": \chi{}
+#GREEK SMALL LETTER PSI
+#requires amsbsy
+"968": \psi{}
+#GREEK CAPITAL LETTER PSI
+#requires amsbsy
+"936": \Psi{}
+#GREEK SMALL LETTER OMEGA
+#requires amsbsy
+"969": \omega{}
+#GREEK CAPITAL LETTER OMEGA
+#requires amsbsy
+"937": \Omega{}
+#ANGLE
+ang: \angle{}
+#ANGLE
+"8736": \angle{}
+#MEASURED ANGLE
+#requires amssymb
+"8737": \measuredangle{}
+#BET SYMBOL
+#requires amssymb
+"8502": \beth{}
+#REVERSED PRIME
+#requires amssymb
+"8245": ^\backprime
+#COMPLEMENT
+#requires amssymb
+"8705": \complement{}
+#DALET SYMBOL
+#requires amssymb
+"8504": \daleth{}
+#SCRIPT SMALL L
+"8467": \ell{}
+#EMPTY SET
+empty: \emptyset{}
+#EMPTY SET
+"8709": \emptyset{}
+#GIMEL SYMBOL
+#requires amssymb
+"8503": \gimel{}
+#BLACK-LETTER CAPITAL I
+image: \Im{}
+#BLACK-LETTER CAPITAL I
+"8465": \Im{}
+#THERE DOES NOT EXIST
+#requires amssymb
+"8708": \nexists{}
+#CIRCLED LATIN CAPITAL LETTER S
+#requires amssymb
+"9416": \textcircled{S}
+#PLANCK CONSTANT OVER TWO PI
+"8463": \hbar{}
+#BLACK-LETTER CAPITAL R
+real: \Re{}
+#BLACK-LETTER CAPITAL R
+"8476": \Re{}
+#SMALL REVERSE SOLIDUS
+#requires amssymb
+"65128": \smallsetminus{}
+#SCRIPT CAPITAL P
+weierp: \wp{}
+#SCRIPT CAPITAL P
+"8472": \wp{}
+#N-ARY COPRODUCT
+"8720": \amalg{}
+#PERSPECTIVE
+#requires amssymb
+"8966": \doublebarwedge{}
+#NAND
+#requires amssymb
+"8892": \barwedge{}
+#DOUBLE INTERSECTION
+#requires amssymb
+"8914": \Cap{}
+#DOUBLE UNION
+#requires amssymb
+"8915": \Cup{}
+#CURLY LOGICAL OR
+#requires amssymb
+"8910": \curlyvee{}
+#CURLY LOGICAL AND
+#requires amssymb
+"8911": \curlywedge{}
+#DIAMOND OPERATOR
+"8900": \diamond{}
+#DIVISION TIMES
+#requires amssymb
+"8903": \divideontimes{}
+#INTERCALATE
+#requires amssymb
+"8890": \intercal{}
+#LEFT SEMIDIRECT PRODUCT
+#requires amssymb
+"8907": \leftthreetimes{}
+#LEFT NORMAL FACTOR SEMIDIRECT PRODUCT
+#requires amssymb
+"8905": \ltimes{}
+#SQUARED MINUS
+#requires amssymb
+"8863": \boxminus{}
+#CIRCLED ASTERISK OPERATOR
+#requires amssymb
+"8859": \circledast{}
+#CIRCLED RING OPERATOR
+#requires amssymb
+"8858": \circledcirc{}
+#CIRCLED DASH
+#requires amssymb
+"8861": \circleddash{}
+#CIRCLED DOT OPERATOR
+"8857": \odot{}
+#CIRCLED MINUS
+"8854": \ominus{}
+#CIRCLED PLUS
+oplus: \oplus{}
+#CIRCLED PLUS
+"8853": \oplus{}
+#CIRCLED DIVISION SLASH
+"8856": \oslash{}
+#CIRCLED TIMES
+otimes: \otimes{}
+#CIRCLED TIMES
+"8855": \otimes{}
+#SQUARED PLUS
+#requires amssymb
+"8862": \boxplus{}
+#DOT PLUS
+#requires amssymb
+"8724": \dotplus{}
+#RIGHT SEMIDIRECT PRODUCT
+#requires amssymb
+"8908": \rightthreetimes{}
+#RIGHT NORMAL FACTOR SEMIDIRECT PRODUCT
+#requires amssymb
+"8906": \rtimes{}
+#DOT OPERATOR
+sdot: \cdot{}
+#DOT OPERATOR
+"8901": \cdot{}
+#SQUARED DOT OPERATOR
+#requires amssymb
+"8865": \boxdot{}
+#SET MINUS
+"8726": \setminus{}
+#SQUARE CAP
+"8851": \sqcap{}
+#SQUARE CUP
+"8852": \sqcup{}
+#STAR OPERATOR
+"8902": \star{}
+#SQUARED TIMES
+#requires amssymb
+"8864": \boxtimes{}
+#DOWN TACK
+"8868": \top{}
+#MULTISET UNION
+"8846": \uplus{}
+#WREATH PRODUCT
+"8768": \wr{}
+#LARGE CIRCLE
+#requires textcomp
+"9711": \textbigcircle{}
+#WHITE DOWN-POINTING TRIANGLE
+"9661": \bigtriangledown{}
+#WHITE UP-POINTING TRIANGLE
+"9651": \bigtriangleup{}
+#N-ARY COPRODUCT
+"8720": \coprod{}
+#N-ARY PRODUCT
+prod: \prod{}
+#N-ARY PRODUCT
+"8719": \prod{}
+#N-ARY SUMMATION
+sum: \sum{}
+#N-ARY SUMMATION
+"8721": \sum{}
+#ALMOST EQUAL OR EQUAL TO
+#requires amssymb
+"8778": \approxeq{}
+#EQUIVALENT TO
+asymp: \asymp{}
+#EQUIVALENT TO
+"8781": \asymp{}
+#ALL EQUAL TO
+#requires amssymb
+"8780": \backcong{}
+#SMALL CONTAINS AS MEMBER
+#requires amssymb
+"8717": \backepsilon{}
+#BOWTIE
+"8904": \bowtie{}
+#REVERSED TILDE
+#requires amssymb
+"8765": \backsim{}
+#REVERSED TILDE EQUALS
+#requires amssymb
+"8909": \backsimeq{}
+#GEOMETRICALLY EQUIVALENT TO
+#requires amssymb
+"8782": \Bumpeq{}
+#DIFFERENCE BETWEEN
+#requires amssymb
+"8783": \bumpeq{}
+#RING EQUAL TO
+#requires amssymb
+"8791": \circeq{}
+#COLON EQUALS
+"8788": ":="
+#EQUAL TO OR PRECEDES
+#requires amssymb
+"8926": \curlyeqprec{}
+#EQUAL TO OR SUCCEEDS
+#requires amssymb
+"8927": \curlyeqsucc{}
+#PRECEDES OR EQUAL TO
+#requires amssymb
+"8828": \preccurlyeq{}
+#LEFT TACK
+"8867": \dashv{}
+#RING IN EQUAL TO
+#requires amssymb
+"8790": \eqcirc{}
+#EQUALS COLON
+"8789": "=:"
+#GEOMETRICALLY EQUAL TO
+#requires amssymb
+"8785": \doteqdot{}
+#APPROACHES THE LIMIT
+"8784": \doteq{}
+#APPROXIMATELY EQUAL TO OR THE IMAGE OF
+#requires amssymb
+"8786": \fallingdotseq{}
+#EQUAL TO OR GREATER-THAN
+#requires amssymb
+"8925": \eqslantgtr{}
+#EQUAL TO OR LESS-THAN
+#requires amssymb
+"8924": \eqslantless{}
+#IMAGE OF OR APPROXIMATELY EQUAL TO
+#requires amssymb
+"8787": \risingdotseq{}
+#PITCHFORK
+#requires amssymb
+"8916": \pitchfork{}
+#FROWN
+"8994": \frown{}
+#GREATER-THAN WITH DOT
+#requires amssymb
+"8919": \gtrdot{}
+#GREATER-THAN OVER EQUAL TO
+#requires amssymb
+"8807": \geqq{}
+#GREATER-THAN EQUAL TO OR LESS-THAN
+#requires amssymb
+"8923": \gtreqless{}
+#GREATER-THAN EQUAL TO OR LESS-THAN
+#requires amssymb
+"8923": \gtreqqless{}
+#VERY MUCH GREATER-THAN
+#requires amssymb
+"8921": \ggg{}
+#GREATER-THAN OR LESS-THAN
+#requires amssymb
+"8823": \gtrless{}
+#GREATER-THAN OR EQUIVALENT TO
+#requires amssymb
+"8819": \gtrsim{}
+#MUCH GREATER-THAN
+"8811": \gg{}
+#LESS-THAN WITH DOT
+#requires amssymb
+"8918": \lessdot{}
+#LESS-THAN OVER EQUAL TO
+#requires amssymb
+"8806": \leqq{}
+#LESS-THAN EQUAL TO OR GREATER-THAN
+#requires amssymb
+"8922": \lesseqqgtr{}
+#LESS-THAN EQUAL TO OR GREATER-THAN
+#requires amssymb
+"8922": \lesseqgtr{}
+#LESS-THAN OR GREATER-THAN
+#requires amssymb
+"8822": \lessgtr{}
+#VERY MUCH LESS-THAN
+#requires amssymb
+"8920": \lll{}
+#LESS-THAN OR EQUIVALENT TO
+#requires amssymb
+"8818": \lesssim{}
+#MUCH LESS-THAN
+"8810": \ll{}
+#NORMAL SUBGROUP OF OR EQUAL TO
+#requires amssymb
+"8884": \trianglelefteq{}
+#DIVIDES
+"8739": \mid{}
+#MODELS
+"8871": \models{}
+#PRECEDES
+"8826": \prec{}
+#PRECEDES OR EQUAL TO
+"8828": \preceq{}
+#PRECEDES OR EQUIVALENT TO
+#requires amssymb
+"8830": \precsim{}
+#CONTAINS AS NORMAL SUBGROUP OR EQUAL TO
+#requires amssymb
+"8885": \trianglerighteq{}
+#SUCCEEDS
+"8827": \succ{}
+#SUCCEEDS OR EQUAL TO
+#requires amssymb
+"8829": \succcurlyeq{}
+#SUCCEEDS OR EQUAL TO
+"8829": \succeq{}
+#SUCCEEDS OR EQUIVALENT TO
+#requires amssymb
+"8831": \succsim{}
+#SMILE
+"8995": \smile{}
+#SQUARE IMAGE OF
+#requires amssymb
+"8847": \sqsubset{}
+#SQUARE IMAGE OF OR EQUAL TO
+"8849": \sqsubseteq{}
+#SQUARE ORIGINAL OF
+#requires amssymb
+"8848": \sqsupset{}
+#SQUARE ORIGINAL OF OR EQUAL TO
+"8850": \sqsupseteq{}
+#DOUBLE SUBSET
+#requires amssymb
+"8912": \Subset{}
+#SUBSET OF OR EQUAL TO
+#requires amssymb
+"8838": \subseteqq{}
+#DOUBLE SUPERSET
+#requires amssymb
+"8913": \Supset{}
+#SUPERSET OF OR EQUAL TO
+#requires amssymb
+"8839": \supseteqq{}
+#DELTA EQUAL TO
+#requires amssymb
+"8796": \triangleq{}
+#BETWEEN
+#requires amssymb
+"8812": \between{}
+#RIGHT TACK
+"8866": \vdash{}
+#FORCES
+#requires amssymb
+"8873": \Vdash{}
+#TRUE
+#requires amssymb
+"8872": \vDash{}
+#XOR
+#requires amssymb
+"8891": \veebar{}
+#NORMAL SUBGROUP OF
+#requires amssymb
+"8882": \vartriangleleft{}
+#PROPORTIONAL TO
+#requires amssymb
+"8733": \varpropto{}
+#CONTAINS AS NORMAL SUBGROUP
+#requires amssymb
+"8883": \vartriangleright{}
+#TRIPLE VERTICAL BAR RIGHT TURNSTILE
+#requires amssymb
+"8874": \Vvdash{}
+#GREATER-THAN BUT NOT EQUAL TO
+#requires amssymb
+"8809": \gneq{}
+#GREATER-THAN BUT NOT EQUAL TO
+#requires amssymb
+"8809": \gneqq{}
+#GREATER-THAN BUT NOT EQUIVALENT TO
+#requires amssymb
+"8935": \gnsim{}
+#GREATER-THAN BUT NOT EQUAL TO
+#requires amssymb
+"8809": \gvertneqq{}
+#LESS-THAN BUT NOT EQUAL TO
+#requires amssymb
+"8808": \lneqq{}
+#LESS-THAN BUT NOT EQUAL TO
+#requires amssymb
+"8808": \lneq{}
+#LESS-THAN BUT NOT EQUIVALENT TO
+#requires amssymb
+"8934": \lnsim{}
+#LESS-THAN BUT NOT EQUAL TO
+#requires amssymb
+"8808": \lvertneqq{}
+#NOT ALMOST EQUAL TO
+"8777": \not\approx{}
+#NEITHER APPROXIMATELY NOR ACTUALLY EQUAL TO
+#requires amssymb
+"8775": \not\cong{}
+#NOT IDENTICAL TO
+"8802": \not\equiv{}
+#NEITHER GREATER-THAN NOR EQUAL TO
+#requires amssymb
+"8817": \not\geq{}
+#NEITHER GREATER-THAN NOR EQUAL TO
+#requires amssymb
+"8817": \ngeqslant{}
+#NOT GREATER-THAN
+#requires amssymb
+"8815": \not>
+#NEITHER LESS-THAN NOR EQUAL TO
+#requires amssymb
+"8816": \not\leq{}
+#NEITHER LESS-THAN NOR EQUAL TO
+#requires amssymb
+"8816": \nleqslant{}
+#NOT LESS-THAN
+#requires amssymb
+"8814": \not<
+#NOT NORMAL SUBGROUP OF
+#requires amssymb
+"8938": \ntriangleleft{}
+#NOT NORMAL SUBGROUP OF OR EQUAL TO
+#requires amssymb
+"8940": \ntrianglelefteq{}
+#DOES NOT DIVIDE
+#requires amssymb
+"8740": \nmid{}
+#NOT PARALLEL TO
+#requires amssymb
+"8742": \nparallel{}
+#DOES NOT PRECEDE
+#requires amssymb
+"8832": \not\prec{}
+#DOES NOT PRECEDE OR EQUAL
+#requires amssymb
+"8928": \not\preceq{}
+#DOES NOT CONTAIN AS NORMAL SUBGROUP
+#requires amssymb
+"8939": \ntriangleright{}
+#DOES NOT CONTAIN AS NORMAL SUBGROUP OR EQUAL
+#requires amssymb
+"8941": \ntrianglerighteq{}
+#DOES NOT SUCCEED
+#requires amssymb
+"8833": \not\succ{}
+#DOES NOT SUCCEED OR EQUAL
+#requires amssymb
+"8929": \not\succeq{}
+#NOT TILDE
+#requires amssymb
+"8769": \not\sim{}
+#NOT ASYMPTOTICALLY EQUAL TO
+"8772": \not\simeq{}
+#NOT A SUBSET OF
+nsub: \not\subset{}
+#NOT A SUBSET OF
+"8836": \not\subset{}
+#NEITHER A SUBSET OF NOR EQUAL TO
+#requires amssymb
+"8840": \not\subseteq{}
+#NEITHER A SUBSET OF NOR EQUAL TO
+#requires amssymb
+"8840": \nsubseteqq{}
+#NOT A SUPERSET OF
+"8837": \not\supset{}
+#NEITHER A SUPERSET OF NOR EQUAL TO
+#requires amssymb
+"8841": \nsupseteqq{}
+#NEITHER A SUPERSET OF NOR EQUAL TO
+#requires amssymb
+"8841": \not\supseteq{}
+#DOES NOT PROVE
+#requires amssymb
+"8876": \nvdash{}
+#NOT TRUE
+#requires amssymb
+"8877": \nvDash{}
+#NEGATED DOUBLE VERTICAL BAR DOUBLE RIGHT TURNSTILE
+#requires amssymb
+"8879": \nVDash{}
+#DOES NOT FORCE
+#requires amssymb
+"8878": \nVdash{}
+#PRECEDES BUT NOT EQUIVALENT TO
+#requires amssymb
+"8936": \precnsim{}
+#SUCCEEDS BUT NOT EQUIVALENT TO
+#requires amssymb
+"8937": \succnsim{}
+#TRUE
+#requires amssymb
+"8842": \subsetneq{}
+#TRUE
+#requires amssymb
+"8842": \subsetneqq{}
+#SUPERSET OF WITH NOT EQUAL TO
+#requires amssymb
+"8843": \supsetneq{}
+#SUPERSET OF WITH NOT EQUAL TO
+#requires amssymb
+"8843": \supsetneqq{}
+#ANTICLOCKWISE TOP SEMICIRCLE ARROW
+#requires amssymb
+"8630": \curvearrowleft{}
+#CLOCKWISE TOP SEMICIRCLE ARROW
+#requires amssymb
+"8631": \curvearrowright{}
+#DOWNWARDS DOUBLE ARROW
+dArr: \Downarrow{}
+#DOWNWARDS DOUBLE ARROW
+"8659": \Downarrow{}
+#DOWNWARDS PAIRED ARROWS
+#requires amssymb
+"8650": \downdownarrows{}
+#DOWNWARDS HARPOON WITH BARB LEFTWARDS
+#requires amssymb
+"8643": \downharpoonleft{}
+#DOWNWARDS HARPOON WITH BARB RIGHTWARDS
+#requires amssymb
+"8642": \downharpoonright{}
+#LEFTWARDS TRIPLE ARROW
+#requires amssymb
+"8666": \Lleftarrow{}
+#LEFTWARDS TWO HEADED ARROW
+#requires amssymb
+"8606": \twoheadleftarrow{}
+#LEFTWARDS PAIRED ARROWS
+#requires amssymb
+"8647": \leftleftarrows{}
+#LEFTWARDS ARROW WITH HOOK
+"8617": \hookleftarrow{}
+#LEFTWARDS ARROW WITH LOOP
+#requires amssymb
+"8619": \looparrowleft{}
+#LEFTWARDS ARROW WITH TAIL
+#requires amssymb
+"8610": \leftarrowtail{}
+#LEFTWARDS HARPOON WITH BARB DOWNWARDS
+"8637": \leftharpoondown{}
+#LEFTWARDS HARPOON WITH BARB UPWARDS
+"8636": \leftharpoonup{}
+#LEFT RIGHT DOUBLE ARROW
+hArr: \Leftrightarrow{}
+#LEFT RIGHT DOUBLE ARROW
+"8660": \Leftrightarrow{}
+#LEFT RIGHT ARROW
+harr: \leftrightarrow{}
+#LEFT RIGHT ARROW
+"8596": \leftrightarrow{}
+#LEFTWARDS ARROW OVER RIGHTWARDS ARROW
+#requires amssymb
+"8646": \leftrightarrows{}
+#RIGHTWARDS ARROW OVER LEFTWARDS ARROW
+#requires amssymb
+"8644": \rightleftarrows{}
+#LEFT RIGHT WAVE ARROW
+#requires amssymb
+"8621": \leftrightsquigarrow{}
+#RIGHTWARDS HARPOON OVER LEFTWARDS HARPOON
+"8652": \rightleftharpoons{}
+#LEFTWARDS HARPOON OVER RIGHTWARDS HARPOON
+#requires amssymb
+"8651": \leftrightharpoons{}
+#UPWARDS ARROW WITH TIP LEFTWARDS
+#requires amssymb
+"8624": \Lsh{}
+#RIGHTWARDS ARROW FROM BAR
+"8614": \mapsto{}
+#MULTIMAP
+#requires amssymb
+"8888": \multimap{}
+#NORTH EAST ARROW
+"8599": \nearrow{}
+#LEFTWARDS DOUBLE ARROW WITH STROKE
+#requires amssymb
+"8653": \nLeftarrow{}
+#LEFTWARDS ARROW WITH STROKE
+#requires amssymb
+"8602": \nleftarrow{}
+#LEFT RIGHT DOUBLE ARROW WITH STROKE
+#requires amssymb
+"8654": \nLeftrightarrow{}
+#LEFT RIGHT ARROW WITH STROKE
+#requires amssymb
+"8622": \nleftrightarrow{}
+#RIGHTWARDS ARROW WITH STROKE
+#requires amssymb
+"8603": \nrightarrow{}
+#RIGHTWARDS DOUBLE ARROW WITH STROKE
+#requires amssymb
+"8655": \nRightarrow{}
+#NORTH WEST ARROW
+"8598": \nwarrow{}
+#ANTICLOCKWISE OPEN CIRCLE ARROW
+#requires amssymb
+"8634": \circlearrowleft{}
+#CLOCKWISE OPEN CIRCLE ARROW
+#requires amssymb
+"8635": \circlearrowright{}
+#RIGHTWARDS TRIPLE ARROW
+#requires amssymb
+"8667": \Rrightarrow{}
+#RIGHTWARDS TWO HEADED ARROW
+#requires amssymb
+"8608": \twoheadrightarrow{}
+#RIGHTWARDS PAIRED ARROWS
+#requires amssymb
+"8649": \rightrightarrows{}
+#RIGHTWARDS ARROW WITH HOOK
+"8618": \hookrightarrow{}
+#RIGHTWARDS ARROW WITH LOOP
+#requires amssymb
+"8620": \looparrowright{}
+#RIGHTWARDS ARROW WITH TAIL
+#requires amssymb
+"8611": \rightarrowtail{}
+#RIGHTWARDS SQUIGGLE ARROW
+#requires amssymb
+"8669": \rightsquigarrow{}
+#RIGHTWARDS HARPOON WITH BARB DOWNWARDS
+"8641": \rightharpoondown{}
+#RIGHTWARDS HARPOON WITH BARB UPWARDS
+"8640": \rightharpoonup{}
+#UPWARDS ARROW WITH TIP RIGHTWARDS
+#requires amssymb
+"8625": \Rsh{}
+#SOUTH EAST ARROW
+"8600": \searrow{}
+#SOUTH WEST ARROW
+"8601": \swarrow{}
+#UPWARDS DOUBLE ARROW
+uArr: \Uparrow{}
+#UPWARDS DOUBLE ARROW
+"8657": \Uparrow{}
+#UPWARDS PAIRED ARROWS
+#requires amssymb
+"8648": \upuparrows{}
+#UP DOWN DOUBLE ARROW
+"8661": \Updownarrow{}
+#UP DOWN ARROW
+"8597": \updownarrow{}
+#UPWARDS HARPOON WITH BARB LEFTWARDS
+#requires amssymb
+"8639": \upharpoonleft{}
+#UPWARDS HARPOON WITH BARB RIGHTWARDS
+#requires amssymb
+"8638": \upharpoonright{}
+#RIGHT CEILING
+rceil: \rceil{}
+#RIGHT CEILING
+"8969": \rceil{}
+#RIGHT FLOOR
+rfloor: \rfloor{}
+#RIGHT FLOOR
+"8971": \rfloor{}
+#TOP RIGHT CORNER
+#requires amsfonts
+"8989": \urcorner{}
+#BOTTOM RIGHT CORNER
+#requires amsfonts
+"8991": \lrcorner{}
+#LEFT CEILING
+lceil: \lceil{}
+#LEFT CEILING
+"8968": \lceil{}
+#LEFT FLOOR
+lfloor: \lfloor{}
+#LEFT FLOOR
+"8970": \lfloor{}
+#TOP LEFT CORNER
+#requires amsfonts
+"8988": \ulcorner{}
+#BOTTOM LEFT CORNER
+#requires amsfonts
+"8990": \llcorner{}
+#LATIN SMALL LETTER A WITH ACUTE
+aacute: \'{a}
+#LATIN SMALL LETTER A WITH ACUTE
+"225": \'{a}
+#LATIN CAPITAL LETTER A WITH ACUTE
+Aacute: \'{A}
+#LATIN CAPITAL LETTER A WITH ACUTE
+"193": \'{A}
+#LATIN SMALL LETTER A WITH CIRCUMFLEX
+acirc: \^{a}
+#LATIN SMALL LETTER A WITH CIRCUMFLEX
+"226": \^{a}
+#LATIN CAPITAL LETTER A WITH CIRCUMFLEX
+Acirc: \^{A}
+#LATIN CAPITAL LETTER A WITH CIRCUMFLEX
+"194": \^{A}
+#LATIN SMALL LETTER A WITH GRAVE
+agrave: \`{a}
+#LATIN SMALL LETTER A WITH GRAVE
+"224": \`{a}
+#LATIN CAPITAL LETTER A WITH GRAVE
+Agrave: \`{A}
+#LATIN CAPITAL LETTER A WITH GRAVE
+"192": \`{A}
+#LATIN SMALL LETTER A WITH RING ABOVE
+aring: \aa{}
+#LATIN SMALL LETTER A WITH RING ABOVE
+"229": \aa{}
+#LATIN CAPITAL LETTER A WITH RING ABOVE
+Aring: \AA{}
+#LATIN CAPITAL LETTER A WITH RING ABOVE
+"197": \AA{}
+#LATIN SMALL LETTER A WITH TILDE
+atilde: \~{a}
+#LATIN SMALL LETTER A WITH TILDE
+"227": \~{a}
+#LATIN CAPITAL LETTER A WITH TILDE
+Atilde: \~{A}
+#LATIN CAPITAL LETTER A WITH TILDE
+"195": \~{A}
+#LATIN SMALL LETTER A WITH DIAERESIS
+auml: \"{a}
+#LATIN SMALL LETTER A WITH DIAERESIS
+"228": \"{a}
+#LATIN CAPITAL LETTER A WITH DIAERESIS
+Auml: \"{A}
+#LATIN CAPITAL LETTER A WITH DIAERESIS
+"196": \"{A}
+#LATIN SMALL LETTER AE
+aelig: \ae{}
+#LATIN SMALL LETTER AE
+"230": \ae{}
+#LATIN CAPITAL LETTER AE
+AElig: \AE{}
+#LATIN CAPITAL LETTER AE
+"198": \AE{}
+#LATIN SMALL LETTER C WITH CEDILLA
+ccedil: \c{c}
+#LATIN SMALL LETTER C WITH CEDILLA
+"231": \c{c}
+#LATIN CAPITAL LETTER C WITH CEDILLA
+Ccedil: \c{C}
+#LATIN CAPITAL LETTER C WITH CEDILLA
+"199": \c{C}
+#LATIN SMALL LETTER ETH
+#requires amssymb
+eth: \dh{}
+#LATIN SMALL LETTER ETH
+#requires amssymb
+"240": \dh{}
+#LATIN CAPITAL LETTER ETH
+#requires wasysym
+ETH: \DH{}
+#LATIN CAPITAL LETTER ETH
+#requires wasysym
+"208": \DH{}
+#LATIN SMALL LETTER E WITH ACUTE
+eacute: \'{e}
+#LATIN SMALL LETTER E WITH ACUTE
+"233": \'{e}
+#LATIN CAPITAL LETTER E WITH ACUTE
+Eacute: \'{E}
+#LATIN CAPITAL LETTER E WITH ACUTE
+"201": \'{E}
+#LATIN SMALL LETTER E WITH CIRCUMFLEX
+ecirc: \^{e}
+#LATIN SMALL LETTER E WITH CIRCUMFLEX
+"234": \^{e}
+#LATIN CAPITAL LETTER E WITH CIRCUMFLEX
+Ecirc: \^{E}
+#LATIN CAPITAL LETTER E WITH CIRCUMFLEX
+"202": \^{E}
+#LATIN SMALL LETTER E WITH GRAVE
+egrave: \`{e}
+#LATIN SMALL LETTER E WITH GRAVE
+"232": \`{e}
+#LATIN CAPITAL LETTER E WITH GRAVE
+Egrave: \`{E}
+#LATIN CAPITAL LETTER E WITH GRAVE
+"200": \`{E}
+#LATIN SMALL LETTER E WITH DIAERESIS
+euml: \"{e}
+#LATIN SMALL LETTER E WITH DIAERESIS
+"235": \"{e}
+#LATIN CAPITAL LETTER E WITH DIAERESIS
+Euml: \"{E}
+#LATIN CAPITAL LETTER E WITH DIAERESIS
+"203": \"{E}
+#LATIN SMALL LETTER I WITH ACUTE
+iacute: \'{\i}
+#LATIN SMALL LETTER I WITH ACUTE
+"237": \'{\i}
+#LATIN CAPITAL LETTER I WITH ACUTE
+Iacute: \'{I}
+#LATIN CAPITAL LETTER I WITH ACUTE
+"205": \'{I}
+#LATIN SMALL LETTER I WITH CIRCUMFLEX
+icirc: \^{\i}
+#LATIN SMALL LETTER I WITH CIRCUMFLEX
+"238": \^{\i}
+#LATIN CAPITAL LETTER I WITH CIRCUMFLEX
+Icirc: \^{I}
+#LATIN CAPITAL LETTER I WITH CIRCUMFLEX
+"206": \^{I}
+#LATIN SMALL LETTER I WITH GRAVE
+igrave: \`{\i}
+#LATIN SMALL LETTER I WITH GRAVE
+"236": \`{\i}
+#LATIN CAPITAL LETTER I WITH GRAVE
+Igrave: \`{I}
+#LATIN CAPITAL LETTER I WITH GRAVE
+"204": \`{I}
+#LATIN SMALL LETTER I WITH DIAERESIS
+iuml: \"{\i}
+#LATIN SMALL LETTER I WITH DIAERESIS
+"239": \"{\i}
+#LATIN CAPITAL LETTER I WITH DIAERESIS
+Iuml: \"{I}
+#LATIN CAPITAL LETTER I WITH DIAERESIS
+"207": \"{I}
+#LATIN SMALL LETTER N WITH TILDE
+ntilde: \~{n}
+#LATIN SMALL LETTER N WITH TILDE
+"241": \~{n}
+#LATIN CAPITAL LETTER N WITH TILDE
+Ntilde: \~{N}
+#LATIN CAPITAL LETTER N WITH TILDE
+"209": \~{N}
+#LATIN SMALL LETTER O WITH ACUTE
+oacute: \'{o}
+#LATIN SMALL LETTER O WITH ACUTE
+"243": \'{o}
+#LATIN CAPITAL LETTER O WITH ACUTE
+Oacute: \'{O}
+#LATIN CAPITAL LETTER O WITH ACUTE
+"211": \'{O}
+#LATIN SMALL LETTER O WITH CIRCUMFLEX
+ocirc: \^{o}
+#LATIN SMALL LETTER O WITH CIRCUMFLEX
+"244": \^{o}
+#LATIN CAPITAL LETTER O WITH CIRCUMFLEX
+Ocirc: \^{O}
+#LATIN CAPITAL LETTER O WITH CIRCUMFLEX
+"212": \^{O}
+#LATIN SMALL LETTER O WITH GRAVE
+ograve: \`{o}
+#LATIN SMALL LETTER O WITH GRAVE
+"242": \`{o}
+#LATIN CAPITAL LETTER O WITH GRAVE
+Ograve: \`{O}
+#LATIN CAPITAL LETTER O WITH GRAVE
+"210": \`{O}
+#LATIN SMALL LETTER O WITH STROKE
+oslash: \o{}
+#LATIN SMALL LETTER O WITH STROKE
+"248": \o{}
+#LATIN CAPITAL LETTER O WITH STROKE
+Oslash: \O{}
+#LATIN CAPITAL LETTER O WITH STROKE
+"216": \O{}
+#LATIN SMALL LETTER O WITH TILDE
+otilde: \~{o}
+#LATIN SMALL LETTER O WITH TILDE
+"245": \~{o}
+#LATIN CAPITAL LETTER O WITH TILDE
+Otilde: \~{O}
+#LATIN CAPITAL LETTER O WITH TILDE
+"213": \~{O}
+#LATIN SMALL LETTER O WITH DIAERESIS
+ouml: \"{o}
+#LATIN SMALL LETTER O WITH DIAERESIS
+"246": \"{o}
+#LATIN CAPITAL LETTER O WITH DIAERESIS
+Ouml: \"{O}
+#LATIN CAPITAL LETTER O WITH DIAERESIS
+"214": \"{O}
+#LATIN SMALL LETTER SHARP S
+szlig: \ss{}
+#LATIN SMALL LETTER SHARP S
+"223": \ss{}
+#LATIN SMALL LETTER THORN
+#requires wasysym
+thorn: \th{}
+#LATIN SMALL LETTER THORN
+#requires wasysym
+"254": \th{}
+#LATIN CAPITAL LETTER THORN
+#requires wasysym
+THORN: \TH{}
+#LATIN CAPITAL LETTER THORN
+#requires wasysym
+"222": \TH{}
+#LATIN SMALL LETTER U WITH ACUTE
+uacute: \'{u}
+#LATIN SMALL LETTER U WITH ACUTE
+"250": \'{u}
+#LATIN CAPITAL LETTER U WITH ACUTE
+Uacute: \'{U}
+#LATIN CAPITAL LETTER U WITH ACUTE
+"218": \'{U}
+#LATIN SMALL LETTER U WITH CIRCUMFLEX
+ucirc: \^{u}
+#LATIN SMALL LETTER U WITH CIRCUMFLEX
+"251": \^{u}
+#LATIN CAPITAL LETTER U WITH CIRCUMFLEX
+Ucirc: \^{U}
+#LATIN CAPITAL LETTER U WITH CIRCUMFLEX
+"219": \^{U}
+#LATIN SMALL LETTER U WITH GRAVE
+ugrave: \`{u}
+#LATIN SMALL LETTER U WITH GRAVE
+"249": \`{u}
+#LATIN CAPITAL LETTER U WITH GRAVE
+Ugrave: \`{U}
+#LATIN CAPITAL LETTER U WITH GRAVE
+"217": \`{U}
+#LATIN SMALL LETTER U WITH DIAERESIS
+uuml: \"{u}
+#LATIN SMALL LETTER U WITH DIAERESIS
+"252": \"{u}
+#LATIN CAPITAL LETTER U WITH DIAERESIS
+Uuml: \"{U}
+#LATIN CAPITAL LETTER U WITH DIAERESIS
+"220": \"{U}
+#LATIN SMALL LETTER Y WITH ACUTE
+yacute: \'{y}
+#LATIN SMALL LETTER Y WITH ACUTE
+"253": \'{y}
+#LATIN CAPITAL LETTER Y WITH ACUTE
+Yacute: \'{Y}
+#LATIN CAPITAL LETTER Y WITH ACUTE
+"221": \'{Y}
+#LATIN SMALL LETTER Y WITH DIAERESIS
+yuml: \"{y}
+#LATIN SMALL LETTER Y WITH DIAERESIS
+"255": \"{y}
+#LATIN SMALL LETTER A WITH BREVE
+"259": \u{a}
+#LATIN CAPITAL LETTER A WITH BREVE
+"258": \u{A}
+#LATIN SMALL LETTER A WITH MACRON
+"257": \={a}
+#LATIN CAPITAL LETTER A WITH MACRON
+"256": \={A}
+#LATIN SMALL LETTER A WITH OGONEK
+#requires fontenc:T1
+"261": \k{a}
+#LATIN CAPITAL LETTER A WITH OGONEK
+#requires fontenc:T1
+"260": \k{A}
+#LATIN SMALL LETTER C WITH ACUTE
+"263": \'{c}
+#LATIN CAPITAL LETTER C WITH ACUTE
+"262": \'{C}
+#LATIN SMALL LETTER C WITH CARON
+"269": \v{c}
+#LATIN CAPITAL LETTER C WITH CARON
+"268": \v{C}
+#LATIN SMALL LETTER C WITH CIRCUMFLEX
+"265": \^{c}
+#LATIN CAPITAL LETTER C WITH CIRCUMFLEX
+"264": \^{C}
+#LATIN SMALL LETTER C WITH DOT ABOVE
+"267": \.{c}
+#LATIN CAPITAL LETTER C WITH DOT ABOVE
+"266": \.{C}
+#LATIN SMALL LETTER D WITH CARON
+"271": \v{d}
+#LATIN CAPITAL LETTER D WITH CARON
+"270": \v{D}
+#LATIN SMALL LETTER D WITH STROKE
+#requires fontenc:T1
+"273": \dj{}
+#LATIN CAPITAL LETTER D WITH STROKE
+#requires fontenc:T1
+"272": \DJ{}
+#LATIN SMALL LETTER E WITH CARON
+"283": \v{e}
+#LATIN CAPITAL LETTER E WITH CARON
+"282": \v{E}
+#LATIN SMALL LETTER E WITH DOT ABOVE
+"279": \.{e}
+#LATIN CAPITAL LETTER E WITH DOT ABOVE
+"278": \.{E}
+#LATIN SMALL LETTER E WITH MACRON
+"275": \={e}
+#LATIN CAPITAL LETTER E WITH MACRON
+"274": \={E}
+#LATIN SMALL LETTER E WITH OGONEK
+#requires fontenc:T1
+"281": \k{e}
+#LATIN CAPITAL LETTER E WITH OGONEK
+#requires fontenc:T1
+"280": \k{E}
+#LATIN SMALL LETTER G WITH ACUTE
+"501": \'{g}
+#LATIN SMALL LETTER G WITH BREVE
+"287": \u{g}
+#LATIN CAPITAL LETTER G WITH BREVE
+"286": \u{G}
+#LATIN CAPITAL LETTER G WITH CEDILLA
+"290": \c{G}
+#LATIN SMALL LETTER G WITH CIRCUMFLEX
+"285": \^{g}
+#LATIN CAPITAL LETTER G WITH CIRCUMFLEX
+"284": \^{G}
+#LATIN SMALL LETTER G WITH DOT ABOVE
+"289": \.{g}
+#LATIN CAPITAL LETTER G WITH DOT ABOVE
+"288": \.{G}
+#LATIN SMALL LETTER H WITH CIRCUMFLEX
+"293": \^{h}
+#LATIN CAPITAL LETTER H WITH CIRCUMFLEX
+"292": \^{H}
+#LATIN SMALL LETTER H WITH STROKE
+"295": \hstrok{}
+#LATIN CAPITAL LETTER H WITH STROKE
+"294": \Hstrok{}
+#LATIN CAPITAL LETTER I WITH DOT ABOVE
+"304": \.{I}
+#LATIN CAPITAL LETTER I WITH MACRON
+"298": \={I}
+#LATIN SMALL LETTER I WITH MACRON
+"299": \={\i}
+#LATIN SMALL LIGATURE IJ
+"307": i\kern -.15em j
+#LATIN CAPITAL LIGATURE IJ
+"306": I\kern -.15em J
+#LATIN SMALL LETTER DOTLESS I
+"305": \i{}
+#LATIN SMALL LETTER I WITH OGONEK
+#requires fontenc:T1
+"303": \k{i}
+#LATIN CAPITAL LETTER I WITH OGONEK
+#requires fontenc:T1
+"302": \k{I}
+#LATIN SMALL LETTER I WITH TILDE
+"297": \~{\i}
+#LATIN CAPITAL LETTER I WITH TILDE
+"296": \~{I}
+#LATIN SMALL LETTER J WITH CIRCUMFLEX
+"309": \^{\j}
+#LATIN CAPITAL LETTER J WITH CIRCUMFLEX
+"308": \^{J}
+#LATIN SMALL LETTER K WITH CEDILLA
+"311": \c{k}
+#LATIN CAPITAL LETTER K WITH CEDILLA
+"310": \c{K}
+#LATIN SMALL LETTER KRA
+"312": \textsc{k}
+#LATIN SMALL LETTER L WITH ACUTE
+"314": \'{l}
+#LATIN CAPITAL LETTER L WITH ACUTE
+"313": \'{L}
+#LATIN SMALL LETTER L WITH CARON
+"318": \v{l}
+#LATIN CAPITAL LETTER L WITH CARON
+"317": \v{L}
+#LATIN SMALL LETTER L WITH CEDILLA
+"316": \c{l}
+#LATIN CAPITAL LETTER L WITH CEDILLA
+"315": \c{L}
+#LATIN SMALL LETTER L WITH MIDDLE DOT
+"320": \lmidot{}
+#LATIN CAPITAL LETTER L WITH MIDDLE DOT
+"319": \Lmidot{}
+#LATIN SMALL LETTER L WITH STROKE
+"322": \l{}
+#LATIN CAPITAL LETTER L WITH STROKE
+"321": \L{}
+#LATIN SMALL LETTER N WITH ACUTE
+"324": \'{n}
+#LATIN CAPITAL LETTER N WITH ACUTE
+"323": \'{N}
+#LATIN SMALL LETTER ENG
+#requires fontenc:T1
+"331": \ng{}
+#LATIN CAPITAL LETTER ENG
+#requires fontenc:T1
+"330": \NG{}
+#LATIN SMALL LETTER N PRECEDED BY APOSTROPHE
+"329": n\kern-.2em\textsf{'}
+#LATIN SMALL LETTER N WITH CARON
+"328": \v{n}
+#LATIN CAPITAL LETTER N WITH CARON
+"327": \v{N}
+#LATIN SMALL LETTER N WITH CEDILLA
+"326": \c{n}
+#LATIN CAPITAL LETTER N WITH CEDILLA
+"325": \c{N}
+#LATIN SMALL LETTER O WITH DOUBLE ACUTE
+"337": \H{o}
+#LATIN CAPITAL LETTER O WITH DOUBLE ACUTE
+"336": \H{O}
+#LATIN CAPITAL LETTER O WITH MACRON
+"332": \={O}
+#LATIN SMALL LETTER O WITH MACRON
+"333": \={o}
+#LATIN SMALL LIGATURE OE
+oelig: \oe{}
+#LATIN SMALL LIGATURE OE
+"339": \oe{}
+#LATIN CAPITAL LIGATURE OE
+OElig: \OE{}
+#LATIN CAPITAL LIGATURE OE
+"338": \OE{}
+#LATIN SMALL LETTER R WITH ACUTE
+"341": \'{r}
+#LATIN CAPITAL LETTER R WITH ACUTE
+"340": \'{R}
+#LATIN SMALL LETTER R WITH CARON
+"345": \v{r}
+#LATIN CAPITAL LETTER R WITH CARON
+"344": \v{R}
+#LATIN SMALL LETTER R WITH CEDILLA
+"343": \c{r}
+#LATIN CAPITAL LETTER R WITH CEDILLA
+"342": \c{R}
+#LATIN SMALL LETTER S WITH ACUTE
+"347": \'{s}
+#LATIN CAPITAL LETTER S WITH ACUTE
+"346": \'{S}
+#LATIN SMALL LETTER S WITH CARON
+scaron: \v{s}
+#LATIN SMALL LETTER S WITH CARON
+"353": \v{s}
+#LATIN CAPITAL LETTER S WITH CARON
+Scaron: \v{S}
+#LATIN CAPITAL LETTER S WITH CARON
+"352": \v{S}
+#LATIN SMALL LETTER S WITH CEDILLA
+"351": \c{s}
+#LATIN CAPITAL LETTER S WITH CEDILLA
+"350": \c{S}
+#LATIN SMALL LETTER S WITH CIRCUMFLEX
+"349": \^{s}
+#LATIN CAPITAL LETTER S WITH CIRCUMFLEX
+"348": \^{S}
+#LATIN SMALL LETTER T WITH CARON
+"357": \v{t}
+#LATIN CAPITAL LETTER T WITH CARON
+"356": \v{T}
+#LATIN SMALL LETTER T WITH CEDILLA
+"355": \c{t}
+#LATIN CAPITAL LETTER T WITH CEDILLA
+"354": \c{T}
+#LATIN SMALL LETTER T WITH STROKE
+"359": \tstrok{}
+#LATIN CAPITAL LETTER T WITH STROKE
+"358": \Tstrok{}
+#LATIN SMALL LETTER U WITH BREVE
+"365": \u{u}
+#LATIN CAPITAL LETTER U WITH BREVE
+"364": \u{U}
+#LATIN SMALL LETTER U WITH DOUBLE ACUTE
+"369": \H{u}
+#LATIN CAPITAL LETTER U WITH DOUBLE ACUTE
+"368": \H{U}
+#LATIN SMALL LETTER U WITH MACRON
+"363": \={u}
+#LATIN CAPITAL LETTER U WITH MACRON
+"362": \={U}
+#LATIN SMALL LETTER U WITH OGONEK
+#requires fontenc:T1
+"371": \k{u}
+#LATIN CAPITAL LETTER U WITH OGONEK
+#requires fontenc:T1
+"370": \k{U}
+#LATIN SMALL LETTER U WITH RING ABOVE
+"367": \r{u}
+#LATIN CAPITAL LETTER U WITH RING ABOVE
+"366": \r{U}
+#LATIN SMALL LETTER U WITH TILDE
+"361": \~{u}
+#LATIN CAPITAL LETTER U WITH TILDE
+"360": \~{U}
+#LATIN SMALL LETTER W WITH CIRCUMFLEX
+"373": \^{w}
+#LATIN CAPITAL LETTER W WITH CIRCUMFLEX
+"372": \^{W}
+#LATIN SMALL LETTER Y WITH CIRCUMFLEX
+"375": \^{y}
+#LATIN CAPITAL LETTER Y WITH CIRCUMFLEX
+"374": \^{Y}
+#LATIN CAPITAL LETTER Y WITH DIAERESIS
+Yuml: \"{Y}
+#LATIN CAPITAL LETTER Y WITH DIAERESIS
+"376": \"{Y}
+#LATIN SMALL LETTER Z WITH ACUTE
+"378": \'{z}
+#LATIN CAPITAL LETTER Z WITH ACUTE
+"377": \'{Z}
+#LATIN SMALL LETTER Z WITH CARON
+"382": \v{z}
+#LATIN CAPITAL LETTER Z WITH CARON
+"381": \v{Z}
+#LATIN SMALL LETTER Z WITH DOT ABOVE
+"380": \.{z}
+#LATIN CAPITAL LETTER Z WITH DOT ABOVE
+"379": \.{Z}
+#ACUTE ACCENT
+#requires textcomp
+acute: \'{}
+#ACUTE ACCENT
+#requires textcomp
+"180": \'{}
+#BREVE
+#requires textcomp
+"728": \u{}
+#CARON
+#requires textcomp
+"711": \v{}
+#CEDILLA
+cedil: \c{}
+#CEDILLA
+"184": \c{}
+#CIRCUMFLEX ACCENT
+circ: \^{}
+#CIRCUMFLEX ACCENT
+"94": \^{}
+#DOUBLE ACUTE ACCENT
+#requires textcomp
+"733": \H{}
+#DIAERESIS
+#requires textcomp
+uml: \"{}
+#DIAERESIS
+#requires textcomp
+"168": \"{}
+#DOT ABOVE
+"729": \.{}
+#GRAVE ACCENT
+#requires textcomp
+"96": \`{}
+#MACRON
+#requires textcomp
+macr: \={}
+#MACRON
+#requires textcomp
+"175": \={}
+#OGONEK
+#requires fontenc:T1
+"731": \k{}
+#RING ABOVE
+"730": \r{}
+#TILDE
+#requires textcomp
+tilde: \~{}
+#TILDE
+#requires textcomp
+"126": \~{}
+#HORIZONTAL TABULATION
+"9": \>,\=
+#LINE FEED
+"10": "\n"
+#SINGLE LEFT-POINTING ANGLE QUOTATION MARK
+#requires fontenc:T1
+lsaquo: \guilsinglleft{}
+#SINGLE LEFT-POINTING ANGLE QUOTATION MARK
+#requires fontenc:T1
+"8249": \guilsinglleft{}
+#SINGLE RIGHT-POINTING ANGLE QUOTATION MARK
+#requires fontenc:T1
+rsaquo: \guilsinglright{}
+#SINGLE RIGHT-POINTING ANGLE QUOTATION MARK
+#requires fontenc:T1
+"8250": \guilsinglright{}
+#OVERLINE
+oline: \={}
+#OVERLINE
+"8254": \={}
+#FRACTION SLASH
+#requires textcomp
+frasl: \textfractionsolidus{}
+#FRACTION SLASH
+#requires textcomp
+"8260": \textfractionsolidus{}
+#EURO SIGN
+#requires textcomp
+euro: \texteuro{}
+#EURO SIGN
+#requires textcomp
+"8364": \texteuro{}
+#LEFTWARDS DASHED ARROW
+#requires amssymb
+"8672": \dashleftarrow{}
+#RIGHTWARDS DASHED ARROW
+#requires amssymb
+"8674": \dashrightarrow{}
+#INVERTED OHM SIGN
+#requires amssymb
+"8487": \textmho{}
+#PROPORTION
+"8759": "::"
+#LEFT WHITE SQUARE BRACKET
+#requires stmaryrd
+"12314": \textlbrackdbl{}
+#PER TEN THOUSAND SIGN
+#requires textcomp
+"8241": \textpertenthousand{}
+#RIGHT WHITE SQUARE BRACKET
+#requires stmaryrd
+"12315": \textrbrackdbl{}
+#MODIFIER LETTER LOW MACRON
+"717": \b{}
+#COMBINING DOT BELOW
+"803": \d{}
+#COMBINING DOUBLE INVERTED BREVE
+"865": \t{}
+#REFERENCE MARK
+#requires textcomp
+"8251": \textreferencemark{}

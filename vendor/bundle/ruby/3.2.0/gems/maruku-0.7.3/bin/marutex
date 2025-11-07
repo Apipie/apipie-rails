@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+
+ARGV.unshift "--pdf"
+load File.join(File.dirname(__FILE__), "maruku")

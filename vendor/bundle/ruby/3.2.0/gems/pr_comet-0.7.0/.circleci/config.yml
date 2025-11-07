@@ -1,0 +1,192 @@
+# Ruby CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-ruby/ for more details
+#
+version: 2.1
+
+orbs:
+  ruby-orbs: sue445/ruby-orbs@1.6.2
+  code-climate: rvla/code-climate@0.0.2
+
+references:
+  - &ruby_version
+    ruby_version:
+      type: enum
+      enum: ["2.7", "3.0", "3.1"]
+      default: "3.1"
+
+executors:
+  default:
+    parameters:
+      <<: *ruby_version
+    docker:
+      - image: cimg/ruby:<< parameters.ruby_version >>
+    working_directory: ~/repo
+
+commands:
+  run_rspec:
+    description: Run RSpec
+    steps:
+      - code-climate/install
+      - run:
+          name: Execute RSpec
+          command: |
+            mkdir /tmp/test-results
+            TEST_FILES="$(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)"
+            cc-test-reporter before-build
+            bundle exec rspec --format documentation \
+                              --color \
+                              --format RspecJunitFormatter \
+                              --out /tmp/test-results/rspec.xml \
+                              $TEST_FILES
+      - code-climate/format-coverage:
+          input-type: simplecov
+          prefix: $(readlink -f .)
+          coverage-file: coverage/coverage.json
+          output: coverage/codeclimate.$CIRCLE_BUILD_NUM.json
+      - persist_to_workspace:
+          root: coverage
+          paths:
+            - codeclimate.*.json
+      - store_test_results:
+          path: /tmp/test-results
+      - store_artifacts:
+          path: /tmp/test-results
+          destination: test-results
+  rubocop:
+    steps:
+      - run:
+          name: Run RuboCop
+          command: bundle exec rubocop
+  yardoc:
+    description: "Generate YARDoc"
+    steps:
+      - run: bundle exec yardoc -o ./yardoc
+      - store_artifacts:
+          path: ./yardoc
+          destination: yardoc
+  rake_build:
+    steps:
+      - run:
+          name: Rake Build
+          command: bundle exec rake build
+  rubocop_challenge:
+    steps:
+      - run:
+          name: Rubocop Challenge
+          command: |
+            gem install rubocop_challenger
+            rubocop_challenger go --email=ryz310@gmail.com --name=ryz310
+  release:
+    description: Release to RubyGems.org
+    steps:
+      - run:
+          name: Create Rubygems Credentials
+          command: |
+            mkdir ~/.gem || true
+            echo -e "---\n:rubygems_api_key: ${RUBYGEMS_API_KEY}" > ~/.gem/credentials
+            chmod 0600 ~/.gem/credentials
+      - run:
+          name: Release Gem
+          command: |
+            git push --set-upstream origin ${CIRCLE_BRANCH}
+            bundle exec rake release --trace
+  setup:
+    description: Setup for Job Working
+    parameters:
+      <<: *ruby_version
+    steps:
+      - checkout
+      - ruby-orbs/bundle-install:
+          cache_key_prefix: v1-dependencies-<< parameters.ruby_version >>
+  test_and_build:
+    description: Build the RubyGem
+    steps:
+      - run_rspec
+      - rake_build
+
+jobs:
+  build:
+    parameters:
+      <<: *ruby_version
+    executor:
+      name: default
+      ruby_version: << parameters.ruby_version >>
+    steps:
+      - setup:
+          ruby_version: << parameters.ruby_version >>
+      - test_and_build
+  upload-coverage:
+    executor: default
+    steps:
+      - attach_workspace:
+          at: ~/repo
+      - code-climate/install
+      - code-climate/sum-coverage:
+          input: codeclimate.*.json
+          parts: 3
+      - code-climate/upload-coverage
+  rubocop:
+    executor: default
+    steps:
+      - setup
+      - rubocop
+  yardoc:
+    executor: default
+    steps:
+      - setup
+      - yardoc
+  rubocop_challenge:
+    executor: default
+    steps:
+      - checkout
+      - rubocop_challenge
+  release:
+    executor: default
+    steps:
+      - setup
+      - release
+
+workflows:
+  version: 2
+
+  commit:
+    jobs:
+      - build:
+          name: build_on_ruby_2.7
+          ruby_version: "2.7"
+      - build:
+          name: build_on_ruby_3.0
+          ruby_version: "3.0"
+      - build:
+          name: build_on_ruby_3.1
+          ruby_version: "3.1"
+      - rubocop
+      - yardoc
+      - upload-coverage:
+          requires:
+            - build_on_ruby_2.7
+            - build_on_ruby_3.0
+            - build_on_ruby_3.1
+      - release:
+          context: RubyGems API Key
+          requires:
+            - build_on_ruby_2.7
+            - build_on_ruby_3.0
+            - build_on_ruby_3.1
+            - rubocop
+          filters:
+            branches:
+              only:
+                - production
+
+  challenge:
+    triggers:
+      - schedule:
+          cron: "30 23 * * *" # 8:30am every day (JST)
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - rubocop_challenge

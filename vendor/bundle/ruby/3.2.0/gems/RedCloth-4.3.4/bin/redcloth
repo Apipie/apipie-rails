@@ -1,0 +1,28 @@
+#!/usr/bin/env ruby
+$:.unshift(File.dirname(__FILE__) + '/../lib/')
+require 'optparse'
+require 'redcloth'
+
+if %w(--version -v).include? ARGV.first
+  puts "#{RedCloth::NAME} #{RedCloth::VERSION}"
+  exit(0)
+end
+
+output_as = "html"
+opts = OptionParser.new do |opts|
+    opts.banner = "Usage: redcloth [options] [redcloth_formatted.txt]"
+    opts.separator "If no file specified, STDIN will be used. If you are typing input, you can send an EOF by pressing ^D (^Z on Windows)"
+    opts.separator ""
+    opts.on("-o", "--output STYLE", "Output format (defaults to #{output_as})") do |o|
+        output_as = o
+    end
+end
+opts.parse! ARGV
+
+red = RedCloth.new( ARGF.read )
+out_meth = "to_#{ output_as }"
+if red.respond_to? out_meth
+    puts red.method( out_meth ).call
+else
+    abort "** No to_#{ output_as } method found for the `#{ output_as }' format"
+end

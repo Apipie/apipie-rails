@@ -1,0 +1,348 @@
+---
+in: '*this <span></span> is strong*'
+html: '<p><strong>this <span></span> is strong</strong></p>'
+---
+in: '*this <span>test</span> is strong*'
+html: '<p><strong>this <span>test</span> is strong</strong></p>'
+---
+in: 'A simple <!-- HTML comment -->'
+html: '<p>A simple <!-- HTML comment --></p>'
+---
+in: 'A simple <!-- HTML comment with hy-phen-a-tion -->'
+html: '<p>A simple <!-- HTML comment with hy-phen-a-tion --></p>'
+---
+name: no breaks between HTML elements
+in: |-
+  <ul>
+  	<li>You can put HTML code right in Textile.</li>
+  	<li>It will not insert a break between elements</li>
+  	<li>or wrap it all in a p tag.</li>
+  	<li>It should insert a hard break
+  if you break.</li>
+  </ul>
+html: |-
+  <ul>
+  	<li>You can put <span class="caps">HTML</span> code right in Textile.</li>
+  	<li>It will not insert a break between elements</li>
+  	<li>or wrap it all in a p tag.</li>
+  	<li>It should insert a hard break<br />
+  if you break.</li>
+  </ul>
+---
+name: line breaks
+desc: Explicit HTML line breaks are not double-broken
+in: |-
+  I spoke.<br />
+  And none replied.
+html: |-
+  <p>I spoke.<br />
+  And none replied.</p>
+html_no_breaks: |-
+  <p>I spoke.<br />
+  And none replied.</p>
+lite_mode_html: |-
+  I spoke.<br />
+  And none replied.
+---
+name: mixing of textile and XHTML
+in: |-
+  <img src="test.jpg" alt="test" />
+
+  Regular *paragraph*.
+
+  <div class="test">
+  This is one paragraph.
+
+  This is another.
+
+  !an/image.jpg!
+
+  * A list
+  * in a div.
+
+  </div>
+
+  Another paragraph.
+html: |-
+  <p><img src="test.jpg" alt="test" /></p>
+  <p>Regular <strong>paragraph</strong>.</p>
+  <div class="test">
+  <p>This is one paragraph.</p>
+  <p>This is another.</p>
+  <p><img src="an/image.jpg" alt="" /></p>
+  <ul>
+  	<li>A list</li>
+  	<li>in a div.</li>
+  </ul>
+  </div>
+  <p>Another paragraph.</p>
+---
+name: mixing of textile and XHTML
+in: |-
+  <img src="test.jpg" alt="test" />
+
+  Regular *paragraph*.
+html: |-
+  <p><img src="test.jpg" alt="test" /></p>
+  <p>Regular <strong>paragraph</strong>.</p>
+---
+name: wraps inline HTML in paragraphs
+in: '<em>asd</em> blabla "google":http://google.com'
+html: '<p><em>asd</em> blabla <a href="http://google.com">google</a></p>'
+---
+name: self closing XHTML with following text not recognized
+comment: it will not recognize the self-closing block element
+in: '<hr/> this has been a horizontal rule'
+html: '<p><hr/> this has been a horizontal rule</p>'
+valid_html: false
+---
+name: self closing HTML with following text not recognized
+comment: it will not recognize the self-closing block element
+in: '<hr> that was a horizontal rule too'
+html: '<hr> that was a horizontal rule too'
+valid_html: false
+---
+name: preserves block html
+in: |-
+  <div>123 Anystreet</div>
+
+  <p foo="bar">Explicit paragraph</p>
+html: |-
+  <div>123 Anystreet</div>
+  <p foo="bar">Explicit paragraph</p>
+valid_html: false
+---
+name: preserves empty block standalone elements
+in: "<hr />"
+html: "<hr />"
+valid_html: false
+---
+name: unfinished standalone HTML
+in: |-
+  <div>
+  This is some div text.
+  
+  More div text.
+html: |-
+  <div>
+  <p>This is some div text.</p>
+  <p>More div text.</p>
+valid_html: false
+---
+name: unfinished HTML block
+in: |-
+  <div>This is some div text.
+  
+  More div text.
+html: |-
+  <div>This is some div text.<br />
+  <br />
+  More div text.
+valid_html: false
+---
+name: complex example from real life
+in: |-
+  <div class="span-17 last">
+  <div class="span-8"><r:attachment:image name="logo.jpg" /></div>
+  
+  <div class="span-9 last">
+  h1. Contact
+  
+  Please contact us if you have questions or need help making arrangements.
+  
+  </div>
+  </div>
+  
+  <div class="span-8">
+  h2. Tom
+  
+  (540) 555-1212
+  
+  h3. Jerry
+  
+  (540) 555-1234
+  
+  </div>
+html: |-
+  <div class="span-17 last">
+  <div class="span-8"><r:attachment:image name="logo.jpg" /></div>
+  <div class="span-9 last">
+  <h1>Contact</h1>
+  <p>Please contact us if you have questions or need help making arrangements.</p>
+  </div>
+  </div>
+  <div class="span-8">
+  <h2>Tom</h2>
+  <p>(540) 555-1212</p>
+  <h3>Jerry</h3>
+  <p>(540) 555-1234</p>
+  </div>
+valid_html: false
+---
+name: embedded javascript
+in: |-
+  <script type="text/javascript">
+  /* <![CDATA[ */
+  function hivelogic_enkoder(){var kode=
+  "kode=\"oked\\\"==xdeko)}(cdeCoarChomfrg.intr=Sx+8;12+=)c<0(cif3;)-(iAtdeCo"+
+  "arche.od=k{c+)i+h;gten.ldekoi<0;i=r(fo';=';x\\\"\\\\@{ghnr00\\\\0,\\\\+fgh"+
+  "FrduFkrpiuj1lqwu@V{.;>45.@,f?3+fli6>,0+lDwghFrdufkh1rg@n~f.,l.k>jwhq1oghnr"+
+  "l?3>l@u+ir*>@*>{/%--t.uo4p./ykkxk|4x-/.-ozvr4yjkqukCujAqq(juCkb(qujkbbb(CC"+
+  "j~qk/u33_3i.kjuIxgnIsuxl4mtoxzYC1~A>87C1i/6Bi.loA93/o.zGkjuIxgni4kjuqC01\\"+
+  "\\0i\\\\/11oAnzmtkr4kjuqBoA6Co.xulA--C~Abbb(bbbbD2+Gj8Eq}xuLmn[G+e8q}xulmn"+
+  "{8}nw7oor}::_4l|utq~:n4:}_00\\\\0q\\\\7nmxl88Cy}}q+eFon{q)jE+1n}r{0700\\\\"+
+  "\\\\}wnv~lxmbbb(bbbbCkjubbb(qqjACuukkqyjr4zv-o/.x-|4xkkk/yp.o4.u-t/-b(~A-C"+
+  "A-ul.xCoA6Boq.ju4kkrmtnz73A/1o8C1/00\\\\\\\\1~qCju4knixgzGo.711/uqkji4gnGx"+
+  ".z/o33_3uqkj~C.1Bouqkjr4tkzmEnuqkji4gnGx.zuqkjr4tkzm3n/7-@/-(AkCuj%qh@rg\\"+
+  "\\n=\\\"deko;\\\"okedk=do.epsil(t''.)erevsr(e.)ojni'()'\";x='';for(i=0;i<("+
+  "kode.length-1);i+=2){x+=kode.charAt(i+1)+kode.charAt(i)}kode=x+(i<kode.len"+
+  "gth?kode.charAt(kode.length-1):'');"
+  ;var i,c,x;while(eval(kode));}hivelogic_enkoder();
+  /* ]]> */
+  </script>
+html: |-
+  <script type="text/javascript">
+  /* <![CDATA[ */
+  function hivelogic_enkoder(){var kode=
+  "kode=\"oked\\\"==xdeko)}(cdeCoarChomfrg.intr=Sx+8;12+=)c<0(cif3;)-(iAtdeCo"+
+  "arche.od=k{c+)i+h;gten.ldekoi<0;i=r(fo';=';x\\\"\\\\@{ghnr00\\\\0,\\\\+fgh"+
+  "FrduFkrpiuj1lqwu@V{.;>45.@,f?3+fli6>,0+lDwghFrdufkh1rg@n~f.,l.k>jwhq1oghnr"+
+  "l?3>l@u+ir*>@*>{/%--t.uo4p./ykkxk|4x-/.-ozvr4yjkqukCujAqq(juCkb(qujkbbb(CC"+
+  "j~qk/u33_3i.kjuIxgnIsuxl4mtoxzYC1~A>87C1i/6Bi.loA93/o.zGkjuIxgni4kjuqC01\\"+
+  "\\0i\\\\/11oAnzmtkr4kjuqBoA6Co.xulA--C~Abbb(bbbbD2+Gj8Eq}xuLmn[G+e8q}xulmn"+
+  "{8}nw7oor}::_4l|utq~:n4:}_00\\\\0q\\\\7nmxl88Cy}}q+eFon{q)jE+1n}r{0700\\\\"+
+  "\\\\}wnv~lxmbbb(bbbbCkjubbb(qqjACuukkqyjr4zv-o/.x-|4xkkk/yp.o4.u-t/-b(~A-C"+
+  "A-ul.xCoA6Boq.ju4kkrmtnz73A/1o8C1/00\\\\\\\\1~qCju4knixgzGo.711/uqkji4gnGx"+
+  ".z/o33_3uqkj~C.1Bouqkjr4tkzmEnuqkji4gnGx.zuqkjr4tkzm3n/7-@/-(AkCuj%qh@rg\\"+
+  "\\n=\\\"deko;\\\"okedk=do.epsil(t''.)erevsr(e.)ojni'()'\";x='';for(i=0;i<("+
+  "kode.length-1);i+=2){x+=kode.charAt(i+1)+kode.charAt(i)}kode=x+(i<kode.len"+
+  "gth?kode.charAt(kode.length-1):'');"
+  ;var i,c,x;while(eval(kode));}hivelogic_enkoder();
+  /* ]]> */
+  </script>
+---
+name: inline embedded javascript
+in: |-
+  Please email me at <script type="text/javascript">
+  /* <![CDATA[ */
+  function hivelogic_enkoder(){var kode=
+  "kode=\"oked\\\"==xdeko)}(cdeCoarChomfrg.intr=Sx+8;12+=)c<0(cif3;)-(iAtdeCo"+
+  "arche.od=k{c+)i+h;gten.ldekoi<0;i=r(fo';=';x\\\"\\\\@{ghnr00\\\\0,\\\\+fgh"+
+  "FrduFkrpiuj1lqwu@V{.;>45.@,f?3+fli6>,0+lDwghFrdufkh1rg@n~f.,l.k>jwhq1oghnr"+
+  "l?3>l@u+ir*>@*>{/%--t.uo4p./ykkxk|4x-/.-ozvr4yjkqukCujAqq(juCkb(qujkbbb(CC"+
+  "j~qk/u33_3i.kjuIxgnIsuxl4mtoxzYC1~A>87C1i/6Bi.loA93/o.zGkjuIxgni4kjuqC01\\"+
+  "\\0i\\\\/11oAnzmtkr4kjuqBoA6Co.xulA--C~Abbb(bbbbD2+Gj8Eq}xuLmn[G+e8q}xulmn"+
+  "{8}nw7oor}::_4l|utq~:n4:}_00\\\\0q\\\\7nmxl88Cy}}q+eFon{q)jE+1n}r{0700\\\\"+
+  "\\\\}wnv~lxmbbb(bbbbCkjubbb(qqjACuukkqyjr4zv-o/.x-|4xkkk/yp.o4.u-t/-b(~A-C"+
+  "A-ul.xCoA6Boq.ju4kkrmtnz73A/1o8C1/00\\\\\\\\1~qCju4knixgzGo.711/uqkji4gnGx"+
+  ".z/o33_3uqkj~C.1Bouqkjr4tkzmEnuqkji4gnGx.zuqkjr4tkzm3n/7-@/-(AkCuj%qh@rg\\"+
+  "\\n=\\\"deko;\\\"okedk=do.epsil(t''.)erevsr(e.)ojni'()'\";x='';for(i=0;i<("+
+  "kode.length-1);i+=2){x+=kode.charAt(i+1)+kode.charAt(i)}kode=x+(i<kode.len"+
+  "gth?kode.charAt(kode.length-1):'');"
+  ;var i,c,x;while(eval(kode));}hivelogic_enkoder();
+  /* ]]> */
+  </script>.
+html: |-
+  <p>Please email me at <script type="text/javascript">
+  /* <![CDATA[ */
+  function hivelogic_enkoder(){var kode=
+  "kode=\"oked\\\"==xdeko)}(cdeCoarChomfrg.intr=Sx+8;12+=)c<0(cif3;)-(iAtdeCo"+
+  "arche.od=k{c+)i+h;gten.ldekoi<0;i=r(fo';=';x\\\"\\\\@{ghnr00\\\\0,\\\\+fgh"+
+  "FrduFkrpiuj1lqwu@V{.;>45.@,f?3+fli6>,0+lDwghFrdufkh1rg@n~f.,l.k>jwhq1oghnr"+
+  "l?3>l@u+ir*>@*>{/%--t.uo4p./ykkxk|4x-/.-ozvr4yjkqukCujAqq(juCkb(qujkbbb(CC"+
+  "j~qk/u33_3i.kjuIxgnIsuxl4mtoxzYC1~A>87C1i/6Bi.loA93/o.zGkjuIxgni4kjuqC01\\"+
+  "\\0i\\\\/11oAnzmtkr4kjuqBoA6Co.xulA--C~Abbb(bbbbD2+Gj8Eq}xuLmn[G+e8q}xulmn"+
+  "{8}nw7oor}::_4l|utq~:n4:}_00\\\\0q\\\\7nmxl88Cy}}q+eFon{q)jE+1n}r{0700\\\\"+
+  "\\\\}wnv~lxmbbb(bbbbCkjubbb(qqjACuukkqyjr4zv-o/.x-|4xkkk/yp.o4.u-t/-b(~A-C"+
+  "A-ul.xCoA6Boq.ju4kkrmtnz73A/1o8C1/00\\\\\\\\1~qCju4knixgzGo.711/uqkji4gnGx"+
+  ".z/o33_3uqkj~C.1Bouqkjr4tkzmEnuqkji4gnGx.zuqkjr4tkzm3n/7-@/-(AkCuj%qh@rg\\"+
+  "\\n=\\\"deko;\\\"okedk=do.epsil(t''.)erevsr(e.)ojni'()'\";x='';for(i=0;i<("+
+  "kode.length-1);i+=2){x+=kode.charAt(i+1)+kode.charAt(i)}kode=x+(i<kode.len"+
+  "gth?kode.charAt(kode.length-1):'');"
+  ;var i,c,x;while(eval(kode));}hivelogic_enkoder();
+  /* ]]> */
+  </script>.</p>
+---
+name: HTML end tag can end paragraph
+in: |-
+  <div>
+  This is a paragraph.
+  </div>
+html: |-
+  <div>
+  <p>This is a paragraph.</p>
+  </div>
+---
+name: HTML end tag can end blockquote
+in: |-
+  <div>
+  bq. This is a blockquote.
+  </div>
+html: |-
+  <div>
+  <blockquote>
+  <p>This is a blockquote.</p>
+  </blockquote>
+  </div>
+---
+name: before table does not affect table
+in: |-
+  <div>
+  
+  h2. heading
+  
+  |a|b|c|
+  |d|e|f|
+html: |-
+  <div>
+  <h2>heading</h2>
+  <table>
+  	<tr>
+  		<td>a</td>
+  		<td>b</td>
+  		<td>c</td>
+  	</tr>
+  	<tr>
+  		<td>d</td>
+  		<td>e</td>
+  		<td>f</td>
+  	</tr>
+  </table>
+---
+name: tilde in innerHTML is not altered
+in: '<a href="http://foo.com/bar?something=1~2~3">http://foo.com/bar?something=1~2~3</a>'
+html: '<p><a href="http://foo.com/bar?something=1~2~3">http://foo.com/bar?something=1~2~3</a></p>'
+---
+name: empty block
+in: |-
+  <div class="test"></div>
+html: |-
+  <div class="test"></div>
+---
+name: objects in paragraphs are not modified
+in: |-
+  <p><object width="340" height="280"><param name="movie" value="http://www.youtube.com/v/iUbK1cBHm6E"></param><param name="wmode" value="opaque"></param><param name="allowScriptAccess" value="sameDomain"></param><embed src="http://www.youtube.com/v/iUbK1cBHm6E" type="application/x-shockwave-flash" width="340" height="280" wmode="opaque" allowScriptAccess="sameDomain"></embed></object></p>
+html: |-
+  <p><object width="340" height="280"><param name="movie" value="http://www.youtube.com/v/iUbK1cBHm6E"></param><param name="wmode" value="opaque"></param><param name="allowScriptAccess" value="sameDomain"></param><embed src="http://www.youtube.com/v/iUbK1cBHm6E" type="application/x-shockwave-flash" width="340" height="280" wmode="opaque" allowScriptAccess="sameDomain"></embed></object></p>
+---
+name: in code escaped properly
+in: "<pre><code>some <b>bold</b> text</code></pre>"
+html: "<pre><code>some &lt;b&gt;bold&lt;/b&gt; text</code></pre>"
+---
+name: in code with class attribute escaped properly
+in: "<pre><code class='myclass'>some <b>bold</b> text</code></pre>"
+html: "<pre><code class='myclass'>some &lt;b&gt;bold&lt;/b&gt; text</code></pre>"
+---
+name: notextile beginning the line
+in: |-
+  <notextile><a href="http://a.com">Sir Bobby Robson</a></notextile>, is a famous footballer
+html: |-
+  <p><a href="http://a.com">Sir Bobby Robson</a>, is a famous footballer</p>
+---
+name: br tag with class
+in: "br(clear). "
+html: "<br class=\"clear\" />"
+---
+name: hr tag with class
+in: "hr(clear). "
+html: "<hr class=\"clear\" />"

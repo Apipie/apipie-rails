@@ -1,0 +1,182 @@
+#!/usr/bin/env ruby
+
+dir = File.join(File.dirname(__FILE__), '..', 'lib')
+$LOAD_PATH.unshift dir unless $LOAD_PATH.include?(dir)
+
+require 'maruku'
+require 'optparse'
+
+
+def cli_puts(s)
+  $stderr.puts(s) if MaRuKu::Globals[:verbose]
+end
+
+def benchmark(section)
+  t = Time.now
+  res = yield
+  cli_puts("%s finished in %.2f seconds." % [section, Time.now - t])
+  res
+end
+
+export = :html
+break_on_error = false
+using_math = false
+using_mathml = false
+output_file = nil
+
+opt = OptionParser.new do |opts|
+  opts.banner = "Usage: #{File.basename($0)} [options] [file1.md] [file2.md] ..."
+
+  opts.on("-v", "--[no-]verbose", "Run verbosely") do |v|
+    MaRuKu::Globals[:verbose] = v
+  end
+
+  opts.on("-u", "--[no-]unsafe", "Use unsafe features") do |v|
+    MaRuKu::Globals[:unsafe_features] = v
+  end
+
+  opts.on("-b", "--[no-]break", "Break on error") do |v|
+    break_on_error = v
+  end
+
+
+  opts.on("-i", "--math-images ENGINE", "Use ENGINE to render TeX to PNG") do |s|
+    using_math = true
+    MaRuKu::Globals[:html_math_output_png] = true
+    MaRuKu::Globals[:html_math_output_mathml] = false
+    MaRuKu::Globals[:html_png_engine] = s
+    cli_puts "Using png engine #{s}."
+  end
+
+  opts.on("-m", "--math-engine ENGINE", "Use ENGINE to render MathML") do |s|
+    MaRuKu::Globals[:html_math_output_png] = false
+    MaRuKu::Globals[:html_math_output_mathml] = true
+    using_math = true
+    using_mathml = true
+    MaRuKu::Globals[:html_math_engine] = s
+  end
+
+  opts.on("-o", "--output FILE", "Output filename (`-o -' writes to stdout)") {|s| output_file = s}
+
+  opts.on_tail("--pdf", "Output PDF;", "first writes LaTeX, then calls pdflatex") {export = :pdf}
+  opts.on_tail("--s5", "Output S5 slideshow") {export = :s5}
+  opts.on_tail("--html", "Output HTML") {export = :html}
+  opts.on_tail("--html-frag", "Output the contents of the <body> tag") {export = :html_frag}
+  opts.on_tail("--tex", "Output LaTeX" ) {export = :tex}
+  opts.on_tail("--markdown", "Output Markdown" ) {export = :markdown}
+  opts.on_tail("--inspect", "Output the parse tree") {export = :inspect}
+
+  opts.on_tail("--ext EXTENSIONS", "Use Maruku extensions (comma separated)") do |s|
+    s.split(",").each {|e| require "maruku/ext/#{e}"}
+  end
+
+  opts.on_tail("-h", "--help", "Show this help message") do
+    puts opts
+    exit
+  end
+
+  opts.on_tail("--version", "Show version") do
+    puts "Maruku #{MaRuKu::Version}"
+    exit
+  end
+end
+
+begin
+  opt.parse!
+rescue OptionParser::InvalidOption => e
+  $stderr.puts e
+  $stderr.puts opt
+  exit 1
+end
+
+
+if using_math
+  cli_puts "Using Math extensions."
+  require 'maruku/ext/math'
+end
+
+
+unless ARGV.empty?
+  if ARGV.size > 1 && output_file
+    $stderr.puts "Can't write #{ARGV.map {|f| f.inspect}.join(' and ')} to #{output_file.inspect}"
+    exit 1
+  end
+
+  # If we are given filenames, convert each file
+  ARGV.map do |f|
+    # read file content
+    cli_puts "Reading from file #{f.inspect}."
+    [f, File.read(f)]
+  end
+else
+  export = :html_frag if export == :html
+  export = :tex_frag if export == :tex
+
+  cli_puts  "Reading from standard input."
+  [[nil, $stdin.read]]
+end.each do |filename, input|
+  doc = benchmark("Parsing") {Maruku.new(input, :on_error => (break_on_error ? :raise : :warning))}
+
+  out = ""
+  suffix = "?"
+  benchmark("Rendering") do
+    case export
+    when :html
+      suffix = using_mathml ? '.xhtml' : '.html'
+      out = doc.to_html_document
+    when :html_frag
+      suffix = '.html_frag'
+      out = doc.to_html
+    when :pdf, :tex
+      suffix = '.tex'
+      out = doc.to_latex_document
+    when :tex_frag
+      suffix = '.tex_frag'
+      out = doc.to_latex
+    when :inspect
+      suffix = '.txt'
+      out = doc.inspect
+    when :markdown
+      suffix = '.md'
+      out = doc.to_md
+    when :s5
+      suffix = '_s5slides.html'
+      out = doc.to_s5(:content_only => false, :print_slides => true)
+    end
+  end
+
+  if (output_file.nil? && filename.nil?) || output_file == "-"
+    if export == :pdf
+      $stderr.puts "Can't write PDF to stdout"
+      exit 1
+    end
+
+    cli_puts "Writing to standard output"
+    $stdout.puts out
+    next
+  end
+
+  if output_file
+    job = File.basename(output_file, File.extname(output_file))
+  else
+    dir = File.dirname(filename)
+    job = File.join(dir, File.basename(filename, File.extname(filename)))
+    output_file = job + suffix
+  end
+
+  if export == :pdf
+    cli_puts "Writing to #{job}.tex"
+    File.open("#{job}.tex", 'w') {|f| f.puts out}
+    cmd = ["pdflatex", "#{job}.tex", "-interaction=nonstopmode"]
+    cmd << "-output-directory=#{dir}" if dir
+    cli_puts "maruku: executing $ #{cmd.join(' ')}"
+
+    # run twice for cross references
+    system *cmd
+    system *cmd
+    next
+  end
+
+  cli_puts "Writing to #{output_file.inspect}"
+  File.open(output_file, 'w') {|f| f.puts out}
+end
