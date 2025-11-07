@@ -1,5 +1,12 @@
  Changelog
 ===========
+## [v1.6.0](https://github.com/Apipie/apipie-rails/tree/v1.6.0) (TBD)
+[Full Changelog](https://github.com/Apipie/apipie-rails/compare/v1.5.0...v1.6.0)
+* **BREAKING**: Drop support for Ruby < 3.1 and Rails < 7.0
+* Fix Rails 8.1 router keyword args deprecation warning
+* Update rubocop configuration to use plugins instead of require
+* Remove conditional code for Rails 5.x and 6.x
+
 ## [v1.5.0](https://github.com/Apipie/apipie-rails/tree/v1.5.0) (2025-08-19)
 [Full Changelog](https://github.com/Apipie/apipie-rails/compare/v1.4.2...v1.5.0)
 * Don't collect records without an action (Evgeni Golov)

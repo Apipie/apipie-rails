@@ -7,7 +7,7 @@ module Apipie
           constraints(:version => %r{[^/]+}, :resource => %r{[^/]+}, :method => %r{[^/]+}) do
             get_args = options.reverse_merge("(:version)/(:resource)/(:method)" => "apipies#index", :as => :apipie)
 
-            Rails.version >= "5.2" ? get(**get_args) : get(get_args)
+            get(**get_args)
           end
         end
       end

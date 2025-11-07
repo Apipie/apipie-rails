@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.homepage    = "https://github.com/Apipie/apipie-rails"
   s.summary     = %q{Rails REST API documentation tool}
   s.description = %q{Rails REST API documentation tool}
-  s.required_ruby_version = '>= 2.6.0'
+  s.required_ruby_version = '>= 3.1.0'
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
@@ -23,8 +23,8 @@ Gem::Specification.new do |s|
     "source_code_uri" => "https://github.com/Apipie/apipie-rails"
   }
 
-  s.add_dependency "actionpack", ">= 5.0"
-  s.add_dependency "activesupport", ">= 5.0"
+  s.add_dependency "actionpack", ">= 7.0"
+  s.add_dependency "activesupport", ">= 7.0"
 
   # Optional dependencies
   s.add_development_dependency "maruku"   # for Markdown support
@@ -38,7 +38,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rubocop-rails'
   s.add_development_dependency 'rubocop-rspec'
   s.add_development_dependency 'rubocop-performance'
-  s.add_development_dependency 'rubocop-rspec_rails' if Gem::Version.new(RUBY_VERSION) >= Gem::Version.new("2.7")
+  s.add_development_dependency 'rubocop-rspec_rails'
   s.add_development_dependency "simplecov"
   s.add_development_dependency "sqlite3"
 end
