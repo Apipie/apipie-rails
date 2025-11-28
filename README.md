@@ -809,6 +809,9 @@ Apipie::prop(<property-name>, <property-type>, <options-hash> [, <array of sub-p
 # options-hash can include any of the options fields allowed in a :returns statement.
 # additionally, it can include the ':is_array => true', in which case the property is understood to be
 # an array of the described type.
+#
+# x-extensions: any option key starting with 'x-' will be passed through to the
+# generated OpenAPI/Swagger specification. This is useful for vendor-specific extensions.
 ```
 
 To describe an embedded object:

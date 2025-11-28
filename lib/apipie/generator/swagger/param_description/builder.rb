@@ -55,6 +55,7 @@ class Apipie::Generator::Swagger::ParamDescription::Builder
     definition.merge!(for_required)
     definition.merge!(for_example)
     definition.merge!(@description.to_hash) if @description.present?
+    definition.merge!(for_x_extensions)
 
     warn_optional_without_default_value(definition)
 
@@ -62,6 +63,10 @@ class Apipie::Generator::Swagger::ParamDescription::Builder
   end
 
   private
+
+  def for_x_extensions
+    @param_description.options.select { |key, _| key.to_s.start_with?('x-') }
+  end
 
   def for_required
     return {} if !required?

@@ -242,4 +242,33 @@ describe Apipie::Generator::Swagger::ParamDescription::Builder do
       it { is_expected.to eq('example') }
     end
   end
+
+  describe 'x-extensions' do
+    context 'when x-extension options are provided' do
+      let(:base_param_description_options) do
+        {
+          required: true,
+          'x-param-sensitive': true,
+          'x-custom-extension': 'custom-value'
+        }
+      end
+
+      it 'includes x-param-sensitive in the output' do
+        expect(generated_block[:'x-param-sensitive']).to eq(true)
+      end
+
+      it 'includes x-custom-extension in the output' do
+        expect(generated_block[:'x-custom-extension']).to eq('custom-value')
+      end
+    end
+
+    context 'when no x-extension options are provided' do
+      let(:base_param_description_options) { { required: true } }
+
+      it 'does not include any x-extension keys' do
+        x_extension_keys = generated_block.keys.select { |k| k.to_s.start_with?('x-') }
+        expect(x_extension_keys).to be_empty
+      end
+    end
+  end
 end
