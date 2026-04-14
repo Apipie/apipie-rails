@@ -1,4 +1,4 @@
-require:
+plugins:
   - rubocop-rails
   - rubocop-rspec
   - rubocop-rspec_rails
@@ -58,7 +58,7 @@ Metrics/BlockLength:
     - lib/tasks/apipie.rake
     - lib/apipie/swagger_generator.rb
 
-Naming/PredicateName:
+Naming/PredicatePrefix:
   AllowedMethods:
     - have_field?
 
