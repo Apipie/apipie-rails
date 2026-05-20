@@ -31,6 +31,8 @@ class Apipie::Generator::Swagger::TypeExtractor
         :string
       elsif enum?
         :enum
+      elsif nested?
+        :hash
       else
         @validator.expected_type.to_sym
       end
@@ -47,5 +49,9 @@ class Apipie::Generator::Swagger::TypeExtractor
   def enum?
     @validator.is_a?(Apipie::Validator::EnumValidator) ||
       (@validator.respond_to?(:is_enum?) && @validator.is_enum?)
+  end
+
+  def nested?
+    @validator.is_a?(Apipie::Validator::NestedValidator)
   end
 end

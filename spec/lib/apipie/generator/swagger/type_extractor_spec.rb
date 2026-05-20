@@ -34,5 +34,20 @@ describe Apipie::Generator::Swagger::TypeExtractor do
     subject { extractor.extract }
 
     it_behaves_like 'extractable method'
+
+    context 'with a NestedValidator (param :foo, Array do … end)' do
+      let(:resource_desc) { Apipie::ResourceDescription.new(UsersController, 'users') }
+      let(:method_desc) do
+        Apipie::MethodDescription.new(:show, resource_desc, ActionController::Base.send(:_apipie_dsl_data_init))
+      end
+      let(:param_description) do
+        Apipie::ParamDescription.new(method_desc, :things, Array) { param :name, String }
+      end
+      let(:validator) { param_description.validator }
+
+      it 'is extracted as object so the nested-schema branch in Composite runs' do
+        expect(subject).to eq(Apipie::Generator::Swagger::TypeExtractor::TYPES[:hash])
+      end
+    end
   end
 end
