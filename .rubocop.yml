@@ -11,7 +11,6 @@ Rails:
 
 AllCops:
   NewCops: enable
-  TargetRubyVersion: 2.6
 
 Layout/MultilineMethodCallIndentation:
   EnforcedStyle: indented
