@@ -550,6 +550,25 @@ describe Apipie::ParamDescription do
     end
   end
 
+  describe '#is_array?' do
+    it 'is true when array_of option is used' do
+      param = Apipie::ParamDescription.new(method_desc, :param, array_of: String, only_in: :response)
+      expect(param).to be_is_array
+    end
+
+    it 'is true when Array is used with a block of nested params' do
+      param = Apipie::ParamDescription.new(method_desc, :param, Array) do
+        param :name, String
+      end
+      expect(param).to be_is_array
+    end
+
+    it 'is false for a plain scalar param' do
+      param = Apipie::ParamDescription.new(method_desc, :param, String)
+      expect(param).not_to be_is_array
+    end
+  end
+
   describe '#deprecated?' do
     subject do
       Apipie::ParamDescription.new(method_desc, :param, Integer, options)
