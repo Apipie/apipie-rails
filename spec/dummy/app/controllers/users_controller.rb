@@ -274,6 +274,12 @@ class UsersController < ApplicationController
     render :plain => 'nothing to see here'
   end
 
+  api :GET, '/users/by_department_number', 'show users from a specific department by department number'
+  param :department, [1, 2, 3], default_value: 1, type: 'integer'
+  def get_by_department_number
+    render :plain => 'nothing to see here'
+  end
+
   api :GET, '/users/in_departments', 'show users from specific departments'
   param :departments, Array, in: %w[finance operations sales marketing HR], default_value: ['sales']
   def get_in_departments
