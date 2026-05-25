@@ -27,11 +27,25 @@ module Apipie
     class Markdown
 
       def initialize
-        require 'maruku'
+        require 'commonmarker'
       end
 
       def to_html(text)
-        Maruku.new(text).to_html
+        Commonmarker.to_html(text, options: {
+          parse: { smart: true },
+          render: {
+            hardbreaks: false,
+            unsafe: false,
+            escape: true
+          },
+          extension: {
+            strikethrough: true,
+            tagfilter: true,
+            table: true,
+            autolink: true,
+            tasklist: true
+          }
+        })
       end
 
     end
