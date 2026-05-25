@@ -523,6 +523,16 @@ module Apipie
       # backwards compatibility
       alias apipie_update_params apipie_update_methods
 
+      def apipie_lazy_update_methods(methods, &block)
+        methods.each do |method|
+          method_desc = Apipie.get_method_description(self, method)
+          unless method_desc
+            raise "Could not find method description for #{self}##{method}. Was the method defined?"
+          end
+          method_desc.lazy_update_blocks << [self, block]
+        end
+      end
+
       def _apipie_concern_subst
         @_apipie_concern_subst ||= {
           controller_path: self.controller_path,
@@ -575,6 +585,9 @@ module Apipie
         _apipie_concern_update_api_blocks.each do |(methods, block)|
           controller.apipie_update_methods(methods, &block)
         end
+        _apipie_concern_lazy_update_api_blocks.each do |(methods, block)|
+          controller.apipie_lazy_update_methods(methods, &block)
+        end
       end
 
       def _apipie_concern_data
@@ -583,6 +596,10 @@ module Apipie
 
       def _apipie_concern_update_api_blocks
         @_apipie_concern_update_api_blocks ||= []
+      end
+
+      def _apipie_concern_lazy_update_api_blocks
+        @_apipie_concern_lazy_update_api_blocks ||= []
       end
 
       def apipie_concern?
@@ -602,6 +619,10 @@ module Apipie
 
       def update_api(*methods, &block)
         _apipie_concern_update_api_blocks << [methods, block]
+      end
+
+      def lazy_update_api(*methods, &block)
+        _apipie_concern_lazy_update_api_blocks << [methods, block]
       end
 
     end
