@@ -557,10 +557,10 @@ describe Apipie::ParamDescription do
     end
 
     it 'is true when Array is used with a block of nested params' do
-      param = Apipie::ParamDescription.new(method_desc, :param, Array) do
+      description = Apipie::ParamDescription.new(method_desc, :param, Array) do
         param :name, String
       end
-      expect(param).to be_is_array
+      expect(description).to be_is_array
     end
 
     it 'is false for a plain scalar param' do
