@@ -1104,6 +1104,7 @@ RSpec/NamedSubject:
     - 'spec/lib/apipie/generator/swagger/param_description/builder_spec.rb'
     - 'spec/lib/apipie/generator/swagger/param_description/type_spec.rb'
     - 'spec/lib/apipie/generator/swagger/param_description_spec.rb'
+    - 'spec/lib/apipie/generator/swagger/type_extractor_spec.rb'
     - 'spec/lib/apipie/generator/swagger/warning_spec.rb'
     - 'spec/lib/apipie/generator/swagger/warning_writer_spec.rb'
     - 'spec/lib/apipie/method_description/apis_service_spec.rb'
@@ -1242,6 +1243,7 @@ Rails/Output:
     - 'lib/apipie/apipie_module.rb'
     - 'lib/apipie/extractor.rb'
     - 'lib/apipie/rspec/response_validation_helper.rb'
+    - 'spec/lib/swagger/swagger_dsl_spec.rb'
 
 # Offense count: 2
 Rails/OutputSafety:
@@ -1725,6 +1727,9 @@ Style/RedundantInterpolation:
 Style/RedundantParentheses:
   Exclude:
     - 'lib/apipie/extractor/collector.rb'
+    - 'lib/apipie/param_description.rb'
+    - 'lib/tasks/apipie.rake'
+    - 'spec/lib/swagger/rake_swagger_spec.rb'
 
 # Offense count: 2
 # This cop supports safe autocorrection (--autocorrect).
@@ -1965,3 +1970,69 @@ Style/ZeroLengthPredicate:
   Exclude:
     - 'lib/apipie/generator/swagger/param_description/composite.rb'
     - 'spec/lib/swagger/swagger_dsl_spec.rb'
+
+# Offense count: 8
+Naming/PredicateMethod:
+  Exclude:
+    - 'app/controllers/apipie/apipies_controller.rb'
+    - 'lib/apipie/response_description.rb'
+    - 'lib/apipie/static_dispatcher.rb'
+    - 'lib/apipie/validator.rb'
+    - 'spec/dummy/config/initializers/apipie.rb'
+    - 'spec/spec_helper.rb'
+    - 'spec/support/custom_bool_validator.rb'
+
+# Offense count: 17
+# This cop supports unsafe autocorrection (--autocorrect-all).
+RSpec/Output:
+  Exclude:
+    - 'spec/lib/swagger/swagger_dsl_spec.rb'
+
+# Offense count: 32
+# This cop supports safe autocorrection (--autocorrect).
+RSpecRails/MinitestAssertions:
+  Exclude:
+    - 'spec/controllers/concerns_controller_spec.rb'
+    - 'spec/controllers/users_controller_spec.rb'
+    - 'spec/lib/apipie/apipies_controller_spec.rb'
+
+# Offense count: 3
+# This cop supports safe autocorrection (--autocorrect).
+Rails/ActionOrder:
+  Exclude:
+    - 'spec/dummy/app/controllers/overridden_concerns_controller.rb'
+    - 'spec/dummy/app/controllers/twitter_example_controller.rb'
+    - 'spec/dummy/app/controllers/users_controller.rb'
+
+# Offense count: 2
+# This cop supports unsafe autocorrection (--autocorrect-all).
+Style/CollectionQuerying:
+  Exclude:
+    - 'lib/apipie/generator/swagger/warning_writer.rb'
+    - 'lib/apipie/see_description.rb'
+
+# Offense count: 1
+Style/FileOpen:
+  Exclude:
+    - 'lib/apipie/dsl_definition.rb'
+
+# Offense count: 1
+# This cop supports safe autocorrection (--autocorrect).
+Style/ModuleMemberExistenceCheck:
+  Exclude:
+    - 'lib/apipie/dsl_definition.rb'
+
+# Offense count: 10
+Style/OneClassPerFile:
+  Exclude:
+    - 'lib/apipie/core_ext/route.rb'
+    - 'lib/apipie/extractor.rb'
+    - 'lib/apipie/rspec/response_validation_helper.rb'
+    - 'spec/dummy/app/controllers/pets_using_auto_views_controller.rb'
+    - 'spec/dummy/app/controllers/pets_using_self_describing_classes_controller.rb'
+
+# Offense count: 3
+# This cop supports unsafe autocorrection (--autocorrect-all).
+Style/ReduceToHash:
+  Exclude:
+    - 'lib/apipie/generator/swagger/method_description/response_service.rb'
