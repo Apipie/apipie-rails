@@ -16,10 +16,11 @@ module Apipie
       private
 
       def rdoc
-        if Gem::Version.new(::RDoc::VERSION) < Gem::Version.new('4.0.0')
-          ::RDoc::Markup::ToHtml.new()
-        else
+        rdoc_version = Gem::Version.new(::RDoc::VERSION)
+        if rdoc_version >= Gem::Version.new('4.0.0') && rdoc_version < Gem::Version.new('8.0.0')
           ::RDoc::Markup::ToHtml.new(::RDoc::Options.new)
+        else
+          ::RDoc::Markup::ToHtml.new()
         end
       end
     end
