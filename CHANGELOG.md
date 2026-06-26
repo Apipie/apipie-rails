@@ -1,5 +1,11 @@
  Changelog
 ===========
+## [v1.5.1](https://github.com/Apipie/apipie-rails/tree/v1.5.1) (2026-06-26)
+[Full Changelog](https://github.com/Apipie/apipie-rails/compare/v1.5.0...v1.5.1)
+* Make rdoc.to_html compatible with rdoc-8.0 [#971](https://github.com/Apipie/apipie-rails/pull/971) (Oleh Fedorenko)
+* Remove rails 8.2 deprecation warnings in `config/routes.rb`. (Panos Dalitsouris)
+* Update `.rubocop_todo.yml` (Panos Dalitsouris)
+
 ## [v1.5.0](https://github.com/Apipie/apipie-rails/tree/v1.5.0) (2025-08-19)
 [Full Changelog](https://github.com/Apipie/apipie-rails/compare/v1.4.2...v1.5.0)
 * Don't collect records without an action (Evgeni Golov)
