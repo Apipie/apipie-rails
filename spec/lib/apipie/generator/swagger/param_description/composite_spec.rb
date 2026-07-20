@@ -74,6 +74,38 @@ describe Apipie::Generator::Swagger::ParamDescription::Composite do
     end
   end
 
+  describe 'array of nested params' do
+    # `param :some_param, Array do ... end` (no `of:`/`array_of:` option)
+    # builds a NestedValidator, whose own params (declared in the block)
+    # should still be recursed into and rendered as the array's `items`
+    # schema, not silently collapsed to `{ type: 'array', items: { type: 'string' } }`.
+    let(:params_description_one) do
+      Apipie::ParamDescription.new(method_description, :some_param, Array) do
+        param :nested_field, String, required: true
+        param :other_field, Integer
+      end
+    end
+
+    let(:param_descriptions) { [params_description_one] }
+
+    subject { swagger[:properties][:some_param] }
+
+    it 'renders the item schema from the nested params instead of falling back to string items' do
+      expect(subject).to eq(
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            nested_field: { type: 'string' },
+            other_field: { type: 'integer', format: 'int32' }
+          },
+          additionalProperties: false,
+          required: [ :nested_field ]
+        }
+      )
+    end
+  end
+
   describe 'required' do
     subject { swagger[:required] }
 
