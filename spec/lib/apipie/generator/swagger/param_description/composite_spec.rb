@@ -110,6 +110,38 @@ describe Apipie::Generator::Swagger::ParamDescription::Composite do
     end
   end
 
+  describe 'nullability' do
+    subject(:properties) { swagger[:properties] }
+
+    let(:context) do
+      Apipie::Generator::Swagger::Context.new(
+        allow_null: false,
+        http_method: 'get',
+        controller_method: method_description
+      )
+    end
+
+    it 'does not mark params as nullable by default' do
+      expect(properties[:some_param][:type]).to eq('string')
+    end
+
+    context 'when a param explicitly sets allow_nil' do
+      let(:params_description_one) do
+        Apipie::ParamDescription.new(
+          method_description,
+          :some_param,
+          String,
+          { allow_nil: true }
+        )
+      end
+
+      it 'marks only that param as nullable' do
+        expect(properties[:some_param][:type]).to eq(%w[string null])
+        expect(properties[:some_other_param][:type]).to eq('string')
+      end
+    end
+  end
+
   describe 'required' do
     subject { swagger[:required] }
 

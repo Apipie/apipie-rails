@@ -88,6 +88,7 @@ module Apipie
         @name = name
         @required = true
         @required = false if options[:required] == false
+        @allow_nil = !!options[:allow_nil]
         @expected_type = expected_type
         @additional_properties = false
 
@@ -128,7 +129,7 @@ module Apipie
             options: options
         }
       end
-      attr_reader :name, :required, :expected_type, :options, :description
+      attr_reader :name, :required, :allow_nil, :expected_type, :options, :description
       attr_accessor :additional_properties
 
       alias desc description

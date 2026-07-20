@@ -56,7 +56,7 @@ class Apipie::Generator::Swagger::ParamDescription::Composite
           schema = for_array(schema)
         end
 
-        if @context.allow_null?
+        if allow_null_for?(param_description)
           schema = with_null(schema)
         end
 
@@ -71,7 +71,7 @@ class Apipie::Generator::Swagger::ParamDescription::Composite
             controller_method: @context.controller_method
           ).
           with_description(language: @context.language).
-          with_type(with_null: @context.allow_null?).
+          with_type(with_null: allow_null_for?(param_description)).
           with_in(
             default_in_value: @context.default_in_value,
             http_method: @context.http_method
@@ -123,5 +123,12 @@ class Apipie::Generator::Swagger::ParamDescription::Composite
     if !param_description.respond_to?(:required)
       raise "Unexpected param_desc format"
     end
+  end
+
+  # A field can opt into being nullable individually (param/property's
+  # existing allow_nil: true option, now also read for response bodies)
+  # even when the surrounding response/context isn't nullable by default.
+  def allow_null_for?(param_description)
+    (param_description.respond_to?(:allow_nil) && param_description.allow_nil) || @context.allow_null?
   end
 end
