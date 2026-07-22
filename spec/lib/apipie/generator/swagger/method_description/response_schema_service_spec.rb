@@ -72,10 +72,10 @@ describe Apipie::Generator::Swagger::MethodDescription::ResponseSchemaService do
           expect(properties).to eq(
             {
               a_number: {
-                type: %w[number null], required: true, example: 1
+                type: 'number', 'x-nullable': true, required: true, example: 1
               },
               an_optional_number: {
-                type: %w[number null], example: 2
+                type: 'number', 'x-nullable': true, example: 2
               }
             }
           )
@@ -97,7 +97,7 @@ describe Apipie::Generator::Swagger::MethodDescription::ResponseSchemaService do
                 type: 'number', required: true, example: 1
               },
               an_optional_number: {
-                type: %w[number null], example: 2
+                type: 'number', 'x-nullable': true, example: 2
               }
             }
           )
@@ -140,7 +140,7 @@ describe Apipie::Generator::Swagger::MethodDescription::ResponseSchemaService do
               type: 'number', required: true
             },
             an_optional_number: {
-              type: %w[number null]
+              type: 'number', 'x-nullable': true
             }
           }
         )

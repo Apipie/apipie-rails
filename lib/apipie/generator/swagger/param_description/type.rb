@@ -28,15 +28,13 @@ class Apipie::Generator::Swagger::ParamDescription::Type
         items: type_definition,
         type: 'array'
       }
-
-      if @with_null
-        type_definition[:type] = [type_definition[:type], 'null']
-      end
     end
 
-    if @with_null
-      type_definition[:type] = [type_definition[:type], 'null']
-    end
+    # Swagger 2.0's Schema Object requires `type` to be a single string --
+    # mutating it into `[type, 'null']` (valid JSON Schema, not valid Swagger
+    # 2.0) isn't understood by tooling that expects spec-conformant OAS2, so
+    # use the widely-supported `x-nullable` vendor extension instead.
+    type_definition[:'x-nullable'] = true if @with_null
 
     type_definition
   end

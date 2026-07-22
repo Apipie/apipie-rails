@@ -136,8 +136,10 @@ describe Apipie::Generator::Swagger::ParamDescription::Composite do
       end
 
       it 'marks only that param as nullable' do
-        expect(properties[:some_param][:type]).to eq(%w[string null])
+        expect(properties[:some_param][:type]).to eq('string')
+        expect(properties[:some_param][:'x-nullable']).to eq(true)
         expect(properties[:some_other_param][:type]).to eq('string')
+        expect(properties[:some_other_param]).not_to have_key(:'x-nullable')
       end
     end
   end
