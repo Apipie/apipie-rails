@@ -111,12 +111,7 @@ class Apipie::Generator::Swagger::ParamDescription::Composite
   end
 
   def with_null(schema)
-    # Ideally we would write schema[:type] = ["object", "null"]
-    # but due to a bug in the json-schema gem, we need to use anyOf
-    # see https://github.com/ruby-json-schema/json-schema/issues/404
-    {
-      anyOf: [ schema, { type: 'null' } ]
-    }
+    schema.merge('x-nullable': true)
   end
 
   def validate(param_description)
