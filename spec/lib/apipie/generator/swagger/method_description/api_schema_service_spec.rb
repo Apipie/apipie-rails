@@ -116,6 +116,12 @@ describe Apipie::Generator::Swagger::MethodDescription::ApiSchemaService do
 
       it { is_expected.to eq('customOperationId') }
     end
+
+    context 'when the operation_id option is an empty string' do
+      let(:api_options) { { operation_id: '' } }
+
+      it { is_expected.to eq(Apipie::Generator::Swagger::OperationId.new(path: path, http_method: http_method).to_s) }
+    end
   end
 
   describe 'description' do

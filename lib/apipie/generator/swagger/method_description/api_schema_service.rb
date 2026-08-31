@@ -10,7 +10,7 @@ class Apipie::Generator::Swagger::MethodDescription::ApiSchemaService
     @method_description.apis.each_with_object({}) do |api, paths|
       api = Apipie::Generator::Swagger::MethodDescription::ApiDecorator.new(api)
       path = Apipie::Generator::Swagger::PathDecorator.new(api.path)
-      op_id = api.options[:operation_id] || Apipie::Generator::Swagger::OperationId.from(api).to_s
+      op_id = api.options[:operation_id].to_s.presence || Apipie::Generator::Swagger::OperationId.from(api).to_s
 
       if Apipie.configuration.generator.swagger.generate_x_computed_id_field?
         Apipie::Generator::Swagger::ComputedInterfaceId.instance.add!(op_id)
