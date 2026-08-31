@@ -133,17 +133,34 @@ describe Apipie::Validator do
   end
 
   describe 'EnumValidator' do
-    it "validates by object class" do
-      validator = Apipie::Validator::EnumValidator.new(params_desc, ['first', 'second & third'])
-      expect(validator.validate("first")).to be_truthy
-      expect(validator.validate("second & third")).to be_truthy
-      expect(validator.validate(1)).to be_falsey
-      expect(validator.validate({ 1 => 1 })).to be_falsey
+    context 'with an array' do
+      subject(:validator) { Apipie::Validator::EnumValidator.new(params_desc, ['first', 'second & third']) }
+
+      it "validates by object class" do
+        expect(validator.validate("first")).to be_truthy
+        expect(validator.validate("second & third")).to be_truthy
+        expect(validator.validate(1)).to be_falsey
+        expect(validator.validate({ 1 => 1 })).to be_falsey
+      end
+
+      it "has a valid description" do
+        expect(validator.description).to eq('Must be one of: <code>first</code>, <code>second &amp; third</code>.')
+      end
     end
 
-    it "has a valid description" do
-      validator = Apipie::Validator::EnumValidator.new(params_desc, ['first', 'second & third'])
-      expect(validator.description).to eq('Must be one of: <code>first</code>, <code>second &amp; third</code>.')
+    context 'with a callable' do
+      subject(:validator) { Apipie::Validator::EnumValidator.new(params_desc, -> { ['first', 'second & third'] }) }
+
+      it "validates by object class" do
+        expect(validator.validate("first")).to be_truthy
+        expect(validator.validate("second & third")).to be_truthy
+        expect(validator.validate(1)).to be_falsey
+        expect(validator.validate({ 1 => 1 })).to be_falsey
+      end
+
+      it "has a valid description" do
+        expect(validator.description).to eq('Must be one of: <code>first</code>, <code>second &amp; third</code>.')
+      end
     end
   end
 end
