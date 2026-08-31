@@ -25,7 +25,15 @@ class Apipie::Generator::Swagger::ParamDescription::Composite
         new(param_description.validator).
         extract
 
-      has_nested_params = param_type == 'object' &&
+      # `param :foo, Array do ... end` builds a NestedValidator (an
+      # ArrayValidator is only built when no block is given), whose own
+      # expected_type is 'array' -- but it delegates params_ordered to an
+      # internal HashValidator, so it does have a nested schema to recurse
+      # into even though param_type isn't 'object'.
+      nested_array = param_type == 'array' &&
+        param_description.validator.respond_to?(:params_ordered)
+
+      has_nested_params = (param_type == 'object' || nested_array) &&
         param_description.validator.params_ordered.present?
 
       if has_nested_params
@@ -44,7 +52,7 @@ class Apipie::Generator::Swagger::ParamDescription::Composite
           schema[:additionalProperties] = true
         end
 
-        if param_description.is_array?
+        if param_description.is_array? || nested_array
           schema = for_array(schema)
         end
 
