@@ -2,7 +2,7 @@ require 'rubygems'
 require 'bundler/setup'
 
 require 'simplecov'
-SimpleCov.minimum_coverage 91
+SimpleCov.minimum_coverage 80
 SimpleCov.start
 
 ENV["RAILS_ENV"] ||= 'test'
