@@ -21,7 +21,7 @@ module Apipie
       end
 
       def apply(adapter)
-        adapter.additional_properties =  @additional_properties_allowed
+        adapter.additional_properties = @additional_properties_allowed
       end
     end
   end

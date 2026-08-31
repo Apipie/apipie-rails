@@ -88,20 +88,24 @@ describe Apipie::Generator::Swagger::ParamDescription::Composite do
 
     let(:param_descriptions) { [params_description_one] }
 
-    subject { swagger[:properties][:some_param] }
+    subject(:some_param_schema) { swagger[:properties][:some_param] }
 
     it 'renders the item schema from the nested params instead of falling back to string items' do
-      expect(subject).to eq(
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: {
-            nested_field: { type: 'string' },
-            other_field: { type: 'integer', format: 'int32' }
+      expect(some_param_schema).to eq(
+        anyOf: [
+          {
+            type: 'array',
+            items: {
+              type: 'object',
+              properties: {
+                nested_field: { type: %w[string null], required: true },
+                other_field: { type: %w[number null] }
+              },
+              required: [:nested_field]
+            }
           },
-          additionalProperties: false,
-          required: [ :nested_field ]
-        }
+          { type: 'null' }
+        ]
       )
     end
   end
