@@ -193,7 +193,7 @@ class PetsController < ApplicationController
   #-----------------------------------------------------------
   api!
   returns :code => 200 do
-    property :a_status, [ 'confirmed', 'discarded' ], :required => false, :allow_nil => true
+    property :a_status, %w[confirmed discarded], :required => false, :allow_nil => true
   end
   def return_and_validate_expected_response_with_null_enum
     result =  {

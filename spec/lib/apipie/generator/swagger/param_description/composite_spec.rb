@@ -92,20 +92,16 @@ describe Apipie::Generator::Swagger::ParamDescription::Composite do
 
     it 'renders the item schema from the nested params instead of falling back to string items' do
       expect(some_param_schema).to eq(
-        anyOf: [
-          {
-            type: 'array',
-            items: {
-              type: 'object',
-              properties: {
-                nested_field: { type: %w[string null], required: true },
-                other_field: { type: %w[number null] }
-              },
-              required: [:nested_field]
-            }
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            nested_field: { type: 'string', required: true, 'x-nullable': true },
+            other_field: { type: 'number', 'x-nullable': true }
           },
-          { type: 'null' }
-        ]
+          required: [:nested_field]
+        },
+        'x-nullable': true
       )
     end
   end
@@ -137,7 +133,7 @@ describe Apipie::Generator::Swagger::ParamDescription::Composite do
 
       it 'marks only that param as nullable' do
         expect(properties[:some_param][:type]).to eq('string')
-        expect(properties[:some_param][:'x-nullable']).to eq(true)
+        expect(properties[:some_param][:'x-nullable']).to be(true)
         expect(properties[:some_other_param][:type]).to eq('string')
         expect(properties[:some_other_param]).not_to have_key(:'x-nullable')
       end
@@ -156,7 +152,7 @@ describe Apipie::Generator::Swagger::ParamDescription::Composite do
 
       it 'marks the nested schema as nullable via x-nullable, not anyOf' do
         expect(properties[:some_param][:type]).to eq('object')
-        expect(properties[:some_param][:'x-nullable']).to eq(true)
+        expect(properties[:some_param][:'x-nullable']).to be(true)
         expect(properties[:some_param]).not_to have_key(:anyOf)
         expect(properties[:some_param][:properties][:nested_field]).to eq(type: 'string', required: true)
       end

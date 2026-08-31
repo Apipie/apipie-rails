@@ -127,7 +127,7 @@ class ActionController::Base
           memo[key] = expand_x_nullable_for_validation(value)
         end
         if expanded.delete('x-nullable')
-          { 'anyOf' => [ expanded, { 'type' => 'null' } ] }
+          { 'anyOf' => [expanded, { 'type' => 'null' }] }
         else
           expanded
         end
