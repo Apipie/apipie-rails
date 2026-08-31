@@ -14,7 +14,10 @@ module Apipie
 
     alias response_only? response_only
     alias request_only? request_only
-    alias is_array? is_array
+
+    def is_array?
+      @is_array || @validator.is_a?(Apipie::Validator::NestedValidator)
+    end
 
     def self.from_dsl_data(method_description, args)
       param_name, validator, desc_or_options, options, block = args
