@@ -108,6 +108,9 @@ describe 'rake tasks' do
         expect_param_def("get", "/users/by_department", "department", "enum",
                          %w[finance operations sales marketing HR])
 
+        expect_param_def("get", "/users/by_department_number", "department", "type", "integer")
+        expect_param_def("get", "/users/by_department_number", "department", "enum", [1, 2, 3])
+
         expect_tags_def("get", "/twitter_example/{id}/followers", %w[twitter_example following index search])
         expect_response_params_def("get", "/pets/{id}/as_properties", 200, "pet_name", "example", "mypet")
       end
@@ -135,12 +138,15 @@ describe 'rake tasks' do
         expect_param_def("get", "/users/by_department", "department", "enum",
                          %w[finance operations sales marketing HR])
 
+        expect_param_def("get", "/users/by_department_number", "department", "type", "integer")
+        expect_param_def("get", "/users/by_department_number", "department", "enum", [1, 2, 3])
+
         expect_param_def("get", "/users/in_departments", "departments", "in", "query")
         expect_array_param_def("get", "/users/in_departments", "departments",
                          %w[finance operations sales marketing HR])
 
         expect_tags_def("get", "/twitter_example/{id}/followers", %w[twitter_example following index search])
-
+        expect_response_params_def("get", "/pets/{id}/as_properties", 200, "pet_name", "example", "mypet")
       end
 
       it "generates a valid swagger file" do

@@ -95,8 +95,8 @@ class Apipie::Generator::Swagger::ParamDescription::Type
 
   def for_enum_type
     {
-      type: 'string',
-      enum: @param_description.validator.values
+      type: validator.expected_type,
+      enum: validator.values
     }
   end
 

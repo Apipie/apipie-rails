@@ -25,8 +25,11 @@ module Apipie
       end
 
       def self.inherited(subclass)
+        BaseValidator.validators.unshift(subclass)
+      end
+
+      def self.validators
         @validators ||= []
-        @validators.insert 0, subclass
       end
 
       # find the right validator for given options
