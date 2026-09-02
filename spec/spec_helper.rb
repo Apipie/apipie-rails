@@ -61,7 +61,7 @@ RSpec.configure do |config|
 
   config.mock_with :rspec
 
-  if Rails.version >= "7.1"
+  if Rails.version >= "7.1" && config.respond_to?(:fixture_paths=)
     config.fixture_paths = ["#{Rails.root}/spec/fixtures"]
   else
     config.fixture_path = "#{Rails.root}/spec/fixtures"

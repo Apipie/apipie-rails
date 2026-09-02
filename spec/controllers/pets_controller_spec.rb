@@ -20,6 +20,11 @@ RSpec.describe PetsController do
     expect(response).to match_declared_responses
   end
 
+  it "does not raise error when rendered output includes null for a nullable enum property" do
+    response = get :return_and_validate_expected_response_with_null_enum, format: :json
+    expect(response).to match_declared_responses
+  end
+
   it "does not raise error when rendered output includes null (instead of an object) in the response" do
     response = get :return_and_validate_expected_response_with_null_object, format: :json
     expect(response).to match_declared_responses

@@ -92,21 +92,70 @@ describe Apipie::Generator::Swagger::ParamDescription::Composite do
 
     it 'renders the item schema from the nested params instead of falling back to string items' do
       expect(some_param_schema).to eq(
-        anyOf: [
-          {
-            type: 'array',
-            items: {
-              type: 'object',
-              properties: {
-                nested_field: { type: %w[string null], required: true },
-                other_field: { type: %w[number null] }
-              },
-              required: [:nested_field]
-            }
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            nested_field: { type: 'string', required: true, 'x-nullable': true },
+            other_field: { type: 'number', 'x-nullable': true }
           },
-          { type: 'null' }
-        ]
+          required: [:nested_field]
+        },
+        'x-nullable': true
       )
+    end
+  end
+
+  describe 'nullability' do
+    subject(:properties) { swagger[:properties] }
+
+    let(:context) do
+      Apipie::Generator::Swagger::Context.new(
+        allow_null: false,
+        http_method: 'get',
+        controller_method: method_description
+      )
+    end
+
+    it 'does not mark params as nullable by default' do
+      expect(properties[:some_param][:type]).to eq('string')
+    end
+
+    context 'when a param explicitly sets allow_nil' do
+      let(:params_description_one) do
+        Apipie::ParamDescription.new(
+          method_description,
+          :some_param,
+          String,
+          { allow_nil: true }
+        )
+      end
+
+      it 'marks only that param as nullable' do
+        expect(properties[:some_param][:type]).to eq('string')
+        expect(properties[:some_param][:'x-nullable']).to be(true)
+        expect(properties[:some_other_param][:type]).to eq('string')
+        expect(properties[:some_other_param]).not_to have_key(:'x-nullable')
+      end
+    end
+
+    context 'when a nested (Hash) param explicitly sets allow_nil' do
+      # Nested/composed schemas go through Composite#with_null, a separate
+      # code path from the plain-scalar one above (Type#to_hash) -- it used
+      # to wrap with `anyOf` instead of `x-nullable` (see with_null's own
+      # comment for why), which this pins as also fixed.
+      let(:params_description_one) do
+        Apipie::ParamDescription.new(method_description, :some_param, Hash, { allow_nil: true }) do
+          param :nested_field, String, required: true
+        end
+      end
+
+      it 'marks the nested schema as nullable via x-nullable, not anyOf' do
+        expect(properties[:some_param][:type]).to eq('object')
+        expect(properties[:some_param][:'x-nullable']).to be(true)
+        expect(properties[:some_param]).not_to have_key(:anyOf)
+        expect(properties[:some_param][:properties][:nested_field]).to eq(type: 'string', required: true)
+      end
     end
   end
 

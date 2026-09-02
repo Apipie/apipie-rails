@@ -189,6 +189,20 @@ class PetsController < ApplicationController
   end
 
   #-----------------------------------------------------------
+  # A method which returns a null value for a nullable enum property
+  #-----------------------------------------------------------
+  api!
+  returns :code => 200 do
+    property :a_status, %w[confirmed discarded], :required => false, :allow_nil => true
+  end
+  def return_and_validate_expected_response_with_null_enum
+    result =  {
+        a_status: nil
+    }
+    render :json => result
+  end
+
+  #-----------------------------------------------------------
   # A method which returns a null value in the response instead of an object
   #-----------------------------------------------------------
   api!

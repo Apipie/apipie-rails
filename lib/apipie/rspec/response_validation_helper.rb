@@ -97,14 +97,45 @@ class ActionController::Base
       end
 
       schema = JSON.parse(JSON(unprocessed_schema))
+      validation_schema = expand_x_nullable_for_validation(schema)
 
-      error_list = JSON::Validator.fully_validate(schema, response.body, :strict => false, :version => :draft4, :json => true)
+      error_list = JSON::Validator.fully_validate(validation_schema, response.body, :strict => false, :version => :draft4, :json => true)
 
       error_object = Apipie::ResponseDoesNotMatchSwaggerSchema.new(controller_name, action_name, response.code, error_list, schema, response.body)
 
       [schema, error_list, error_object]
     rescue Apipie::NoDocumentedMethod
       [nil, [], nil]
+    end
+
+    private
+
+    # `x-nullable` (the OAS2 vendor-extension convention apipie's swagger
+    # generator uses for nullable fields -- see param_description/type.rb and
+    # param_description/composite.rb) isn't a JSON Schema keyword, so the
+    # `json-schema` gem doesn't know to relax the `type` check for it: a
+    # legitimately-null response value fails validation with "did not match
+    # type: X" against a bare `x-nullable` schema. Rewrite it into a form the
+    # gem does understand (a type/null `anyOf`) for this validation call only
+    # -- the schema written to the actual swagger doc, and returned to the
+    # caller here for display on failure, keeps the clean x-nullable shape
+    # that other OAS2-consuming tooling expects.
+    def expand_x_nullable_for_validation(schema)
+      case schema
+      when Hash
+        expanded = schema.each_with_object({}) do |(key, value), memo|
+          memo[key] = expand_x_nullable_for_validation(value)
+        end
+        if expanded.delete('x-nullable')
+          { 'anyOf' => [expanded, { 'type' => 'null' }] }
+        else
+          expanded
+        end
+      when Array
+        schema.map { |item| expand_x_nullable_for_validation(item) }
+      else
+        schema
+      end
     end
   end
 
