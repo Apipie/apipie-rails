@@ -6,6 +6,7 @@ describe Apipie::Generator::Swagger::MethodDescription::ApiSchemaService do
   let(:resource_id) { 'users' }
   let(:method_description_description) { nil }
   let(:tags) { [] }
+  let(:api_options) { { deprecated: true } }
 
   let(:dsl_data) do
     ActionController::Base
@@ -13,7 +14,7 @@ describe Apipie::Generator::Swagger::MethodDescription::ApiSchemaService do
       .merge(
         {
           description: method_description_description,
-          api_args: [[http_method, path, 'Some api description', { deprecated: true }]],
+          api_args: [[http_method, path, 'Some api description', api_options]],
           tag_list: tags
         }
       )
@@ -102,6 +103,24 @@ describe Apipie::Generator::Swagger::MethodDescription::ApiSchemaService do
       before { Apipie.configuration.generator.swagger.content_type_input = :json }
 
       it { is_expected.to eq(['application/json']) }
+    end
+  end
+
+  describe 'operationId' do
+    subject { service.call[path][http_method][:operationId] }
+
+    it { is_expected.to eq(Apipie::Generator::Swagger::OperationId.new(path: path, http_method: http_method).to_s) }
+
+    context 'when the operation_id option is given' do
+      let(:api_options) { { operation_id: 'customOperationId' } }
+
+      it { is_expected.to eq('customOperationId') }
+    end
+
+    context 'when the operation_id option is an empty string' do
+      let(:api_options) { { operation_id: '' } }
+
+      it { is_expected.to eq(Apipie::Generator::Swagger::OperationId.new(path: path, http_method: http_method).to_s) }
     end
   end
 

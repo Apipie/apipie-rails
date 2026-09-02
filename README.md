@@ -1748,6 +1748,18 @@ example:
 param :do_something, Boolean, :desc => "take an action", :required => false, :default_value => false
 ```
 
+## Specifying a custom operationId
+
+By default, the `operationId` of each generated swagger operation is
+derived from its HTTP method and path (e.g. `get_api_users_id`). To
+use a custom value instead (for example to match the naming your
+client code generator expects), pass `:operation_id` in the `api` DSL
+call:
+
+``` ruby
+api :GET, "/api/users/:id", "Show user", :operation_id => "showUser"
+```
+
 ## Generated Warnings
 
 The help identify potential improvements to your documentation, the
