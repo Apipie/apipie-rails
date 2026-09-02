@@ -1,7 +1,7 @@
 module Apipie
   class MethodDescription
     attr_reader :full_description, :method, :resource, :apis, :examples, :see, :formats, :headers, :show
-    attr_accessor :metadata
+    attr_accessor :metadata, :lazy_update_blocks
 
     def initialize(method, resource, dsl_data)
       @method = method.to_s
@@ -43,6 +43,7 @@ module Apipie
       else
         true
       end
+      @lazy_update_blocks = []
     end
 
     def id
@@ -71,6 +72,14 @@ module Apipie
 
       merge_params(all_params, @params_ordered)
       all_params.find_all(&:validator)
+    end
+
+    def eval_lazy_update_blocks
+      lazy_update_blocks.each do |(context, block)|
+        dsl_data = context._apipie_eval_dsl(&block)
+        context._apipie_update_params(self, dsl_data)
+        context._apipie_update_meta(self, dsl_data)
+      end
     end
 
     def returns_self
@@ -159,6 +168,7 @@ module Apipie
     end
 
     def to_json(lang = nil)
+      eval_lazy_update_blocks
       {
         :doc_url => doc_url,
         :name => @method,
