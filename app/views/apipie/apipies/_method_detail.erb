@@ -24,6 +24,7 @@
 
 <% unless method[:params].blank? %>
   <%= heading(t('apipie.params'), h_level) %>
+  <%= render(:partial => "params_simple", :locals => {:params => method[:params]}) %>
   <table class='table'>
     <thead>
       <tr>
@@ -44,6 +45,7 @@
       <%= heading("#{t('apipie.description')}:", h_level + 2) %>
       <p><%= item[:description] %></p>
     <% end %>
+    <%= render(:partial => "params_simple", :locals => {:params => item[:returns_object]}) %>
     <table class='table'>
       <thead>
         <tr>

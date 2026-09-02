@@ -1,0 +1,49 @@
+<ul>
+  <% params.each do |param| %>
+    <% if !param[:show] %>
+      <%= render(:partial => "params_simple", :locals => {:params => param[:params]}) unless param[:params].blank? %>
+      <% next %>
+    <% end %>
+    <li>
+      <span>
+        <b>
+          <a href="#<%= param[:full_name] %>" data-toggle="tooltip" data-placement="top" title="<%= param[:description] ? param[:description] : param[:name] %>">
+            <%= param[:name] %>
+          </a>
+        </b>
+      </span>
+      <%- if param[:required] %>
+        <span style="color: red">* </span>
+      <%- end %>
+      <%- if param[:validator].present? %>
+        <span>: </span>
+        <span style="margin-left: 10px;">
+            <% if param[:validator].include? "one of" %>
+              <%= param[:validator].html_safe %>
+            <%- else %>
+              <%- if param[:is_array] || param[:expected_type] == "array" %>
+                <span> [ </span>
+              <%- end %>
+            <%- if param[:expected_type] == "hash" && !param[:is_array] %>
+                <span> { </span>
+              <%- elsif param[:params].blank? %>
+                  <%= param[:expected_type] %>
+              <%- if (param[:is_array] || param[:expected_type] == "array") %>
+                    <span> ] </span>
+                  <%- end %>
+              <%- end %>
+            <% end %>
+        </span>
+      <%- end %>
+    </li>
+    <% if param[:params].present? %>
+      <%= render(:partial => "params_simple", :locals => {:params => param[:params]}) unless param[:params].blank? %>
+      <%- if param[:expected_type] == "hash" && !param[:is_array] %>
+        <span> } </span>
+      <%- end %>
+      <%- if param[:is_array] || param[:expected_type] == "array" %>
+        <span> ] </span>
+      <%- end %>
+    <% end %>
+  <% end %>
+</ul>
