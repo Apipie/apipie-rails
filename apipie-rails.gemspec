@@ -27,7 +27,7 @@ Gem::Specification.new do |s|
   s.add_dependency "activesupport", ">= 5.0"
 
   # Optional dependencies
-  s.add_development_dependency "maruku"   # for Markdown support
+  s.add_development_dependency "commonmarker"   # for Markdown support
   s.add_development_dependency "RedCloth" # for Textile support
 
   # Dev/tests only dependencies
